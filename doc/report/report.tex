@@ -1,0 +1,66 @@
+\documentclass{scrartcl}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{paralist}
+\usepackage{enumitem}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{scalaStyle}{
+  frame=tb,
+  language=scala,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=true
+}
+
+\lstset{style=scalaStyle}
+
+\newcommand{\emailaddr}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\title{\LARGE
+    Report finale PPS - evo-sim
+}
+
+\author{
+    Rei Beshiri \\ \emailaddr{rei.beshiri@studio.unibo.it}
+    \and 
+    Andrea Betti \\ \emailaddr{andrea.betti10@studio.unibo.it} 
+    \and 
+    Daniele Giulianini \\ \emailaddr{daniele.giulianini3@studio.unibo.it}
+    \and 
+    Alessandro Oliva \\ \emailaddr{alessandro.oliva4@studio.unibo.it}
+    \and 
+    Andrea Vaienti \\ \emailaddr{andrea.vaienti2@studio.unibo.it}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\input{tex/requirements}
+\newpage
+
+\end{document}
