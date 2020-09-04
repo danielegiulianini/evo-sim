@@ -55,6 +55,87 @@ In particolare l'utente può usufruire dei seguenti aspetti:
 
 \subsection{Requisiti funzionali}
 
+\begin{myEnumerate}
+    \item[3] Funzionali.
+    \begin{myEnumerate}[label*=\arabic*.]
+        \item[3.1] Supportare diverse tipologie di entità;
+	\begin{myEnumerate}[label*=\arabic*.]
+        	\item[3.1.1] \textit{blob};
+		\begin{myEnumerate}[label*=\arabic*.]
+        		\item[3.1.1.1] I \textit{blob} hanno delle caratteristiche genetiche;
+			\begin{myEnumerate}[label*=\arabic*.]
+        			\item[3.1.1.1.1] Velocità;
+				\item[3.1.1.1.2] Percezione dell'ambiente;
+				\item[3.1.1.1.3] Dimensione;
+				\item[3.1.1.1.4] Energia;
+    			\end{myEnumerate}
+			\item[3.1.1.2] Possibilità per i \textit{blob} di ottenere delle abilità durante il loro ciclo evolutivo
+			\begin{myEnumerate}[label*=\arabic*.]
+        			\item[3.1.1.2.1] Resistenza al freddo;
+				\item[3.1.1.2.2] Resistenza al caldo;
+				\item[3.1.1.2.3] Resistenza all'avvelenamento (cibo avvelenato);
+				\item[3.1.1.2.4] Cannibalismo;
+				\item[3.1.1.2.5] Untore;
+				\item[3.1.1.2.6] ...;
+    			\end{myEnumerate}
+    		\end{myEnumerate}
+		\item[3.1.2] Cibi il cui ingerimento provoca diversi effetti sui \textit{blob}
+		\begin{myEnumerate}[label*=\arabic*.]
+        		\item[3.1.2.1] Nutrienti che aumentano l'energia attuale del \textit{blob};
+			\item[3.1.2.2] Avvelenato che fa consumare più energia al \textit{blob} per diverse giornate;
+			\item[3.1.2.3] ...;
+    		\end{myEnumerate}
+		\item[3.1.3] Ostacoli la cui collisione impedisce il naturale movimento del \textit{blob};
+		\begin{myEnumerate}[label*=\arabic*.]
+        		\item[3.1.3.1] Preclusori di passaggio;
+			\item[3.1.3.2] Rallentatori di movimento;
+    		\end{myEnumerate}
+    	\end{myEnumerate}
+	\item[3.2] Parametrizzazione delle diverse caratteristiche ambientali che influenzano tutti i \textit{blob};
+	\begin{myEnumerate}[label*=\arabic*.]
+        	\item[3.2.1] Temperatura che influenza la velocità di movimento;
+		\item[3.2.2] Luminosità che influenza la percezione dell'ambiente;
+    	\end{myEnumerate}
+	\item[3.3] Movimento dei \textit{blob} all'interno dell'ambiente dettato da un AI;
+	\begin{myEnumerate}[label*=\arabic*.]
+        	\item[3.3.1] Movimento alla ricerca di cibo finché quest'ultimo non è presente all'interno del campo visivo;
+		\item[3.3.2] Movimento secondo determinati pattern con entità presenti nel campo visivo;
+		\begin{myEnumerate}[label*=\arabic*.]
+        		\item[3.3.2.1] ...;
+    		\end{myEnumerate}
+    	\end{myEnumerate}
+	\item[3.4] Riproduzione dei \textit{blob} basata sulle caratteristiche genetiche dei genitori;
+	\item[3.5] Possibilità di effettuare simulazioni parametrizzate arbitrariamente dall'utente;
+	\begin{myEnumerate}[label*=\arabic*.]
+		\item[3.5.1] Parametrizzazione \textit{blob};
+		\item[3.5.2] Parametrizzazione cibi;
+		\item[3.5.3] Parametrizzazione ostacoli;
+	\end{myEnumerate}
+	\item[3.6] Possibilità di visualizzare l'andamento della simulazione;	
+	\begin{myEnumerate}[label*=\arabic*.]
+		\item[3.6.1] Visualizzazione delle entità all'interno dell'ambiente;
+		\item[3.6.2] Visualizzazione degli indicatori di evoluzione in real-time;
+		\item[3.6.3] Visualizzazione dell'indicatore della giornata corrente.
+	\end{myEnumerate}
+    \end{myEnumerate}
+\end{myEnumerate}
+
 \subsection{Requisiti non funzionali}
 
+\begin{myEnumerate}[label*=\arabic*.]
+	\item[4] Non funzionali
+	\begin{myEnumerate}[label*=\arabic*.]
+		\item[4.1] Mantenimento di un framerate stabile e costante che si aggiri sui 30 FPS con un numero di \textit{blob} che si aggira su [...].
+		\item[4.2] Latenza dell'interfaccia utente inferiore ai [...] ms.
+	\end{myEnumerate}
+\end{myEnumerate}
+
+
 \subsection{Requisiti di implementazione}
+
+\begin{myEnumerate}[label*=\arabic*.]
+	\item[5] Implementazione
+	\begin{myEnumerate}[label*=\arabic*.]
+		\item[5.1] L'applicazione verrà sviluppata in Scala, mentre per verificare la presenza di errori verranno implementati test in Scalatest.
+	\end{myEnumerate}
+\end{myEnumerate}
