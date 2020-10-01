@@ -47,12 +47,23 @@ trait Blob extends Entity with Living with Moving with Perceptive with Intellige
   def degradationEffect: DegradationEffect
 }
 
-
 trait Food extends Entity with Living with Effectful {
   override def boundingBox: CircularBoundingBox
 }
 
+trait Obstacle extends Entity with Effectful {
+  override def boundingBox: TriangularBoundingBox
+}
 
+
+
+//leaves of model hierarchy
+case class BaseBlob(override val boundingBox: RectangularBoundingBox,
+                    override val life: Int,
+                    override val velocity: Int,
+                    override val degradationEffect: DegradationEffect,
+                    override val fieldOfViewRadius: Int,
+                    override val movementStrategy: MovementStrategy) extends Blob
 
 
 object Prova extends App {
