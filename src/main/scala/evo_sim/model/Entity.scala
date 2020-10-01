@@ -48,6 +48,13 @@ trait Blob extends Entity with Living with Moving with Perceptive with Intellige
 }
 
 
+trait Food extends Entity with Living with Effectful {
+  override def boundingBox: CircularBoundingBox
+}
+
+
+
+
 object Prova extends App {
   println("Ok")
 }
