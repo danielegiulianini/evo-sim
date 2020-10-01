@@ -8,3 +8,7 @@ case class Circle(radius: Int) extends Shape
 case class Triangle(side1: Int, side2: Int, side3: Int) extends Shape
 
 
+trait BoundingBox {
+  def position: (Int, Int)
+  def shape : Shape
+}
