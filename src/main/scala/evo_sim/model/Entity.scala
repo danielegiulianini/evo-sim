@@ -69,6 +69,9 @@ case class BaseFood(override val boundingBox: CircularBoundingBox,
                     override val life: Life,
                     override val effect: Effect) extends Food
 
+case class BaseObstacle(override val boundingBox: TriangularBoundingBox,
+                        override val effect: Effect) extends Obstacle
+
 object Prova extends App {
   println("Ok")
 }
