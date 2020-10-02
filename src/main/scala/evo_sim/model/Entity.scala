@@ -65,6 +65,9 @@ case class BaseBlob(override val boundingBox: RectangularBoundingBox,
                     override val fieldOfViewRadius: Int,
                     override val movementStrategy: MovementStrategy) extends Blob
 
+case class BaseFood(override val boundingBox: CircularBoundingBox,
+                    override val life: Life,
+                    override val effect: Effect) extends Food
 
 object Prova extends App {
   println("Ok")
