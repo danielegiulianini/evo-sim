@@ -1,7 +1,6 @@
 package evo_sim.model
 
-import java.awt.geom.RectangularShape
-
+import evo_sim.model.BoundingBoxShape._
 import evo_sim.model.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 
 trait Domain {
@@ -43,33 +42,33 @@ trait Intelligent extends Perceptive with Moving {
 }
 
 trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {
-  override def boundingBox: RectangularBoundingBox
+  override def boundingBox: Rectangle
   def degradationEffect: DegradationEffect
 }
 
 trait Food extends Entity with Living with Effectful {
-  override def boundingBox: CircularBoundingBox
+  override def boundingBox: Circle
 }
 
 trait Obstacle extends Entity with Effectful {
-  override def boundingBox: TriangularBoundingBox
+  override def boundingBox: Triangle
 }
 
 
 
 //leaves of model hierarchy
-case class BaseBlob(override val boundingBox: RectangularBoundingBox,
+case class BaseBlob(override val boundingBox: Rectangle,
                     override val life: Int,
                     override val velocity: Int,
                     override val degradationEffect: DegradationEffect,
                     override val fieldOfViewRadius: Int,
                     override val movementStrategy: MovementStrategy) extends Blob
 
-case class BaseFood(override val boundingBox: CircularBoundingBox,
+case class BaseFood(override val boundingBox: Circle,
                     override val life: Life,
                     override val effect: Effect) extends Food
 
-case class BaseObstacle(override val boundingBox: TriangularBoundingBox,
+case class BaseObstacle(override val boundingBox: Triangle,
                         override val effect: Effect) extends Obstacle
 
 object Prova extends App {
