@@ -26,9 +26,9 @@ object View {
 
   private val inputView: Parent = FXMLView(getClass.getResource("/InputSelector.fxml"),
     NoDependencyResolver)
-  val simulatorView: BorderPane = new BorderPane
-  val entityPane = new BorderPane
-  val barPane = new BorderPane
+  private val simulatorView: BorderPane = new BorderPane
+  private val entityPane = new BorderPane
+  private val barPane = new BorderPane
 
   private class FXView(stage: Stage) extends View {
 
