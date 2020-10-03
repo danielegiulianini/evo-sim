@@ -6,7 +6,7 @@ scalaVersion := "2.12.11"
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
-libraryDependencies += "org.scalafx" %% "scalafx" % "8.0.192-R14"
+libraryDependencies += "org.scalafx" %% "scalafx" % "14-R19"
 libraryDependencies += "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test

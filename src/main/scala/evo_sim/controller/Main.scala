@@ -17,7 +17,7 @@ object Main {
       GUI.GUIBuilt()
 
       def environment = GUI.inputReadFromUser()
-
+      // GUI.rendered(World(0, Set()))
       println(environment.InitialBlobsNumber)
     }
   }
