@@ -1,4 +1,4 @@
-package evo_sim.model
+/*package evo_sim.model
 
 
 
@@ -15,4 +15,4 @@ trait BoundingBox {
 
 case class TriangularBoundingBox(override val shape: Triangle, override val position : (Int, Int)) extends BoundingBox
 case class RectangularBoundingBox(override val shape: Rectangle, override val position : (Int, Int)) extends BoundingBox
-case class CircularBoundingBox(override val shape: Rectangle, override val position : (Int, Int)) extends BoundingBox
+case class CircularBoundingBox(override val shape: Rectangle, override val position : (Int, Int)) extends BoundingBox*/

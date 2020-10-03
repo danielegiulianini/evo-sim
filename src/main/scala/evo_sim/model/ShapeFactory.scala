@@ -1,3 +1,5 @@
+package evo_sim.model
+
 import BoundingBoxShape._
 
 //Bounding Box trait, Point(centered)

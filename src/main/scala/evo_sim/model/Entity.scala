@@ -9,7 +9,7 @@ trait Domain {
   type Velocity
   type DegradationEffect >: Living => Life
   type Effect = Blob => Set[Entity]  //name to be changed
-  type MovementStrategy = (Intelligent, Set[Entity]) => BoundingBox
+  type MovementStrategy = (Intelligent, Set[Entity]) => BoundingBoxShape
 }
 
 object DomainImpl extends Domain {
@@ -19,7 +19,7 @@ object DomainImpl extends Domain {
 }
 
 trait Entity {
-  def boundingBox: BoundingBox
+  def boundingBox: BoundingBoxShape
 }
 
 trait Living extends Entity {
