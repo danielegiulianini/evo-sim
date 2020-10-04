@@ -37,4 +37,13 @@ object SimulationEngine {
     )
   }
 
+
+
+  def started() = {
+    val environment = ??? //inputReadFromUser()
+    val world = worldCreated(environment)
+    //simulationLoop(world)
+  }
+
+
 }
