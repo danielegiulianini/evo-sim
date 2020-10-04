@@ -58,7 +58,7 @@ object FXView {
           fill = Red
         }
         case Triangle((xCord, yCord), h, a) => new scalafx.scene.shape.Polygon {
-          val vertices = triangleVertices(Triangle((xCord, yCord), h, a))
+          private val vertices = triangleVertices(Triangle((xCord, yCord), h, a))
           points.addAll(vertices._1, vertices._2, vertices._3, vertices._4, vertices._5, vertices._6)
           fill = Green
         }
