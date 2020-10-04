@@ -5,7 +5,7 @@ import evo_sim.view.View
 import javafx.application.Application
 import javafx.stage.Stage
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 object Main {
@@ -20,7 +20,14 @@ object Main {
 
       GUI.GUIBuilt()
 
-      GUI.inputReadFromUser().future.onComplete(_ => println("success"))
+      val immediateContext: ExecutionContext = new ExecutionContext {
+        def execute(runnable: Runnable) {
+          runnable.run()
+        }
+        def reportFailure(cause: Throwable) {}
+      }
+
+      GUI.inputReadFromUser().future.onComplete(_ => println("success"))(immediateContext)
 
       /*
       def environment = GUI.inputReadFromUser()
