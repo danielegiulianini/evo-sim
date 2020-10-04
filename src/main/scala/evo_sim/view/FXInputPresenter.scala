@@ -8,7 +8,7 @@ import scalafx.util.converter.NumberStringConverter
 import scalafxml.core.macros.sfxml
 
 @sfxml
-class FXPresenter(blobTextField: TextField, startButton: Button) {
+class FXInputPresenter(blobTextField: TextField, startButton: Button) {
 
   blobTextField.setTextFormatter(new TextFormatter(new NumberStringConverter()))
 

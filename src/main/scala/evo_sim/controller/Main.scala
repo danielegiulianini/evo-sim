@@ -1,6 +1,6 @@
 package evo_sim.controller
 
-import evo_sim.view.View
+import evo_sim.view.FXView
 import javafx.application.Application
 import javafx.stage.Stage
 
@@ -14,9 +14,8 @@ object Main {
 
   class EvoSim extends Application {
     override def start(stage: Stage): Unit = {
-      def GUI = View(stage)
 
-      GUI.inputGUIBuilt()
+      FXView.inputGUIBuilt(stage)
 
       val immediateContext: ExecutionContext = new ExecutionContext {
         def execute(runnable: Runnable) {
@@ -26,8 +25,8 @@ object Main {
         def reportFailure(cause: Throwable) {}
       }
 
-      GUI.inputReadFromUser().future.onComplete(_ => {
-        GUI.simulationGUIBuilt()
+      FXView.inputReadFromUser().future.onComplete(_ => {
+        FXView.simulationGUIBuilt()
       })(immediateContext)
 
       /*
