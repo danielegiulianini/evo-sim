@@ -13,9 +13,11 @@ import scalafxml.core.{FXMLView, NoDependencyResolver}
 import scala.concurrent.Promise
 
 trait View {
-  def GUIBuilt(): Unit
+  def inputGUIBuilt(): Unit
 
   def inputReadFromUser(): Promise[Environment]
+
+  def simulationGUIBuilt(): Unit
 
   def rendered(world: World): Unit
 }
@@ -31,7 +33,7 @@ object View {
 
   private class FXView(stage: Stage) extends View {
 
-    override def GUIBuilt(): Unit = {
+    override def inputGUIBuilt(): Unit = {
       stage.title = "evo-sim"
       barPane.setBorder(new Border(new BorderStroke(Black,
         BorderStrokeStyle.Solid, CornerRadii.Empty, BorderWidths.Default)))
@@ -43,9 +45,11 @@ object View {
     override def inputReadFromUser(): Promise[Environment] = {
       stage.scene = new Scene(inputView)
       stage.show()
-      val env = userInput.environment
-      //stage.scene = new Scene(simulatorView, 600, 450)
-      env
+      userInput.environment
+    }
+
+    override def simulationGUIBuilt(): Unit = {
+      stage.scene = new Scene(simulatorView, 600, 450)
     }
 
     override def rendered(world: World): Unit = {

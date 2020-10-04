@@ -1,12 +1,10 @@
 package evo_sim.controller
 
-import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 import javafx.application.Application
 import javafx.stage.Stage
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext
 
 object Main {
 
@@ -18,16 +16,19 @@ object Main {
     override def start(stage: Stage): Unit = {
       def GUI = View(stage)
 
-      GUI.GUIBuilt()
+      GUI.inputGUIBuilt()
 
       val immediateContext: ExecutionContext = new ExecutionContext {
         def execute(runnable: Runnable) {
           runnable.run()
         }
+
         def reportFailure(cause: Throwable) {}
       }
 
-      GUI.inputReadFromUser().future.onComplete(_ => println("success"))(immediateContext)
+      GUI.inputReadFromUser().future.onComplete(_ => {
+        GUI.simulationGUIBuilt()
+      })(immediateContext)
 
       /*
       def environment = GUI.inputReadFromUser()
