@@ -1,6 +1,6 @@
 package evo_sim.view
 
-import evo_sim.model.BoundingBoxShape.{Circle, Rectangle}
+import evo_sim.model.BoundingBoxShape.{Circle, Rectangle, Triangle, triangleVertices}
 import evo_sim.model.{Environment, World}
 import javafx.stage.Stage
 import scalafx.Includes._
@@ -68,8 +68,11 @@ object View {
             height = h
             fill = Red
           }
-          // TODO: Triangle (how to obtain point, Polygon doesn't have fill attribute)
-          case _ => scalafx.scene.shape.Polygon()
+          case Triangle((xCord, yCord), h, a) => new scalafx.scene.shape.Polygon {
+            val vertices = triangleVertices(Triangle((xCord, yCord), h, a))
+            points.addAll(vertices._1, vertices._2, vertices._3, vertices._4, vertices._5, vertices._6)
+            fill = Green
+          }
         })
     }
 
