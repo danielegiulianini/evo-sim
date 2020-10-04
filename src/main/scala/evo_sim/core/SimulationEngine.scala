@@ -21,5 +21,20 @@ object SimulationEngine {
       ).entities
     )
 
- 
+  def collisionsHandled(world:World) : World = {
+    def collisions = for {
+      i <- world.entities
+      j <- world.entities
+      if i != j // && i.intersected(j.shape)//intersects(j.shape)
+    } yield (i, j)
+
+    def entitiesAfterCollision =
+      collisions.foldLeft(Set.empty[Simulable])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
+
+    World(
+      world.currentIteration,
+      world.entities//entitiesAfterCollision
+    )
+  }
+
 }
