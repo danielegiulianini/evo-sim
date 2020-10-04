@@ -1,5 +1,6 @@
 package evo_sim.view
 
+import evo_sim.model.Environment
 import scalafx.beans.binding.Bindings
 import scalafx.event.Event
 import scalafx.scene.control.{Button, TextField, TextFormatter}
@@ -17,7 +18,12 @@ class FXPresenter(blobTextField: TextField, startButton: Button) {
       blobTextField.text))
 
   def onStart(event: Event): Unit = {
-    blobTextField.text.value.toInt
+    userInput.environment.success(new Environment(
+      temperature = 30,
+      luminosity = 50,
+      initialBlobsNumber = blobTextField.text.value.toInt,
+      initialFoodNumber = 0,
+      initialObstacleNumber = 0))
   }
 
 }

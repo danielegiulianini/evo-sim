@@ -10,15 +10,14 @@ import scalafx.scene.paint.Color._
 import scalafx.scene.{Parent, Scene}
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
-import scala.concurrent.{Await, Promise}
-import scala.concurrent.duration.Duration
+import scala.concurrent.Promise
 
 trait View {
-  def rendered(world: World): Unit
-
   def GUIBuilt(): Unit
 
-  def inputReadFromUser(): Environment
+  def inputReadFromUser(): Promise[Environment]
+
+  def rendered(world: World): Unit
 }
 
 object View {
@@ -41,19 +40,11 @@ object View {
       simulatorView.center = entityPane
     }
 
-    override def inputReadFromUser(): Environment = {
+    override def inputReadFromUser(): Promise[Environment] = {
       stage.scene = new Scene(inputView)
       stage.show()
-      // TODO: handle other inputs
-      // TODO: fix await result
-      val env = new Environment(
-        temperature = 30,
-        luminosity = 50,
-        initialBlobsNumber = 5,
-        initialFoodNumber = 0,
-        initialObstacleNumber = 0)
-      stage.scene = new Scene(simulatorView, 600, 450)
-      stage.show()
+      val env = userInput.environment
+      //stage.scene = new Scene(simulatorView, 600, 450)
       env
     }
 
@@ -80,4 +71,8 @@ object View {
 
   }
 
+}
+
+object userInput {
+  val environment: Promise[Environment] = Promise[Environment]()
 }

@@ -1,9 +1,12 @@
 package evo_sim.controller
 
-import evo_sim.model.World
+import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 import javafx.application.Application
 import javafx.stage.Stage
+
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 object Main {
 
@@ -17,7 +20,7 @@ object Main {
 
       GUI.GUIBuilt()
 
-      GUI.inputReadFromUser()
+      GUI.inputReadFromUser().future.onComplete(_ => println("success"))
 
       /*
       def environment = GUI.inputReadFromUser()
@@ -31,7 +34,7 @@ object Main {
       )).toSet
       GUI.rendered(World(0, entities))
        */
-      GUI.rendered(World(0, Set()))
+      //GUI.rendered(World(0, Set()))
     }
   }
 
