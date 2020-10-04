@@ -5,10 +5,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="evo_sim.view.FXInputPresenter">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="426.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="evo_sim.view.FXInputPresenter">
    <bottom>
       <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStart" text="Start" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -16,19 +15,32 @@
          </BorderPane.margin>
       </Button>
    </bottom>
-   <center>
-      <VBox alignment="CENTER" fillWidth="false" BorderPane.alignment="CENTER">
+   <left>
+      <VBox alignment="CENTER_LEFT" prefHeight="199.0" prefWidth="118.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" fillHeight="false" spacing="10.0">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Blob" />
-                  <TextField fx:id="blobTextField" />
-               </children>
-            </HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="#Blob" />
+            <Label alignment="CENTER" contentDisplay="CENTER" text="#Food" />
+            <Label alignment="CENTER" contentDisplay="CENTER" text="#Obstacles" />
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Temperature °C" />
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Luminosity L" />
          </children>
          <BorderPane.margin>
-            <Insets />
+            <Insets left="50.0" />
          </BorderPane.margin>
       </VBox>
-   </center>
+   </left>
+   <right>
+      <VBox alignment="CENTER_RIGHT" prefHeight="199.0" prefWidth="326.0" spacing="2.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="blobTextField" />
+            <TextField fx:id="foodTextField" />
+            <TextField fx:id="obstacleTextField" />
+            <TextField fx:id="temperatureTextField" />
+            <TextField fx:id="luminosityTextField" />
+         </children>
+         <BorderPane.margin>
+            <Insets right="50.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
 </BorderPane>

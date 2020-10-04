@@ -1,5 +1,6 @@
 package evo_sim.controller
 
+import evo_sim.model.Environment
 import evo_sim.view.FXView
 import javafx.application.Application
 import javafx.stage.Stage
@@ -25,7 +26,13 @@ object Main {
         def reportFailure(cause: Throwable) {}
       }
 
-      FXView.inputReadFromUser().future.onComplete(_ => {
+      FXView.inputReadFromUser().future.onComplete(e => {
+        def env: Environment = e.get
+        println("#blob: " + env.InitialBlobNumber)
+        println("#food: " + env.InitialFoodNumber)
+        println("#obstacle: " + env.InitialObstacleNumber)
+        println("temperature: " + env.Temperature)
+        println("luminosity: " + env.Luminosity)
         FXView.simulationGUIBuilt()
       })(immediateContext)
 

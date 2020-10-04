@@ -3,7 +3,6 @@ package evo_sim.core
 import evo_sim.model.EntityBehaviour.Simulable
 import evo_sim.model.World
 
-import evo_sim.view.View
 import evo_sim.model.World._
 
 
