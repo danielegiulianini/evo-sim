@@ -20,14 +20,14 @@ object BoundingBoxShape {
   def apply(point: (Int, Int), width: Int, height: Int): Rectangle = Rectangle(point, width, height)
   def apply(point: (Int, Int), height: Int, angle : Double): Triangle = Triangle(point, height, angle)
 
-  def triangleVertices(tri: Triangle) : ((Double, Double), (Double, Double), (Double, Double)) = {
+  def triangleVertices(tri: Triangle) : (Double, Double, Double, Double, Double, Double) = {
     /** return a tuple3 with the vertices
      *  v1 = center.x, center.y  + radius           -> upper vertices
      *  v2 = center.x - radius, center.y  - radius  -> bottom left vertices
      *  v1 = center.x + radius, center.y  - radius  -> bottom right vertices
      */
     val radius: Double = tri.height/3*2
-    (((tri.point._1, tri.point._2 + radius),(tri.point._1 - radius, tri.point._2 - radius), (tri.point._1 + radius, tri.point._2 - radius) ))
+    (tri.point._1, tri.point._2 + radius,tri.point._1 - radius, tri.point._2 - radius, tri.point._1 + radius, tri.point._2 - radius)
   }
 }
 
