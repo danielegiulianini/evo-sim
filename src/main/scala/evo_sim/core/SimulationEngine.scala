@@ -36,20 +36,16 @@ object SimulationEngine {
     )
   }
 
-
-
   def started() = {
     val environment = ??? //inputReadFromUser()
     val world = worldCreated(environment)
     simulationLoop(world)
   }
 
-
   def simulationLoop(world:World) : Unit = {
     val updatedWorld = worldUpdated(world)
     val worldAfterCollisions = collisionsHandled(updatedWorld)
     //View.rendered(worldAfterCollisions)
   }
-
 
 }
