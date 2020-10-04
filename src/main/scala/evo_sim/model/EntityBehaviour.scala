@@ -1,7 +1,8 @@
 package evo_sim.model
 
 object EntityBehaviour {
-  trait Simulable extends Updatable with Collidable //type Simulable = Updatable with Collidable
+
+  trait Simulable extends Updatable with Collidable
 
   //stub for blob
   class SimulableBlob(baseBlob : BaseBlob) extends Simulable {
