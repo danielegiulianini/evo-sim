@@ -5,10 +5,10 @@ object EntityBehaviour {
 
   //stub for blob
   class SimulableBlob(baseBlob : BaseBlob) extends Simulable {//does nothing
-    override def updated(world: World): Set[Simulable] = {print("baseBlob");Set(baseBlob)}
+    override def updated(world: World): Set[Simulable] = {print("baseBlob");Set(this)}
     override def collided(other: Simulable): Set[Simulable] = other match {
-      case blob: SimulableBlob => Set(baseBlob)
-      case _ =>Set(baseBlob)
+      case blob: SimulableBlob => Set(this)
+      case _ =>Set(this)
     }
     override def structure: Entity = baseBlob
   }
