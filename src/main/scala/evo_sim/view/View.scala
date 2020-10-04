@@ -1,5 +1,6 @@
 package evo_sim.view
 
+import evo_sim.model.BoundingBoxShape.{Circle, Rectangle, Triangle, triangleVertices}
 import evo_sim.model.{Environment, World}
 import javafx.stage.Stage
 import scalafx.Includes._
@@ -41,9 +42,8 @@ object FXView {
   }
 
   def rendered(world: World): Unit = {
-    /*
     entityPane.children = world.entities.map(e =>
-      e match {
+      e.structure.boundingBox match {
         case Circle((x, y), r) => new scalafx.scene.shape.Circle {
           centerX = x
           centerY = y
@@ -63,7 +63,6 @@ object FXView {
           fill = Green
         }
       })
-     */
   }
 
 }
