@@ -5,13 +5,13 @@ import evo_sim.model.{Environment, World}
 import javafx.stage.Stage
 import scalafx.Includes._
 import scalafx.scene.control.Label
-import scalafx.scene.layout.{Border, BorderPane, BorderStroke, BorderStrokeStyle, BorderWidths, CornerRadii}
+import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
 import scalafx.scene.{Parent, Scene}
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
-import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
+import scala.concurrent.duration.Duration
 
 trait View {
   def rendered(world: World): Unit
@@ -34,8 +34,6 @@ object View {
 
     override def GUIBuilt(): Unit = {
       stage.title = "evo-sim"
-      stage.width = 600
-      stage.height = 450
       barPane.setBorder(new Border(new BorderStroke(Black,
         BorderStrokeStyle.Solid, CornerRadii.Empty, BorderWidths.Default)))
       barPane.top = new Label("Info")
@@ -51,11 +49,10 @@ object View {
       val env = new Environment(
         temperature = 30,
         luminosity = 50,
-        initialBlobsNumber = Await.result(userInput.environment.future, Duration.Inf),
+        initialBlobsNumber = 5,
         initialFoodNumber = 0,
         initialObstacleNumber = 0)
-
-      stage.scene = new Scene(simulatorView)
+      stage.scene = new Scene(simulatorView, 600, 450)
       stage.show()
       env
     }
@@ -67,7 +64,7 @@ object View {
             centerX = x
             centerY = y
             radius = r
-            fill = Red
+            fill = Yellow
           }
           case Rectangle((xCord, yCord), w, h) => new scalafx.scene.shape.Rectangle {
             x = xCord
@@ -83,8 +80,4 @@ object View {
 
   }
 
-}
-
-object userInput {
-  val environment: Promise[Integer] = Promise[Integer]()
 }

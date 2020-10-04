@@ -1,7 +1,7 @@
 package evo_sim.view
 
-import javafx.application.Platform
 import scalafx.beans.binding.Bindings
+import scalafx.event.Event
 import scalafx.scene.control.{Button, TextField, TextFormatter}
 import scalafx.util.converter.NumberStringConverter
 import scalafxml.core.macros.sfxml
@@ -16,9 +16,8 @@ class FXPresenter(blobTextField: TextField, startButton: Button) {
       () => blobTextField.text.value.trim.isEmpty,
       blobTextField.text))
 
-  def onStart(): Unit = {
-    userInput.environment.success(blobTextField.text.value.toInt)
-    Platform.exit()
+  def onStart(event: Event): Unit = {
+    blobTextField.text.value.toInt
   }
 
 }
