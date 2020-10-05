@@ -1,19 +1,19 @@
 package evo_sim.model
 
-class Environment(temperature: Integer,
-                  luminosity: Integer,
-                  initialBlobNumber: Integer,
-                  initialFoodNumber: Integer,
-                  initialObstacleNumber: Integer) {
+class Environment(temperature: Int,
+                  luminosity: Int,
+                  initialBlobNumber: Int,
+                  initialFoodNumber: Int,
+                  initialObstacleNumber: Int) {
 
-  def Temperature: Integer = temperature
+  def Temperature: Int = temperature
 
-  def Luminosity: Integer = luminosity
+  def Luminosity: Int = luminosity
 
-  def InitialBlobNumber: Integer = initialBlobNumber
+  def InitialBlobNumber: Int = initialBlobNumber
 
-  def InitialFoodNumber: Integer = initialFoodNumber
+  def InitialFoodNumber: Int = initialFoodNumber
 
-  def InitialObstacleNumber: Integer = initialObstacleNumber
+  def InitialObstacleNumber: Int = initialObstacleNumber
 
 }
