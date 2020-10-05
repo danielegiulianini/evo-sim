@@ -65,8 +65,8 @@ object View {
             fill = Yellow
           }
           case Rectangle((xCord, yCord), w, h) => new scalafx.scene.shape.Rectangle {
-            x = xCord
-            y = yCord
+            x = xCord - (w / 2)
+            y = yCord - (h / 2)
             width = w
             height = h
             fill = Red
