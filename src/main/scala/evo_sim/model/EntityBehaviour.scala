@@ -7,7 +7,7 @@ object EntityBehaviour {
   //trait Simulable
   type SimulableEntity = Entity with Updatable with Collidable
 
-  //stub for blob(//does nothing)
+  //stub for blob(does nothing)
   trait BlobBehaviour extends Updatable with Collidable {
     self: BaseBlob =>
     override def updated(world: World): Set[SimulableEntity] = {print("baseBlob");Set(this)}
