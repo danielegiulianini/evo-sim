@@ -1,5 +1,7 @@
 package evo_sim.model
 
+import evo_sim.model.EntityStructure.{Entity, Intelligent}
+
 import scala.math._
 
 object MovingStrategies {

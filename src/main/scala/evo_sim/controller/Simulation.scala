@@ -1,7 +1,8 @@
 package evo_sim.controller
 
 import evo_sim.model.EntityBehaviour.{BlobBehaviour, SimulableEntity}
-import evo_sim.model.{BaseBlob, BoundingBoxShape, DegradationEffect, World}
+import evo_sim.model.Entities.BaseBlob
+import evo_sim.model.{BoundingBoxShape, DegradationEffect, World}
 import evo_sim.view.View
 import javafx.application.Application
 import javafx.stage.Stage

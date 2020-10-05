@@ -1,5 +1,8 @@
 package evo_sim.model
 
+import evo_sim.model.EntityStructure.Entity
+import evo_sim.model.Entities.BaseBlob
+
 object EntityBehaviour {
   //trait Simulable
   type SimulableEntity = Entity with Updatable with Collidable

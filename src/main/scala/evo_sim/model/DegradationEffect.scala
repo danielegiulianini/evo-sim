@@ -1,6 +1,8 @@
 package evo_sim.model
 
-import evo_sim.model.DomainImpl.Life
+import evo_sim.model.EntityStructure.DomainImpl.Life
+import evo_sim.model.EntityStructure.{Blob, Entity, Food}
+
 
 /**
  * This object contains the degradation effects that will be passed at the Living entities DegradationEffect property
