@@ -12,7 +12,7 @@ import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 import scala.concurrent.Promise
 
-object FXView {
+object View {
 
   private var primaryStage: Stage = _
   private val inputView: Parent = FXMLView(getClass.getResource("/InputSelector.fxml"),
@@ -67,6 +67,6 @@ object FXView {
 
 }
 
-object userInput {
+private[view] object userInput {
   val environment: Promise[Environment] = Promise[Environment]()
 }

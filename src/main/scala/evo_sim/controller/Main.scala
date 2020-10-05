@@ -1,7 +1,7 @@
 package evo_sim.controller
 
 import evo_sim.model.Environment
-import evo_sim.view.FXView
+import evo_sim.view.View
 import javafx.application.Application
 import javafx.stage.Stage
 
@@ -16,7 +16,7 @@ object Main {
   class EvoSim extends Application {
     override def start(stage: Stage): Unit = {
 
-      FXView.inputGUIBuilt(stage)
+      View.inputGUIBuilt(stage)
 
       val immediateContext: ExecutionContext = new ExecutionContext {
         def execute(runnable: Runnable) {
@@ -26,14 +26,14 @@ object Main {
         def reportFailure(cause: Throwable) {}
       }
 
-      FXView.inputReadFromUser().future.onComplete(e => {
+      View.inputReadFromUser().future.onComplete(e => {
         def env: Environment = e.get
         println("#blob: " + env.InitialBlobNumber)
         println("#food: " + env.InitialFoodNumber)
         println("#obstacle: " + env.InitialObstacleNumber)
         println("temperature: " + env.Temperature)
         println("luminosity: " + env.Luminosity)
-        FXView.simulationGUIBuilt()
+        View.simulationGUIBuilt()
       })(immediateContext)
 
       /*
