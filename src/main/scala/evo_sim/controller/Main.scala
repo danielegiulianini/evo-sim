@@ -28,11 +28,11 @@ object Main {
 
       View.inputReadFromUser().future.onComplete(e => {
         def env: Environment = e.get
-        println("#blob: " + env.InitialBlobNumber)
-        println("#food: " + env.InitialFoodNumber)
-        println("#obstacle: " + env.InitialObstacleNumber)
-        println("temperature: " + env.Temperature)
-        println("luminosity: " + env.Luminosity)
+        println("#blob: " + env.initialBlobNumber)
+        println("#food: " + env.initialFoodNumber)
+        println("#obstacle: " + env.initialObstacleNumber)
+        println("temperature: " + env.temperature)
+        println("luminosity: " + env.luminosity)
         View.simulationGUIBuilt()
       })(immediateContext)
 
