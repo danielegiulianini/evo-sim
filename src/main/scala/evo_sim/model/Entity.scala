@@ -2,6 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBoxShape._
 import evo_sim.model.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy, Velocity}
+import evo_sim.model.EntityBehaviour.BlobBehaviour
 
 trait Domain {
   type Life
@@ -55,6 +56,11 @@ trait Obstacle extends Entity with Effectful {
 }
 
 
+//----here ends data structure ----
+
+
+
+
 
 //leaves of model hierarchy
 case class BaseBlob(override val boundingBox: Rectangle,
@@ -62,7 +68,7 @@ case class BaseBlob(override val boundingBox: Rectangle,
                     override val velocity: Int,
                     override val degradationEffect: DegradationEffect,
                     override val fieldOfViewRadius: Int,
-                    override val movementStrategy: MovementStrategy) extends Blob
+                    override val movementStrategy: MovementStrategy) extends Blob with BlobBehaviour
 
 case class BaseFood(override val boundingBox: Circle,
                     override val life: Life,
@@ -70,6 +76,10 @@ case class BaseFood(override val boundingBox: Circle,
 
 case class BaseObstacle(override val boundingBox: Triangle,
                         override val effect: Effect) extends Obstacle
+
+
+
+
 
 object Prova extends App {
   println("Ok")

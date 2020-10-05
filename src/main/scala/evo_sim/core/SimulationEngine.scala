@@ -1,8 +1,7 @@
 package evo_sim.core
 
-import evo_sim.model.EntityBehaviour.Simulable
+import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World
-
 import evo_sim.model.World._
 
 
@@ -27,7 +26,7 @@ object SimulationEngine {
     } yield (i, j)
 
     def entitiesAfterCollision =
-      collisions.foldLeft(Set.empty[Simulable])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
+      collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
     World(
       world.currentIteration,

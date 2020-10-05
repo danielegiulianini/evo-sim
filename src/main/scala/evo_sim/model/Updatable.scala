@@ -1,9 +1,9 @@
 package evo_sim.model
 
-import evo_sim.model.EntityBehaviour.Simulable
+import evo_sim.model.EntityBehaviour.{SimulableEntity}
 
 trait Updatable {
-  def updated(world: World) : Set[EntityBehaviour.Simulable]
+  def updated(world: World) : Set[SimulableEntity]
 }
 
 

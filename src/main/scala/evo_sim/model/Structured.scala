@@ -1,6 +1,5 @@
 package evo_sim.model
 
-import evo_sim.model.EntityBehaviour.Simulable
 
 //DA REFATORIZZARE
 

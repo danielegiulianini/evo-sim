@@ -1,8 +1,8 @@
 package evo_sim.model
 
-import evo_sim.model.EntityBehaviour.Simulable
+import evo_sim.model.EntityBehaviour.{SimulableEntity}
 
-case class World(currentIteration: Int, entities: Set[Simulable])
+case class World(currentIteration: Int, entities: Set[SimulableEntity])
 
 //companion object
 object World {

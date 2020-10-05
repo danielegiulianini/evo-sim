@@ -57,7 +57,7 @@ object View {
 
     override def rendered(world: World): Unit = {
       entityPane.children = world.entities.map(e =>
-        e.structure.boundingBox match {
+        e.boundingBox match {
           case Circle((x, y), r) => new scalafx.scene.shape.Circle {
             centerX = x
             centerY = y
