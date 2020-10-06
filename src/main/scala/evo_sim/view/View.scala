@@ -4,6 +4,8 @@ import evo_sim.model.BoundingBoxShape.{Circle, Rectangle, Triangle, triangleVert
 import evo_sim.model.{Environment, World}
 import javafx.stage.Stage
 import scalafx.Includes._
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.chart.{LineChart, NumberAxis, XYChart}
 import scalafx.scene.control.Label
 import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
@@ -21,6 +23,9 @@ trait View {
   def simulationGUIBuilt(): Unit
 
   def rendered(world: World): Unit
+
+  def showResultGUI(world: World): Unit
+
 }
 
 object View {
@@ -83,6 +88,47 @@ private class FXView(stage: Stage) extends View {
           fill = Green
         }
       })
+  }
+
+  override def showResultGUI(world: World): Unit = {
+    val linechart = {
+      val xAxis = NumberAxis("", 0, 3, 1)
+      val yAxis = NumberAxis("Values for Y-Axis", 0, 3, 1)
+
+      val toChartData = (xy: (Int, Int)) => XYChart.Data[Number, Number](xy._1, xy._2)
+
+      val series1 = new XYChart.Series[Number, Number] {
+        name = "Death"
+        data = Seq(
+          (0, 0),
+          (1, 2),
+          (2, 3),
+          (3, 1)).map(toChartData)
+      }
+
+      val series2 = new XYChart.Series[Number, Number] {
+        name = "Birth"
+        data = Seq(
+          (0, 0),
+          (1, 1),
+          (2, 1),
+          (3, 0)).map(toChartData)
+      }
+
+      val lineChart = new LineChart[Number, Number](xAxis, yAxis, ObservableBuffer(series1, series2))
+      lineChart.setAnimated(true)
+
+      /*def savePng: Unit = {
+        val img = lineChart.snapshot(null, new WritableImage(500, 250))
+        val file = new File("/tmp/chart.png")
+        ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file)
+      }*/
+
+      lineChart
+    }
+    val resultView = new BorderPane
+    resultView.setCenter(linechart)
+    primaryStage.scene = new Scene(resultView, 600, 450)
   }
 
 }
