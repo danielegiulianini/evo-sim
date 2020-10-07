@@ -1,14 +1,9 @@
 package evo_sim.controller
 
 import evo_sim.core.SimulationEngine
-import evo_sim.model.Entities.BaseBlob
-import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.{BoundingBoxShape, DegradationEffect, World}
 import evo_sim.view.{ScalaFXGUI, View}
 import javafx.application.Application
 import javafx.stage.Stage
-
-import scala.concurrent.ExecutionContext
 
 trait Simulation {
 
