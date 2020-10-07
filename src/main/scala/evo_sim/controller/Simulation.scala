@@ -42,8 +42,7 @@ trait Simulation {
         fieldOfViewRadius = 10,
         movementStrategy = null /*MovingStrategies.baseMovement?*/)
       }.toSet
-
-      View.rendered(new World(0, entities))
+      view.rendered(new World(100, 100, 0, entities))
     })(immediateContext)
      */
 
