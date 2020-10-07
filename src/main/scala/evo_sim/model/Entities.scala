@@ -1,9 +1,9 @@
 package evo_sim.model
 
 import evo_sim.model.BoundingBoxShape.{Circle, Rectangle, Triangle}
-import evo_sim.model.EntityBehaviour.BlobBehaviour
+import evo_sim.model.EntityBehaviour.{BaseFoodBehaviour, BlobBehaviour}
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
-import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Life, Effect, MovementStrategy}
+import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy}
 
 object Entities {
 
@@ -18,7 +18,7 @@ object Entities {
   case class BaseFood(override val boundingBox: Circle,
                       override val degradationEffect: DegradationEffect[Food],
                       override val life: Life,
-                      override val effect: Effect) extends Food
+                      override val effect: Effect) extends Food with BaseFoodBehaviour
 
   case class BaseObstacle(override val boundingBox: Triangle,
                           override val effect: Effect) extends Obstacle
