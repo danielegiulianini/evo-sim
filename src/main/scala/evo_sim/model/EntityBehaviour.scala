@@ -7,6 +7,8 @@ object EntityBehaviour {
   trait Simulable extends Updatable with Collidable //-able suffix refers to behaviour only
   type SimulableEntity = Entity with Simulable
 
+
+
   //stub for blob (does nothing)
   trait BlobBehaviour extends Simulable {
     self: Blob =>
@@ -17,10 +19,12 @@ object EntityBehaviour {
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case blob: BaseBlob => Set(this)
+      case blob: BaseBlob => Set(self)
       case _ => Set(this)
     }
   }
+
+
 
   //other entities go here:
 

@@ -8,15 +8,16 @@ object EntityStructure {
   trait Domain {
     type Life
     type Velocity
-    type DegradationEffect >: Living => Life
+    type DegradationEffect[A] >: A => Life
     type Effect = Blob => Set[Entity]  //name to be changed
-    type MovementStrategy = (Intelligent, Set[Entity]) => BoundingBoxShape
+    type Rivals = Set[Entity]
+    type MovementStrategy = (Intelligent, Rivals) => BoundingBoxShape
   }
 
   object DomainImpl extends Domain {
     override type Life = Int
     override type Velocity = Int
-    override type DegradationEffect = Blob => Life
+    override type DegradationEffect[A] = A => Life
   }
 
   trait Entity {
@@ -45,11 +46,12 @@ object EntityStructure {
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {
     override def boundingBox: Rectangle
-    def degradationEffect: DegradationEffect
+    def degradationEffect: DegradationEffect[Blob]
   }
 
   trait Food extends Entity with Living with Effectful {
     override def boundingBox: Circle
+    def degradationEffect: DegradationEffect[Food]
   }
 
   trait Obstacle extends Entity with Effectful {

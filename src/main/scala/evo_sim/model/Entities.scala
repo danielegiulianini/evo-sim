@@ -11,11 +11,12 @@ object Entities {
   case class BaseBlob(override val boundingBox: Rectangle,
                       override val life: Int,
                       override val velocity: Int,
-                      override val degradationEffect: DegradationEffect,
+                      override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy) extends Blob with BlobBehaviour
 
   case class BaseFood(override val boundingBox: Circle,
+                      override val degradationEffect: DegradationEffect[Food],
                       override val life: Life,
                       override val effect: Effect) extends Food
 
