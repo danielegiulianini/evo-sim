@@ -1,11 +1,10 @@
 package evo_sim.model
 
 import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Life, Velocity, Effect, MovementStrategy}
+import evo_sim.model.BoundingBoxShape._
+
 
 object EntityStructure {
-
-  import evo_sim.model.BoundingBoxShape._
-
   trait Domain {
     type Life
     type Velocity
