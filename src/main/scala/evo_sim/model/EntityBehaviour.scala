@@ -4,7 +4,7 @@ import evo_sim.model.EntityStructure.{Blob, Entity}
 import evo_sim.model.Entities.BaseBlob
 
 object EntityBehaviour {
-  type Simulable = Updatable with Collidable
+  type Simulable = Updatable with Collidable //-able suffix refers to behaviour only
   type SimulableEntity = Entity with Simulable //trait Simulable
 
   //stub for blob (does nothing)
