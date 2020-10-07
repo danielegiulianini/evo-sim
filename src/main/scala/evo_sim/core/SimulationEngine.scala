@@ -1,26 +1,37 @@
 package evo_sim.core
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.{Environment, World}
+import evo_sim.model.World
 import evo_sim.model.World._
-import evo_sim.view.View._
+import evo_sim.view.View
 
-//import scala.concurrent.{Future}
+import scala.concurrent.ExecutionContext
 
 object SimulationEngine {
 
-  def worldUpdated(world: World) : World =
+  private def immediateContext: ExecutionContext = new ExecutionContext {
+    def execute(runnable: Runnable) {
+      runnable.run()
+    }
+
+    def reportFailure(cause: Throwable): Unit = {
+      cause.printStackTrace()
+      System.exit(-1)
+    }
+  }
+
+  def worldUpdated(world: World): World =
     World(
       world.currentIteration + 1,
       world.entities.foldLeft(world)((updatedWorld, entity) =>
-        World (
+        World(
           world.currentIteration,
           entity.updated(updatedWorld)
         )
       ).entities
     )
 
-  def collisionsHandled(world:World) : World = {
+  def collisionsHandled(world: World): World = {
     def collisions = for {
       i <- world.entities
       j <- world.entities
@@ -32,29 +43,24 @@ object SimulationEngine {
 
     World(
       world.currentIteration,
-      world.entities//entitiesAfterCollision
+      world.entities //entitiesAfterCollision
     )
   }
 
 
-  def started() = {
-    val environment = ??? //inputReadFromUser()
+  def started(): Unit = {
+    View.GUIBuilt()
+    View.inputReadFromUser().onComplete(e => {
+      val environment = e.get
+      val world = worldCreated(environment)
+      simulationLoop(world)
+    })(immediateContext)
 
-    val world = worldCreated(environment)
-    simulationLoop(world)
+    def simulationLoop(world: World): Unit = {
+      val updatedWorld = worldUpdated(world)
+      val worldAfterCollisions = collisionsHandled(updatedWorld)
+      View.rendered(worldAfterCollisions)
+    }
+
   }
-
-
-  //stub for function of view still to be implemented
-  /*def inputReadFromUser(): Future[Environment] = {
-    Future[Environment]()
-  }*/
-
-
-  def simulationLoop(world:World) : Unit = {
-    val updatedWorld = worldUpdated(world)
-    val worldAfterCollisions = collisionsHandled(updatedWorld)
-    //View.rendered(worldAfterCollisions)
-  }
-
 }

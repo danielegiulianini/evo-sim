@@ -1,19 +1,22 @@
 package evo_sim.controller
 
-import evo_sim.model.EntityBehaviour.{BlobBehaviour, SimulableEntity}
+import evo_sim.core.SimulationEngine
 import evo_sim.model.Entities.BaseBlob
+import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.{BoundingBoxShape, DegradationEffect, World}
-import evo_sim.view.View
+import evo_sim.view.{ScalaFXGUI, View}
 import javafx.application.Application
 import javafx.stage.Stage
 
 import scala.concurrent.ExecutionContext
 
 trait Simulation {
-  protected var view: View = _
 
   def launch(): Unit = {
 
+    SimulationEngine.started()
+
+    /*
     def immediateContext: ExecutionContext = new ExecutionContext {
       def execute(runnable: Runnable) {
         runnable.run()
@@ -25,9 +28,9 @@ trait Simulation {
       }
     }
 
-    view.inputGUIBuilt()
-    view.inputReadFromUser().future.onComplete(e => {
-      view.simulationGUIBuilt()
+    View.GUIBuilt()
+    View.inputReadFromUser().onComplete(e => {
+      View.simulationGUIBuilt()
       val environment = e.get
       val blobNum = environment.initialBlobNumber
 
@@ -40,17 +43,15 @@ trait Simulation {
         movementStrategy = null /*MovingStrategies.baseMovement?*/)
       }.toSet
 
-      view.rendered(new World(0, entities))
+      View.rendered(new World(0, entities))
     })(immediateContext)
+     */
+
   }
+
 }
 
-object Simulation {
-  def apply(): Simulation = FXSimulation
-}
-
-
-private object FXSimulation extends Simulation {
+object ScalaFXSimulation extends Simulation {
   override def launch(): Unit = {
     Application.launch(classOf[FXInitializer])
   }
@@ -58,9 +59,8 @@ private object FXSimulation extends Simulation {
   private class FXInitializer extends Application with Simulation {
 
     override def start(stage: Stage): Unit = {
-      view = View(stage)
+      View.setGUI(ScalaFXGUI(stage))
       super.launch()
     }
   }
-
 }
