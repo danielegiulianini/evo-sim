@@ -9,7 +9,7 @@ object EntityBehaviour {
 
   //stub for blob (does nothing)
   trait BlobBehaviour extends Simulable {
-    self: BaseBlob =>
+    self: Blob =>
 
     override def updated(world: World): Set[SimulableEntity] = {
       print("baseBlob");
