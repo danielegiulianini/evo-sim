@@ -1,9 +1,11 @@
 package evo_sim.core
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World
+import evo_sim.model.{Environment, World}
 import evo_sim.model.World._
+import evo_sim.view.View._
 
+//import scala.concurrent.{Future}
 
 object SimulationEngine {
 
@@ -34,11 +36,20 @@ object SimulationEngine {
     )
   }
 
+
   def started() = {
     val environment = ??? //inputReadFromUser()
+
     val world = worldCreated(environment)
     simulationLoop(world)
   }
+
+
+  //stub for function of view still to be implemented
+  /*def inputReadFromUser(): Future[Environment] = {
+    Future[Environment]()
+  }*/
+
 
   def simulationLoop(world:World) : Unit = {
     val updatedWorld = worldUpdated(world)
