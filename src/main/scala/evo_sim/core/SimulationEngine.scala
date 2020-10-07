@@ -11,9 +11,13 @@ object SimulationEngine {
 
   def worldUpdated(world: World) : World =
     World(
+      world.width,
+      world.height,
       world.currentIteration + 1,
       world.entities.foldLeft(world)((updatedWorld, entity) =>
         World (
+          world.width,
+          world.height,
           world.currentIteration,
           entity.updated(updatedWorld)
         )
@@ -31,6 +35,8 @@ object SimulationEngine {
       collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
     World(
+      world.width,
+      world.height,
       world.currentIteration,
       world.entities//entitiesAfterCollision
     )

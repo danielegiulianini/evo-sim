@@ -40,7 +40,7 @@ trait Simulation {
         movementStrategy = null /*MovingStrategies.baseMovement?*/)
       }.toSet
 
-      view.rendered(new World(0, entities))
+      view.rendered(new World(100, 100, 0, entities))
     })(immediateContext)
   }
 }
