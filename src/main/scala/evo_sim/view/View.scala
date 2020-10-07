@@ -10,6 +10,7 @@ import scalafx.scene.control.Label
 import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
 import scalafx.scene.{Parent, Scene}
+import scalafx.stage.Screen
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 import scala.collection.mutable
@@ -63,21 +64,23 @@ private class FXView(stage: Stage) extends View {
   }
 
   override def simulationGUIBuilt(): Unit = {
-    primaryStage.scene = new Scene(simulatorView, 600, 450)
+    primaryStage.scene = new Scene(simulatorView, Screen.primary.visualBounds.width, Screen.primary.visualBounds.height)
+    primaryStage.maximized = true
   }
 
   override def rendered(world: World): Unit = {
     entityPane.children = world.entities.map(e =>
       e.boundingBox match {
-        case Circle((x, y), r) => new scalafx.scene.shape.Circle {
+        case Circle((x, y), r) => new scalafx.scene.shape.Ellipse {
           centerX = x
           centerY = y
-          radius = r
+          radiusX = r
+          radiusY = r
           fill = Yellow
         }
         case Rectangle((xCord, yCord), w, h) => new scalafx.scene.shape.Rectangle {
-          x = xCord
-          y = yCord
+          x = xCord - w / 2
+          y = yCord - h / 2
           width = w
           height = h
           fill = Red
@@ -129,6 +132,7 @@ private class FXView(stage: Stage) extends View {
     val resultView = new BorderPane
     resultView.setCenter(linechart)
     primaryStage.scene = new Scene(resultView, 600, 450)
+    primaryStage.maximized = false
   }
 
 }
