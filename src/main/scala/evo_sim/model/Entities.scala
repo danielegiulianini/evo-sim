@@ -3,14 +3,14 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.{BaseBlobBehaviour, BaseFoodBehaviour}
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
-import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy}
+import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 
 object Entities {
 
   //leaves of model hierarchy
   case class BaseBlob(override val boundingBox: Rectangle,
-                      override val life: Int,
-                      override val velocity: Int,
+                      override val life: Life,
+                      override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy) extends Blob with BaseBlobBehaviour
