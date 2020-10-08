@@ -1,6 +1,5 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Rectangle
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
@@ -32,10 +31,10 @@ object EntityBehaviour {
     self: Food =>
 
     override def updated(world: World): Set[SimulableEntity] = {
-      if (self.degradationEffect(self) <= 0) {
-        Set()
-      } else {
-        Set(BaseFood(self.boundingBox, self.degradationEffect, self.degradationEffect(self), self.effect))
+      val life = self.degradationEffect(self)
+      life match {
+        case _ <= 0 => Set()
+        case _ => Set(BaseFood(self.boundingBox, self.degradationEffect, life, self.effect))
       }
     }
 
