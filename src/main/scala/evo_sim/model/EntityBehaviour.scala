@@ -11,13 +11,13 @@ object EntityBehaviour {
 
 
   //stub for blob (does nothing)
-  trait BlobBehaviour extends Simulable {
+  trait BaseBlobBehaviour extends Simulable {
     self: Blob =>
 
     override def updated(world: World): Set[SimulableEntity] = {
       //ritorna bb self.movementStrategy(self, world.entities)
       //Set(new BaseBlob(Rectangle(self.movementStrategy(self, world.entities).point, self.boundingBox.width, self.boundingBox.height),
-      //  self.life-self.degradationEffect,self.velocity, self,degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
+      //  self.degradationEffect,self.velocity, self,degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
       Set(self)
     }
 
@@ -32,10 +32,10 @@ object EntityBehaviour {
     self: Food =>
 
     override def updated(world: World): Set[SimulableEntity] = {
-      if (self.life - self.degradationEffect(self) <= 0) {
+      if (self.degradationEffect(self) <= 0) {
         Set()
       } else {
-        Set(BaseFood(self.boundingBox, self.degradationEffect, self.life - self.degradationEffect(self), self.effect))
+        Set(BaseFood(self.boundingBox, self.degradationEffect, self.degradationEffect(self), self.effect))
       }
     }
 
