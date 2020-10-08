@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.EntityBehaviour.{BaseBlobBehaviour, BaseFoodBehaviour, BlobBehaviour}
+import evo_sim.model.EntityBehaviour.{BaseBlobBehaviour, BaseFoodBehaviour}
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
 import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy}
 
