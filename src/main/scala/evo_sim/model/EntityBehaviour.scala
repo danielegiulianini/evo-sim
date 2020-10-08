@@ -23,7 +23,7 @@ object EntityBehaviour {
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
       case blob: BaseBlob => Set(self)
-      case food: BaseFood => Set(food.effect(self))
+      case food: BaseFood => food.effect(self)
       case _ => Set(this)
     }
   }
