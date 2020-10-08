@@ -1,7 +1,8 @@
 package evo_sim.model
 
-import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Life, Velocity, Effect, MovementStrategy}
+import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 import evo_sim.model.BoundingBox._
+import evo_sim.model.EntityBehaviour.SimulableEntity
 
 
 object EntityStructure {
@@ -9,15 +10,17 @@ object EntityStructure {
     type Life
     type Velocity
     type DegradationEffect[A] >: A => Life
-    type Effect = Blob => Set[Entity]  //name to be changed
+    type Effect = Blob => Set[SimulableEntity]  //name to be changed
     type Rivals = Set[Entity]
-    type MovementStrategy = (Intelligent, Rivals) => BoundingBox
+    type Position
+    type MovementStrategy = (Intelligent, Rivals) => Position
   }
 
   object DomainImpl extends Domain {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
+    override type Position = (Double, Double)
   }
 
   trait Entity {

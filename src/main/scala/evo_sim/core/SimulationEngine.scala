@@ -59,7 +59,7 @@ object SimulationEngine {
     View.inputReadFromUser().onComplete(e => {
       val environment = e.get
       val world = worldCreated(environment)
-      View.simulationGUIBuilt()d
+      View.simulationGUIBuilt()
       simulationLoop(world)
     })(immediateContext)
 
