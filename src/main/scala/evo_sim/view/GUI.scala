@@ -17,7 +17,7 @@ import scalafxml.core.{FXMLView, NoDependencyResolver}
 import scala.concurrent.Promise
 
 trait GUI {
-  def GUIBuilt(): Unit
+  def inputGUIBuilt(): Unit
 
   def inputReadFromUser(): Promise[Environment]
 
@@ -26,8 +26,6 @@ trait GUI {
   def rendered(world: World): Unit
 
   def showResultGUI(world: World): Unit
-
-  def hideGUI(): Unit
 }
 
 case class ScalaFXGUI(stage: Stage) extends GUI {
@@ -38,7 +36,7 @@ case class ScalaFXGUI(stage: Stage) extends GUI {
   val barPane = new BorderPane
   val simulatorView: BorderPane = new BorderPane
 
-  override def GUIBuilt(): Unit = {
+  override def inputGUIBuilt(): Unit = {
     stage.title = "evo-sim"
     stage.resizable = false
     barPane.setBorder(new Border(new BorderStroke(Black,
@@ -46,17 +44,15 @@ case class ScalaFXGUI(stage: Stage) extends GUI {
     barPane.top = new Label("Info")
     simulatorView.top = barPane
     simulatorView.center = entityPane
+    stage.scene = new Scene(inputView)
+    stage.show()
   }
 
   override def inputReadFromUser(): Promise[Environment] = {
-    stage.scene = new Scene(inputView)
-    stage.show()
     userInput.environment
   }
 
   override def simulationGUIBuilt(): Unit = {
-    stage.scene = new Scene(simulatorView, 600, 450)
-    stage.show()
     stage.scene = new Scene(simulatorView, Screen.primary.visualBounds.width, Screen.primary.visualBounds.height)
     stage.maximized = true
   }
@@ -126,10 +122,7 @@ case class ScalaFXGUI(stage: Stage) extends GUI {
     resultView.setCenter(linechart)
     stage.scene = new Scene(resultView, 600, 450)
     stage.maximized = false
-    stage.show()
   }
-
-  override def hideGUI(): Unit = stage.hide()
 }
 
 private[view] object userInput {

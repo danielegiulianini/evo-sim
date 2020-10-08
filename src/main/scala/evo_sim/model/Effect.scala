@@ -9,4 +9,7 @@ object Effect {
   def standardFoodEffect(blob: BaseBlob): Set[Entity] = Set(BaseBlob(blob.boundingBox, blob.life + 10, blob.velocity, blob.degradationEffect, blob.fieldOfViewRadius, blob.movementStrategy))
 
   def poisonousFoodEffect(blob: BaseBlob): Set[Entity] = ???
+
+  // used for static entities
+  def neutralEffect(blob: BaseBlob): Set[Entity] = Set(blob)
 }

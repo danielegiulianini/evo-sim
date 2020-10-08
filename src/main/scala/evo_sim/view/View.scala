@@ -9,7 +9,7 @@ object View {
 
   def setGUI(g: GUI): Unit = { gui = g }
 
-  def GUIBuilt(): Unit = gui.GUIBuilt()
+  def GUIBuilt(): Unit = gui.inputGUIBuilt()
 
   def inputReadFromUser(): Future[Environment] = gui.inputReadFromUser().future
 

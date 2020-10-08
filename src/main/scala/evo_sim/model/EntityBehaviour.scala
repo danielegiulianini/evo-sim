@@ -1,12 +1,12 @@
 package evo_sim.model
 
-import evo_sim.model.EntityStructure.{Blob, Entity, Food}
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
+import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
 object EntityBehaviour {
+
   trait Simulable extends Updatable with Collidable //-able suffix refers to behaviour only
   type SimulableEntity = Entity with Simulable
-
 
 
   //stub for blob (does nothing)
@@ -14,19 +14,17 @@ object EntityBehaviour {
     self: Blob =>
 
     override def updated(world: World): Set[SimulableEntity] = {
-      print("baseBlob");
+      print("baseBlob")
       Set(this)
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case blob: BaseBlob => Set(self)
-      case _ => Set(this)
+      case _: BaseBlob => Set(this)
+      //case f: BaseFood => f.effect(self)
+      //case o: BaseObstacle => o.effect(self)
     }
   }
 
-
-
-  //other entities go here:
   trait BaseFoodBehaviour extends Simulable {
     self: Food =>
 
@@ -34,7 +32,7 @@ object EntityBehaviour {
       if (self.life - self.degradationEffect(self) <= 0) {
         Set()
       } else {
-        Set(BaseFood(self.boundingBox, self.degradationEffect, self.life - self.degradationEffect(self),  self.effect))
+        Set(BaseFood(self.boundingBox, self.degradationEffect, self.life - self.degradationEffect(self), self.effect))
       }
     }
 
@@ -43,4 +41,13 @@ object EntityBehaviour {
       case _ => Set(this)
     }
   }
+
+  trait NeutralBehaviour extends Simulable {
+    self: Obstacle =>
+
+    override def updated(world: World): Set[SimulableEntity] = Set(this)
+
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(this)
+  }
+
 }
