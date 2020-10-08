@@ -33,8 +33,8 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val life = self.degradationEffect(self)
       life match {
-        case n if n <= 0 => Set()
-        case _ => Set(BaseFood(self.boundingBox, self.degradationEffect, life, self.effect))
+        case n if n > 0 => Set(BaseFood(self.boundingBox, self.degradationEffect, life, self.effect))
+        case _ => Set()
       }
     }
 
