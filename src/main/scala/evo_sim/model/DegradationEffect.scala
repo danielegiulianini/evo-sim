@@ -10,9 +10,9 @@ import evo_sim.model.EntityStructure.{Blob, Entity, Food}
  */
 object DegradationEffect{
   //standard degradation effect
-  def standardDegradation(entity: Entity): Life = 1
+  def standardDegradation(blob: Blob): Life = blob.life - 1
   //extends the standard Degradation
-  def foodDegradation(entity: Food): Life = standardDegradation(entity)
+  def foodDegradation(food: Food): Life = food.life - 1
   //blob specific degradation effect, velocity + standardDegradation
-  def baseBlobDegradation(blob: Blob) : Life = blob.velocity + standardDegradation(blob)
+  def baseBlobDegradation(blob: Blob) : Life = blob. life - (/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
 }
