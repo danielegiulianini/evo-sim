@@ -1,20 +1,20 @@
 package evo_sim.model
 
-import BoundingBoxShape._
+import BoundingBox._
 
 //Bounding Box trait, Point(centered)
-trait BoundingBoxShape {
+trait BoundingBox {
   def point: (Int, Int)
 }
 
-object BoundingBoxShape {
+object BoundingBox {
   //case classes for the different types of Bounding Boxes
   //Circle: Point & Radius
-  case class Circle private[BoundingBoxShape](point: (Int, Int), radius: Int) extends BoundingBoxShape
+  case class Circle private[BoundingBox](point: (Int, Int), radius: Int) extends BoundingBox
   //Rectangle: Point & w + h
-  case class Rectangle private[BoundingBoxShape](point: (Int, Int), width: Int, height: Int) extends BoundingBoxShape
+  case class Rectangle private[BoundingBox](point: (Int, Int), width: Int, height: Int) extends BoundingBox
   //Triangle: Point & h + angle (angle is defaulted as 60 -> equilateral), apothem = h/3*2 -> circe radius circumscribed in the triangle
-  case class Triangle private[BoundingBoxShape](point: (Int, Int), height: Int, angle: Double = 60.0) extends BoundingBoxShape
+  case class Triangle private[BoundingBox](point: (Int, Int), height: Int, angle: Double = 60.0) extends BoundingBox
   //apply methods
   def apply(point: (Int, Int), radius: Int): Circle = Circle(point, radius)
   def apply(point: (Int, Int), width: Int, height: Int): Rectangle = Rectangle(point, width, height)
@@ -42,7 +42,7 @@ println(tri.point + ", " + tri.height + ", " + tri.angle + "->" + tri.getClass)*
 
 object Intersection {
   //Intersection between a circle and any other entity (Circle, Rect, Triangle)
-  def intersected(body1: Circle, body2: BoundingBoxShape): Boolean = body2 match {
+  def intersected(body1: Circle, body2: BoundingBox): Boolean = body2 match {
     //distance between centers, then check if is less than the sum of both the circle radius
     case circle: Circle => Math.hypot(body1.point._1 - circle.point._1, body1.point._2 - circle.point._2) < (body1.radius + circle.radius) //https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
     //collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)

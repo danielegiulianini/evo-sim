@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Life, Velocity, Effect, MovementStrategy}
-import evo_sim.model.BoundingBoxShape._
+import evo_sim.model.BoundingBox._
 
 
 object EntityStructure {
@@ -11,7 +11,7 @@ object EntityStructure {
     type DegradationEffect[A] >: A => Life
     type Effect = Blob => Set[Entity]  //name to be changed
     type Rivals = Set[Entity]
-    type MovementStrategy = (Intelligent, Rivals) => BoundingBoxShape
+    type MovementStrategy = (Intelligent, Rivals) => BoundingBox
   }
 
   object DomainImpl extends Domain {
@@ -21,7 +21,7 @@ object EntityStructure {
   }
 
   trait Entity {
-    def boundingBox: BoundingBoxShape
+    def boundingBox: BoundingBox
   }
 
   trait Living extends Entity {

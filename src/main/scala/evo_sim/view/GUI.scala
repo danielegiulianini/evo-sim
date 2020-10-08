@@ -1,6 +1,6 @@
 package evo_sim.view
 
-import evo_sim.model.BoundingBoxShape.{Circle, Rectangle, Triangle, triangleVertices}
+import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle, triangleVertices}
 import evo_sim.model.{Environment, World}
 import javafx.scene.Parent
 import javafx.stage.Stage

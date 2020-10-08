@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import evo_sim.model.BoundingBox.Rectangle
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
@@ -14,14 +15,16 @@ object EntityBehaviour {
     self: Blob =>
 
     override def updated(world: World): Set[SimulableEntity] = {
-      print("baseBlob")
-      Set(this)
+      //ritorna bb self.movementStrategy(self, world.entities)
+      //Set(new BaseBlob(Rectangle(self.movementStrategy(self, world.entities).point, self.boundingBox.width, self.boundingBox.height),
+      //  self.life-self.degradationEffect,self.velocity, self,degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
+      Set(self)
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case _: BaseBlob => Set(this)
-      //case f: BaseFood => f.effect(self)
-      //case o: BaseObstacle => o.effect(self)
+      case blob: BaseBlob => Set(self)
+      case food: BaseFood => Set(food.effect(self))
+      case _ => Set(this)
     }
   }
 
