@@ -60,22 +60,22 @@ case class ScalaFXGUI(stage: Stage) extends GUI {
   override def rendered(world: World): Unit = {
     entityPane.children = world.entities.map(e =>
       e.boundingBox match {
-        case Circle((x, y), r) => new scalafx.scene.shape.Ellipse {
-          centerX = x
-          centerY = y
+        case Circle(point2D, r) => new scalafx.scene.shape.Ellipse {
+          centerX = point2D.x
+          centerY = point2D.y
           radiusX = r
           radiusY = r
           fill = Yellow
         }
-        case Rectangle((xCord, yCord), w, h) => new scalafx.scene.shape.Rectangle {
-          x = xCord
-          y = yCord
-          x = xCord - w / 2
-          y = yCord - h / 2
+        case Rectangle(point2D, w, h) => new scalafx.scene.shape.Rectangle {
+          x = point2D.x
+          y = point2D.y
+          x = point2D.x - w / 2
+          y = point2D.y - h / 2
           fill = Red
         }
-        case Triangle((xCord, yCord), h, a) => new scalafx.scene.shape.Polygon {
-          private val vertices = triangleVertices(Triangle((xCord, yCord), h, a))
+        case Triangle(point2D, h, a) => new scalafx.scene.shape.Polygon {
+          private val vertices = triangleVertices(Triangle(point2D, h, a))
           points.addAll(vertices._1, vertices._2, vertices._3, vertices._4, vertices._5, vertices._6)
           fill = Green
         }
