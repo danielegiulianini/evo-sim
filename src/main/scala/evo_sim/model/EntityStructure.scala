@@ -11,16 +11,18 @@ object EntityStructure {
     type Velocity
     type DegradationEffect[A] >: A => Life
     type Effect = Blob => Set[SimulableEntity]  //name to be changed
-    type Rivals = Set[Entity]
+    type Rivals
     type Position
-    type MovementStrategy = (Intelligent, Rivals) => Position
+    type MovementStrategy
   }
 
   object DomainImpl extends Domain {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
+    override type Rivals = Set[Entity]
     override type Position = (Double, Double)
+    override type MovementStrategy = (Intelligent, Rivals) => Position
   }
 
   trait Entity {
