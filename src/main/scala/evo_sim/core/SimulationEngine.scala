@@ -6,19 +6,11 @@ import evo_sim.model.World._
 import evo_sim.view.View
 
 import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
 
-  private def immediateContext: ExecutionContext = new ExecutionContext {
-    def execute(runnable: Runnable) {
-      runnable.run()
-    }
 
-    def reportFailure(cause: Throwable): Unit = {
-      cause.printStackTrace()
-      System.exit(-1)
-    }
-  }
 
   def worldUpdated(world: World): World =
     World(
@@ -61,7 +53,7 @@ object SimulationEngine {
       val world = worldCreated(environment)
       View.simulationGUIBuilt()
       simulationLoop(world)
-    })(immediateContext)
+    })
 
     def simulationLoop(world: World): Unit = {
       val updatedWorld = worldUpdated(world)
