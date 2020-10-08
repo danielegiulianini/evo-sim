@@ -2,23 +2,24 @@ package evo_sim.model
 
 import BoundingBox._
 
+case class Point2D(x: Int, y:Int)
 //Bounding Box trait, Point(centered)
 trait BoundingBox {
-  def point: (Int, Int)
+  def point: Point2D
 }
 
 object BoundingBox {
   //case classes for the different types of Bounding Boxes
   //Circle: Point & Radius
-  case class Circle private[BoundingBox](point: (Int, Int), radius: Int) extends BoundingBox
+  case class Circle private[BoundingBox](point: Point2D, radius: Int) extends BoundingBox
   //Rectangle: Point & w + h
-  case class Rectangle private[BoundingBox](point: (Int, Int), width: Int, height: Int) extends BoundingBox
+  case class Rectangle private[BoundingBox](point: Point2D, width: Int, height: Int) extends BoundingBox
   //Triangle: Point & h + angle (angle is defaulted as 60 -> equilateral), apothem = h/3*2 -> circe radius circumscribed in the triangle
-  case class Triangle private[BoundingBox](point: (Int, Int), height: Int, angle: Double = 60.0) extends BoundingBox
+  case class Triangle private[BoundingBox](point: Point2D, height: Int, angle: Double = 60.0) extends BoundingBox
   //apply methods
-  def apply(point: (Int, Int), radius: Int): Circle = Circle(point, radius)
-  def apply(point: (Int, Int), width: Int, height: Int): Rectangle = Rectangle(point, width, height)
-  def apply(point: (Int, Int), height: Int, angle : Double): Triangle = Triangle(point, height, angle)
+  def apply(point: Point2D, radius: Int): Circle = Circle(point, radius)
+  def apply(point: Point2D, width: Int, height: Int): Rectangle = Rectangle(point, width, height)
+  def apply(point: Point2D, height: Int, angle : Double): Triangle = Triangle(point, height, angle)
 
   def triangleVertices(tri: Triangle) : (Double, Double, Double, Double, Double, Double) = {
     /** return a tuple3 with the vertices
@@ -27,7 +28,7 @@ object BoundingBox {
      *  v1 = center.x + radius, center.y  - radius  -> bottom right vertices
      */
     val radius: Double = tri.height/3*2
-    (tri.point._1, tri.point._2 + radius,tri.point._1 - radius, tri.point._2 - radius, tri.point._1 + radius, tri.point._2 - radius)
+    (tri.point.x, tri.point.y + radius,tri.point.x - radius, tri.point.y - radius, tri.point.x + radius, tri.point.y - radius)
   }
 }
 
@@ -44,7 +45,7 @@ object Intersection {
   //Intersection between a circle and any other entity (Circle, Rect, Triangle)
   def intersected(body1: Circle, body2: BoundingBox): Boolean = body2 match {
     //distance between centers, then check if is less than the sum of both the circle radius
-    case circle: Circle => Math.hypot(body1.point._1 - circle.point._1, body1.point._2 - circle.point._2) < (body1.radius + circle.radius) //https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
+    case circle: Circle => Math.hypot(body1.point.x - circle.point.x, body1.point.y - circle.point.y) < (body1.radius + circle.radius) //https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
     //collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)
     /**
      * Bx + Bw > Ax &&
@@ -52,12 +53,12 @@ object Intersection {
      * Ax + Aw > Bx &&
      * Ay + Ah > By;
      */
-    case rectangle: Rectangle => rectangle.point._1 + rectangle.width > body1.point._1 &&
-      rectangle.point._2 + rectangle.height > body1.point._2 &&
-      body1.point._1 + body1.radius > rectangle.point._1 &&
-      body1.point._2 + body1.radius > rectangle.point._2
+    case rectangle: Rectangle => rectangle.point.x + rectangle.width > body1.point.x &&
+      rectangle.point.y + rectangle.height > body1.point.y &&
+      body1.point.x + body1.radius > rectangle.point.x &&
+      body1.point.y + body1.radius > rectangle.point.y
     //treat the triangle as a circle, simpler collision, apothem * 2 = circe radius circumscribed in the triangle
-    case triangle: Triangle => Math.hypot(body1.point._1 - triangle.point._1, body1.point._2 - triangle.point._2) < (body1.radius + triangle.height / 3 * 2)
+    case triangle: Triangle => Math.hypot(body1.point.x - triangle.point.x, body1.point.y - triangle.point.y) < (body1.radius + triangle.height / 3 * 2)
     case _ => false
   }
 }
