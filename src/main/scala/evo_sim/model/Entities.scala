@@ -30,7 +30,7 @@ object Entities {
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy,
-                      override val cooldown: Cooldown,
+                      override val slownessCooldown: Cooldown,
                       override val initialVelocity: Int) extends SlowedBlob with BaseBlobBehaviour
 
 }
