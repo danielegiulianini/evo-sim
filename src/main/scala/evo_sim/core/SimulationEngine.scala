@@ -51,7 +51,7 @@ object SimulationEngine {
       val environment = e.get
       val world = worldCreated(environment)
       View.simulationGUIBuilt()
-      //simulationLoop(world)
+      simulationLoop(world)
     })
 
     def simulationLoop(world: World): Unit = {
