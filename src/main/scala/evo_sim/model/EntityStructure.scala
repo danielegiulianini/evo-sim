@@ -65,6 +65,11 @@ object EntityStructure {
     override def boundingBox: Triangle
   }
 
+
+
+
+
+
   // status
   trait BlobWithTemporaryStatus extends Blob
 

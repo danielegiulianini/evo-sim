@@ -5,7 +5,6 @@ import evo_sim.model.{Environment, World}
 import evo_sim.model.World._
 import evo_sim.view.View
 
-import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
