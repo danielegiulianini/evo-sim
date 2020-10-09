@@ -1,24 +1,14 @@
 package evo_sim.core
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World
+import evo_sim.model.{Environment, World}
 import evo_sim.model.World._
-import evo_sim.view.View
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
+  
 
-  private def immediateContext: ExecutionContext = new ExecutionContext {
-    def execute(runnable: Runnable) {
-      runnable.run()
-    }
-
-    def reportFailure(cause: Throwable): Unit = {
-      cause.printStackTrace()
-      System.exit(-1)
-    }
-  }
 
   def worldUpdated(world: World): World =
     World(
@@ -49,25 +39,23 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      world.entities //entitiesAfterCollision
+      entitiesAfterCollision//world.entities
     )
   }
 
-
   def started(): Unit = {
-    View.GUIBuilt()
-    View.inputReadFromUser().onComplete(e => {
+    ViewModule.GUIBuilt()
+    ViewModule.inputReadFromUser().onComplete(e => {
       val environment = e.get
       val world = worldCreated(environment)
-      View.simulationGUIBuilt()
+      ViewModule.simulationGUIBuilt()
       simulationLoop(world)
-    })(immediateContext)
+    })
 
     def simulationLoop(world: World): Unit = {
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
-      View.rendered(worldAfterCollisions)
+      ViewModule.rendered(worldAfterCollisions)
     }
-
   }
 }
