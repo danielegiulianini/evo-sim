@@ -1,9 +1,7 @@
 package evo_sim.controller
 
-object Launcher {
+import evo_sim.view.scala_fx.ScalaFXSimulation
 
-  def main(args: Array[String]): Unit = {
+object Launcher extends App {
     ScalaFXSimulation.launch()
-  }
-
 }
