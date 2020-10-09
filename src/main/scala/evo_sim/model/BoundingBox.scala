@@ -3,6 +3,7 @@ package evo_sim.model
 import BoundingBox._
 
 case class Point2D(x: Int, y:Int)
+
 //Bounding Box trait, Point(centered)
 trait BoundingBox {
   def point: Point2D
@@ -20,16 +21,6 @@ object BoundingBox {
   def apply(point: Point2D, radius: Int): Circle = Circle(point, radius)
   def apply(point: Point2D, width: Int, height: Int): Rectangle = Rectangle(point, width, height)
   def apply(point: Point2D, height: Int, angle : Double): Triangle = Triangle(point, height, angle)
-
-  def triangleVertices(tri: Triangle) : (Double, Double, Double, Double, Double, Double) = {
-    /** return a tuple3 with the vertices
-     *  v1 = center.x, center.y  + radius           -> upper vertices
-     *  v2 = center.x - radius, center.y  - radius  -> bottom left vertices
-     *  v1 = center.x + radius, center.y  - radius  -> bottom right vertices
-     */
-    val radius: Double = tri.height/3*2
-    (tri.point.x, tri.point.y + radius,tri.point.x - radius, tri.point.y - radius, tri.point.x + radius, tri.point.y - radius)
-  }
 }
 
 //creation bounding boxes

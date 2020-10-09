@@ -1,6 +1,8 @@
 package evo_sim.view
 
-import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle, triangleVertices}
+import java.{lang, util}
+
+import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.{Environment, World}
 import javafx.scene.Parent
 import javafx.stage.Stage
@@ -14,6 +16,8 @@ import scalafx.scene.paint.Color.{Black, Green, Red, Yellow}
 import scalafx.stage.Screen
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
+import scala.collection.JavaConverters._
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.concurrent.Promise
 
 trait GUI {
@@ -29,6 +33,8 @@ trait GUI {
 }
 
 case class ScalaFXGUI(stage: Stage) extends GUI {
+
+  private case class Point2DDouble(x: Double, y: Double)
 
   val inputView: Parent = FXMLView(getClass.getResource("/InputSelector.fxml"),
     NoDependencyResolver)
@@ -58,25 +64,31 @@ case class ScalaFXGUI(stage: Stage) extends GUI {
   }
 
   override def rendered(world: World): Unit = {
+    /* world : screen = model point : x */
     entityPane.children = world.entities.map(e =>
       e.boundingBox match {
         case Circle(point2D, r) => new scalafx.scene.shape.Ellipse {
-          centerX = point2D.x
-          centerY = point2D.y
-          radiusX = r
-          radiusY = r
+          centerX = modelToViewRatio(point2D.x, entityPane.width.value, world.width)
+          centerY = modelToViewRatio(point2D.y, entityPane.height.value, world.height)
+          radiusX = modelToViewRatio(r, entityPane.width.value, world.width)
+          radiusY = modelToViewRatio(r, entityPane.height.value, world.height)
           fill = Yellow
         }
         case Rectangle(point2D, w, h) => new scalafx.scene.shape.Rectangle {
-          x = point2D.x
-          y = point2D.y
-          x = point2D.x - w / 2
-          y = point2D.y - h / 2
+          x = modelToViewRatio(point2D.x - w / 2, entityPane.width.value, world.width)
+          y = modelToViewRatio(point2D.y - h / 2, entityPane.height.value, world.height)
+          width = modelToViewRatio(w, entityPane.width.value, world.width)
+          height = modelToViewRatio(h, entityPane.height.value, world.height)
           fill = Red
         }
         case Triangle(point2D, h, a) => new scalafx.scene.shape.Polygon {
           private val vertices = triangleVertices(Triangle(point2D, h, a))
-          points.addAll(vertices._1, vertices._2, vertices._3, vertices._4, vertices._5, vertices._6)
+          vertices.productIterator.foreach({
+            case p: Point2DDouble => points ++= List(
+              modelToViewRatio(p.x, entityPane.width.value, world.width),
+              modelToViewRatio(p.y, entityPane.height.value, world.height)
+            )
+          })
           fill = Green
         }
       })
@@ -122,6 +134,20 @@ case class ScalaFXGUI(stage: Stage) extends GUI {
     resultView.setCenter(linechart)
     stage.scene = new Scene(resultView, 600, 450)
     stage.maximized = false
+  }
+
+  private def modelToViewRatio(modelProperty: Double, viewDimension: Double, modelDimension: Double): Double = {
+    modelProperty * viewDimension / modelDimension
+  }
+
+  private def triangleVertices(tri: Triangle) : (Point2DDouble, Point2DDouble, Point2DDouble) = {
+    /** return a tuple3 with the vertices
+     *  v1 = center.x, center.y  + radius           -> upper vertices
+     *  v2 = center.x - radius, center.y  - radius  -> bottom left vertices
+     *  v1 = center.x + radius, center.y  - radius  -> bottom right vertices
+     */
+    val radius: Double = tri.height/3*2
+    (Point2DDouble(tri.point.x, tri.point.y + radius), Point2DDouble(tri.point.x - radius, tri.point.y - radius), Point2DDouble(tri.point.x + radius, tri.point.y - radius))
   }
 }
 
