@@ -1,11 +1,11 @@
 package evo_sim.core
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World
+import evo_sim.model.{Environment, World}
 import evo_sim.model.World._
 import evo_sim.view.View
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
@@ -41,7 +41,7 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      world.entities //entitiesAfterCollision
+      entitiesAfterCollision//world.entities
     )
   }
 
@@ -52,7 +52,7 @@ object SimulationEngine {
       val environment = e.get
       val world = worldCreated(environment)
       View.simulationGUIBuilt()
-      simulationLoop(world)
+      //simulationLoop(world)
     })
 
     def simulationLoop(world: World): Unit = {
