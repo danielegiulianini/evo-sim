@@ -1,6 +1,7 @@
 package evo_sim.model
 
-import evo_sim.model.Entities.{BaseBlob, BaseFood}
+import evo_sim.model.BoundingBox.Rectangle
+import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, SlowBlob}
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
 object EntityBehaviour {
@@ -12,17 +13,26 @@ object EntityBehaviour {
   //stub for blob (does nothing)
   trait BaseBlobBehaviour extends Simulable {
     self: Blob =>
-
     override def updated(world: World): Set[SimulableEntity] = {
+      /* I blob con un trait che estende da BlobWithTemporaryStatus devono decrementare il cooldown dei loro status,
+          se questo diviene 0 lo status corrispondente deve essere eliminato */
+      def newSelf = self match {
+        case s: SlowBlob if s.slownessCooldown > 1 => SlowBlob(s.boundingBox, s.life, s.velocity, s.degradationEffect,
+          s.fieldOfViewRadius, s.movementStrategy, s.slownessCooldown - 1, s.initialVelocity)
+        case s: SlowBlob => BaseBlob(s.boundingBox, s.life, s.velocity, s.degradationEffect,
+          s.fieldOfViewRadius, s.movementStrategy)
+        case _ => self
+      }
       //ritorna bb self.movementStrategy(self, world.entities)
       //Set(new BaseBlob(Rectangle(self.movementStrategy(self, world.entities).point, self.boundingBox.width, self.boundingBox.height),
       //  self.degradationEffect,self.velocity, self,degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
-      Set(self)
+      Set(newSelf)
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
       case blob: BaseBlob => Set(self)
       case food: BaseFood => food.effect(self)
+      case obstacle: BaseObstacle => obstacle.effect(self)
       case _ => Set(this)
     }
   }

@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Effect, Life, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 
@@ -14,6 +14,7 @@ object EntityStructure {
     type Rivals
     type Position
     type MovementStrategy
+    type Cooldown
   }
 
   object DomainImpl extends Domain {
@@ -23,6 +24,7 @@ object EntityStructure {
     override type Rivals = Set[Entity]
     override type Position = (Double, Double)
     override type MovementStrategy = (Intelligent, Rivals) => Position
+    override type Cooldown = Int
   }
 
   trait Entity {
@@ -61,6 +63,14 @@ object EntityStructure {
 
   trait Obstacle extends Entity with Effectful {
     override def boundingBox: Triangle
+  }
+
+  // status
+  trait BlobWithTemporaryStatus extends Blob
+
+  trait SlowedBlob extends BlobWithTemporaryStatus {
+    def slownessCooldown: Cooldown
+    def initialVelocity: Velocity
   }
 
 }

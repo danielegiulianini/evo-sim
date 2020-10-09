@@ -1,14 +1,14 @@
 package evo_sim.model
 
-import java.util.Random
-
 import evo_sim.model.BoundingBox.Rectangle
-import evo_sim.model.Entities.BaseBlob
+import evo_sim.model.Entities.{BaseBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{DegradationEffect, Life, MovementStrategy, Rivals, Velocity}
-import evo_sim.model.EntityStructure.{Blob, Intelligent}
+import evo_sim.model.EntityStructure.Blob
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Life, MovementStrategy, Velocity}
 
 object Effect {
+
+  private val COOLDOWN_DEFAULT: Cooldown = 3
 
   private val rand = new java.util.Random()
   private val modifyingPropertyRange = 5
@@ -29,6 +29,12 @@ object Effect {
 
   // used for static entities
   def neutralEffect(blob: BaseBlob): Set[SimulableEntity] = Set(blob)
+
+  def mudEffect(blob: Blob): Set[SimulableEntity] = {
+    val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
+    Set(SlowBlob(
+      blob.boundingBox, blob.life, currentVelocity, blob.degradationEffect, blob.fieldOfViewRadius, blob.movementStrategy, COOLDOWN_DEFAULT, blob.velocity))
+  }
 
 
   private def randomBlob(boundingBox: Rectangle, life: Life, velocity: Velocity, degradationEffect: DegradationEffect[Blob], fieldOfViewRadius: Int, movementStrategy: MovementStrategy): Blob = {

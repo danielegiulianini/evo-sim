@@ -16,12 +16,12 @@ trait Simulation {
 object ScalaFXSimulation extends Simulation {
   override def launch(): Unit = {
     Application.launch(classOf[FXInitializer])
+    super.launch()
   }
 
-  private class FXInitializer extends Application with Simulation {
+  private class FXInitializer extends Application {
     override def start(stage: Stage): Unit = {
       View.setGUI(ScalaFXGUI(stage))
-      super.launch()
     }
   }
 }
