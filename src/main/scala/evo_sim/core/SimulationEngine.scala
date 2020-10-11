@@ -1,14 +1,11 @@
 package evo_sim.core
 
+import evo_sim.controller.HandlerExecutionContext
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.{Environment, World}
+import evo_sim.model.World
 import evo_sim.model.World._
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 object SimulationEngine {
-  
-
 
   def worldUpdated(world: World): World =
     World(
@@ -50,7 +47,7 @@ object SimulationEngine {
       val world = worldCreated(environment)
       ViewModule.simulationGUIBuilt()
       simulationLoop(world)
-    })
+    })(HandlerExecutionContext.immediateContext)
 
     def simulationLoop(world: World): Unit = {
       val updatedWorld = worldUpdated(world)
