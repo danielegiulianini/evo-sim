@@ -26,7 +26,8 @@ object SimulationEngine {
   def toTuple[A](a:A) = (a, a)
 
   def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
-
+  def collisionsHandled2(): Simulation[World] = toStateTWorld { collisionsHandled _  }
+  
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
   def started() =
     for {
@@ -40,13 +41,10 @@ object SimulationEngine {
     _  <- worldUpdated2()
   } yield ()
 
-  def collisionsHandled() = for {
-    _  <- liftIo(IO {})
-  } yield ()
 
 
 
-  def worldUpdated(world: World): World = {
+  def worldUpdated(world: World): World =
     World(
       world.width,
       world.height,
@@ -60,7 +58,6 @@ object SimulationEngine {
         )
       ).entities
     )
-  }
 
   def collisionsHandled(world: World): World = {
     def collisions = for {
