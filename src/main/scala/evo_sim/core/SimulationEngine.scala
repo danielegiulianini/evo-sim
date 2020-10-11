@@ -25,22 +25,6 @@ object SimulationEngine {
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World]( w => toTuple(f(w)))
   def toTuple[A](a:A) = (a, a)
 
-
-  /*val worldUpdatedVal = (world: World) =>
-    World(
-      world.width,
-      world.height,
-      world.currentIteration + 1,
-      world.entities.foldLeft(world)((updatedWorld, entity) =>
-        World (
-          world.width,
-          world.height,
-          world.currentIteration,
-          entity.updated(updatedWorld)
-        )
-      ).entities
-    )*/
-
   def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
 
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
@@ -49,8 +33,18 @@ object SimulationEngine {
       _ <- IO { println("initializing") }
       - <- IO { ViewModule.GUIBuilt() }
       env <- fromFuture(IO(ViewModule.inputReadFromUser()))
-      _ <- IO { simulationLoop().runS(worldCreated(env))}
+      _ <- IO { simulationLoop().runS(worldCreated(env)) }
     } yield()
+
+  def simulationLoop() = for {
+    _  <- worldUpdated2()
+  } yield ()
+
+  def collisionsHandled() = for {
+    _  <- liftIo(IO {})
+  } yield ()
+
+
 
   def worldUpdated(world: World): World = {
     World(
@@ -103,5 +97,4 @@ object SimulationEngine {
     ViewModule.rendered(worldAfterCollisions)
   }*/
 
-  def simulationLoop() = for { _  <- liftIo(IO {})} yield ()
 }
