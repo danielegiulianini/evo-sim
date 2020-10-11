@@ -21,6 +21,7 @@ object SimulationEngine {
 
   //function to create StateMonad from a World to World function
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World]( w => toTuple(f(w)))
+
   def toTuple[A](a:A) = (a, a)
 
   def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
@@ -73,7 +74,7 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      entitiesAfterCollision
+      entitiesAfterCollision ++ world.entities
     )
   }
 }
