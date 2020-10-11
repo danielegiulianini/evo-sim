@@ -1,5 +1,6 @@
 package evo_sim.core
 
+import cats.effect.IO
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.{Environment, World}
 import evo_sim.model.World._
@@ -7,6 +8,10 @@ import evo_sim.model.World._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
+
+  type SimulationIO[A] = IO[A]    //could be not generic: type SimulationIO = IO[Unit]
+  
+
 
   def worldUpdated(world: World): World =
     World(
