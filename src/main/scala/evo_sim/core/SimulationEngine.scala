@@ -41,6 +41,12 @@ object SimulationEngine {
 
   def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
 
+  def started() =
+    for {
+      _ <- IO { println("initializing") }
+      //- <- ViewModule.GUIBuilt()
+    } yield()
+
   def worldUpdated(world: World): World = {
     World(
       world.width,
@@ -75,7 +81,7 @@ object SimulationEngine {
     )
   }
 
-  //to be refactored in functional way
+  /*//to be refactored in functional way
   def started(): Unit = {
     ViewModule.GUIBuilt()
     ViewModule.inputReadFromUser().onComplete(e => {
@@ -83,7 +89,7 @@ object SimulationEngine {
       val world = worldCreated(environment)
       ViewModule.simulationGUIBuilt()
       simulationLoop(world)
-    })
+    })*/
 
     //to be refactored in functional way
     def simulationLoop(world: World): Unit = {
