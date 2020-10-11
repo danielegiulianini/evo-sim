@@ -16,11 +16,15 @@ object SimulationEngine {
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
   def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
+
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
+  //function to create StateMonad from a World to World function
+  def toStateTWorld(f: World => World): Simulation[World] = toStateT[World]( w => toTuple(f(w)))
+  def toTuple[A](a:A) = (a, a)
 
-
-  def worldUpdated(world: World): World =
+ 
+  def worldUpdated(world: World): World = {
     World(
       world.width,
       world.height,
@@ -34,6 +38,7 @@ object SimulationEngine {
         )
       ).entities
     )
+  }
 
   def collisionsHandled(world: World): World = {
     def collisions = for {
