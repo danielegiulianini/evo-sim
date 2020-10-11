@@ -25,7 +25,7 @@ object SimulationEngine {
   def toTuple[A](a:A) = (a, a)
 
   def worldUpdated(): Simulation[World] = toStateTWorld { SimulationLogic.worldUpdated _  }
-  def collisionsHandled(): Simulation[World] = toStateTWorld { collisionsHandled _  }
+  def collisionsHandled(): Simulation[World] = toStateTWorld { SimulationLogic.collisionsHandled _  }
 
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
@@ -39,47 +39,46 @@ object SimulationEngine {
 
   def simulationLoop() = for {
     _ <- worldUpdated()
-    uW <- collisionsHandled()
-    _ <- liftIo(IO{ ViewModule.rendered(uW)})
+    updatedWorld <- collisionsHandled()
+    _ <- liftIo(IO{ ViewModule.rendered(updatedWorld)})
   } yield ()
-
-
+  
 
 
 
 
   object SimulationLogic {
     def worldUpdated(world: World): World =
-    World(
-      world.width,
-      world.height,
-      world.currentIteration + 1,
-      world.entities.foldLeft(world)((updatedWorld, entity) =>
-        World (
-          world.width,
-          world.height,
-          world.currentIteration,
-          entity.updated(updatedWorld)
-        )
-      ).entities
-    )
-  }
+      World(
+        world.width,
+        world.height,
+        world.currentIteration + 1,
+        world.entities.foldLeft(world)((updatedWorld, entity) =>
+          World (
+            world.width,
+            world.height,
+            world.currentIteration,
+            entity.updated(updatedWorld)
+          )
+        ).entities
+      )
 
-  def collisionsHandled(world: World): World = {
-    def collisions = for {
-      i <- world.entities
-      j <- world.entities
-      if i != j // && i.intersected(j.shape)//intersects(j.shape)
-    } yield (i, j)
+    def collisionsHandled(world: World): World = {
+      def collisions = for {
+        i <- world.entities
+        j <- world.entities
+        if i != j // && i.intersected(j.shape)//intersects(j.shape)
+      } yield (i, j)
 
-    def entitiesAfterCollision =
-      collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
+      def entitiesAfterCollision =
+        collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
-    World(
-      world.width,
-      world.height,
-      world.currentIteration,
-      entitiesAfterCollision ++ world.entities
-    )
+      World(
+        world.width,
+        world.height,
+        world.currentIteration,
+        entitiesAfterCollision ++ world.entities
+      )
+    }
   }
 }
