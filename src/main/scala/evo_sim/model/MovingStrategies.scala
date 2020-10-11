@@ -1,39 +1,56 @@
 package evo_sim.model
 
-import evo_sim.model.EntityStructure.{Entity, Intelligent}
+import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityStructure.Intelligent
 
 import scala.math._
 
 object MovingStrategies {
 
-  def baseMovement(entity: Intelligent, entities: Set[Entity]): (Double, Double) = {
-    val chasedEntity = (entities - entity).minBy(distanceBetweenEntities(entity, _))
+  def baseMovement(entity: Intelligent, entities: Set[SimulableEntity]): Point2D = {
+    val chasedEntity = (entities - entity.asInstanceOf[SimulableEntity]).minBy(distanceBetweenEntities(entity, _))
     distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius match {
       case true => chaseMovement(entity, chasedEntity)
       case false => standardMovement(entity)
     }
   }
 
-  private def distanceBetweenEntities(a: Intelligent, b: Entity): Double = {
+  def crazyMovement(entity: Intelligent, entities: Set[Intelligent]): Intelligent = ???
+
+  private def distanceBetweenEntities(a: Intelligent, b: SimulableEntity): Double = {
     sqrt(pow(b.boundingBox.point.x - a.boundingBox.point.x, 2) + pow(b.boundingBox.point.y - a.boundingBox.point.y, 2))
   }
 
-  private def standardMovement(entity: Intelligent): (Double, Double) = {
-    println("standardMovement")
+  private def standardMovement(entity: Intelligent): Point2D = {
     val angle = new java.util.Random().nextInt(360)
     val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle))
     val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle))
-    (entity.boundingBox.point.x + deltaX, entity.boundingBox.point.y + deltaY)
+    val x = entity.boundingBox.point.x + deltaX
+    val y = entity.boundingBox.point.y + deltaY
+    isBoundaryCollision(x, y) match {
+      case true => standardMovement(entity)
+      case false =>  Point2D(x.toInt, y.toInt)
+    }
   }
 
-  private def chaseMovement(entity: Intelligent, chasedEntity: Entity): (Double, Double) = {
-    println("chaseMovement")
+  private def chaseMovement(entity: Intelligent, chasedEntity: SimulableEntity): Point2D = {
     val angle = toDegrees(atan2(chasedEntity.boundingBox.point.y - entity.boundingBox.point.y, chasedEntity.boundingBox.point.x - entity.boundingBox.point.x))
     val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle))
     val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle))
-    (entity.boundingBox.point.x + deltaX, entity.boundingBox.point.y + deltaY)
+    val x = entity.boundingBox.point.x + deltaX
+    val y = entity.boundingBox.point.y + deltaY
+    isBoundaryCollision(x, y) match {
+      case true => chaseMovement(entity, chasedEntity)
+      case false =>  Point2D(x.toInt, y.toInt)
+    }
   }
 
-  def crazyMovement(entity: Intelligent, entities: Set[Intelligent]): Intelligent = ???
+  //DA MODIFICARE, bisogna considerare anche il raggio di grandezza del blob)
+  private def isBoundaryCollision(x: Double, y: Double): Boolean = (x, y) match {
+    //case (x, y) if x > World.width || y > World.height => true
+    case (x, y) if x < 0 || y < 0 => true
+    case _ => false
+  }
+
 
 }

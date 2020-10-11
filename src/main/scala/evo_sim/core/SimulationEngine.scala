@@ -28,7 +28,7 @@ object SimulationEngine {
       j <- world.entities
       if i != j // && i.intersected(j.shape)//intersects(j.shape)
     } yield (i, j)
-
+    
     def entitiesAfterCollision =
       collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 

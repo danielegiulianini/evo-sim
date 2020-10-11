@@ -1,6 +1,5 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Rectangle
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, SlowBlob}
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
@@ -24,8 +23,8 @@ object EntityBehaviour {
         case _ => self
       }
       //ritorna bb self.movementStrategy(self, world.entities)
-      //Set(new BaseBlob(Rectangle(self.movementStrategy(self, world.entities).point, self.boundingBox.width, self.boundingBox.height),
-      //  self.degradationEffect,self.velocity, self,degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
+      //Set(BaseBlob(Rectangle(self.movementStrategy(self, world.entities), self.boundingBox.width, self.boundingBox.height),
+        //self.degradationEffect(self), self.velocity, self.degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
       Set(newSelf)
     }
 

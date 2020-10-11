@@ -21,8 +21,8 @@ object EntityStructure {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
-    override type Rivals = Set[Entity]
-    override type Position = (Double, Double)
+    override type Rivals = Set[SimulableEntity]
+    override type Position = Point2D
     override type MovementStrategy = (Intelligent, Rivals) => Position
     override type Cooldown = Int
   }
