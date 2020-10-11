@@ -7,8 +7,6 @@ import evo_sim.model.World._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
-  
-
 
   def worldUpdated(world: World): World =
     World(
@@ -43,6 +41,7 @@ object SimulationEngine {
     )
   }
 
+  //to be refactored in functional way
   def started(): Unit = {
     ViewModule.GUIBuilt()
     ViewModule.inputReadFromUser().onComplete(e => {
@@ -52,6 +51,7 @@ object SimulationEngine {
       simulationLoop(world)
     })
 
+    //to be refactored in functional way
     def simulationLoop(world: World): Unit = {
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
