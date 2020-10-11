@@ -23,7 +23,6 @@ object SimulationEngine {
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World]( w => toTuple(f(w)))
   def toTuple[A](a:A) = (a, a)
 
-  def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated(_) }
 
   val worldUpdatedVal2 = (world: World) =>
     World(
@@ -39,6 +38,8 @@ object SimulationEngine {
         )
       ).entities
     )
+
+  def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
 
   def worldUpdated(world: World): World = {
     World(
