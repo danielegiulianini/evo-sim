@@ -15,20 +15,25 @@ object Effect {
   private val foodEnergy = 10
 
   // adds 10 to blob life
-  def standardFoodEffect(blob: BaseBlob): Set[SimulableEntity] = {
+  def standardFoodEffect(blob: Blob): Set[SimulableEntity] = {
     val newBlob = randomBlob(blob.boundingBox, blob.life + foodEnergy, randomValueChange(blob.velocity, modifyingPropertyRange), blob.degradationEffect, randomValueChange(blob.fieldOfViewRadius, modifyingPropertyRange), MovingStrategies.baseMovement)
     newBlob match {
       case b : BaseBlob => Set(
           BaseBlob(blob.boundingBox, blob.life + foodEnergy, blob.velocity, blob.degradationEffect, blob.fieldOfViewRadius, blob.movementStrategy),
           b)
-      case _ => Set(blob)
+      case _ => Set()
     }
   }
 
-  def poisonousFoodEffect(blob: BaseBlob): Set[SimulableEntity] = ???
+  def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = ???
 
   // used for static entities
-  def neutralEffect(blob: BaseBlob): Set[SimulableEntity] = Set(blob)
+  def neutralEffect(blob: Blob): Set[SimulableEntity] = {
+    blob match {
+      case b : BaseBlob => Set(b)
+      case _ => Set()
+    }
+  }
 
   def mudEffect(blob: Blob): Set[SimulableEntity] = {
     val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
