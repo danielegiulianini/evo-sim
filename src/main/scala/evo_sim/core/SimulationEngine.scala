@@ -9,10 +9,8 @@ import evo_sim.model.World
 import evo_sim.model.World._
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
-
 
   type SimulationIO[A] = IO[A]    //could be not generic: type SimulationIO = IO[Unit]
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
@@ -27,7 +25,7 @@ object SimulationEngine {
 
   def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
   def collisionsHandled2(): Simulation[World] = toStateTWorld { collisionsHandled _  }
-  
+
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
   def started() =
     for {
@@ -38,7 +36,8 @@ object SimulationEngine {
     } yield()
 
   def simulationLoop() = for {
-    _  <- worldUpdated2()
+    _ <- worldUpdated2()
+    - <- collisionsHandled2()
   } yield ()
 
 
