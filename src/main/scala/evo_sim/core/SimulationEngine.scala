@@ -37,12 +37,12 @@ object SimulationEngine {
       _ <- IO { simulationLoop().runS(worldCreated(env)) }
     } yield()
 
-  def simulationLoop() = for {
+  def simulationLoop()  : Simulation[World]  = for {
     _ <- worldUpdated()
     updatedWorld <- collisionsHandled()
     _ <- liftIo(IO{ ViewModule.rendered(updatedWorld)})
   } yield ()
-  
+
 
 
 
