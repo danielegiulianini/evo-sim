@@ -37,7 +37,8 @@ object SimulationEngine {
 
   def simulationLoop() = for {
     _ <- worldUpdated2()
-    - <- collisionsHandled2()
+    uW <- collisionsHandled2()
+    _ <- liftIo(IO{ ViewModule.rendered(uW)})
   } yield ()
 
 
@@ -72,25 +73,7 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      entitiesAfterCollision//world.entities
+      entitiesAfterCollision
     )
   }
-
-  /*//to be refactored in functional way
-  def started(): Unit = {
-    ViewModule.GUIBuilt()
-    ViewModule.inputReadFromUser().onComplete(e => {
-      val environment = e.get
-      val world = worldCreated(environment)
-      ViewModule.simulationGUIBuilt()
-      simulationLoop(world)
-    })*/
-
-  //to be refactored in functional way
-  /*def simulationLoop(world: World): Unit = {
-    val updatedWorld = worldUpdated(world)
-    val worldAfterCollisions = collisionsHandled(updatedWorld)
-    ViewModule.rendered(worldAfterCollisions)
-  }*/
-
 }
