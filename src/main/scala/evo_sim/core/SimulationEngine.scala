@@ -1,6 +1,7 @@
 package evo_sim.core
 
 
+import cats.data.StateT
 import cats.effect.IO
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World
@@ -12,7 +13,8 @@ object SimulationEngine {
 
 
   type SimulationIO[A] = IO[A]    //could be not generic: type SimulationIO = IO[Unit]
-  
+  type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
+
 
 
 
