@@ -49,8 +49,7 @@ object SimulationEngine {
       _ <- IO { println("initializing") }
       - <- IO { ViewModule.GUIBuilt() }
       env <- fromFuture(IO(ViewModule.inputReadFromUser()))
-      /*_ <- IO { println("starting gameLoop")}
-      _ <- IO { gameLoop().runS(env) }*/
+      _ <- IO { simulationLoop().runS(worldCreated(env))}
     } yield()
 
   def worldUpdated(world: World): World = {
@@ -98,10 +97,11 @@ object SimulationEngine {
     })*/
 
   //to be refactored in functional way
-  def simulationLoop(world: World): Unit = {
+  /*def simulationLoop(world: World): Unit = {
     val updatedWorld = worldUpdated(world)
     val worldAfterCollisions = collisionsHandled(updatedWorld)
     ViewModule.rendered(worldAfterCollisions)
-  }
+  }*/
 
+  def simulationLoop() = for { _  <- liftIo(IO {})} yield ()
 }
