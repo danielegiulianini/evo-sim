@@ -2,11 +2,13 @@ package evo_sim.core
 
 
 import cats.data.StateT
-import cats.effect.IO
+import cats.effect.{ContextShift, IO}
+import cats.effect.IO.fromFuture
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World
 import evo_sim.model.World._
 
+import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object SimulationEngine {
@@ -41,10 +43,14 @@ object SimulationEngine {
 
   def worldUpdated2(): Simulation[World] = toStateTWorld { worldUpdated _  }
 
+  implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
   def started() =
     for {
       _ <- IO { println("initializing") }
       - <- IO { ViewModule.GUIBuilt() }
+      env <- fromFuture(IO(ViewModule.inputReadFromUser()))
+      /*_ <- IO { println("starting gameLoop")}
+      _ <- IO { gameLoop().runS(env) }*/
     } yield()
 
   def worldUpdated(world: World): World = {
@@ -91,11 +97,11 @@ object SimulationEngine {
       simulationLoop(world)
     })*/
 
-    //to be refactored in functional way
-    def simulationLoop(world: World): Unit = {
-      val updatedWorld = worldUpdated(world)
-      val worldAfterCollisions = collisionsHandled(updatedWorld)
-      ViewModule.rendered(worldAfterCollisions)
-    }
+  //to be refactored in functional way
+  def simulationLoop(world: World): Unit = {
+    val updatedWorld = worldUpdated(world)
+    val worldAfterCollisions = collisionsHandled(updatedWorld)
+    ViewModule.rendered(worldAfterCollisions)
   }
+
 }
