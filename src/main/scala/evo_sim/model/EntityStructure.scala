@@ -52,17 +52,17 @@ object EntityStructure {
   }
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {
-    override def boundingBox: Rectangle
+    override def boundingBox: Circle
     def degradationEffect: DegradationEffect[Blob]
   }
 
   trait Food extends Entity with Living with Effectful {
-    override def boundingBox: Circle
+    override def boundingBox: Triangle
     def degradationEffect: DegradationEffect[Food]
   }
 
   trait Obstacle extends Entity with Effectful {
-    override def boundingBox: Triangle
+    override def boundingBox: Rectangle
   }
 
 
@@ -78,4 +78,7 @@ object EntityStructure {
     def initialVelocity: Velocity
   }
 
+  trait PoisonedBlob extends BlobWithTemporaryStatus {
+    def poisonCooldown: Cooldown
+  }
 }
