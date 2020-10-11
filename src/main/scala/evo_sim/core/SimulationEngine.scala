@@ -15,6 +15,7 @@ object SimulationEngine {
   type SimulationIO[A] = IO[A]    //could be not generic: type SimulationIO = IO[Unit]
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
+  def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
 
 
 
