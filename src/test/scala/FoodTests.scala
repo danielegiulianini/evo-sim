@@ -6,14 +6,14 @@ import org.scalatest.FunSuite
 class FoodTests extends FunSuite {
 
   val blob: BaseBlob = BaseBlob(
-    boundingBox = BoundingBox.Rectangle.apply(point = Point2D(100, 100), width = 10, height = 10),
+    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
     movementStrategy = MovingStrategies.baseMovement)
   val food: BaseFood = BaseFood(
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.foodDegradation,
     life = 100,
     effect = Effect.standardFoodEffect /*Effect.standardFoodEffect*/)
