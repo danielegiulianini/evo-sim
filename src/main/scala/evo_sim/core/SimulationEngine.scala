@@ -44,7 +44,7 @@ object SimulationEngine {
   def started() =
     for {
       _ <- IO { println("initializing") }
-      //- <- ViewModule.GUIBuilt()
+      - <- IO { ViewModule.GUIBuilt() }
     } yield()
 
   def worldUpdated(world: World): World = {
