@@ -1,12 +1,10 @@
 package evo_sim.view.swing
 
 import java.awt.event.ActionEvent
-import java.awt.geom.{Ellipse2D, Rectangle2D}
-import java.awt.{BorderLayout, Color, Dimension, Graphics, Polygon, Toolkit}
+import java.awt.{BorderLayout, Dimension, Toolkit}
 import java.text.NumberFormat
 
-import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.{Environment, Point2D, World}
+import evo_sim.model.{Environment, World}
 import evo_sim.view.GUI
 import javax.swing._
 import javax.swing.text.NumberFormatter

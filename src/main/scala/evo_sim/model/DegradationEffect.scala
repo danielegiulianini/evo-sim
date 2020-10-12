@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.EntityStructure.DomainImpl.Life
-import evo_sim.model.EntityStructure.{Blob, Entity, Food}
+import evo_sim.model.EntityStructure.{Blob, Food}
 
 
 /**

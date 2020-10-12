@@ -23,7 +23,7 @@ object SimulationEngine {
     def collisions = for {
       i <- world.entities
       j <- world.entities
-      if i != j && intersected(i.boundingBox, i.boundingBox)
+      if i != j && intersected(i.boundingBox, j.boundingBox)
     } yield (i, j)
 
     def entitiesAfterCollision =
@@ -33,7 +33,7 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      entitiesAfterCollision, //world.entities
+      world.entities ++ entitiesAfterCollision,
       world.totalIterations
     )
   }
@@ -43,33 +43,36 @@ object SimulationEngine {
     val environment = ViewModule.inputReadFromUser()
     val world = worldCreated(environment)
     ViewModule.simulationGUIBuilt()
-    // ! val days = environment.daysNumber
+    val startingTime = System.currentTimeMillis()
+    ViewModule.rendered(world)
+    val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
+    val elapsed = endingTime - startingTime
+    waitUntil(elapsed, 1000) //period in milliseconds
     simulationLoop(world)
 
+    @scala.annotation.tailrec
     def simulationLoop(world: World): Unit = {
-      println("iteration: " + world.currentIteration + "/ " + world.totalIterations)
-
-      val startingTime = System.currentTimeMillis();
+      val startingTime = System.currentTimeMillis()
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
       ViewModule.rendered(worldAfterCollisions)
 
-      val endingTime = System.currentTimeMillis()  //val endingTime = System.nanoTime();
+      val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
       val elapsed = endingTime - startingTime
 
-      waitUntil(elapsed, 1000)  //period in milliseconds
-
-      def waitUntil(from: Long, period: Long): Unit = {
-        if (from < period)
-          try
-            Thread.sleep((period - from))
-          catch {
-            case ignore: InterruptedException =>
-          }
-      }
+      waitUntil(elapsed, 1000) //period in milliseconds
 
       if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
         simulationLoop(worldAfterCollisions)
+    }
+
+    def waitUntil(from: Long, period: Long): Unit = {
+      if (from < period)
+        try
+          Thread.sleep(period - from)
+        catch {
+          case _: InterruptedException =>
+        }
     }
   }
 }

@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.{Circle, Rectangle}
+import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob

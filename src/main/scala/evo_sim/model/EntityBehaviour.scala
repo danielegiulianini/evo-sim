@@ -9,7 +9,6 @@ object EntityBehaviour {
   trait Simulable extends Updatable with Collidable //-able suffix refers to behaviour only
   type SimulableEntity = Entity with Simulable
 
-
   //Base blob behaviour implementation
   trait BaseBlobBehaviour extends Simulable {
     self: Blob => //BaseBlob
@@ -19,9 +18,9 @@ object EntityBehaviour {
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case blob: Blob => Set(self)
-      case food: BaseFood => food.effect(self)
-      case obstacle: BaseObstacle => obstacle.effect(self)
+      case _: Blob => Set(this)
+      case food: BaseFood => food.effect(this)
+      case obstacle: BaseObstacle => obstacle.effect(this)
       case _ => Set(this)
     }
   }
@@ -35,18 +34,19 @@ object EntityBehaviour {
         case _ => BaseBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius), self.degradationEffect(self), self.initialVelocity, self.degradationEffect,
           self.fieldOfViewRadius, self.movementStrategy)
       }
+
       Set(newSelf)
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case blob: Blob => Set(self)
-      case food: BaseFood => food.effect(self)
-      case obstacle: BaseObstacle => obstacle.effect(self)
+      case _: Blob => Set(this)
+      case food: BaseFood => food.effect(this)
+      case obstacle: BaseObstacle => obstacle.effect(this)
       case _ => Set(this)
     }
   }
 
-  trait PoisonBlobBehaviour extends Simulable{
+  trait PoisonBlobBehaviour extends Simulable {
     self: PoisonBlob =>
 
     override def updated(world: World): Set[SimulableEntity] = {
@@ -56,13 +56,14 @@ object EntityBehaviour {
         case _ => BaseBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius), self.degradationEffect(self), self.velocity, self.degradationEffect,
           self.fieldOfViewRadius, self.movementStrategy)
       }
+
       Set(newSelf)
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case blob: Blob => Set(self)
-      case food: BaseFood => food.effect(self)
-      case obstacle: BaseObstacle => obstacle.effect(self)
+      case _: Blob => Set(this)
+      case food: BaseFood => food.effect(this)
+      case obstacle: BaseObstacle => obstacle.effect(this)
       case _ => Set(this)
     }
   }
@@ -71,7 +72,7 @@ object EntityBehaviour {
     self: Food =>
 
     override def updated(world: World): Set[SimulableEntity] = {
-      val life = self.degradationEffect(self)
+      val life = self.degradationEffect(this)
       life match {
         case n if n > 0 => Set(BaseFood(self.boundingBox, self.degradationEffect, life, self.effect))
         case _ => Set()
@@ -87,9 +88,9 @@ object EntityBehaviour {
   trait NeutralBehaviour extends Simulable {
     self: Obstacle =>
 
-    override def updated(world: World): Set[SimulableEntity] = Set(self)
+    override def updated(world: World): Set[SimulableEntity] = Set(this)
 
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(this)
   }
 
 }
