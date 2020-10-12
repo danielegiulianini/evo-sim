@@ -6,3 +6,5 @@ scalaVersion := "2.12.11"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
 libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % Test
+libraryDependencies += "com.github.wookietreiber" %% "scala-chart" % "latest.integration"
+libraryDependencies += "org.knowm.xchart" % "xchart" % "3.6.5"
