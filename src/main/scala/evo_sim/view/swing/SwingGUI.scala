@@ -88,7 +88,7 @@ case class SwingGUI() extends GUI {
       frame.getContentPane.add(textFieldPanel, BorderLayout.EAST)
       frame.getContentPane.add(startButton, BorderLayout.SOUTH)
       frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-      frame.setSize(new Dimension(800, 800))
+      frame.setSize(800, 800)
       frame.pack()
     })
   }
@@ -119,11 +119,8 @@ case class SwingGUI() extends GUI {
     SwingUtilities.invokeAndWait(() => {
       frame.getContentPane.removeAll()
       // TODO
+      frame.setSize(800, 800)
       frame.pack()
     })
-  }
-
-  private def modelToViewRatio(modelProperty: Double, viewDimension: Double, modelDimension: Double): Double = {
-    modelProperty * viewDimension / modelDimension
   }
 }
