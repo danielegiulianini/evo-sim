@@ -7,7 +7,7 @@ case class World(width: Int, //to move in environment?
                  height: Int, //to move in environment?
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
-                 totalIterations : Int = 10, //to move in environment?
+                 totalIterations : Int, //to move in environment?
                 )
 
 //companion object
@@ -33,8 +33,10 @@ object World {
 
     val entities: Set[SimulableEntity] = blobs ++ foods ++ obstacles
 
-    World(width = 100, height = 100, currentIteration = 0, entities = entities)
+    World(width = 100, height = 100, currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
+
+  val iterationsPerDay = 5
 }
 
 
