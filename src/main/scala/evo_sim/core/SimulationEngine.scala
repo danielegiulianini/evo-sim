@@ -13,7 +13,8 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration + 1,
-      world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
+      world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
+      world.totalIterations
     )
   }
 
@@ -32,7 +33,8 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      entitiesAfterCollision //world.entities
+      entitiesAfterCollision, //world.entities
+      world.totalIterations
     )
   }
 
