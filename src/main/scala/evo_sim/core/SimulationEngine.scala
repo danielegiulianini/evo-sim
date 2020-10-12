@@ -1,6 +1,7 @@
 package evo_sim.core
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World._
 import evo_sim.view.ViewModule
@@ -26,7 +27,7 @@ object SimulationEngine {
     def collisions = for {
       i <- world.entities
       j <- world.entities
-      if i != j // && i.intersected(j.shape)//intersects(j.shape)
+      if i != j && intersected(i.boundingBox, i.boundingBox)
     } yield (i, j)
 
     def entitiesAfterCollision =
