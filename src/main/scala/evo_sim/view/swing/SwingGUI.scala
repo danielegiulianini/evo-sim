@@ -2,11 +2,11 @@ package evo_sim.view.swing
 
 import java.awt.event.ActionEvent
 import java.awt.geom.{Ellipse2D, Rectangle2D}
-import java.awt.{BorderLayout, Dimension, Graphics, Polygon}
+import java.awt.{BorderLayout, Color, Dimension, Graphics, Polygon, Toolkit}
 import java.text.NumberFormat
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.{Environment, World}
+import evo_sim.model.{Environment, Point2D, World}
 import evo_sim.view.GUI
 import javax.swing._
 import javax.swing.text.NumberFormatter
@@ -17,6 +17,9 @@ import scala.concurrent.{Await, Promise}
 case class SwingGUI() extends GUI {
 
   private val frame = new JFrame("evo-sim")
+  private val barPanel = new JPanel
+  private val entityPanel = new JPanel
+
   private val userInput: Promise[Environment] = Promise[Environment]()
 
   SwingUtilities.invokeAndWait(() => frame.setVisible(true))
@@ -81,7 +84,7 @@ case class SwingGUI() extends GUI {
       frame.getContentPane.add(startButton, BorderLayout.SOUTH)
       //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
       frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-      frame.setSize(new Dimension(600, 400))
+      frame.setSize(new Dimension(800, 800))
       frame.pack()
     })
   }
@@ -89,44 +92,22 @@ case class SwingGUI() extends GUI {
   override def inputReadFromUser(): Environment = Await.result(userInput.future, Duration.Inf)
 
   override def simulationGUIBuilt(): Unit = {
-    val barPanel = new JPanel
-    val entityPanel = new JPanel
     SwingUtilities.invokeAndWait(() => {
       frame.getContentPane.removeAll()
       frame.getContentPane.add(barPanel, BorderLayout.NORTH)
       frame.getContentPane.add(entityPanel, BorderLayout.CENTER)
-      frame.setSize(new Dimension(1280, 720))
+      frame.setPreferredSize(new Dimension(
+        Toolkit.getDefaultToolkit.getScreenSize.width,
+        Toolkit.getDefaultToolkit.getScreenSize.height))
       frame.pack()
     })
   }
 
   override def rendered(world: World): Unit = {
     SwingUtilities.invokeAndWait(() => {
-      /*
-      world.entities.foreach(e => frame.getContentPane.getComponent(0).add(e.boundingBox match {
-        case Circle(point2D, r) => new Ellipse2D.Double(
-          centerX = modelToViewRatio(point2D.x, entityPane.width.value, world.width)
-          centerY = modelToViewRatio(point2D.y, entityPane.height.value, world.height)
-          radiusX = modelToViewRatio(r, entityPane.width.value, world.width)
-          radiusY = modelToViewRatio(r, entityPane.height.value, world.height)
-          fill = Yellow)
-        case Rectangle(point2D, w, h) => new Rectangle2D.Double(
-          x = modelToViewRatio(point2D.x - w / 2, entityPane.width.value, world.width)
-          y = modelToViewRatio(point2D.y - h / 2, entityPane.height.value, world.height)
-          width = modelToViewRatio(w, entityPane.width.value, world.width)
-          height = modelToViewRatio(h, entityPane.height.value, world.height)
-          fill = Red)
-        case Triangle(point2D, h, a) => new Polygon(
-          private val vertices = triangleVertices(Triangle(point2D, h, a))
-          vertices.productIterator.foreach({
-            case p: Point2DDouble => points ++= List(
-              modelToViewRatio(p.x, entityPane.width.value, world.width),
-              modelToViewRatio(p.y, entityPane.height.value, world.height)
-            )
-          })
-          fill = Green)
-      }))
-      */
+      entityPanel.removeAll()
+      entityPanel.add(new ShapesPanel(world))
+      frame.pack()
     })
   }
 
@@ -136,5 +117,9 @@ case class SwingGUI() extends GUI {
       // TODO
       frame.pack()
     })
+  }
+
+  private def modelToViewRatio(modelProperty: Double, viewDimension: Double, modelDimension: Double): Double = {
+    modelProperty * viewDimension / modelDimension
   }
 }
