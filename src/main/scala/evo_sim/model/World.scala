@@ -6,8 +6,9 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 case class World(width: Int, //to move in environment?
                  height: Int, //to move in environment?
                  currentIteration: Int,
+                 entities: Set[SimulableEntity],
                  totalIterations : Int = 10, //to move in environment?
-                 entities: Set[SimulableEntity])
+                )
 
 //companion object
 object World {
