@@ -34,9 +34,9 @@ println(tri.point + ", " + tri.height + ", " + tri.angle + "->" + tri.getClass)*
 
 object Intersection {
   //Intersection between a circle and any other entity (Circle, Rect, Triangle)
-  def intersected(body1: Circle, body2: BoundingBox): Boolean = body2 match {
+  def intersected(body1: BoundingBox, body2: BoundingBox): Boolean = (body1,body2) match {
     //distance between centers, then check if is less than the sum of both the circle radius
-    case circle: Circle => Math.hypot(body1.point.x - circle.point.x, body1.point.y - circle.point.y) < (body1.radius + circle.radius) //https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
+    case (body1: Circle,circle: Circle) => Math.hypot(body1.point.x - circle.point.x, body1.point.y - circle.point.y) < (body1.radius + circle.radius) //https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
     //collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)
     /**
      * Bx + Bw > Ax &&
@@ -44,12 +44,12 @@ object Intersection {
      * Ax + Aw > Bx &&
      * Ay + Ah > By;
      */
-    case rectangle: Rectangle => rectangle.point.x + rectangle.width > body1.point.x &&
+    case (body1: Circle,rectangle: Rectangle) => rectangle.point.x + rectangle.width > body1.point.x &&
       rectangle.point.y + rectangle.height > body1.point.y &&
       body1.point.x + body1.radius > rectangle.point.x &&
       body1.point.y + body1.radius > rectangle.point.y
     //treat the triangle as a circle, simpler collision, apothem * 2 = circe radius circumscribed in the triangle
-    case triangle: Triangle => Math.hypot(body1.point.x - triangle.point.x, body1.point.y - triangle.point.y) < (body1.radius + triangle.height / 3 * 2)
+    case (body1: Circle,triangle: Triangle) => Math.hypot(body1.point.x - triangle.point.x, body1.point.y - triangle.point.y) < (body1.radius + triangle.height / 3 * 2)
     case _ => false
   }
 }
