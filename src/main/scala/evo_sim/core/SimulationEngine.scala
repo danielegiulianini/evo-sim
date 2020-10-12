@@ -46,6 +46,7 @@ object SimulationEngine {
     val environment = ViewModule.inputReadFromUser()
     val world = worldCreated(environment)
     ViewModule.simulationGUIBuilt()
+    // ! val days = environment.daysNumber
     simulationLoop(world)
 
     def simulationLoop(world: World): Unit = {
