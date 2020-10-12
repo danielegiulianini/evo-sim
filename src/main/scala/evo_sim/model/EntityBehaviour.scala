@@ -87,9 +87,9 @@ object EntityBehaviour {
   trait NeutralBehaviour extends Simulable {
     self: Obstacle =>
 
-    override def updated(world: World): Set[SimulableEntity] = Set(this)
+    override def updated(world: World): Set[SimulableEntity] = Set(self)
 
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(this)
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
   }
 
 }

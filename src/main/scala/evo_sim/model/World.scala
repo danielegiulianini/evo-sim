@@ -2,7 +2,6 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.view.swing.SwingGUI
 
 case class World(width: Int, //to move in environment?
                  height: Int, //to move in environment?
