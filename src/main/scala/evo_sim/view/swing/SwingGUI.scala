@@ -30,7 +30,8 @@ case class SwingGUI() extends GUI {
       new JLabel("#Food"),
       new JLabel("#Obstacle"),
       new JLabel("Luminosity (L)"),
-      new JLabel("Temperature (°C)"))
+      new JLabel("Temperature (°C)"),
+      new JLabel("#Days"))
     val labelPanel = new JPanel
     val labelBoxLayout = new BoxLayout(labelPanel, BoxLayout.Y_AXIS)
     labelPanel.setLayout(labelBoxLayout)
@@ -53,11 +54,13 @@ case class SwingGUI() extends GUI {
     val obstacleTextField = new JFormattedTextField(formatter)
     val luminosityTextField = new JFormattedTextField(formatter)
     val temperatureField = new JFormattedTextField(formatter)
+    val daysField = new JFormattedTextField(formatter)
     blobTextField.setColumns(10)
     foodTextField.setColumns(10)
     obstacleTextField.setColumns(10)
     luminosityTextField.setColumns(10)
     temperatureField.setColumns(10)
+    daysField.setColumns(10)
     val textFieldPanel = new JPanel
     val textFieldBoxLayout = new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS)
     textFieldPanel.setLayout(textFieldBoxLayout)
@@ -66,6 +69,7 @@ case class SwingGUI() extends GUI {
     textFieldPanel.add(obstacleTextField)
     textFieldPanel.add(luminosityTextField)
     textFieldPanel.add(temperatureField)
+    textFieldPanel.add(daysField)
     textFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30))
 
     val startButton = new JButton("Start")
@@ -74,7 +78,8 @@ case class SwingGUI() extends GUI {
       luminosity = luminosityTextField.getText().toInt,
       initialBlobNumber = blobTextField.getText().toInt,
       initialFoodNumber = foodTextField.getText().toInt,
-      initialObstacleNumber = obstacleTextField.getText().toInt
+      initialObstacleNumber = obstacleTextField.getText().toInt,
+      daysNumber = daysField.getText().toInt
     )))
 
     SwingUtilities.invokeAndWait(() => {
@@ -82,7 +87,6 @@ case class SwingGUI() extends GUI {
       frame.getContentPane.add(labelPanel, BorderLayout.WEST)
       frame.getContentPane.add(textFieldPanel, BorderLayout.EAST)
       frame.getContentPane.add(startButton, BorderLayout.SOUTH)
-      //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
       frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
       frame.setSize(new Dimension(800, 800))
       frame.pack()
