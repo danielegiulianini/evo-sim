@@ -1,9 +1,9 @@
 package evo_sim.core
 
-import evo_sim.controller.HandlerExecutionContext
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World
 import evo_sim.model.World._
+import evo_sim.view.ViewModule
 
 object SimulationEngine {
 
@@ -13,7 +13,7 @@ object SimulationEngine {
       world.height,
       world.currentIteration + 1,
       world.entities.foldLeft(world)((updatedWorld, entity) =>
-        World (
+        World(
           world.width,
           world.height,
           world.currentIteration,
@@ -28,7 +28,7 @@ object SimulationEngine {
       j <- world.entities
       if i != j // && i.intersected(j.shape)//intersects(j.shape)
     } yield (i, j)
-    
+
     def entitiesAfterCollision =
       collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
@@ -36,18 +36,16 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      entitiesAfterCollision//world.entities
+      entitiesAfterCollision //world.entities
     )
   }
 
   def started(): Unit = {
     ViewModule.GUIBuilt()
-    ViewModule.inputReadFromUser().onComplete(e => {
-      val environment = e.get
-      val world = worldCreated(environment)
-      ViewModule.simulationGUIBuilt()
-      simulationLoop(world)
-    })(HandlerExecutionContext.immediateContext)
+    val environment = ViewModule.inputReadFromUser()
+    val world = worldCreated(environment)
+    ViewModule.simulationGUIBuilt()
+    simulationLoop(world)
 
     def simulationLoop(world: World): Unit = {
       val updatedWorld = worldUpdated(world)

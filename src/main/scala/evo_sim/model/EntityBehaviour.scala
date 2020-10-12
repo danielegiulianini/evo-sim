@@ -26,7 +26,7 @@ object EntityBehaviour {
     }
   }
 
-  trait SlowBlobBehaviour extends Simulable{
+  trait SlowBlobBehaviour extends Simulable {
     self: SlowBlob => //SlowBlob
     override def updated(world: World): Set[SimulableEntity] = {
       def newSelf = self.slownessCooldown match {

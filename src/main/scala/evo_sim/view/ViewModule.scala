@@ -1,18 +1,14 @@
-package evo_sim.core
+package evo_sim.view
 
 import evo_sim.model.{Environment, World}
-import evo_sim.view.GUI
-
-import scala.concurrent.Future
+import evo_sim.view.swing.SwingGUI
 
 object ViewModule {
-  private var gui: GUI = _
-
-  def setGUI(g: GUI): Unit = { gui = g }
+  private val gui: GUI = SwingGUI()
 
   def GUIBuilt(): Unit = gui.inputGUIBuilt()
 
-  def inputReadFromUser(): Future[Environment] = gui.inputReadFromUser()
+  def inputReadFromUser(): Environment = gui.inputReadFromUser()
 
   def simulationGUIBuilt(): Unit = gui.simulationGUIBuilt()
 
