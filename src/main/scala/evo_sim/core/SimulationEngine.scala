@@ -55,7 +55,9 @@ object SimulationEngine {
       ViewModule.rendered(worldAfterCollisions)
 
       val endingTime = System.currentTimeMillis()  //val endingTime = System.nanoTime();
+      val elapsed = endingTime - startingTime
 
+      waitUntil(elapsed, 1000)
 
       def waitUntil(from: Long, period: Long): Unit = {
         if (from < period)
