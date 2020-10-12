@@ -48,9 +48,23 @@ object SimulationEngine {
     simulationLoop(world)
 
     def simulationLoop(world: World): Unit = {
+      val startingTime = System.currentTimeMillis();
+
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
       ViewModule.rendered(worldAfterCollisions)
+
+
+
+      def waitUntil(from: Long, period: Long): Unit = {
+        if (from < period)
+          try
+            Thread.sleep((period - from))
+          catch {
+            case ignore: InterruptedException =>
+          }
+      }
+
     }
   }
 }

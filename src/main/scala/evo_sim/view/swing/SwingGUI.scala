@@ -79,7 +79,7 @@ case class SwingGUI() extends GUI {
       frame.getContentPane.add(labelPanel, BorderLayout.WEST)
       frame.getContentPane.add(textFieldPanel, BorderLayout.EAST)
       frame.getContentPane.add(startButton, BorderLayout.SOUTH)
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+      //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
       frame.setSize(new Dimension(600, 400))
       frame.pack()
     })
