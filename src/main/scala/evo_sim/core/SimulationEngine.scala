@@ -40,7 +40,8 @@ object SimulationEngine {
 
 
   def getTime() = liftIo(IO(System.currentTimeMillis().millis))
-
+  def waitUntil(from: FiniteDuration, period: FiniteDuration) =
+    liftIo(IO( if (from < period) { IO.sleep((period-from))} else unit ))
   def worldRendered(worldAfterCollisions : World) =
     liftIo(IO{ ViewModule.rendered(worldAfterCollisions)})
 
@@ -73,6 +74,7 @@ object SimulationEngine {
     worldAfterCollisions <- collisionsHandled
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
+    _ <- waitUntil(currentTime - startTime, 1000 millis)
   } yield ()
 
 
