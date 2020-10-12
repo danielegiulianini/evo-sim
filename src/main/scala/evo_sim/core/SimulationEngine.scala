@@ -48,8 +48,9 @@ object SimulationEngine {
     simulationLoop(world)
 
     def simulationLoop(world: World): Unit = {
-      val startingTime = System.currentTimeMillis();
+      println("iteration: " + world.currentIteration + "/ " + world.totalIterations)
 
+      val startingTime = System.currentTimeMillis();
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
       ViewModule.rendered(worldAfterCollisions)
@@ -57,7 +58,7 @@ object SimulationEngine {
       val endingTime = System.currentTimeMillis()  //val endingTime = System.nanoTime();
       val elapsed = endingTime - startingTime
 
-      waitUntil(elapsed, 1000)
+      waitUntil(elapsed, 1000)  //period in milliseconds
 
       def waitUntil(from: Long, period: Long): Unit = {
         if (from < period)
@@ -68,6 +69,8 @@ object SimulationEngine {
           }
       }
 
+      if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
+        simulationLoop(worldAfterCollisions)
     }
   }
 }
