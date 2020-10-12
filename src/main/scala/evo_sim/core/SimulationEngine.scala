@@ -8,20 +8,15 @@ import evo_sim.view.ViewModule
 
 object SimulationEngine {
 
-  def worldUpdated(world: World): World =
+  def worldUpdated(world: World): World = {
     World(
       world.width,
       world.height,
       world.currentIteration + 1,
-      world.entities.foldLeft(world)((updatedWorld, entity) =>
-        World(
-          world.width,
-          world.height,
-          world.currentIteration,
-          entity.updated(updatedWorld)
-        )
-      ).entities
+      world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
     )
+  }
+
 
   def collisionsHandled(world: World): World = {
     def collisions = for {
