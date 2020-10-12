@@ -33,7 +33,7 @@ object World {
 
     val entities: Set[SimulableEntity] = blobs ++ foods ++ obstacles
 
-    World(width = 100, height = 100, currentIteration = 0, entities = entities, totalIterations = env.daysNumber/iterationsPerDay)
+    World(width = 100, height = 100, currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
 
   val iterationsPerDay = 5
