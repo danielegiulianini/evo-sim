@@ -3,16 +3,19 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.{ContextShift, IO}
-import cats.effect.IO.fromFuture
+import cats.effect.IO.{fromFuture, unit}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World
 import evo_sim.model.World._
+import scala.concurrent.duration._
+
 
 import scala.concurrent.ExecutionContext
+//import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 
 object SimulationEngine {
 
-  type SimulationIO[A] = IO[A]    //could be not generic: type SimulationIO = IO[Unit]
+  type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
   def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
@@ -20,27 +23,56 @@ object SimulationEngine {
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
   //function to create StateMonad from a World to World function
-  def toStateTWorld(f: World => World): Simulation[World] = toStateT[World]( w => toTuple(f(w)))
+  def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple(f(w)))
 
-  def toTuple[A](a:A) = (a, a)
+  def toTuple[A](a: A) = (a, a)
 
-  def worldUpdated(): Simulation[World] = toStateTWorld { SimulationLogic.worldUpdated _  }
-  def collisionsHandled(): Simulation[World] = toStateTWorld { SimulationLogic.collisionsHandled _  }
+  def worldUpdated(): Simulation[World] = toStateTWorld {
+    SimulationLogic.worldUpdated _
+  }
+
+  def collisionsHandled(): Simulation[World] = toStateTWorld {
+    SimulationLogic.collisionsHandled _
+  }
+
+  //def getTime() = liftIo(IO( (w: World) => (w, System.currentTimeMillis().millis)) ) //ritorna un mondo uguale ma dopo 10 secondi
+  implicit val timer = IO.timer(ExecutionContext.global)
+
+
+  def getTime() = liftIo(IO(System.currentTimeMillis().millis))
+
+  def worldRendered(worldAfterCollisions : World) =
+    liftIo(IO{ ViewModule.rendered(worldAfterCollisions)})
 
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
-  def started() =
-    for {
-      _ <- IO { println("initializing") }
-      - <- IO { ViewModule.GUIBuilt() }
-      env <- fromFuture(IO(ViewModule.inputReadFromUser()))
-      _ <- IO { simulationLoop().runS(worldCreated(env)) }
-    } yield()
 
-  def simulationLoop()  : Simulation[World]  = for {
+
+  def started() = {
+    println("from started currentThread is"+ Thread.currentThread)
+    for {
+      _ <- IO {
+        println("initializing")
+      }
+      - <- IO {
+        println("building gui")
+        ViewModule.GUIBuilt()
+      }
+      env <- fromFuture(IO(ViewModule.inputReadFromUser()))
+      /*_ <- IO {
+        simulationLoop().runS(worldCreated(env))
+      }*/
+    } yield ()
+  }
+
+
+  def simulationLoop()   = for {
+    _ <- liftIo(IO({ println("inside sim loop") }))
+    startTime <- getTime
     _ <- worldUpdated()
-    updatedWorld <- collisionsHandled()
-    _ <- liftIo(IO{ ViewModule.rendered(updatedWorld)})
+    worldAfterCollisions <- collisionsHandled
+    _ <- worldRendered(worldAfterCollisions)
+    currentTime <- getTime
   } yield ()
 
 
