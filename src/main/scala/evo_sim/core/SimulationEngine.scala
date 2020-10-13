@@ -90,7 +90,7 @@ object SimulationEngine {
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
     _ <- waitUntil(currentTime - startTime, 1000 millis)
-    - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations) simulationLoop() else liftIo(IO(unit))
+    - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations) simulationLoop() else liftIo(IO { println("simulation ended.") })//liftIo(IO(unit))
   } yield ()
 
 
