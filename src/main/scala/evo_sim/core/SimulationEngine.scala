@@ -48,6 +48,10 @@ object SimulationEngine {
   def worldRendered(worldAfterCollisions: World) =
     liftIo(IO { ViewModule.rendered(worldAfterCollisions) })
 
+  def inputReadFromUser() =
+    IO { ViewModule.inputReadFromUser() }
+
+
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
   def started() = {
@@ -60,8 +64,7 @@ object SimulationEngine {
         println("building gui")
         ViewModule.GUIBuilt()
       }
-      //env <- fromFuture(IO(ViewModule.inputReadFromUser()))
-      //env <-
+      env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promises
       /*_ <- IO {
         simulationLoop().runS(worldCreated(env))
       }*/
