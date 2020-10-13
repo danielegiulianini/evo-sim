@@ -5,11 +5,12 @@ import cats.data.StateT
 import cats.effect.{ContextShift, IO}
 import cats.effect.IO.{fromFuture, unit}
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World._
+import evo_sim.view.ViewModule
+
 import scala.concurrent.duration._
-
-
 import scala.concurrent.ExecutionContext
 //import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 
@@ -40,17 +41,22 @@ object SimulationEngine {
 
 
   def getTime() = liftIo(IO(System.currentTimeMillis().millis))
+
   def waitUntil(from: FiniteDuration, period: FiniteDuration) =
-    liftIo(IO( if (from < period) { IO.sleep((period-from))} else unit ))
-  def worldRendered(worldAfterCollisions : World) =
-    liftIo(IO{ ViewModule.rendered(worldAfterCollisions)})
+    liftIo(IO(if (from < period) {
+      IO.sleep((period - from))
+    } else unit))
+
+  def worldRendered(worldAfterCollisions: World) =
+    liftIo(IO {
+      ViewModule.rendered(worldAfterCollisions)
+    })
 
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
 
-
   def started() = {
-    println("from started currentThread is"+ Thread.currentThread)
+    println("from started currentThread is" + Thread.currentThread)
     for {
       _ <- IO {
         println("initializing")
@@ -59,7 +65,7 @@ object SimulationEngine {
         println("building gui")
         ViewModule.GUIBuilt()
       }
-      env <- fromFuture(IO(ViewModule.inputReadFromUser()))
+      //env <- fromFuture(IO(ViewModule.inputReadFromUser()))
       /*_ <- IO {
         simulationLoop().runS(worldCreated(env))
       }*/
@@ -67,8 +73,10 @@ object SimulationEngine {
   }
 
 
-  def simulationLoop()   = for {
-    _ <- liftIo(IO({ println("inside sim loop") }))
+  def simulationLoop() = for {
+    _ <- liftIo(IO({
+      println("inside sim loop")
+    }))
     startTime <- getTime
     _ <- worldUpdated()
     worldAfterCollisions <- collisionsHandled
@@ -78,9 +86,6 @@ object SimulationEngine {
   } yield ()
 
 
-
-
-
   object SimulationLogic {
     def worldUpdated(world: World): World =
       World(
@@ -88,13 +93,15 @@ object SimulationEngine {
         world.height,
         world.currentIteration + 1,
         world.entities.foldLeft(world)((updatedWorld, entity) =>
-          World (
+          World(
             world.width,
             world.height,
             world.currentIteration,
-            entity.updated(updatedWorld)
+            entity.updated(updatedWorld),
+            world.totalIterations
           )
-        ).entities
+        ).entities,
+        world.totalIterations
       )
 
     def collisionsHandled(world: World): World = {
@@ -111,8 +118,83 @@ object SimulationEngine {
         world.width,
         world.height,
         world.currentIteration,
-        entitiesAfterCollision ++ world.entities
+        entitiesAfterCollision ++ world.entities,
+        world.totalIterations
       )
     }
   }
+
 }
+      /*
+object SimulationEngine {
+
+  def worldUpdated(world: World): World = {
+    World(
+      world.width,
+      world.height,
+      world.currentIteration + 1,
+      world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
+      world.totalIterations
+    )
+  }
+
+
+  def collisionsHandled(world: World): World = {
+    def collisions = for {
+      i <- world.entities
+      j <- world.entities
+      if i != j && intersected(i.boundingBox, j.boundingBox)
+    } yield (i, j)
+
+    def entitiesAfterCollision =
+      collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
+
+    World(
+      world.width,
+      world.height,
+      world.currentIteration,
+      world.entities ++ entitiesAfterCollision,
+      world.totalIterations
+    )
+  }
+
+  def started(): Unit = {
+    ViewModule.GUIBuilt()
+    val environment = ViewModule.inputReadFromUser()
+    val world = worldCreated(environment)
+    ViewModule.simulationGUIBuilt()
+    val startingTime = System.currentTimeMillis()
+    ViewModule.rendered(world)
+    val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
+    val elapsed = endingTime - startingTime
+    waitUntil(elapsed, 1000) //period in milliseconds
+    simulationLoop(world)
+
+    @scala.annotation.tailrec
+    def simulationLoop(world: World): Unit = {
+      println("iteration: " + world.currentIteration + "/ " + world.totalIterations)
+      val startingTime = System.currentTimeMillis()
+      val updatedWorld = worldUpdated(world)
+      val worldAfterCollisions = collisionsHandled(updatedWorld)
+      ViewModule.rendered(worldAfterCollisions)
+
+      val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
+      val elapsed = endingTime - startingTime
+
+      waitUntil(elapsed, 1000) //period in milliseconds
+
+      if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
+        simulationLoop(worldAfterCollisions)
+    }
+
+    def waitUntil(from: Long, period: Long): Unit = {
+      if (from < period)
+        try
+          Thread.sleep(period - from)
+        catch {
+          case _: InterruptedException =>
+        }
+    }
+  }
+}
+*/

@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.EntityStructure.DomainImpl.Life
-import evo_sim.model.EntityStructure.{Blob, Entity, Food}
+import evo_sim.model.EntityStructure.{Blob, Food}
 
 
 /**
@@ -15,4 +15,6 @@ object DegradationEffect{
   def foodDegradation(food: Food): Life = food.life - 1
   //blob specific degradation effect, velocity + standardDegradation
   def baseBlobDegradation(blob: Blob) : Life = blob. life - (/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
+  //poison degradation effect
+  def posionBlobDegradation(blob: Blob) : Life = blob. life - 2*(/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
 }

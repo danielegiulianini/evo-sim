@@ -1,7 +1,7 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Rectangle
-import evo_sim.model.Entities.{BaseBlob, SlowBlob}
+import evo_sim.model.BoundingBox.Circle
+import evo_sim.model.Entities.{BaseBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Life, MovementStrategy, Velocity}
@@ -25,7 +25,10 @@ object Effect {
     }
   }
 
-  def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = ???
+  def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
+    Set(PoisonBlob(
+      blob.boundingBox, blob.life, blob.velocity, DegradationEffect.posionBlobDegradation, blob.fieldOfViewRadius, blob.movementStrategy, COOLDOWN_DEFAULT))
+  }
 
   // used for static entities
   def neutralEffect(blob: Blob): Set[SimulableEntity] = {
@@ -42,7 +45,7 @@ object Effect {
   }
 
 
-  private def randomBlob(boundingBox: Rectangle, life: Life, velocity: Velocity, degradationEffect: DegradationEffect[Blob], fieldOfViewRadius: Int, movementStrategy: MovementStrategy): Blob = {
+  private def randomBlob(boundingBox: Circle, life: Life, velocity: Velocity, degradationEffect: DegradationEffect[Blob], fieldOfViewRadius: Int, movementStrategy: MovementStrategy): Blob = {
     // TODO: cases for other blob types
     rand.nextInt(1 /* number of blob types*/) match {
       case 0 => BaseBlob(boundingBox, life, velocity, degradationEffect, fieldOfViewRadius, movementStrategy)

@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.EntityBehaviour.{SimulableEntity}
+import evo_sim.model.EntityBehaviour.SimulableEntity
 
 trait Collidable {
   def collided(other: SimulableEntity) : Set[SimulableEntity]

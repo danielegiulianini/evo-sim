@@ -1,7 +1,7 @@
 package evo_sim.controller
 
-import evo_sim.view.scala_fx.ScalaFXSimulation
+import evo_sim.core.SimulationEngine
 
 object Launcher extends App {
-    ScalaFXSimulation.launch()
+  SimulationEngine.started()
 }

@@ -33,23 +33,46 @@ val tri = Triangle((7,7), 8)
 println(tri.point + ", " + tri.height + ", " + tri.angle + "->" + tri.getClass)*/
 
 object Intersection {
+
   //Intersection between a circle and any other entity (Circle, Rect, Triangle)
-  def intersected(body1: Circle, body2: BoundingBox): Boolean = body2 match {
-    //distance between centers, then check if is less than the sum of both the circle radius
-    case circle: Circle => Math.hypot(body1.point.x - circle.point.x, body1.point.y - circle.point.y) < (body1.radius + circle.radius) //https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
-    //collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)
-    /**
-     * Bx + Bw > Ax &&
-     * By + Bh > Ay &&
-     * Ax + Aw > Bx &&
-     * Ay + Ah > By;
-     */
-    case rectangle: Rectangle => rectangle.point.x + rectangle.width > body1.point.x &&
-      rectangle.point.y + rectangle.height > body1.point.y &&
-      body1.point.x + body1.radius > rectangle.point.x &&
-      body1.point.y + body1.radius > rectangle.point.y
-    //treat the triangle as a circle, simpler collision, apothem * 2 = circe radius circumscribed in the triangle
-    case triangle: Triangle => Math.hypot(body1.point.x - triangle.point.x, body1.point.y - triangle.point.y) < (body1.radius + triangle.height / 3 * 2)
+  def intersected(body1: BoundingBox, body2: BoundingBox): Boolean = (body1, body2) match {
+    case (body1: Circle, circle: Circle) => circleIntersectsCircle(body1, circle)
+    case (body1: Circle, rectangle: Rectangle) => circleIntersectsRectangle(body1, rectangle)
+    case (body1: Circle, triangle: Triangle) => circleIntersectsTriangle(body1, triangle)
+    case (body1: Rectangle, circle: Circle) => circleIntersectsRectangle(circle, body1)
+    case (body1: Rectangle, rectangle: Rectangle) => rectangleIntersectsRectangle(body1, rectangle)
+    case (body1: Rectangle, triangle: Triangle) => rectangleIntersectsTriangle(body1, triangle)
+    case (body1: Triangle, circle: Circle) => circleIntersectsTriangle(circle, body1)
+    case (body1: Triangle, rectangle: Rectangle) => rectangleIntersectsTriangle(rectangle, body1)
+    case (body1: Triangle, triangle: Triangle) =>triangleIntersectsTriangle(body1, triangle)
     case _ => false
   }
+
+  // distance between centers, then check if is less than the sum of both the circle radius
+  // https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
+  private def circleIntersectsCircle(circle1: Circle, circle2: Circle) =
+    Math.hypot(circle1.point.x - circle2.point.x, circle1.point.y - circle2.point.y) < (circle1.radius + circle2.radius)
+
+  // Treat the triangle as a circle, simpler collision, apothem * 2 = circe radius circumscribed in the triangle
+  private def circleIntersectsTriangle(circle: Circle, triangle: Triangle) =
+    Math.hypot(circle.point.x - triangle.point.x, circle.point.y - triangle.point.y) < (circle.radius + triangle.height / 3 * 2)
+
+  private def circleIntersectsRectangle(circle: Circle, rectangle: Rectangle) =
+    rectangle.point.x + rectangle.width > circle.point.x && rectangle.point.y + rectangle.height > circle.point.y &&
+      circle.point.x + circle.radius > rectangle.point.x && circle.point.y + circle.radius > rectangle.point.y
+
+  // Collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)
+  /**
+   * Bx + Bw > Ax &&
+   * By + Bh > Ay &&
+   * Ax + Aw > Bx &&
+   * Ay + Ah > By;
+   */
+  private def rectangleIntersectsRectangle(rectangle1: Rectangle, rectangle2: Rectangle) = false
+
+  private def rectangleIntersectsTriangle(rectangle: Rectangle, triangle: Triangle) = false
+
+  private def triangleIntersectsTriangle(triangle1: Triangle, triangle2: Triangle) = false
+
+
 }
