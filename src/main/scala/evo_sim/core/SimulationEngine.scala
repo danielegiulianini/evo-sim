@@ -65,9 +65,9 @@ object SimulationEngine {
         ViewModule.GUIBuilt()
       }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promises
-      /*_ <- IO {
+      _ <- IO {
         simulationLoop().runS(worldCreated(env))
-      }*/
+      }
     } yield ()
   }
 
@@ -85,6 +85,7 @@ object SimulationEngine {
   } yield ()
 
 
+  //maybe to move outside this object
   object SimulationLogic {
     def worldUpdated(world: World): World =
       World(
