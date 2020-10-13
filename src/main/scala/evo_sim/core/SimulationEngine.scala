@@ -71,7 +71,6 @@ object SimulationEngine {
     } yield ()
   }
 
-
   def simulationLoop() : Simulation[Unit] = for {
     _ <- toStateTWorld { (w: World) => {
       log("it " + w.currentIteration + " / " + w.totalIterations)

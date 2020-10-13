@@ -11,3 +11,6 @@ libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0
 scalacOptions += "-Ypartial-unification"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
 libraryDependencies += "org.typelevel" %% "cats-effect" % "2.2.0"
+
+libraryDependencies += "com.github.wookietreiber" %% "scala-chart" % "latest.integration"
+libraryDependencies += "org.knowm.xchart" % "xchart" % "3.6.5"

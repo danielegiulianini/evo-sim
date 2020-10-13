@@ -22,8 +22,8 @@ object MovingStrategies {
   @scala.annotation.tailrec
   private def standardMovement(entity: Intelligent): Point2D = {
     val angle = new java.util.Random().nextInt(360)
-    val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle))
-    val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle))
+    val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle)) * 0.05
+    val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle)) * 0.05
     val x = entity.boundingBox.point.x + deltaX
     val y = entity.boundingBox.point.y + deltaY
     if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(x.toInt, y.toInt)
