@@ -118,10 +118,12 @@ object SimulationEngine {
     }
   }
 
+  //to remove after debugging complete
   object Logging {
     def log(message: String) = println(Thread.currentThread.getName+": " + message)
   }
 }
+
 /*
 object SimulationEngine {
 
