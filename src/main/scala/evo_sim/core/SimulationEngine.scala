@@ -12,7 +12,6 @@ import evo_sim.view.ViewModule
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
-//import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 
 object SimulationEngine {
 
@@ -29,18 +28,16 @@ object SimulationEngine {
   def toTuple[A](a: A) = (a, a)
 
   def worldUpdated(): Simulation[World] = toStateTWorld {
-    SimulationLogic.worldUpdated _
+    SimulationLogic.worldUpdated
   }
 
   def collisionsHandled(): Simulation[World] = toStateTWorld {
-    SimulationLogic.collisionsHandled _
+    SimulationLogic.collisionsHandled
   }
 
-  //def getTime() = liftIo(IO( (w: World) => (w, System.currentTimeMillis().millis)) ) //ritorna un mondo uguale ma dopo 10 secondi
   implicit val timer = IO.timer(ExecutionContext.global)
 
-
-  def getTime() = liftIo(IO(System.currentTimeMillis().millis))
+  def getTime() = liftIo(IO(System.currentTimeMillis().millis))   //def getTime() = liftIo(IO( (w: World) => (w, System.currentTimeMillis().millis)) ) //as a statet monad returns a identical new world but x seconds older
 
   def waitUntil(from: FiniteDuration, period: FiniteDuration) =
     liftIo(IO(if (from < period) {
@@ -48,12 +45,9 @@ object SimulationEngine {
     } else unit))
 
   def worldRendered(worldAfterCollisions: World) =
-    liftIo(IO {
-      ViewModule.rendered(worldAfterCollisions)
-    })
+    liftIo(IO { ViewModule.rendered(worldAfterCollisions) })
 
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
 
   def started() = {
     println("from started currentThread is" + Thread.currentThread)
@@ -66,6 +60,7 @@ object SimulationEngine {
         ViewModule.GUIBuilt()
       }
       //env <- fromFuture(IO(ViewModule.inputReadFromUser()))
+      //env <-
       /*_ <- IO {
         simulationLoop().runS(worldCreated(env))
       }*/
@@ -92,15 +87,7 @@ object SimulationEngine {
         world.width,
         world.height,
         world.currentIteration + 1,
-        world.entities.foldLeft(world)((updatedWorld, entity) =>
-          World(
-            world.width,
-            world.height,
-            world.currentIteration,
-            entity.updated(updatedWorld),
-            world.totalIterations
-          )
-        ).entities,
+        world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
         world.totalIterations
       )
 
