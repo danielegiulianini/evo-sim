@@ -18,11 +18,12 @@ object SimulationEngine {
   type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
+  //helper to create StateT monad from a IO monad
   def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
 
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
-  //function to create StateMonad from a World to World function
+  //function to create StateT monad from a World to World function
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple(f(w)))
 
   def toTuple[A](a: A) = (a, a)
@@ -95,7 +96,7 @@ object SimulationEngine {
       def collisions = for {
         i <- world.entities
         j <- world.entities
-        if i != j // && i.intersected(j.shape)//intersects(j.shape)
+        if i != j && intersected(i.boundingBox, j.boundingBox)
       } yield (i, j)
 
       def entitiesAfterCollision =
