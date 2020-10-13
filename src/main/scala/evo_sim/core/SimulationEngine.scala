@@ -4,8 +4,6 @@ package evo_sim.core
 import cats.data.StateT
 import cats.effect.{ContextShift, IO}
 import cats.effect.IO.{fromFuture, unit}
-import evo_sim.controller.Logging.log
-import evo_sim.core.SimulationEngine.simulationLoop
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
@@ -14,6 +12,7 @@ import evo_sim.view.ViewModule
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
+import evo_sim.core.SimulationEngine.Logging._
 
 object SimulationEngine {
 
@@ -60,17 +59,11 @@ object SimulationEngine {
 
   def started() = {
     for {
-      _ <- IO {
-        log("initializing")
-      }
       - <- IO {
         log("building gui")
         ViewModule.GUIBuilt()
       }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promises
-      _ <- IO {
-        log("before sim loop call")
-      }
       _ <- IO {
         log("calling sim loop")
         simulationLoop().runS(worldCreated(env)).unsafeRunSync()
@@ -125,6 +118,9 @@ object SimulationEngine {
     }
   }
 
+  object Logging {
+    def log(message: String) = println(Thread.currentThread.getName+": " + message)
+  }
 }
 /*
 object SimulationEngine {
