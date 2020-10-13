@@ -13,30 +13,34 @@ case class World(width: Int, //to move in environment?
 //companion object
 object World {
   def worldCreated(env: Environment): World = {
+    val iterationsPerDay = 1000
+    val worldWidth = 1280
+    val worldHeight = 720
+
+    def randomPosition() = Point2D(new scala.util.Random().nextInt(worldWidth + 1), new scala.util.Random().nextInt(worldHeight + 1))
+
     val blobs: Set[BaseBlob] = Iterator.fill(env.initialBlobNumber)(BaseBlob(
-      boundingBox = BoundingBox.Circle.apply(point = Point2D(640, 360), radius = 5),
-      life = 100,
+      boundingBox = BoundingBox.Circle.apply(point = randomPosition(), radius = 5),
+      life = Integer.MAX_VALUE,
       velocity = 50,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = 10,
       movementStrategy = MovingStrategies.baseMovement)).toSet
 
     val foods: Set[BaseFood] = Iterator.fill(env.initialFoodNumber)(BaseFood(
-      boundingBox = BoundingBox.Triangle.apply(point = Point2D(700, 400), height = 10),
+      boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = 10),
       degradationEffect = DegradationEffect.foodDegradation,
-      life = 100,
+      life = Integer.MAX_VALUE,
       effect = Effect.standardFoodEffect)).toSet
 
     val obstacles: Set[BaseObstacle] = Iterator.fill(env.initialObstacleNumber)(BaseObstacle(
-      boundingBox = BoundingBox.Rectangle(point = Point2D(600, 300), width = 15, height = 12),
+      boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = 15, height = 12),
       effect = Effect.neutralEffect)).toSet
 
     val entities: Set[SimulableEntity] = blobs ++ foods ++ obstacles
 
-    World(width = 1280, height = 720, currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
+    World(width = worldWidth, height = worldHeight, currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
-
-  val iterationsPerDay = 5
 }
 
 

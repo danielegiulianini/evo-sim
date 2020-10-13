@@ -12,7 +12,7 @@ class ShapesPanel(world: World) extends JPanel {
     super.paintComponent(g)
     world.entities.foreach(e => e.boundingBox match {
       case Circle(point2D, r) =>
-        g.setColor(Color.yellow)
+        g.setColor(Color.blue)
         g.fillOval(modelToViewRatio(point2D.x - r, this.getSize().width, world.width),
           modelToViewRatio(point2D.y - r, this.getSize().height, world.height),
           modelToViewRatio(r * 2, this.getSize().width, world.width),
