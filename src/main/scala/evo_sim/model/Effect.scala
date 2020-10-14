@@ -36,9 +36,13 @@ object Effect {
     }
   }
 
-  def mudEffect(blob: BaseBlob): Set[SimulableEntity] = {
+  def mudEffect(blob: Blob): Set[SimulableEntity] = {
     val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
-    Set(SlowBlob(blob, blob.boundingBox, COOLDOWN_DEFAULT, blob.velocity))
+    blob match {
+      case b:BaseBlob => Set(SlowBlob(b, blob.boundingBox, COOLDOWN_DEFAULT, blob.velocity))
+      //case _ => Set(blob) -> Blob immune dagli effetti //TODO
+    }
+
   }
 
   /* min = value - range, max = value + range */

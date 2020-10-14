@@ -26,14 +26,14 @@ object Entities {
   //blobs with temporary status changes refactored
   trait TempBlob extends BlobWithTemporaryStatus with Entity with Simulable
 
-  case class PoisonBlob(  override val blob: BaseBlob,
-                          override val boundingBox: Circle,
-                          poisonCooldown: Cooldown) extends TempBlob with TempBlobBehaviour
+  case class PoisonBlob(override val blob: Blob,
+                        override val boundingBox: Circle,
+                        override val cooldown: Cooldown) extends TempBlob with TempBlobBehaviour
 
-  case class SlowBlob(    override val blob: BaseBlob,
-                          override val boundingBox: Circle,
-                          slownessCooldown: Cooldown,
-                          initialVelocity: Velocity) extends TempBlob with TempBlobBehaviour
+  case class SlowBlob(override val blob: Blob,
+                      override val boundingBox: Circle,
+                      override val cooldown: Cooldown,
+                      initialVelocity: Velocity) extends TempBlob with TempBlobBehaviour
 }
 
 

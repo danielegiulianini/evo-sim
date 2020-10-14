@@ -11,7 +11,7 @@ object EntityStructure {
     type Life
     type Velocity
     type DegradationEffect[A] >: A => Life
-    type Effect = BaseBlob => Set[SimulableEntity]  //name to be changed
+    type Effect = Blob => Set[SimulableEntity]  //name to be changed
     type Rivals
     type Position
     type MovementStrategy
@@ -67,6 +67,7 @@ object EntityStructure {
   }
 
   trait BlobWithTemporaryStatus {
-    def blob: BaseBlob
+    def blob: Blob
+    def cooldown: Cooldown
   }
 }
