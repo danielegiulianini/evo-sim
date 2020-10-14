@@ -12,7 +12,7 @@ case class World(width: Int, //to move in environment?
 
 //companion object
 object World {
-  def worldCreated(env: Environment): World = {
+  def apply(env: Environment): World = {
 
     val iterationsPerDay = 1000
     val worldWidth = 1280

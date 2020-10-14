@@ -66,7 +66,7 @@ object SimulationEngine {
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promises
       _ <- IO {
         log("calling sim loop")
-        simulationLoop().runS(worldCreated(env)).unsafeRunSync()
+        simulationLoop().runS(World(env)).unsafeRunSync()
       }
     } yield ()
   }
