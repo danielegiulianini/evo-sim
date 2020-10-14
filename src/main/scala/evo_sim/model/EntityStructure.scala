@@ -66,23 +66,6 @@ object EntityStructure {
     override def boundingBox: Rectangle
   }
 
-
-
-
-
-
-  // status
-  /*trait BlobWithTemporaryStatus extends Blob
-
-  trait SlowedBlob extends BlobWithTemporaryStatus {
-    def slownessCooldown: Cooldown
-    def initialVelocity: Velocity
-  }
-
-  trait PoisonedBlob extends BlobWithTemporaryStatus {
-    def poisonCooldown: Cooldown
-  }*/
-
   trait BlobWithTemporaryStatus {
     def blob: BaseBlob
   }

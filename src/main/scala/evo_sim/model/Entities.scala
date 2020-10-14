@@ -23,25 +23,7 @@ object Entities {
   case class BaseObstacle(override val boundingBox: Rectangle,
                           override val effect: Effect) extends Obstacle with NeutralBehaviour
 
-  //blobs with temporary status changes
-  /*case class SlowBlob(override val boundingBox: Circle,
-                      override val life: Life,
-                      override val velocity: Velocity,
-                      override val degradationEffect: DegradationEffect[Blob],
-                      override val fieldOfViewRadius: Int,
-                      override val movementStrategy: MovementStrategy,
-                      override val slownessCooldown: Cooldown,
-                      override val initialVelocity: Int) extends SlowedBlob with SlowBlobBehaviour
-
-  case class PoisonBlob(override val boundingBox: Circle,
-                        override val life: Life,
-                        override val velocity: Velocity,
-                        override val degradationEffect: DegradationEffect[Blob],
-                        override val fieldOfViewRadius: Int,
-                        override val movementStrategy: MovementStrategy,
-                        override val poisonCooldown: Cooldown) extends PoisonedBlob with PoisonBlobBehaviour*/
-
-  //blobs with temporary status changes refactor
+  //blobs with temporary status changes refactored
   trait TempBlob extends BlobWithTemporaryStatus with Entity with Simulable
 
   case class PoisonBlob(  override val blob: BaseBlob,

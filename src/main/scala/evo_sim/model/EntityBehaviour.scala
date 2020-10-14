@@ -27,49 +27,6 @@ object EntityBehaviour {
     }
   }
 
-  /*trait SlowBlobBehaviour extends Simulable {
-    self: SlowBlob => //SlowBlob
-    override def updated(world: World): Set[SimulableEntity] = {
-      def newSelf = self.slownessCooldown match {
-        case n if n > 1 => SlowBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius), self.degradationEffect(self), self.velocity, self.degradationEffect,
-          self.fieldOfViewRadius, self.movementStrategy, self.slownessCooldown - 1, self.initialVelocity)
-        case _ => BaseBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius), self.degradationEffect(self), self.initialVelocity, self.degradationEffect,
-          self.fieldOfViewRadius, self.movementStrategy)
-      }
-
-      Set(newSelf)
-    }
-
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case _: Blob => Set(self)
-      case food: BaseFood => food.effect(self)
-      case obstacle: BaseObstacle => obstacle.effect(self)
-      case _ => Set(self)
-    }
-  }
-
-  trait PoisonBlobBehaviour extends Simulable {
-    self: PoisonBlob =>
-
-    override def updated(world: World): Set[SimulableEntity] = {
-      def newSelf = self.poisonCooldown match {
-        case n if n > 1 => PoisonBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius), self.degradationEffect(self), self.velocity, self.degradationEffect,
-          self.fieldOfViewRadius, self.movementStrategy, self.poisonCooldown - 1)
-        case _ => BaseBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius), self.degradationEffect(self), self.velocity, self.degradationEffect,
-          self.fieldOfViewRadius, self.movementStrategy)
-      }
-
-      Set(newSelf)
-    }
-
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case _: Blob => Set(self)
-      case food: BaseFood => food.effect(self)
-      case obstacle: BaseObstacle => obstacle.effect(self)
-      case _ => Set(self)
-    }
-  }*/
-
   trait TempBlobBehaviour extends Simulable {
     self: TempBlob =>
     override def updated(world: World): Set[SimulableEntity] = {

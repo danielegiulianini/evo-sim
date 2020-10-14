@@ -40,7 +40,6 @@ object Effect {
   def mudEffect(blob: BaseBlob): Set[SimulableEntity] = {
     val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
     Set(SlowBlob(blob, blob.boundingBox, COOLDOWN_DEFAULT, blob.velocity))
-      //blob.boundingBox, blob.life, currentVelocity, blob.degradationEffect, blob.fieldOfViewRadius, blob.movementStrategy, COOLDOWN_DEFAULT, blob.velocity))
   }
 
 
