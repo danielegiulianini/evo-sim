@@ -19,8 +19,8 @@ object Effect {
     val newBlob = BaseBlob(blob.boundingBox, blob.life + foodEnergy, randomValueChange(blob.velocity, modifyingPropertyRange), blob.degradationEffect, randomValueChange(blob.fieldOfViewRadius, modifyingPropertyRange), MovingStrategies.baseMovement)
     Set(newBlob, blob match {
       case b : BaseBlob => BaseBlob(b.boundingBox, b.life + foodEnergy, b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy)
-      case b: PoisonBlob => PoisonBlob(b.blob, b.boundingBox, b.poisonCooldown)
-      case b: SlowBlob => SlowBlob(b.blob, b.boundingBox, b.slownessCooldown, b.initialVelocity)
+      case b: PoisonBlob => PoisonBlob(b.blob, b.boundingBox, b.cooldown)
+      case b: SlowBlob => SlowBlob(b.blob, b.boundingBox, b.cooldown, b.initialVelocity)
     })
   }
 
