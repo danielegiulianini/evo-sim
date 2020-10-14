@@ -7,7 +7,6 @@ import cats.effect.IO.{fromFuture, unit}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
-import evo_sim.model.World._
 import evo_sim.view.ViewModule
 
 import scala.concurrent.duration._
@@ -63,7 +62,7 @@ object SimulationEngine {
         log("building gui")
         ViewModule.GUIBuilt()
       }
-      env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promises
+      env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise
       - <- IO {
         log("building simulation gui")
         ViewModule.simulationGUIBuilt()
@@ -74,6 +73,10 @@ object SimulationEngine {
           _ <- IO {ViewModule.simulationGUIBuilt()}
           _ <- simulationLoop().runS(World(env))
         } yield()).unsafeRunSync()
+        /*
+        * ViewModule.simulationGUIBuilt()
+        * simulationLoop().runS()
+        * */
       }
     } yield ()
   }
@@ -84,7 +87,7 @@ object SimulationEngine {
       w
     }}
     startTime <- getTime
-    _ <- worldUpdated()
+    _ <- worldUpdated
     worldAfterCollisions <- collisionsHandled
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
@@ -92,7 +95,7 @@ object SimulationEngine {
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else
       liftIo( for {
-        _ <- IO { println("simulation ended, printing sim statistics") }
+        _ <- IO { log("simulation ended, printing sim statistics") }
         - <- IO { ViewModule.showResultGUI(worldAfterCollisions) }
       } yield ())//liftIo(IO(unit))
   } yield ()
