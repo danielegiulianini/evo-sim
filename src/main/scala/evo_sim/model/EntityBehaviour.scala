@@ -1,12 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.BoundingBox.Circle
-<<<<<<< HEAD
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, PoisonBlob, SlowBlob}
-import evo_sim.model.EntityStructure.DomainImpl.Velocity
-=======
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, PoisonBlob, SlowBlob, TempBlob}
->>>>>>> 39f1ca4e255272eb1782fc0d1e4b4e2a2ed6f99c
+import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
 object EntityBehaviour {
@@ -19,21 +14,9 @@ object EntityBehaviour {
     self: BaseBlob =>
 
     override def updated(world: World): Set[SimulableEntity] = {
-      def velocityUpdated(vel: Velocity): Velocity = {
-        val newVel = vel + world.temperature match {
-          case t if Integer.MIN_VALUE to 0 contains t => -3
-          case t if 1 to 10 contains t => -1
-          case t if 11 to 20 contains t => 1
-          case t if 21 to 35 contains t => -1
-          case t if 36 to Integer.MAX_VALUE contains t => -3
-        }
-        if (newVel > 10) newVel else vel
-      }
-
       Set(self.copy(
         boundingBox = Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius),
         life = self.degradationEffect(self),
-        velocity = velocityUpdated(self.velocity),
         fieldOfViewRadius = self.fieldOfViewRadius + world.luminosity
       ))
     }
@@ -56,6 +39,7 @@ object EntityBehaviour {
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
+
       Set(newSelf)
     }
 
@@ -95,7 +79,7 @@ object EntityBehaviour {
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = self.poisonCooldown match {
     case n if n > 1 => PoisonBlob(BaseBlob(Circle(self.blob.movementStrategy(self.blob, world.entities), self.blob.boundingBox.radius), self.blob.degradationEffect(self.blob), self.blob.velocity, self.blob.degradationEffect,
-      self.blob.fieldOfViewRadius, self.blob.movementStrategy), self.boundingBox,self.poisonCooldown - 1)
+      self.blob.fieldOfViewRadius, self.blob.movementStrategy), self.boundingBox, self.poisonCooldown - 1)
     case _ => BaseBlob(Circle(self.blob.movementStrategy(self.blob, world.entities), self.blob.boundingBox.radius), self.blob.degradationEffect(self.blob), self.blob.velocity, self.blob.degradationEffect,
       self.blob.fieldOfViewRadius, self.blob.movementStrategy)
   }

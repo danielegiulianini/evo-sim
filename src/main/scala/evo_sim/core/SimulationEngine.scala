@@ -15,7 +15,7 @@ object SimulationEngine {
   }
 
   def worldUpdated(world: World): World = {
-    
+
     // TODO: iterationsPerDay solo una volta nel codice (c'è anche in world)
     val iterationsPerDay: Int = 100
     val phaseDuration: Int = iterationsPerDay / 4
