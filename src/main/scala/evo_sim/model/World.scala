@@ -14,7 +14,7 @@ case class World(width: Int, //to move in environment?
 object World {
   def apply(env: Environment): World = {
 
-    val iterationsPerDay = 1000
+    val iterationsPerDay = 5  //1000
     val worldWidth = 1280
     val worldHeight = 720
 

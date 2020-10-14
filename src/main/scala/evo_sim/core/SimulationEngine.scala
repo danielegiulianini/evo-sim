@@ -70,7 +70,10 @@ object SimulationEngine {
       }
       _ <- IO {
         log("calling sim loop")
-        simulationLoop().runS(World(env)).unsafeRunSync()
+        (for {
+          _ <- IO {ViewModule.simulationGUIBuilt()}
+          _ <- simulationLoop().runS(World(env))
+        } yield()).unsafeRunSync()
       }
     } yield ()
   }
@@ -89,7 +92,7 @@ object SimulationEngine {
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else
       liftIo( for {
-        _ <- IO { println("simulation ended.") }
+        _ <- IO { println("simulation ended, printing sim statistics") }
         - <- IO { ViewModule.showResultGUI(worldAfterCollisions) }
       } yield ())//liftIo(IO(unit))
   } yield ()
