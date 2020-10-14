@@ -15,6 +15,7 @@ object SimulationEngine {
   }
 
   def worldUpdated(world: World): World = {
+    
     // TODO: iterationsPerDay solo una volta nel codice (c'è anche in world)
     val iterationsPerDay: Int = 100
     val phaseDuration: Int = iterationsPerDay / 4
@@ -38,14 +39,11 @@ object SimulationEngine {
       case _ => EnvironmentModifiers(0, 0)
     }
 
-    World(
-      world.temperature + environmentModifiers.temperature,
-      world.luminosity + environmentModifiers.luminosity,
-      world.width,
-      world.height,
-      world.currentIteration + 1,
-      world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
-      world.totalIterations
+    world.copy(
+      temperature = world.temperature + environmentModifiers.temperature,
+      luminosity = world.luminosity + environmentModifiers.luminosity,
+      currentIteration = world.currentIteration + 1,
+      entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
     )
   }
 
