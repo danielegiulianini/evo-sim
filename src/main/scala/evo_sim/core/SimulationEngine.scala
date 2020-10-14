@@ -24,7 +24,7 @@ object SimulationEngine {
 
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
-  //function to create StateT monad from a World to World function
+  //helper to create StateT monad from a World to World function
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple(f(w)))
 
   def toTuple[A](a: A) = (a, a)
@@ -64,6 +64,10 @@ object SimulationEngine {
         ViewModule.GUIBuilt()
       }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promises
+      - <- IO {
+        log("building simulation gui")
+        ViewModule.simulationGUIBuilt()
+      }
       _ <- IO {
         log("calling sim loop")
         simulationLoop().runS(World(env)).unsafeRunSync()
@@ -82,7 +86,12 @@ object SimulationEngine {
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
     _ <- waitUntil(currentTime - startTime, 1000 millis)
-    - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations) simulationLoop() else liftIo(IO { println("simulation ended.") })//liftIo(IO(unit))
+    - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
+      simulationLoop() else
+      liftIo( for {
+        _ <- IO { println("simulation ended.") }
+        - <- IO { ViewModule.showResultGUI(worldAfterCollisions) }
+      } yield ())//liftIo(IO(unit))
   } yield ()
 
 
