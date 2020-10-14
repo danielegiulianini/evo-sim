@@ -2,6 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, PoisonBlob, SlowBlob}
+import evo_sim.model.EntityStructure.DomainImpl.Velocity
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
 object EntityBehaviour {
@@ -11,10 +12,26 @@ object EntityBehaviour {
 
   //Base blob behaviour implementation
   trait BaseBlobBehaviour extends Simulable {
-    self: Blob => //BaseBlob
+    self: BaseBlob =>
+
     override def updated(world: World): Set[SimulableEntity] = {
-      Set(BaseBlob(Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius),
-        self.degradationEffect(self), self.velocity, self.degradationEffect, self.fieldOfViewRadius, self.movementStrategy))
+      def velocityUpdated(vel: Velocity): Velocity = {
+        val newVel = vel + world.temperature match {
+          case t if Integer.MIN_VALUE to 0 contains t => -3
+          case t if 1 to 10 contains t => -1
+          case t if 11 to 20 contains t => 1
+          case t if 21 to 35 contains t => -1
+          case t if 36 to Integer.MAX_VALUE contains t => -3
+        }
+        if (newVel > 10) newVel else vel
+      }
+
+      Set(self.copy(
+        boundingBox = Circle(self.movementStrategy(self, world.entities), self.boundingBox.radius),
+        life = self.degradationEffect(self),
+        velocity = velocityUpdated(self.velocity),
+        fieldOfViewRadius = self.fieldOfViewRadius + world.luminosity
+      ))
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {

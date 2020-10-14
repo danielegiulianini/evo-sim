@@ -3,7 +3,9 @@ package evo_sim.model
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 
-case class World(width: Int, //to move in environment?
+case class World(temperature: Int,
+                 luminosity: Int,
+                 width: Int, //to move in environment?
                  height: Int, //to move in environment?
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
@@ -13,7 +15,7 @@ case class World(width: Int, //to move in environment?
 //companion object
 object World {
   def worldCreated(env: Environment): World = {
-    val iterationsPerDay = 1000
+    val iterationsPerDay = 100
     val worldWidth = 1280
     val worldHeight = 720
 
@@ -39,7 +41,8 @@ object World {
 
     val entities: Set[SimulableEntity] = blobs ++ foods ++ obstacles
 
-    World(width = worldWidth, height = worldHeight, currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
+    World(temperature = env.temperature, luminosity = env.luminosity, width = worldWidth, height = worldHeight,
+      currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
 }
 
