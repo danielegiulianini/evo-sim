@@ -47,7 +47,7 @@ object SimulationEngine {
     ViewModule.rendered(world)
     val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
     val elapsed = endingTime - startingTime
-    waitUntil(elapsed, 1000) //period in milliseconds
+    //waitUntil(elapsed, 1000) //period in milliseconds
     simulationLoop(world)
 
     @scala.annotation.tailrec
@@ -60,7 +60,7 @@ object SimulationEngine {
       val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
       val elapsed = endingTime - startingTime
 
-      waitUntil(elapsed, 1000) //period in milliseconds
+      //waitUntil(elapsed, 1000) //period in milliseconds
 
       if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
         simulationLoop(worldAfterCollisions)

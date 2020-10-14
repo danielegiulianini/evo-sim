@@ -8,9 +8,12 @@ import scala.math._
 object MovingStrategies {
 
   def baseMovement(entity: Intelligent, entities: Set[SimulableEntity]): Point2D = {
-    val chasedEntity = (entities - entity.asInstanceOf[SimulableEntity]).minBy(distanceBetweenEntities(entity, _))
-    if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius) chaseMovement(entity, chasedEntity)
-    else standardMovement(entity)
+    /*val chasedEntity = (entities - entity.asInstanceOf[SimulableEntity]).minBy(distanceBetweenEntities(entity, _))
+    if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius)
+      chaseMovement(entity, chasedEntity)
+    else
+      standardMovement(entity)*/
+    standardMovement(entity)
   }
 
   def crazyMovement(entity: Intelligent, entities: Set[Intelligent]): Intelligent = ???
@@ -22,11 +25,12 @@ object MovingStrategies {
   @scala.annotation.tailrec
   private def standardMovement(entity: Intelligent): Point2D = {
     val angle = new java.util.Random().nextInt(360)
-    val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle))
-    val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle))
+    val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle)) * 0.05
+    val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle)) * 0.05
     val x = entity.boundingBox.point.x + deltaX
     val y = entity.boundingBox.point.y + deltaY
     if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(x.toInt, y.toInt)
+    //Point2D(x.toInt, y.toInt)
   }
 
   @scala.annotation.tailrec
