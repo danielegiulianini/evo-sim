@@ -2,6 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 import evo_sim.model.BoundingBox._
+import evo_sim.model.Entities.BaseBlob
 import evo_sim.model.EntityBehaviour.SimulableEntity
 
 
@@ -10,7 +11,7 @@ object EntityStructure {
     type Life
     type Velocity
     type DegradationEffect[A] >: A => Life
-    type Effect = Blob => Set[SimulableEntity]  //name to be changed
+    type Effect = BaseBlob => Set[SimulableEntity]  //name to be changed
     type Rivals
     type Position
     type MovementStrategy
@@ -71,7 +72,7 @@ object EntityStructure {
 
 
   // status
-  trait BlobWithTemporaryStatus extends Blob
+  /*trait BlobWithTemporaryStatus extends Blob
 
   trait SlowedBlob extends BlobWithTemporaryStatus {
     def slownessCooldown: Cooldown
@@ -80,5 +81,9 @@ object EntityStructure {
 
   trait PoisonedBlob extends BlobWithTemporaryStatus {
     def poisonCooldown: Cooldown
+  }*/
+
+  trait BlobWithTemporaryStatus {
+    def blob: BaseBlob
   }
 }

@@ -25,9 +25,8 @@ object Effect {
     }
   }
 
-  def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    Set(PoisonBlob(
-      blob.boundingBox, blob.life, blob.velocity, DegradationEffect.posionBlobDegradation, blob.fieldOfViewRadius, blob.movementStrategy, COOLDOWN_DEFAULT))
+  def poisonousFoodEffect(blob: BaseBlob): Set[SimulableEntity] = {
+    Set(PoisonBlob(blob, blob.boundingBox, COOLDOWN_DEFAULT))
   }
 
   // used for static entities
@@ -38,10 +37,10 @@ object Effect {
     }
   }
 
-  def mudEffect(blob: Blob): Set[SimulableEntity] = {
+  def mudEffect(blob: BaseBlob): Set[SimulableEntity] = {
     val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
-    Set(SlowBlob(
-      blob.boundingBox, blob.life, currentVelocity, blob.degradationEffect, blob.fieldOfViewRadius, blob.movementStrategy, COOLDOWN_DEFAULT, blob.velocity))
+    Set(SlowBlob(blob, blob.boundingBox, COOLDOWN_DEFAULT, blob.velocity))
+      //blob.boundingBox, blob.life, currentVelocity, blob.degradationEffect, blob.fieldOfViewRadius, blob.movementStrategy, COOLDOWN_DEFAULT, blob.velocity))
   }
 
 
