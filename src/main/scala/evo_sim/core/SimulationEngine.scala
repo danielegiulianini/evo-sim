@@ -63,14 +63,14 @@ object SimulationEngine {
         SwingGUI.inputViewBuiltAndShowed()
       }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise
-      - <- IO {
+      /*- <- IO {
         log("building simulation gui")
         SwingGUI.simulationViewBuiltAndShowed()
-      }
+      }*/
       _ <- IO {
         log("calling sim loop")
         (for {
-          //_ <- IO {SwingGUI.simulationViewBuiltAndShowed()}
+          _ <- IO {SwingGUI.simulationViewBuiltAndShowed()}
           _ <- simulationLoop().runS(World(env))
         } yield()).unsafeRunSync()
         /*
