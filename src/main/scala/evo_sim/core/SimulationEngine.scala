@@ -12,6 +12,7 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 import evo_sim.core.SimulationEngine.Logging._
 import evo_sim.core.SimulationEngine.SimulationLogic.DayPhase.DayPhase
+import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.view.swing.View
 
 object SimulationEngine {
@@ -23,15 +24,6 @@ object SimulationEngine {
   def collisionsHandled(): Simulation[World] = toStateTWorld {
     SimulationLogic.collisionsHandled
   }
-
-  implicit val timer = IO.timer(ExecutionContext.global)
-
-  def getTime() = liftIo(IO { System.currentTimeMillis().millis })   //def getTime() = liftIo(IO( (w: World) => (w, System.currentTimeMillis().millis)) ) //as a statet monad returns a identical new world but x seconds older
-
-  def waitUntil(from: FiniteDuration, period: FiniteDuration) =
-    liftIo(if (from < period) {
-      IO.sleep(period - from)
-    } else unit)
 
   //missing guiBuilt as IO-monad
 
