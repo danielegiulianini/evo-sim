@@ -61,7 +61,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val life = self.degradationEffect(self)
       life match {
-        case n if n > 0 => Set(BaseFood(self.boundingBox, self.degradationEffect, life, self.effect))
+        case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
         case _ => Set()
       }
     }
@@ -85,7 +85,9 @@ object EntityBehaviour {
     self.cooldown match {
       case n if n > 1 => {
         self.blob match {
-          case base: BaseBlob => PoisonBlob(base.copy(
+          case base: BaseBlob => PoisonBlob(
+            name = base.name,
+            base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
             stepToNextDirection = base.stepToNextDirection - 1,
@@ -99,6 +101,7 @@ object EntityBehaviour {
       case _ => {
         self.blob match {
           case base: BaseBlob => base.copy(
+            name = base.name,
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
             stepToNextDirection = base.stepToNextDirection - 1,
@@ -116,7 +119,9 @@ object EntityBehaviour {
     self.cooldown match {
       case n if n > 1 => {
         self.blob match {
-          case base: BaseBlob => SlowBlob(base.copy(
+          case base: BaseBlob => SlowBlob(
+            name = base.name,
+            base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
             stepToNextDirection = base.stepToNextDirection - 1,
