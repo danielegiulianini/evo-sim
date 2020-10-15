@@ -3,7 +3,9 @@ package evo_sim.model
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 
-case class World(width: Int, //to move in environment?
+case class World(temperature: Int,
+                 luminosity: Int,
+                 width: Int, //to move in environment?
                  height: Int, //to move in environment?
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
@@ -12,37 +14,41 @@ case class World(width: Int, //to move in environment?
 
 //companion object
 object World {
-  def apply(env: Environment): World = {
 
-    val iterationsPerDay = 5  //1000
+  def apply(env: Environment): World = {
+    val iterationsPerDay = 100
     val worldWidth = 1280
     val worldHeight = 720
 
     def randomPosition() = Point2D(new scala.util.Random().nextInt(worldWidth + 1), new scala.util.Random().nextInt(worldHeight + 1))
-
-    val blobs: Set[SimulableEntity] = Iterator.fill(env.initialBlobNumber)(BaseBlob(
+    val blobs: Set[SimulableEntity] = Iterator.tabulate(env.initialBlobNumber)(i => BaseBlob(
+      name = "blob" + i,
       boundingBox = BoundingBox.Circle.apply(point = randomPosition(), radius = 5),
       life = Integer.MAX_VALUE,
       velocity = 50,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = 10,
-      movementStrategy = MovingStrategies.baseMovement)).toSet
+      movementStrategy = MovingStrategies.baseMovement,
+      movementDirection = 0,
+      stepToNextDirection = 20)).toSet
 
 
-    val foods: Set[SimulableEntity] = Iterator.fill(env.initialFoodNumber)(BaseFood(
+    val foods: Set[SimulableEntity] = Iterator.tabulate(env.initialFoodNumber)(i => BaseFood(
+      name = "food" + i,
       boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = 10),
       degradationEffect = DegradationEffect.foodDegradation,
       life = Integer.MAX_VALUE,
       effect = Effect.standardFoodEffect)).toSet
 
-
-    val obstacles: Set[SimulableEntity] = Iterator.fill(env.initialObstacleNumber)(BaseObstacle(
+    val obstacles: Set[SimulableEntity] = Iterator.tabulate(env.initialObstacleNumber)(i => BaseObstacle(
+      name = "obstacle" + i,
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = 15, height = 12),
       effect = Effect.neutralEffect)).toSet
 
     val entities = blobs ++ foods ++ obstacles
 
-    World(width = worldWidth, height = worldHeight, currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
+    World(temperature = env.temperature, luminosity = env.luminosity, width = worldWidth, height = worldHeight,
+      currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
 }
 

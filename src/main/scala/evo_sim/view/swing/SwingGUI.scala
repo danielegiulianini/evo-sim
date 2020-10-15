@@ -2,17 +2,16 @@ package evo_sim.view.swing
 
 import java.awt.event.ActionEvent
 import java.awt.{BorderLayout, Dimension, Toolkit}
-import java.text.NumberFormat
 
-import evo_sim.model.{Environment, World}
-import evo_sim.view.GUI
+import evo_sim.model.{Constants, Environment, World}
+import evo_sim.view.View
 import javax.swing._
-import javax.swing.text.NumberFormatter
+import javax.swing.event.ChangeEvent
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
 
-case class SwingGUI() extends GUI {
+object SwingGUI extends View {
 
   private val frame = new JFrame("evo-sim")
   private val barPanel = new JPanel
@@ -20,80 +19,88 @@ case class SwingGUI() extends GUI {
 
   private val userInput: Promise[Environment] = Promise[Environment]()
 
-  SwingUtilities.invokeAndWait(() => frame.setVisible(true))
+  override def inputViewBuiltAndShowed(): Unit = {
 
-  override def inputGUIBuilt(): Unit = {
-    val labels = List(
-      new JLabel("#Blob"),
-      new JLabel("#Food"),
-      new JLabel("#Obstacle"),
-      new JLabel("Luminosity (L)"),
-      new JLabel("Temperature (°C)"),
-      new JLabel("#Days"))
-    val labelPanel = new JPanel
-    val labelBoxLayout = new BoxLayout(labelPanel, BoxLayout.Y_AXIS)
-    labelPanel.setLayout(labelBoxLayout)
-    labels.foreach(l => {
-      l.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0))
-      labelPanel.add(l)
-    })
-    labelPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30))
+    val inputPanel = new JPanel
+    val inputLayout = new BoxLayout(inputPanel, BoxLayout.Y_AXIS)
+    inputPanel.setLayout(inputLayout)
 
-    val format = NumberFormat.getInstance
-    val formatter = new NumberFormatter(format)
-    formatter.setValueClass(classOf[Integer])
-    formatter.setMinimum(0)
-    formatter.setMaximum(Integer.MAX_VALUE)
-    formatter.setAllowsInvalid(false)
-    formatter.setCommitsOnValidEdit(true)
+    def addDataInputRow(text: String, min: Int, max: Int, default: Int): JSlider = {
+      val rowPanel = new JPanel
+      rowPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10))
+      val rowLayout = new BorderLayout()
+      rowPanel.setLayout(rowLayout)
 
-    val blobTextField = new JFormattedTextField(formatter)
-    val foodTextField = new JFormattedTextField(formatter)
-    val obstacleTextField = new JFormattedTextField(formatter)
-    val luminosityTextField = new JFormattedTextField(formatter)
-    val temperatureField = new JFormattedTextField(formatter)
-    val daysField = new JFormattedTextField(formatter)
-    blobTextField.setColumns(10)
-    foodTextField.setColumns(10)
-    obstacleTextField.setColumns(10)
-    luminosityTextField.setColumns(10)
-    temperatureField.setColumns(10)
-    daysField.setColumns(10)
-    val textFieldPanel = new JPanel
-    val textFieldBoxLayout = new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS)
-    textFieldPanel.setLayout(textFieldBoxLayout)
-    textFieldPanel.add(blobTextField)
-    textFieldPanel.add(foodTextField)
-    textFieldPanel.add(obstacleTextField)
-    textFieldPanel.add(luminosityTextField)
-    textFieldPanel.add(temperatureField)
-    textFieldPanel.add(daysField)
-    textFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30))
+      val counter = new JLabel(default.toString)
+
+      val slider: JSlider = new JSlider(min, max, default)
+      slider.addChangeListener((e: ChangeEvent) => {
+        val source = e.getSource.asInstanceOf[JSlider]
+        counter.setText(source.getValue.toString)
+      })
+      slider.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0))
+      slider.setMajorTickSpacing(slider.getMaximum / 5)
+      slider.setMinorTickSpacing(1)
+      slider.setPaintTicks(true)
+      slider.setPaintLabels(true)
+
+      val incrementButton = new JButton("+")
+      incrementButton.addActionListener((_: ActionEvent) => if (slider.getValue < max) slider.setValue(slider.getValue + 1))
+
+      val decrementButton = new JButton("-")
+      decrementButton.addActionListener((_: ActionEvent) => if (slider.getValue > min) slider.setValue(slider.getValue - 1))
+
+      val infoPanel = new JPanel()
+      infoPanel.add(new JLabel(text + ":"))
+      infoPanel.add(counter)
+      infoPanel.setBorder(BorderFactory.createEmptyBorder((1.5 * counter.getFont.getSize).toInt, 0, 0, 0))
+      rowPanel.add(infoPanel, BorderLayout.WEST)
+
+      val commandPanel = new JPanel()
+      commandPanel.add(decrementButton)
+      commandPanel.add(slider)
+      commandPanel.add(incrementButton)
+      rowPanel.add(commandPanel, BorderLayout.EAST)
+
+      inputPanel.add(rowPanel)
+
+      slider
+    }
+
+    val blobComponent = addDataInputRow("#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS, Constants.DEF_BLOBS)
+    val foodComponent = addDataInputRow("#Food", Constants.MIN_FOOD, Constants.MAX_FOOD, Constants.DEF_FOOD)
+    val obstacleComponent = addDataInputRow("#Obstacle", Constants.MIN_OBSTACLES, Constants.MAX_OBSTACLES, Constants.DEF_OBSTACLES)
+    val luminosityComponent = addDataInputRow("Luminosity (cd)", Constants.MIN_LUMINOSITY, Constants.MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
+    val temperatureComponent = addDataInputRow("Temperature (°C)", Constants.MIN_TEMPERATURE, Constants.MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
+    val daysComponent = addDataInputRow("#Days", Constants.MIN_DAYS, Constants.MAX_DAYS, Constants.DEF_DAYS)
 
     val startButton = new JButton("Start")
-    startButton.addActionListener((_: ActionEvent) => userInput.success(Environment(
-      temperature = blobTextField.getText().toInt,
-      luminosity = luminosityTextField.getText().toInt,
-      initialBlobNumber = blobTextField.getText().toInt,
-      initialFoodNumber = foodTextField.getText().toInt,
-      initialObstacleNumber = obstacleTextField.getText().toInt,
-      daysNumber = daysField.getText().toInt
-    )))
+    startButton.addActionListener((_: ActionEvent) => {
+      userInput.success(Environment(
+        temperature = temperatureComponent.getValue,
+        luminosity = luminosityComponent.getValue,
+        initialBlobNumber = blobComponent.getValue,
+        initialFoodNumber = foodComponent.getValue,
+        initialObstacleNumber = obstacleComponent.getValue,
+        daysNumber = daysComponent.getValue
+      ))
+      frame.setVisible(false)
+    })
 
     SwingUtilities.invokeAndWait(() => {
       frame.getContentPane.removeAll()
-      frame.getContentPane.add(labelPanel, BorderLayout.WEST)
-      frame.getContentPane.add(textFieldPanel, BorderLayout.EAST)
+      frame.getContentPane.add(inputPanel, BorderLayout.CENTER)
       frame.getContentPane.add(startButton, BorderLayout.SOUTH)
       frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-      frame.setSize(800, 800)
       frame.pack()
+      frame.setResizable(false)
+      frame.setVisible(true)
     })
   }
 
   override def inputReadFromUser(): Environment = Await.result(userInput.future, Duration.Inf)
 
-  override def simulationGUIBuilt(): Unit = {
+  override def simulationViewBuiltAndShowed(): Unit = {
     SwingUtilities.invokeAndWait(() => {
       frame.getContentPane.removeAll()
       frame.getContentPane.add(barPanel, BorderLayout.NORTH)
@@ -102,6 +109,7 @@ case class SwingGUI() extends GUI {
         Toolkit.getDefaultToolkit.getScreenSize.width,
         Toolkit.getDefaultToolkit.getScreenSize.height))
       frame.pack()
+      frame.setVisible(true)
     })
   }
 
@@ -113,7 +121,7 @@ case class SwingGUI() extends GUI {
     })
   }
 
-  override def showResultGUI(world: World): Unit = {
+  override def resultViewBuiltAndShowed(world: World): Unit = {
     SwingUtilities.invokeAndWait(() => {
       frame.getContentPane.removeAll()
       // TODO

@@ -6,13 +6,17 @@ import org.scalatest.FunSuite
 class FoodTests extends FunSuite {
 
   val blob: BaseBlob = BaseBlob(
+    name = "blob1",
     boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
-    movementStrategy = MovingStrategies.baseMovement)
+    movementStrategy = MovingStrategies.baseMovement,
+    movementDirection = 0,
+    stepToNextDirection = 15)
   val food: BaseFood = BaseFood(
+    name = "food1",
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.foodDegradation,
     life = 100,
