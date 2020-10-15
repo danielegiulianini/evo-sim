@@ -11,7 +11,7 @@ import javax.swing.event.ChangeEvent
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
 
-object SwingGUI extends View {
+object View extends View {
 
   private val frame = new JFrame("evo-sim")
   private val barPanel = new JPanel

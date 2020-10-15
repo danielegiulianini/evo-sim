@@ -1,6 +1,6 @@
-package evo_sim.view.chart
+package evo_sim.view.swing.chart
 
-import evo_sim.view.chart.JFreeChart.{JFreeChart, XYSeries, XYSeriesCollection}
+import evo_sim.view.swing.chart.JFreeChart.{JFreeChart, XYSeries, XYSeriesCollection}
 import javax.swing.JFrame
 import org.jfree.chart.{ChartFactory, ChartPanel}
 

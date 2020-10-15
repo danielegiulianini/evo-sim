@@ -11,7 +11,8 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 import evo_sim.core.SimulationEngine.Logging._
 import evo_sim.core.SimulationEngine.SimulationLogic.DayPhase.DayPhase
-import evo_sim.view.swing.SwingGUI
+
+import evo_sim.view.swing.View
 
 object SimulationEngine {
 
@@ -48,10 +49,10 @@ object SimulationEngine {
   //missing guiBuilt as IO-monad
 
   def worldRendered(worldAfterCollisions: World) =
-    liftIo(IO { SwingGUI.rendered(worldAfterCollisions) })
+    liftIo(IO { View.rendered(worldAfterCollisions) })
 
   def inputReadFromUser() =
-    IO { SwingGUI.inputReadFromUser() }
+    IO { View.inputReadFromUser() }
 
 
   implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
@@ -60,7 +61,7 @@ object SimulationEngine {
     for {
       - <- IO {
         log("building gui")
-        SwingGUI.inputViewBuiltAndShowed()
+        View.inputViewBuiltAndShowed()
       }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise
       /*- <- IO {
@@ -70,7 +71,7 @@ object SimulationEngine {
       _ <- IO {
         log("calling sim loop")
         (for {
-          _ <- IO {SwingGUI.simulationViewBuiltAndShowed()}
+          _ <- IO {View.simulationViewBuiltAndShowed()}
           _ <- simulationLoop().runS(World(env))
         } yield()).unsafeRunSync()
         /*
@@ -97,7 +98,7 @@ object SimulationEngine {
       simulationLoop() else
       liftIo( for {
         _ <- IO { log("simulation ended, printing sim statistics") }
-        - <- IO { SwingGUI.resultViewBuiltAndShowed(worldAfterCollisions) }
+        - <- IO { View.resultViewBuiltAndShowed(worldAfterCollisions) }
       } yield ())//liftIo(IO(unit))
   } yield ()
 
