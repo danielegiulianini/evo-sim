@@ -76,11 +76,12 @@ object SimulationEngine {
     val environment = SwingGUI.inputReadFromUser()
     val world = worldCreated(environment)
     SwingGUI.simulationViewBuiltAndShowed()
-    val startingTime = System.currentTimeMillis()
+    
+    /*val startingTime = System.currentTimeMillis()
     SwingGUI.rendered(world)
     val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
     val elapsed = endingTime - startingTime
-    //waitUntil(elapsed, 1000) //period in milliseconds
+    //waitUntil(elapsed, 1000) //period in milliseconds*/
     simulationLoop(world)
 
     @scala.annotation.tailrec
