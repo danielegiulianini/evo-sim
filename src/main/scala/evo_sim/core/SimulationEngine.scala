@@ -5,7 +5,7 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World._
-import evo_sim.view.swing.SwingGUI
+import evo_sim.view.swing.View
 
 object SimulationEngine {
 
@@ -70,12 +70,12 @@ object SimulationEngine {
   }
 
   def started(): Unit = {
-    SwingGUI.inputViewBuiltAndShowed()
-    val environment = SwingGUI.inputReadFromUser()
+    View.inputViewBuiltAndShowed()
+    val environment = View.inputReadFromUser()
     val world = worldCreated(environment)
-    SwingGUI.simulationViewBuiltAndShowed()
+    View.simulationViewBuiltAndShowed()
     val startingTime = System.currentTimeMillis()
-    SwingGUI.rendered(world)
+    View.rendered(world)
     val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
     val elapsed = endingTime - startingTime
     //waitUntil(elapsed, 1000) //period in milliseconds
@@ -86,7 +86,7 @@ object SimulationEngine {
       val startingTime = System.currentTimeMillis()
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
-      SwingGUI.rendered(worldAfterCollisions)
+      View.rendered(worldAfterCollisions)
 
       val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
       val elapsed = endingTime - startingTime

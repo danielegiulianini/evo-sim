@@ -1,4 +1,4 @@
-package evo_sim.view.chart
+package evo_sim.view.swing.chart
 
 object JFreeChart extends App with scalax.chart.module.Charting {
 
