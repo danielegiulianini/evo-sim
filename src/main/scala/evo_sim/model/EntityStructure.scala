@@ -28,6 +28,7 @@ object EntityStructure {
   }
 
   trait Entity {
+    def name : String
     def boundingBox: BoundingBox
   }
 
