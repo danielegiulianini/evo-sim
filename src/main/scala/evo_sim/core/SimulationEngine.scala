@@ -1,6 +1,5 @@
 package evo_sim.core
 
-import cats.data.StateT
 import cats.effect.{ContextShift, IO}
 import cats.effect.IO.{fromFuture, unit}
 import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
@@ -9,7 +8,6 @@ import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 
 import scala.concurrent.duration._
-import scala.concurrent.ExecutionContext
 import evo_sim.core.SimulationEngine.Logging._
 import evo_sim.core.SimulationEngine.SimulationLogic.DayPhase.DayPhase
 import evo_sim.core.TimingOps.{getTime, waitUntil}
@@ -25,7 +23,7 @@ object SimulationEngine {
     SimulationLogic.collisionsHandled
   }
 
-  //missing guiBuilt as IO-monad
+  //missing guiBuilt, resultGuiBuiltAndShowed as IO-monad
 
   def worldRendered(worldAfterCollisions: World) =
     liftIo(IO { View.rendered(worldAfterCollisions) })
@@ -33,16 +31,13 @@ object SimulationEngine {
   def inputReadFromUser() =
     IO { View.inputReadFromUser() }
 
-
-  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
   def started() = {
     for {
       - <- IO {
         log("building gui")
         View.inputViewBuiltAndShowed()
       }
-      env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise
+      env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
       /*- <- IO {
         log("building simulation gui")
         SwingGUI.simulationViewBuiltAndShowed()
