@@ -55,8 +55,10 @@ object SimulationEngine {
       if i != j && intersected(i.boundingBox, j.boundingBox)
     } yield (i, j)
 
+    def collidingEntities = collisions.map(_._1)
+
     def entitiesAfterCollision =
-      collisions.foldLeft(world.entities)((entitiesAfterCollision, collision) => entitiesAfterCollision.filter(e => !e.equals(collision._1)) ++ collision._1.collided(collision._2))
+      collisions.foldLeft(world.entities -- collidingEntities)((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
     World(
       world.temperature,
