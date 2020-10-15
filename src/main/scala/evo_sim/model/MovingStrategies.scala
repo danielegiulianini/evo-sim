@@ -7,6 +7,9 @@ import scala.math._
 
 object MovingStrategies {
 
+  var t = 0
+  var angle = 0
+
   def baseMovement(entity: Intelligent, entities: Set[SimulableEntity]): Point2D = {
     /*val chasedEntity = (entities - entity.asInstanceOf[SimulableEntity]).minBy(distanceBetweenEntities(entity, _))
     if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius)
@@ -24,13 +27,18 @@ object MovingStrategies {
 
   @scala.annotation.tailrec
   private def standardMovement(entity: Intelligent): Point2D = {
-    val angle = new java.util.Random().nextInt(360)
+    if(t == 0) {
+      angle = new java.util.Random().nextInt(360)
+      t = new java.util.Random().nextInt(50) + 1
+    } else
+      t = t - 1
+
+    //val angle = new java.util.Random().nextInt(360)
     val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle)) * 0.05
     val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle)) * 0.05
-    val x = entity.boundingBox.point.x + deltaX
-    val y = entity.boundingBox.point.y + deltaY
-    if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(x.toInt, y.toInt)
-    //Point2D(x.toInt, y.toInt)
+    val x = (entity.boundingBox.point.x + deltaX).toFloat
+    val y = (entity.boundingBox.point.y + deltaY).toFloat
+    if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(round(x), round(y))
   }
 
   @scala.annotation.tailrec

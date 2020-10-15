@@ -6,7 +6,7 @@ object JFreeChart extends App with scalax.chart.module.Charting {
   val chart = XYLineChart(data)
   chart.show()*/
 
-  val born = List.iterate(0, 5)(_ + 3)
+  /*val born = List.iterate(0, 5)(_ + 3)
   val death = List.iterate(0, 5)(_ + 1)
   val prova = new XYSeries("Prova")
   val prova2 = new XYSeries("Prova2")
@@ -20,18 +20,18 @@ object JFreeChart extends App with scalax.chart.module.Charting {
   dataset.addSeries(prova2)
 
   val chart = XYLineChart(dataset)
-  chart.show()
+  chart.show()*/
 
 
-  /*val series = new XYSeries("f(x) = sin(x)")
+  val series = new XYSeries("f(x) = sin(x)")
   val chart = XYLineChart(series)
   chart.show()
-  for (x <- -4.0 to 4 by 0.1) {
+  for (x <- 0 to 360) {
     swing.Swing onEDT {
-      series.add(x,math.sin(x))
+      series.add(x,math.cos(math.toRadians(x)))
     }
     Thread.sleep(50)
-  }*/
+  }
 
 }
 

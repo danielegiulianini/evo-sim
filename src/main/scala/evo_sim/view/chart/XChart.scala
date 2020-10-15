@@ -1,7 +1,7 @@
 package evo_sim.view.chart
 
 import javax.swing.{JFrame, WindowConstants}
-import org.knowm.xchart.{SwingWrapper, XChartPanel, XYChartBuilder}
+import org.knowm.xchart.{XChartPanel, XYChartBuilder}
 
 object View extends JFrame {
 
@@ -32,7 +32,7 @@ object XChart extends App {
   l.add(chart2)
   new SwingWrapper(l, 2, 1).displayChartMatrix()*/
 
-  val data1 = List.range(0, 10).map(elem => elem.toDouble).toArray
+  /*val data1 = List.range(0, 10).map(elem => elem.toDouble).toArray
   val data2 = List.range(10, 20).map(elem => elem.toDouble).toArray
   val chart = new XYChartBuilder().build()
   chart.addSeries("prova1", data1, data2)
@@ -42,7 +42,7 @@ object XChart extends App {
   l.add(chart)
   l.add(chart)
   l.add(chart)
-  new SwingWrapper(l, 2,2).displayChartMatrix()
+  new SwingWrapper(l, 2,2).displayChartMatrix()*/
 
-  //View.initGUI()
+  View.initGUI()
 }
