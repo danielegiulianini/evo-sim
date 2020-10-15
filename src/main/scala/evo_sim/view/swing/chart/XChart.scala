@@ -1,4 +1,4 @@
-package evo_sim.view.chart
+package evo_sim.view.swing.chart
 
 import javax.swing.{JFrame, WindowConstants}
 import org.knowm.xchart.{XChartPanel, XYChartBuilder}
