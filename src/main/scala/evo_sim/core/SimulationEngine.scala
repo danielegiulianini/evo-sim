@@ -3,6 +3,7 @@ package evo_sim.core
 import cats.data.StateT
 import cats.effect.{ContextShift, IO}
 import cats.effect.IO.{fromFuture, unit}
+import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
@@ -11,23 +12,9 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 import evo_sim.core.SimulationEngine.Logging._
 import evo_sim.core.SimulationEngine.SimulationLogic.DayPhase.DayPhase
-
 import evo_sim.view.swing.View
 
 object SimulationEngine {
-
-  type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
-  type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
-
-  //helper to create StateT monad from a IO monad
-  def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
-
-  def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
-
-  //helper to create StateT monad from a World to World function
-  def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple(f(w)))
-
-  def toTuple[A](a: A) = (a, a)
 
   def worldUpdated(): Simulation[World] = toStateTWorld {
     SimulationLogic.worldUpdated
@@ -76,7 +63,7 @@ object SimulationEngine {
         } yield()).unsafeRunSync()
         /*
         * ViewModule.simulationGUIBuilt()
-        * simulationLoop().runS()
+        * simulationLoop().runS(World(env))
         * */
         /*simulationLoop().runS(World(env))*/
       }
