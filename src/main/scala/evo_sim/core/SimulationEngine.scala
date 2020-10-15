@@ -34,7 +34,7 @@ object SimulationEngine {
     IO { View.inputReadFromUser() }
 
 
-  implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
   def started() = {
     for {
