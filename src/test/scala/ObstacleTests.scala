@@ -6,13 +6,17 @@ import org.scalatest.FunSuite
 class ObstacleTests extends FunSuite {
 
   val blob: BaseBlob = BaseBlob(
+    name = "blob1",
     boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
-    movementStrategy = MovingStrategies.baseMovement)
+    movementStrategy = MovingStrategies.baseMovement,
+    movementDirection = 0,
+    stepToNextDirection = 15)
   val mud: BaseObstacle = BaseObstacle(
+    name = "obstacle1",
     boundingBox = BoundingBox.Rectangle.apply(point = Point2D(100, 100), width= 50, height = 40),
     effect = Effect.mudEffect)
 

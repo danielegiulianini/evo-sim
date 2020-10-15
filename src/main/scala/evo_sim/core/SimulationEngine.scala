@@ -56,7 +56,7 @@ object SimulationEngine {
     } yield (i, j)
 
     def entitiesAfterCollision =
-      collisions.foldLeft(Set.empty[SimulableEntity])((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
+      collisions.foldLeft(world.entities)((entitiesAfterCollision, collision) => entitiesAfterCollision.filter(e => !e.equals(collision._1)) ++ collision._1.collided(collision._2))
 
     World(
       world.temperature,
@@ -64,7 +64,7 @@ object SimulationEngine {
       world.width,
       world.height,
       world.currentIteration,
-      world.entities ++ entitiesAfterCollision,
+      entitiesAfterCollision,
       world.totalIterations
     )
   }

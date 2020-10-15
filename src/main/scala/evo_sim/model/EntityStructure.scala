@@ -1,9 +1,8 @@
 package evo_sim.model
 
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 import evo_sim.model.BoundingBox._
-import evo_sim.model.Entities.BaseBlob
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 
 
 object EntityStructure {
@@ -12,7 +11,7 @@ object EntityStructure {
     type Velocity
     type DegradationEffect[A] >: A => Life
     type Effect = Blob => Set[SimulableEntity]  //name to be changed
-    type Rivals
+    //type Rivals
     type Position
     type MovementStrategy
     type Cooldown
@@ -22,13 +21,14 @@ object EntityStructure {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
-    override type Rivals = Set[SimulableEntity]
-    override type Position = Point2D
-    override type MovementStrategy = (Intelligent, Rivals) => Position
+    //override type Rivals = Set[SimulableEntity]
+    override type Position = Movement
+    override type MovementStrategy = (Intelligent, World) => Position
     override type Cooldown = Int
   }
 
   trait Entity {
+    def name : String
     def boundingBox: BoundingBox
   }
 
@@ -50,6 +50,8 @@ object EntityStructure {
 
   trait Intelligent extends Perceptive with Moving {
     def movementStrategy: MovementStrategy
+    def movementDirection: Int
+    def stepToNextDirection: Int
   }
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {

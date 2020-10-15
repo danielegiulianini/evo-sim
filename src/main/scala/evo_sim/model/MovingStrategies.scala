@@ -5,12 +5,19 @@ import evo_sim.model.EntityStructure.Intelligent
 
 import scala.math._
 
+case class Movement(point: Point2D, angle: Int)
+
 object MovingStrategies {
 
-  var t = 0
-  var angle = 0
+  def baseMovement(entity: Intelligent, world: World): Movement = {
 
-  def baseMovement(entity: Intelligent, entities: Set[SimulableEntity]): Point2D = {
+    /*world.entities - entity.asInstanceOf[SimulableEntity] match {
+      case Set.empty => standardMovement(entity)
+      case set if
+      case set => chaseMovement()
+    }*/
+
+
     /*val chasedEntity = (entities - entity.asInstanceOf[SimulableEntity]).minBy(distanceBetweenEntities(entity, _))
     if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius)
       chaseMovement(entity, chasedEntity)
@@ -25,20 +32,21 @@ object MovingStrategies {
     sqrt(pow(b.boundingBox.point.x - a.boundingBox.point.x, 2) + pow(b.boundingBox.point.y - a.boundingBox.point.y, 2))
   }
 
-  @scala.annotation.tailrec
-  private def standardMovement(entity: Intelligent): Point2D = {
-    if(t == 0) {
+  //@scala.annotation.tailrec
+  private def standardMovement(entity: Intelligent): Movement = {
+    /*if(t == 0) {
       angle = new java.util.Random().nextInt(360)
       t = new java.util.Random().nextInt(50) + 1
     } else
-      t = t - 1
+      t = t - 1*/
 
-    //val angle = new java.util.Random().nextInt(360)
+    val angle = new java.util.Random().nextInt(360)
     val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle)) * 0.05
     val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle)) * 0.05
     val x = (entity.boundingBox.point.x + deltaX).toFloat
     val y = (entity.boundingBox.point.y + deltaY).toFloat
-    if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(round(x), round(y))
+    //if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(round(x), round(y))
+    Movement(Point2D(round(x), round(y)), angle)
   }
 
   @scala.annotation.tailrec

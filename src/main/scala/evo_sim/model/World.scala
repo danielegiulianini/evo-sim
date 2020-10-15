@@ -21,21 +21,26 @@ object World {
 
     def randomPosition() = Point2D(new scala.util.Random().nextInt(worldWidth + 1), new scala.util.Random().nextInt(worldHeight + 1))
 
-    val blobs: Set[BaseBlob] = Iterator.fill(env.initialBlobNumber)(BaseBlob(
+    val blobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber)(i => BaseBlob(
+      name = "blob" + i,
       boundingBox = BoundingBox.Circle.apply(point = randomPosition(), radius = 5),
       life = Integer.MAX_VALUE,
       velocity = 50,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = 10,
-      movementStrategy = MovingStrategies.baseMovement)).toSet
+      movementStrategy = MovingStrategies.baseMovement,
+      movementDirection = 0,
+      stepToNextDirection = 20)).toSet
 
-    val foods: Set[BaseFood] = Iterator.fill(env.initialFoodNumber)(BaseFood(
+    val foods: Set[BaseFood] = Iterator.tabulate(env.initialFoodNumber)(i => BaseFood(
+      name = "food" + i,
       boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = 10),
       degradationEffect = DegradationEffect.foodDegradation,
       life = Integer.MAX_VALUE,
       effect = Effect.standardFoodEffect)).toSet
 
-    val obstacles: Set[BaseObstacle] = Iterator.fill(env.initialObstacleNumber)(BaseObstacle(
+    val obstacles: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber)(i => BaseObstacle(
+      name = "obstacle" + i,
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = 15, height = 12),
       effect = Effect.neutralEffect)).toSet
 
