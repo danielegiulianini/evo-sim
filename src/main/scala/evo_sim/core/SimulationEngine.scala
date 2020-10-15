@@ -5,7 +5,7 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World._
-import evo_sim.view.ViewModule
+import evo_sim.view.swing.SwingGUI
 
 object SimulationEngine {
 
@@ -18,7 +18,7 @@ object SimulationEngine {
 
     // TODO: iterationsPerDay solo una volta nel codice (c'è anche in world)
     val iterationsPerDay: Int = 100
-    val phaseDuration: Int = iterationsPerDay / 4
+    val phaseDuration: Int = iterationsPerDay / DayPhase.values.size
 
     def asDayPhase(iteration: Int): DayPhase = iteration % iterationsPerDay match {
       case i if phaseDuration >= i => DayPhase.Night
@@ -72,12 +72,12 @@ object SimulationEngine {
   }
 
   def started(): Unit = {
-    ViewModule.GUIBuilt()
-    val environment = ViewModule.inputReadFromUser()
+    SwingGUI.inputViewBuiltAndShowed()
+    val environment = SwingGUI.inputReadFromUser()
     val world = worldCreated(environment)
-    ViewModule.simulationGUIBuilt()
+    SwingGUI.simulationViewBuiltAndShowed()
     val startingTime = System.currentTimeMillis()
-    ViewModule.rendered(world)
+    SwingGUI.rendered(world)
     val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
     val elapsed = endingTime - startingTime
     //waitUntil(elapsed, 1000) //period in milliseconds
@@ -88,7 +88,7 @@ object SimulationEngine {
       val startingTime = System.currentTimeMillis()
       val updatedWorld = worldUpdated(world)
       val worldAfterCollisions = collisionsHandled(updatedWorld)
-      ViewModule.rendered(worldAfterCollisions)
+      SwingGUI.rendered(worldAfterCollisions)
 
       val endingTime = System.currentTimeMillis() //val endingTime = System.nanoTime();
       val elapsed = endingTime - startingTime
