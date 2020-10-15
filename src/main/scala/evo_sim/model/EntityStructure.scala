@@ -49,8 +49,8 @@ object EntityStructure {
 
   trait Intelligent extends Perceptive with Moving {
     def movementStrategy: MovementStrategy
-    //def movementDirection: Int
-    //def iterationNextChange: Int
+    def movementDirection: Int
+    def stepToNextDirection: Int
   }
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {

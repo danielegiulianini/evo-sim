@@ -13,7 +13,9 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
-                      override val movementStrategy: MovementStrategy) extends Blob with BaseBlobBehaviour
+                      override val movementStrategy: MovementStrategy,
+                      override val movementDirection: Int,
+                      override val stepToNextDirection: Int) extends Blob with BaseBlobBehaviour
 
   case class BaseFood(override val boundingBox: Triangle,
                       override val degradationEffect: DegradationEffect[Food],

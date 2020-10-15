@@ -11,7 +11,9 @@ class FoodTests extends FunSuite {
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
-    movementStrategy = MovingStrategies.baseMovement)
+    movementStrategy = MovingStrategies.baseMovement,
+    movementDirection = 0,
+    stepToNextDirection = 15)
   val food: BaseFood = BaseFood(
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.foodDegradation,

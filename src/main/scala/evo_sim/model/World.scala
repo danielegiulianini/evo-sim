@@ -27,7 +27,9 @@ object World {
       velocity = 50,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = 10,
-      movementStrategy = MovingStrategies.baseMovement)).toSet
+      movementStrategy = MovingStrategies.baseMovement,
+      movementDirection = 0,
+      stepToNextDirection = 20)).toSet
 
     val foods: Set[BaseFood] = Iterator.fill(env.initialFoodNumber)(BaseFood(
       boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = 10),
