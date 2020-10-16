@@ -21,13 +21,16 @@ object SimulationEngine {
     SimulationLogic.collisionsHandled
   }
 
-  //missing guiBuilt, resultGuiBuiltAndShowed as IO-monad
+  //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
 
   def worldRendered(worldAfterCollisions: World) =
     liftIo(IO { View.rendered(worldAfterCollisions) })
 
   def inputReadFromUser() =
     IO { View.inputReadFromUser() }
+
+
+  
 
   def started() = {
     for {
