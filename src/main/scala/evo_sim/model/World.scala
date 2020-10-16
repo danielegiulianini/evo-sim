@@ -82,7 +82,6 @@ object World {
     environmentModifiers  //could return luminosity and temp updated instead of delta?
   }
 
-
   object DayPhase extends Enumeration {
     type DayPhase = Value
     val Morning, Afternoon, Evening, Night = Value

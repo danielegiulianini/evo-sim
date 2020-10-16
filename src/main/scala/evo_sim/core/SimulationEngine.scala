@@ -90,11 +90,6 @@ object SimulationEngine {
         world.totalIterations
       )*/
 
-    object DayPhase extends Enumeration {
-      type DayPhase = Value
-      val Morning, Afternoon, Evening, Night = Value
-    }
-
     def worldUpdated(world: World): World = {
       val environmentModifiers = worldEnvironmentUpdated(world)
 
