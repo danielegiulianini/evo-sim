@@ -43,7 +43,7 @@ object World {
     val stones: Set[BaseObstacle] = Iterator.tabulate((env.initialObstacleNumber / 2).ceil.toInt)(i => BaseObstacle(
       name = "obstacle" + i,
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
-      effect = Effect.neutralEffect)).toSet
+      effect = Effect.damageEffect)).toSet
 
     val puddles: Set[BaseObstacle] = Iterator.tabulate((env.initialObstacleNumber / 2).floor.toInt)(i => BaseObstacle(
       name = "obstacle" + i,

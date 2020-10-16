@@ -22,6 +22,7 @@ object Constants {
   val DEF_STONE_HEIGHT = 12
 
   val DEF_COOLDOWN = 50
+  val DEF_DAMAGE = 25
   val DEF_MOD_PROP_RANGE = 5
   val DEF_FOOD_ENERGY = 10
 

@@ -42,7 +42,7 @@ object Effect {
   }
 
   def damageEffect(blob: Blob): Set[SimulableEntity] = blob match {
-    case b: BaseBlob => Set(BaseBlob(b.name, b.boundingBox, b.life + Constants.DEF_FOOD_ENERGY, b.velocity,
+    case b: BaseBlob => Set(BaseBlob(b.name, b.boundingBox, b.life - Constants.DEF_DAMAGE, b.velocity,
       b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.direction/*b.movementDirection, b.stepToNextDirection*/))
     }
 
