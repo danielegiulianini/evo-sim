@@ -5,7 +5,7 @@ import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World.worldEnvironmentUpdated
 
-//maybe this object inside SimulationEngine
+//maybe this object could go inside SimulationEngine
 object SimulationLogic {
   def worldUpdated(world: World): World = {
     val updatedEnvironmentParameters = worldEnvironmentUpdated(world)
@@ -30,14 +30,8 @@ object SimulationLogic {
     def entitiesAfterCollision =
       collisions.foldLeft(world.entities -- collidingEntities)((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
-    World(
-      world.temperature,
-      world.luminosity,
-      world.width,
-      world.height,
-      world.currentIteration,
-      entitiesAfterCollision,
-      world.totalIterations
+    world.copy(
+      entities = entitiesAfterCollision,
     )
   }
 }

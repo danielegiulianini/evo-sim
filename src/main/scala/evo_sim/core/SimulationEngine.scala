@@ -12,7 +12,7 @@ import evo_sim.view.swing.View //import evo_sim.view.cli.View
 
 object SimulationEngine {
 
-  //maybe move these conversions from here to SimulationLogic or Simulation
+  //maybe move these conversions from here to SimulationLogic or Simulation...
   def worldUpdated(): Simulation[World] = toStateTWorld {
     SimulationLogic.worldUpdated
   }
@@ -69,6 +69,9 @@ object SimulationEngine {
       } yield ())
   } yield ()
 }
+
+
+
 
 //to remove after debugging complete
 object Logging {
