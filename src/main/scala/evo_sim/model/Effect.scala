@@ -21,7 +21,7 @@ object Effect {
     })
   }
 
-  def poisonousFoodEffect(blob: BaseBlob): Set[SimulableEntity] = {
+  def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
     Set(PoisonBlob(blob.name, blob, blob.boundingBox, Constants.DEF_COOLDOWN))
   }
 
@@ -29,7 +29,8 @@ object Effect {
   def neutralEffect(blob: Blob): Set[SimulableEntity] = {
     blob match {
       case b : BaseBlob => Set(b)
-      case _ => Set()
+      case b: PoisonBlob => Set(b)
+      case b: SlowBlob => Set(b)
     }
   }
 
@@ -37,13 +38,18 @@ object Effect {
     val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
     blob match {
       case b : BaseBlob => Set(SlowBlob(b.name, b, b.boundingBox, Constants.DEF_COOLDOWN, currentVelocity))
-      //case _ => Set(blob) -> Blob immune dagli effetti //TODO
+      case b: PoisonBlob => Set(b)
+      case b: SlowBlob => Set(b)
+      case _ => Set()
     }
   }
 
   def damageEffect(blob: Blob): Set[SimulableEntity] = blob match {
     case b: BaseBlob => Set(BaseBlob(b.name, b.boundingBox, b.life - Constants.DEF_DAMAGE, b.velocity,
       b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.direction/*b.movementDirection, b.stepToNextDirection*/))
+    case b: PoisonBlob => Set(b)
+    case b: SlowBlob => Set(b)
+    case _ => Set()
     }
 
   /* min = value - range, max = value + range */
