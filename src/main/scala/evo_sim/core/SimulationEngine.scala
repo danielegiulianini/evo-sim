@@ -2,7 +2,7 @@ package evo_sim.core
 
 
 import cats.effect.{ContextShift, IO}
-import evo_sim.core.SimulationEngine.toStateTConversions._
+import evo_sim.core.Simulation.toStateTConversions._
 //import cats.effect.IO.{fromFuture, unit}
 import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
 import evo_sim.model.World
@@ -52,27 +52,6 @@ object SimulationEngine {
         - <- IO { View.resultViewBuiltAndShowed(worldAfterCollisions) }
       } yield ())
   } yield ()
-
-
-
-  object toStateTConversions {
-    //maybe move these conversions from here to 1. SimulationLogic or 2. Simulation...
-    def worldUpdated(): Simulation[World] = toStateTWorld {
-      SimulationLogic.worldUpdated
-    }
-    def collisionsHandled(): Simulation[World] = toStateTWorld {
-      SimulationLogic.collisionsHandled
-    }
-    //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
-    def worldRendered(worldAfterCollisions: World) =
-      liftIo(IO {
-        View.rendered(worldAfterCollisions)
-      })
-    def inputReadFromUser() =
-      IO {
-        View.inputReadFromUser()
-      }
-  }
 }
 
 

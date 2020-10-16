@@ -4,6 +4,7 @@ import cats.data.StateT
 import cats.effect.IO
 import evo_sim.core.TupleUtils.toTuple
 import evo_sim.model.World
+import evo_sim.view.swing.View
 
 
 object Simulation {
@@ -22,6 +23,27 @@ object Simulation {
   implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
     def started() = simulation.unsafeRunSync()
   }
+
+
+  //maybe move these conversions from here to 2. SimulationEngine...
+  object toStateTConversions {
+    def worldUpdated(): Simulation[World] = toStateTWorld {
+      SimulationLogic.worldUpdated
+    }
+    def collisionsHandled(): Simulation[World] = toStateTWorld {
+      SimulationLogic.collisionsHandled
+    }
+    //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
+    def worldRendered(worldAfterCollisions: World) =
+      liftIo(IO {
+        View.rendered(worldAfterCollisions)
+      })
+    def inputReadFromUser() =
+      IO {
+        View.inputReadFromUser()
+      }
+  }
+
 }
 
 
