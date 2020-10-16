@@ -4,16 +4,11 @@ package evo_sim.core
 import cats.effect.{ContextShift, IO}
 //import cats.effect.IO.{fromFuture, unit}
 import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
-import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
-
 import scala.concurrent.duration._
 import evo_sim.core.SimulationEngine.Logging._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
-import evo_sim.model.World.worldEnvironmentUpdated
-import evo_sim.view.swing.View
-//import evo_sim.view.cli.View
+import evo_sim.view.swing.View //import evo_sim.view.cli.View
 
 object SimulationEngine {
 
@@ -70,56 +65,8 @@ object SimulationEngine {
       liftIo( for {
         _ <- IO { log("simulation ended, printing sim statistics") }
         - <- IO { View.resultViewBuiltAndShowed(worldAfterCollisions) }
-      } yield ())//liftIo(IO(unit))
+      } yield ())
   } yield ()
-
-
-
-  //maybe to move outside this object
-  object SimulationLogic {
-    /*def worldUpdated(world: World): World =
-      World(
-        world.width,
-        world.height,
-        world.currentIteration + 1,
-        world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
-        world.totalIterations
-      )*/
-
-    def worldUpdated(world: World): World = {
-      val environmentModifiers = worldEnvironmentUpdated(world)
-
-      world.copy(
-        temperature = world.temperature + environmentModifiers.temperature,
-        luminosity = world.luminosity + environmentModifiers.luminosity,
-        currentIteration = world.currentIteration + 1,
-        entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
-      )
-    }
-
-    def collisionsHandled(world: World): World = {
-      def collisions = for {
-        i <- world.entities
-        j <- world.entities
-        if i != j && intersected(i.boundingBox, j.boundingBox)
-      } yield (i, j)
-
-      def collidingEntities = collisions.map(_._1)
-
-      def entitiesAfterCollision =
-        collisions.foldLeft(world.entities -- collidingEntities)((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
-
-      World(
-        world.temperature,
-        world.luminosity,
-        world.width,
-        world.height,
-        world.currentIteration,
-        entitiesAfterCollision,
-        world.totalIterations
-      )
-    }
-  }
 
   //to remove after debugging complete
   object Logging {
