@@ -54,6 +54,6 @@ object Effect {
 
   /* min = value - range, max = value + range */
   private def randomValueChange(value: Int, range: Int): Int = {
-    value + new java.util.Random().nextInt(range + 1) - range
+    value + new java.util.Random().nextInt(range * 2 + 1) - range
   }
 }
