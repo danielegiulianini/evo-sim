@@ -6,13 +6,13 @@ import cats.effect.{ContextShift, IO}
 import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
 import evo_sim.model.World
 import scala.concurrent.duration._
-import evo_sim.core.SimulationEngine.Logging._
+import evo_sim.core.Logging._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.view.swing.View //import evo_sim.view.cli.View
 
 object SimulationEngine {
 
-  //maybe move this conversion in SimulationLogic
+  //maybe move these conversions from here to SimulationLogic or Simulation
   def worldUpdated(): Simulation[World] = toStateTWorld {
     SimulationLogic.worldUpdated
   }
@@ -68,11 +68,11 @@ object SimulationEngine {
         - <- IO { View.resultViewBuiltAndShowed(worldAfterCollisions) }
       } yield ())
   } yield ()
+}
 
-  //to remove after debugging complete
-  object Logging {
-    def log(message: String) = println(Thread.currentThread.getName+": " + message)
-  }
+//to remove after debugging complete
+object Logging {
+  def log(message: String) = println(Thread.currentThread.getName+": " + message)
 }
 
 

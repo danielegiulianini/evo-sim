@@ -32,7 +32,6 @@ object World {
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction(0, 20))).toSet
 
-
     val foods: Set[SimulableEntity] = Iterator.tabulate(env.initialFoodNumber)(i => BaseFood(
       name = "food" + i,
       boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
