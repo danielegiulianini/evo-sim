@@ -5,7 +5,7 @@ import evo_sim.model.EntityStructure.Intelligent
 
 import scala.math._
 
-case class Movement(point: Point2D, angle: Int)
+case class Movement(point: Point2D, angle: Int, stepToNextDirection: Int)
 
 object MovingStrategies {
 
@@ -31,9 +31,11 @@ object MovingStrategies {
 
   //@scala.annotation.tailrec
   private def standardMovement(entity: Intelligent, angle: Int, world: World): Movement = {
-    val newAngle = entity.stepToNextDirection match {
+    val rnd = new java.util.Random()
+    val step = entity.stepToNextDirection
+    val newAngle = step match {
       //case 0 => new java.util.Random().nextInt(360)
-      case x if x % 100 == 0 => new java.util.Random().nextInt(360)
+      case x if x < 0 => rnd.nextInt(360)
       //case _ => entity.movementDirection
       case _ => angle
     }
@@ -50,7 +52,7 @@ object MovingStrategies {
 
     isBoundaryCollision(Point2D(x, y), Point2D(world.width, world.height)) match {
       case true => standardMovement(entity, new java.util.Random().nextInt(360), world)
-      case false => Movement(Point2D(x, y), newAngle)
+      case false => Movement(Point2D(x, y), newAngle, if (step > 0) step - 1 else rnd.nextInt(50))
     }
     //Movement(Point2D(x, y), angle)
   }

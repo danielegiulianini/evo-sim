@@ -18,7 +18,7 @@ object EntityBehaviour {
       Set(self.copy(
         boundingBox = Circle(movement.point, self.boundingBox.radius),
         movementDirection = movement.angle,
-        stepToNextDirection = self.stepToNextDirection - 1,
+        stepToNextDirection = movement.stepToNextDirection,
         life = self.degradationEffect(self),
         fieldOfViewRadius = self.fieldOfViewRadius + world.luminosity
       ))
@@ -83,68 +83,64 @@ object EntityBehaviour {
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
     val movement = self.blob.movementStrategy(self.blob, world)
     self.cooldown match {
-      case n if n > 1 => {
+      case n if n > 1 =>
         self.blob match {
           case base: BaseBlob => PoisonBlob(
             name = base.name,
             base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
-            stepToNextDirection = base.stepToNextDirection - 1,
+            stepToNextDirection = movement.stepToNextDirection,
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity),
             self.boundingBox,
             self.cooldown - 1)
-          // case _ => // other blobs
+          //TODO case _ => // other blobs
         }
-      }
-      case _ => {
+      case _ =>
         self.blob match {
           case base: BaseBlob => base.copy(
             name = base.name,
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
-            stepToNextDirection = base.stepToNextDirection - 1,
+            stepToNextDirection = movement.stepToNextDirection,
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity
           )
-          // case _ => // other blobs
+          //TODO case _ => // other blobs
         }
-      }
     }
   }
 
   private def slowBehaviour(self: SlowBlob, world: World): SimulableEntity = {
     val movement = self.blob.movementStrategy(self.blob, world)
     self.cooldown match {
-      case n if n > 1 => {
+      case n if n > 1 =>
         self.blob match {
           case base: BaseBlob => SlowBlob(
             name = base.name,
             base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
-            stepToNextDirection = base.stepToNextDirection - 1,
+            stepToNextDirection = movement.stepToNextDirection,
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity),
             self.boundingBox,
             self.cooldown - 1,
             self.initialVelocity)
-          // case _ => // other blobs
+          //TODO case _ => // other blobs
         }
-      }
-      case _ => {
+      case _ =>
         self.blob match {
           case base: BaseBlob => base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             movementDirection = movement.angle,
-            stepToNextDirection = base.stepToNextDirection - 1,
+            stepToNextDirection = movement.stepToNextDirection,
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity,
             velocity = self.initialVelocity)
-            // case _ => // other blobs
+            //TODO case _ => // other blobs
         }
-      }
     }
   }
 
