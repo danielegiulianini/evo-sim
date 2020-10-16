@@ -1,4 +1,4 @@
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
+import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model._
 import org.scalatest.FunSuite
@@ -13,8 +13,9 @@ class FoodTests extends FunSuite {
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
     movementStrategy = MovingStrategies.baseMovement,
-    movementDirection = 0,
-    stepToNextDirection = 15)
+    direction = Direction(0, 15)
+    /*movementDirection = 0,
+    stepToNextDirection = 15*/)
   val food: BaseFood = BaseFood(
     name = "food1",
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),

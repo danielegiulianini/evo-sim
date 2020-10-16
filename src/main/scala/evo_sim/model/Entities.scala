@@ -1,9 +1,9 @@
 package evo_sim.model
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.EntityBehaviour.{BaseBlobBehaviour, BaseFoodBehaviour, NeutralBehaviour, Simulable, SimulableEntity, TempBlobBehaviour}
-import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle, BlobWithTemporaryStatus}
+import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure._
 
 object Entities {
 
@@ -15,8 +15,9 @@ object Entities {
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy,
-                      override val movementDirection: Int,
-                      override val stepToNextDirection: Int) extends Blob with BaseBlobBehaviour
+                      override val direction: Direction
+                      /*override val movementDirection: Int,
+                      override val stepToNextDirection: Int*/) extends Blob with BaseBlobBehaviour
 
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,

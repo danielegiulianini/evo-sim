@@ -13,8 +13,9 @@ class ObstacleTests extends FunSuite {
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
     movementStrategy = MovingStrategies.baseMovement,
-    movementDirection = 0,
-    stepToNextDirection = 15)
+    direction = Direction(0, 15)
+    /*movementDirection = 0,
+    stepToNextDirection = 15*/)
   val mud: BaseObstacle = BaseObstacle(
     name = "obstacle1",
     boundingBox = BoundingBox.Rectangle.apply(point = Point2D(100, 100), width= 50, height = 40),

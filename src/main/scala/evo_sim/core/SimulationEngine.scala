@@ -12,6 +12,7 @@ import evo_sim.view.swing.View //import evo_sim.view.cli.View
 
 object SimulationEngine {
 
+  //maybe move this conversion in SimulationLogic
   def worldUpdated(): Simulation[World] = toStateTWorld {
     SimulationLogic.worldUpdated
   }

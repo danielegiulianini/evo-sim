@@ -68,7 +68,7 @@ object View extends View {
     }
 
     val blobComponent = addDataInputRow("#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS, Constants.DEF_BLOBS)
-    val foodComponent = addDataInputRow("#Food", Constants.MIN_FOOD, Constants.MAX_FOOD, Constants.DEF_FOOD)
+    val foodComponent = addDataInputRow("#Food", Constants.MIN_FOODS, Constants.MAX_FOODS, Constants.DEF_FOODS)
     val obstacleComponent = addDataInputRow("#Obstacle", Constants.MIN_OBSTACLES, Constants.MAX_OBSTACLES, Constants.DEF_OBSTACLES)
     val luminosityComponent = addDataInputRow("Luminosity (cd)", Constants.MIN_LUMINOSITY, Constants.MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
     val temperatureComponent = addDataInputRow("Temperature (°C)", Constants.MIN_TEMPERATURE, Constants.MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)

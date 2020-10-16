@@ -1,6 +1,5 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
@@ -16,9 +15,9 @@ object Effect {
 
   // adds 10 to blob life and creates new BaseBlob
   def standardFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    val newBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + foodEnergy, randomValueChange(blob.velocity, modifyingPropertyRange), blob.degradationEffect, randomValueChange(blob.fieldOfViewRadius, modifyingPropertyRange), MovingStrategies.baseMovement, blob.movementDirection, blob.stepToNextDirection)
+    val newBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + foodEnergy, randomValueChange(blob.velocity, modifyingPropertyRange), blob.degradationEffect, randomValueChange(blob.fieldOfViewRadius, modifyingPropertyRange), MovingStrategies.baseMovement, blob.direction/*blob.movementDirection, blob.stepToNextDirection*/)
     Set(newBlob, blob match {
-      case b : BaseBlob => BaseBlob(b.name, b.boundingBox, b.life + foodEnergy, b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.movementDirection, b.stepToNextDirection)
+      case b : BaseBlob => BaseBlob(b.name, b.boundingBox, b.life + foodEnergy, b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.direction/*b.movementDirection, b.stepToNextDirection*/)
       case b: PoisonBlob => PoisonBlob(b.name, b.blob, b.boundingBox, b.cooldown)
       case b: SlowBlob => SlowBlob(b.name, b.blob, b.boundingBox, b.cooldown, b.initialVelocity)
     })
