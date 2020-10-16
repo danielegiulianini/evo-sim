@@ -30,7 +30,7 @@ object SimulationEngine {
     IO { View.inputReadFromUser() }
 
 
-  
+
 
   def started() = {
     for {

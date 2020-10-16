@@ -2,7 +2,7 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.IO
-import evo_sim.core.Simulation.TupleUtils.toTuple
+import evo_sim.core.TupleUtils.toTuple
 import evo_sim.core.TupleUtils.toTuple
 import evo_sim.model.World
 import evo_sim.model.World
