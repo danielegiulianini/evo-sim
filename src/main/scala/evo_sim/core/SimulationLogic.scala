@@ -7,15 +7,6 @@ import evo_sim.model.World.worldEnvironmentUpdated
 
 //maybe this object inside SimulationEngine
 object SimulationLogic {
-  /*def worldUpdated(world: World): World =
-    World(
-      world.width,
-      world.height,
-      world.currentIteration + 1,
-      world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
-      world.totalIterations
-    )*/
-
   def worldUpdated(world: World): World = {
     val environmentModifiers = worldEnvironmentUpdated(world)
 
