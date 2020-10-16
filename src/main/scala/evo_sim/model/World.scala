@@ -16,16 +16,14 @@ case class World(temperature: Int,
 //companion object
 object World {
 
-  def worldCreated(env: Environment): World = {
-    val iterationsPerDay = 100
-    val worldWidth = 1280
-    val worldHeight = 720
+  def randomPosition(): Point2D = Point2D(new scala.util.Random().nextInt(Constants.WORLD_WIDTH + 1),
+    new scala.util.Random().nextInt(Constants.WORLD_HEIGHT + 1))
 
-    def randomPosition() = Point2D(new scala.util.Random().nextInt(worldWidth + 1), new scala.util.Random().nextInt(worldHeight + 1))
+  def worldCreated(env: Environment): World = {
 
     val blobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber)(i => BaseBlob(
       name = "blob" + i,
-      boundingBox = BoundingBox.Circle.apply(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
+      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
       degradationEffect = DegradationEffect.standardDegradation,
@@ -37,7 +35,7 @@ object World {
 
     val foods: Set[BaseFood] = Iterator.tabulate(env.initialFoodNumber)(i => BaseFood(
       name = "food" + i,
-      boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
+      boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
       life = Constants.DEF_FOOD_LIFE,
       effect = Effect.standardFoodEffect)).toSet
@@ -54,8 +52,8 @@ object World {
 
     val entities: Set[SimulableEntity] = blobs ++ foods ++ stones ++ puddles
 
-    World(temperature = env.temperature, luminosity = env.luminosity, width = worldWidth, height = worldHeight,
-      currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
+    World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
+      currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
 
   case class EnvironmentParameters(temperature: Int, luminosity: Int)
