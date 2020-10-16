@@ -3,8 +3,6 @@ package evo_sim.core
 import cats.data.StateT
 import cats.effect.IO
 import evo_sim.core.TupleUtils.toTuple
-import evo_sim.core.TupleUtils.toTuple
-import evo_sim.model.World
 import evo_sim.model.World
 
 
@@ -20,7 +18,7 @@ object Simulation {
   //helper to create StateT monad from a World to World function
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple(f(w)))
 
-  //prettier method name than "unsafeRunAsync for "
+  //prettier method name than "unsafeRunAsync for starting simulation"
   implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
     def started() = simulation.unsafeRunSync()
   }
