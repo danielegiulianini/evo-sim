@@ -2,6 +2,8 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.World.DayPhase
+import evo_sim.model.World.DayPhase.DayPhase
 
 case class World(temperature: Int,
                  luminosity: Int,
@@ -14,6 +16,7 @@ case class World(temperature: Int,
 
 //companion object
 object World {
+
   def worldCreated(env: Environment): World = {
     val iterationsPerDay = 100
     val worldWidth = 1280
@@ -49,6 +52,42 @@ object World {
     World(temperature = env.temperature, luminosity = env.luminosity, width = worldWidth, height = worldHeight,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
+
+  def worldEnvironmentUpdated(world:World) = {
+
+    // TODO: iterationsPerDay solo una volta nel codice (c'è anche in world)
+    val iterationsPerDay: Int = 100
+    val phaseDuration: Int = iterationsPerDay / DayPhase.values.size
+
+    def asDayPhase(iteration: Int): DayPhase = iteration % iterationsPerDay match {
+      case i if phaseDuration >= i => DayPhase.Night
+      case i if phaseDuration + 1 to phaseDuration * 2 contains i => DayPhase.Morning
+      case i if phaseDuration * 2 + 1 to phaseDuration * 3 contains i => DayPhase.Afternoon
+      case i if phaseDuration * 3 < i => DayPhase.Evening
+    }
+
+    val currentDayPhase = asDayPhase(world.currentIteration)
+    val nextDayPhase = asDayPhase(world.currentIteration + 1)
+
+    case class EnvironmentModifiers(temperature: Int, luminosity: Int)
+
+    def environmentModifiers: EnvironmentModifiers = (currentDayPhase != nextDayPhase, nextDayPhase) match {
+      case (true, DayPhase.Night) => EnvironmentModifiers(-7, -15)
+      case (true, DayPhase.Morning) => EnvironmentModifiers(+10, +25)
+      case (true, DayPhase.Afternoon) => EnvironmentModifiers(+7, +15)
+      case (true, DayPhase.Night) => EnvironmentModifiers(-10, -25)
+      case _ => EnvironmentModifiers(0, 0)
+    }
+
+    environmentModifiers  //could return luminosity and temp updated instead of delta?
+  }
+
+
+  object DayPhase extends Enumeration {
+    type DayPhase = Value
+    val Morning, Afternoon, Evening, Night = Value
+  }
+
 }
 
 
