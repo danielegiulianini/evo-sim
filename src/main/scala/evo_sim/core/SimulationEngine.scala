@@ -2,7 +2,7 @@ package evo_sim.core
 
 
 import cats.effect.{ContextShift, IO}
-import cats.effect.IO.{fromFuture, unit}
+//import cats.effect.IO.{fromFuture, unit}
 import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Intersection.intersected
@@ -13,6 +13,7 @@ import evo_sim.core.SimulationEngine.Logging._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.model.World.worldEnvironmentUpdated
 import evo_sim.view.swing.View
+//import evo_sim.view.cli.View
 
 object SimulationEngine {
 
