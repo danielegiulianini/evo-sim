@@ -9,11 +9,10 @@ import evo_sim.view.swing.View
 object SimulationEngine {
 
   def worldUpdated(world: World): World = {
-    val environmentModifiers = worldEnvironmentUpdated(world)
-
+    val updatedEnvironmentParameters = worldEnvironmentUpdated(world)
     world.copy(
-      temperature = world.temperature + environmentModifiers.temperature,
-      luminosity = world.luminosity + environmentModifiers.luminosity,
+      temperature = updatedEnvironmentParameters.temperature,
+      luminosity = updatedEnvironmentParameters.luminosity,
       currentIteration = world.currentIteration + 1,
       entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
     )

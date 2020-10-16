@@ -2,13 +2,32 @@ package evo_sim.model
 
 object Constants {
 
+  val WORLD_WIDTH = 1280
+  val WORLD_HEIGHT = 720
+
+  val ITERATIONS_PER_DAY = 100
+
+  val DEF_BLOB_RADIUS = 5
+  val DEF_BLOB_LIFE = 300
+  val DEF_BLOB_VELOCITY = 50
+  val DEF_BLOB_FOW_RADIUS = 50
+
+  val DEF_FOOD_HEIGHT = 10
+  val DEF_FOOD_LIFE = 500
+
+  val DEF_PUDDLE_WIDTH = 50
+  val DEF_PUDDLE_HEIGHT = 35
+
+  val DEF_STONE_WIDTH = 15
+  val DEF_STONE_HEIGHT = 12
+
   val MIN_BLOBS = 0
   val MAX_BLOBS = 300
   val DEF_BLOBS = 50
 
-  val MIN_FOOD = 0
-  val MAX_FOOD = 300
-  val DEF_FOOD = 50
+  val MIN_FOODS = 0
+  val MAX_FOODS = 300
+  val DEF_FOODS = 50
 
   val MIN_OBSTACLES = 0
   val MAX_OBSTACLES = 100

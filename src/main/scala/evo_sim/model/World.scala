@@ -2,7 +2,6 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.DayPhase
 import evo_sim.model.World.DayPhase.DayPhase
 
 case class World(temperature: Int,
@@ -26,40 +25,50 @@ object World {
 
     val blobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber)(i => BaseBlob(
       name = "blob" + i,
-      boundingBox = BoundingBox.Circle.apply(point = randomPosition(), radius = 5),
-      life = Integer.MAX_VALUE,
-      velocity = 50,
+      boundingBox = BoundingBox.Circle.apply(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
+      life = Constants.DEF_BLOB_LIFE,
+      velocity = Constants.DEF_BLOB_VELOCITY,
       degradationEffect = DegradationEffect.standardDegradation,
-      fieldOfViewRadius = 10,
+      fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
       movementDirection = 0,
       stepToNextDirection = 20)).toSet
 
     val foods: Set[BaseFood] = Iterator.tabulate(env.initialFoodNumber)(i => BaseFood(
       name = "food" + i,
-      boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = 10),
+      boundingBox = BoundingBox.Triangle.apply(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
-      life = Integer.MAX_VALUE,
+      life = Constants.DEF_FOOD_LIFE,
       effect = Effect.standardFoodEffect)).toSet
 
-    val obstacles: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber)(i => BaseObstacle(
+    val stones: Set[BaseObstacle] = Iterator.tabulate((env.initialObstacleNumber / 2).ceil.toInt)(i => BaseObstacle(
       name = "obstacle" + i,
-      boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = 15, height = 12),
+      boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
       effect = Effect.neutralEffect)).toSet
 
-    val entities: Set[SimulableEntity] = blobs ++ foods ++ obstacles
+    val puddles: Set[BaseObstacle] = Iterator.tabulate((env.initialObstacleNumber / 2).floor.toInt)(i => BaseObstacle(
+      name = "obstacle" + i,
+      boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
+      effect = Effect.mudEffect)).toSet
+
+    val entities: Set[SimulableEntity] = blobs ++ foods ++ stones ++ puddles
 
     World(temperature = env.temperature, luminosity = env.luminosity, width = worldWidth, height = worldHeight,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * iterationsPerDay)
   }
 
-  def worldEnvironmentUpdated(world:World) = {
+  case class EnvironmentParameters(temperature: Int, luminosity: Int)
 
-    // TODO: iterationsPerDay solo una volta nel codice (c'è anche in world)
-    val iterationsPerDay: Int = 100
-    val phaseDuration: Int = iterationsPerDay / DayPhase.values.size
+  object DayPhase extends Enumeration {
+    type DayPhase = Value
+    val Morning, Afternoon, Evening, Night = Value
+  }
 
-    def asDayPhase(iteration: Int): DayPhase = iteration % iterationsPerDay match {
+  def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
+
+    val phaseDuration: Int = Constants.ITERATIONS_PER_DAY / DayPhase.values.size
+
+    def asDayPhase(iteration: Int): DayPhase = iteration % Constants.ITERATIONS_PER_DAY match {
       case i if phaseDuration >= i => DayPhase.Night
       case i if phaseDuration + 1 to phaseDuration * 2 contains i => DayPhase.Morning
       case i if phaseDuration * 2 + 1 to phaseDuration * 3 contains i => DayPhase.Afternoon
@@ -69,23 +78,13 @@ object World {
     val currentDayPhase = asDayPhase(world.currentIteration)
     val nextDayPhase = asDayPhase(world.currentIteration + 1)
 
-    case class EnvironmentModifiers(temperature: Int, luminosity: Int)
-
-    def environmentModifiers: EnvironmentModifiers = (currentDayPhase != nextDayPhase, nextDayPhase) match {
-      case (true, DayPhase.Night) => EnvironmentModifiers(-7, -15)
-      case (true, DayPhase.Morning) => EnvironmentModifiers(+10, +25)
-      case (true, DayPhase.Afternoon) => EnvironmentModifiers(+7, +15)
-      case (true, DayPhase.Night) => EnvironmentModifiers(-10, -25)
-      case _ => EnvironmentModifiers(0, 0)
+    (currentDayPhase != nextDayPhase, nextDayPhase) match {
+      case (true, DayPhase.Night) => EnvironmentParameters((world.luminosity * 0.20).toInt, world.temperature - 12)
+      case (true, DayPhase.Morning) => EnvironmentParameters(world.luminosity * 4, world.temperature + 8)
+      case (true, DayPhase.Afternoon) => EnvironmentParameters((world.luminosity * 1.5).toInt, world.temperature + 10)
+      case (true, DayPhase.Evening) => EnvironmentParameters((world.luminosity * 0.75).toInt, world.temperature - 6)
+      case _ => EnvironmentParameters(world.luminosity, world.temperature)
     }
-
-    environmentModifiers  //could return luminosity and temp updated instead of delta?
-  }
-
-
-  object DayPhase extends Enumeration {
-    type DayPhase = Value
-    val Morning, Afternoon, Evening, Night = Value
   }
 
 }
