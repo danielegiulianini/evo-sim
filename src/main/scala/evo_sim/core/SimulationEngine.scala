@@ -50,11 +50,6 @@ object SimulationEngine {
           _ <- IO {View.simulationViewBuiltAndShowed()}
           _ <- simulationLoop().runS(World(env))
         } yield()).unsafeRunSync()
-        /*
-        * ViewModule.simulationGUIBuilt()
-        * simulationLoop().runS(World(env))
-        * */
-        /*simulationLoop().runS(World(env))*/
       }
     } yield ()
   }
