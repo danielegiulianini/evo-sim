@@ -3,6 +3,7 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
+import evo_sim.model.World._
 
 object EntityBehaviour {
 
@@ -63,7 +64,8 @@ object EntityBehaviour {
       val life = self.degradationEffect(self)
       life match {
         case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
-        case _ => Set()
+        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), Constants.DEF_BLOB_RADIUS),
+          self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
       }
     }
 
