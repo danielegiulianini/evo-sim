@@ -31,8 +31,9 @@ object World {
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      movementDirection = 0,
-      stepToNextDirection = 20)).toSet
+      direction = Direction(0, 20)
+      /*movementDirection = 0,
+      stepToNextDirection = 20*/)).toSet
 
     val foods: Set[BaseFood] = Iterator.tabulate(env.initialFoodNumber)(i => BaseFood(
       name = "food" + i,
