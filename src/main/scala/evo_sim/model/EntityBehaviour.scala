@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities._
-import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle}
+import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
 
 object EntityBehaviour {
 
@@ -17,8 +17,9 @@ object EntityBehaviour {
       val movement = self.movementStrategy(self, world)
       Set(self.copy(
         boundingBox = Circle(movement.point, self.boundingBox.radius),
-        movementDirection = movement.angle,
-        stepToNextDirection = movement.stepToNextDirection,
+        direction = movement.direction,
+        /*movementDirection = movement.angle,
+        stepToNextDirection = movement.stepToNextDirection,*/
         life = self.degradationEffect(self),
         fieldOfViewRadius = self.fieldOfViewRadius + world.luminosity
       ))
@@ -89,8 +90,9 @@ object EntityBehaviour {
             name = base.name,
             base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
-            movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,
+            direction = movement.direction,
+            /*movementDirection = movement.angle,
+            stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity),
             self.boundingBox,
@@ -102,8 +104,9 @@ object EntityBehaviour {
           case base: BaseBlob => base.copy(
             name = base.name,
             boundingBox = Circle(movement.point, base.boundingBox.radius),
-            movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,
+            direction = movement.direction,
+            /*movementDirection = movement.angle,
+            stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity
           )
@@ -121,8 +124,9 @@ object EntityBehaviour {
             name = base.name,
             base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
-            movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,
+            direction = movement.direction,
+            /*movementDirection = movement.angle,
+            stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity),
             self.boundingBox,
@@ -134,8 +138,9 @@ object EntityBehaviour {
         self.blob match {
           case base: BaseBlob => base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
-            movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,
+            direction = movement.direction,
+            /*movementDirection = movement.angle,
+            stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity,
             velocity = self.initialVelocity)
