@@ -11,19 +11,16 @@ object MovingStrategies {
 
   def baseMovement(entity: Intelligent, world: World): Movement = {
 
-    /*world.entities - entity.asInstanceOf[SimulableEntity] match {
-      case Set.empty => standardMovement(entity)
-      case set if
-      case set => chaseMovement()
-    }*/
+    val chasedEntity = world.entities - entity.asInstanceOf[SimulableEntity] match {
+      case set if set.nonEmpty => Option(set.minBy(distanceBetweenEntities(entity, _)))
+      case _ => None
+    }
 
+    chasedEntity match {
+      //case Some(chasedEntity) if distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius => chaseMovement(entity, chasedEntity)
+      case _ => standardMovement(entity, entity.movementDirection, world)
+    }
 
-    /*val chasedEntity = (entities - entity.asInstanceOf[SimulableEntity]).minBy(distanceBetweenEntities(entity, _))
-    if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius)
-      chaseMovement(entity, chasedEntity)
-    else
-      standardMovement(entity)*/
-    standardMovement(entity)
   }
 
   def crazyMovement(entity: Intelligent, entities: Set[Intelligent]): Intelligent = ???
@@ -33,23 +30,32 @@ object MovingStrategies {
   }
 
   //@scala.annotation.tailrec
-  private def standardMovement(entity: Intelligent): Movement = {
+  private def standardMovement(entity: Intelligent, angle: Int, world: World): Movement = {
+    val newAngle = entity.stepToNextDirection match {
+      //case 0 => new java.util.Random().nextInt(360)
+      case x if x % 100 == 0 => new java.util.Random().nextInt(360)
+      //case _ => entity.movementDirection
+      case _ => angle
+    }
     /*if(t == 0) {
       angle = new java.util.Random().nextInt(360)
       t = new java.util.Random().nextInt(50) + 1
     } else
       t = t - 1*/
 
-    val angle = new java.util.Random().nextInt(360)
     val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle)) * 0.05
     val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle)) * 0.05
-    val x = (entity.boundingBox.point.x + deltaX).toFloat
-    val y = (entity.boundingBox.point.y + deltaY).toFloat
-    //if (isBoundaryCollision(x, y)) standardMovement(entity) else Point2D(round(x), round(y))
-    Movement(Point2D(round(x), round(y)), angle)
+    val x = (entity.boundingBox.point.x + deltaX).toFloat.round
+    val y = (entity.boundingBox.point.y + deltaY).toFloat.round
+
+    isBoundaryCollision(Point2D(x, y), Point2D(world.width, world.height)) match {
+      case true => standardMovement(entity, new java.util.Random().nextInt(360), world)
+      case false => Movement(Point2D(x, y), newAngle)
+    }
+    //Movement(Point2D(x, y), angle)
   }
 
-  @scala.annotation.tailrec
+  /*@scala.annotation.tailrec
   private def chaseMovement(entity: Intelligent, chasedEntity: SimulableEntity): Point2D = {
     val angle = toDegrees(atan2(chasedEntity.boundingBox.point.y - entity.boundingBox.point.y, chasedEntity.boundingBox.point.x - entity.boundingBox.point.x))
     val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle))
@@ -57,13 +63,12 @@ object MovingStrategies {
     val x = entity.boundingBox.point.x + deltaX
     val y = entity.boundingBox.point.y + deltaY
     if (isBoundaryCollision(x, y)) chaseMovement(entity, chasedEntity) else Point2D(x.toInt, y.toInt)
-  }
+  }*/
 
-  //DA MODIFICARE, bisogna considerare anche il raggio di grandezza del blob)
-  private def isBoundaryCollision(x: Double, y: Double): Boolean = (x, y) match {
-    //case (x, y) if x > World.width || y > World.height => true
-    case (x, y) if x < 0 || y < 0 => true
-    case _ => false
+  //TODO: Bisogna considerare anche il raggio di grandezza del blob
+  private def isBoundaryCollision(position: Point2D, worldDimension: Point2D): Boolean = (position.x, position.y) match {
+    case (x, y) if (0 until worldDimension.x contains x) && (0 until worldDimension.y contains y) => false
+    case _ => true
   }
 
 
