@@ -32,14 +32,22 @@ object SimulationLogic {
     def entitiesAfterCollision =
       collisions.foldLeft(world.entities -- collidingEntities)((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
-    var blobn = 0
+    var blobnormal = 0
+    var blobpoison = 0
+    var blobslow = 0
     var obstaclen = 0
     var foodsn = 0
-    entitiesAfterCollision.foreach(e => if (e.isInstanceOf[Food]) foodsn=foodsn+1)
-    entitiesAfterCollision.foreach(e => if (e.isInstanceOf[Blob] || e.isInstanceOf[PoisonBlob] || e.isInstanceOf[SlowBlob]) blobn=blobn+1)
-    entitiesAfterCollision.foreach(e => if (e.isInstanceOf[Obstacle]) obstaclen=obstaclen+1)
+    entitiesAfterCollision.foreach(e =>
+      if (e.isInstanceOf[Food]) foodsn=foodsn+1
+      else if (e.isInstanceOf[Blob]) blobnormal=blobnormal+1
+      else if (e.isInstanceOf[Obstacle]) obstaclen=obstaclen+1
+      else if (e.isInstanceOf[SlowBlob]) blobslow=blobslow+1
+      else if (e.isInstanceOf[PoisonBlob]) blobpoison=blobpoison+1)
+
     println("--------")
-    println(blobn)
+    println(blobnormal)
+    println(blobpoison)
+    println(blobslow)
     println(foodsn)
     println(obstaclen)
 
