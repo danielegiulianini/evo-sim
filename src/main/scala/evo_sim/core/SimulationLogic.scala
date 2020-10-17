@@ -1,6 +1,8 @@
 package evo_sim.core
 
+import evo_sim.model.Entities.{PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
 import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World.worldEnvironmentUpdated
@@ -30,8 +32,20 @@ object SimulationLogic {
     def entitiesAfterCollision =
       collisions.foldLeft(world.entities -- collidingEntities)((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
+    var blobn = 0
+    var obstaclen = 0
+    var foodsn = 0
+    entitiesAfterCollision.foreach(e => if (e.isInstanceOf[Food]) foodsn=foodsn+1)
+    entitiesAfterCollision.foreach(e => if (e.isInstanceOf[Blob] || e.isInstanceOf[PoisonBlob] || e.isInstanceOf[SlowBlob]) blobn=blobn+1)
+    entitiesAfterCollision.foreach(e => if (e.isInstanceOf[Obstacle]) obstaclen=obstaclen+1)
+    println("--------")
+    println(blobn)
+    println(foodsn)
+    println(obstaclen)
+
     world.copy(
       entities = entitiesAfterCollision,
     )
+
   }
 }
