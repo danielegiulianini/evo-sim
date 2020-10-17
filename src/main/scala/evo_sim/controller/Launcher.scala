@@ -1,10 +1,10 @@
 package evo_sim.controller
 
-import cats.effect.{ContextShift, IO}
 import evo_sim.core.SimulationEngine
+import evo_sim.core.Simulation._
 
 
 object Launcher extends App {
-  SimulationEngine.started().unsafeRunSync()
+  SimulationEngine.started run
 }
 

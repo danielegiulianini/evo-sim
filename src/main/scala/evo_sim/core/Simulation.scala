@@ -21,7 +21,7 @@ object Simulation {
 
   //prettier method name than "unsafeRunAsync for starting simulation"
   implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
-    def started() = simulation.unsafeRunSync()
+    def run() = simulation.unsafeRunSync()
   }
 
 
