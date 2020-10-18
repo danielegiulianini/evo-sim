@@ -5,7 +5,7 @@ object Constants {
   val WORLD_WIDTH = 1280
   val WORLD_HEIGHT = 720
 
-  val ITERATIONS_PER_DAY = 100
+  val ITERATIONS_PER_DAY = 500
 
   val DEF_BLOB_RADIUS = 5
   val DEF_BLOB_LIFE = 300

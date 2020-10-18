@@ -14,7 +14,7 @@ object EntityStructure {
     //type Rivals
     type Position
     type MovementStrategy
-    type Cooldown
+    type Cooldown = Int
   }
 
   object DomainImpl extends Domain {
@@ -24,7 +24,6 @@ object EntityStructure {
     //override type Rivals = Set[SimulableEntity]
     override type Position = Movement
     override type MovementStrategy = (Intelligent, World) => Position
-    override type Cooldown = Int
   }
 
   trait Entity {

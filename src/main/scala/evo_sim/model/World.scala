@@ -2,7 +2,6 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.DayPhase.DayPhase
 
 case class World(temperature: Int,
                  luminosity: Int,
@@ -21,7 +20,6 @@ object World {
 
   def apply(env: Environment): World = {
     val blobs: Set[SimulableEntity] = Iterator.tabulate(env.initialBlobNumber)(i => BaseBlob(
-
       name = "blob" + i,
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
@@ -58,13 +56,16 @@ object World {
 
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
+  /*
   object DayPhase extends Enumeration {
     type DayPhase = Value
     val Morning, Afternoon, Evening, Night = Value
   }
+  */
 
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
 
+    /*
     val phaseDuration: Int = Constants.ITERATIONS_PER_DAY / DayPhase.values.size
 
     def asDayPhase(iteration: Int): DayPhase = iteration % Constants.ITERATIONS_PER_DAY match {
@@ -84,6 +85,18 @@ object World {
       case (true, DayPhase.Evening) => EnvironmentParameters((world.luminosity * 0.75).toInt, world.temperature - 6)
       case _ => EnvironmentParameters(world.luminosity, world.temperature)
     }
+    */
+
+    // TODO: luminosity deve essere il valore medio, non minimo
+    def updatedLuminosity(luminosity: Int, currentIteration: Int) =
+      luminosity + (3 * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+
+    // TODO: temperature deve essere il valore medio, non minimo
+    def updatedTemperature(temperature: Int, currentIteration: Int) =
+      temperature + (1 * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+
+    EnvironmentParameters(updatedLuminosity(world.luminosity, world.currentIteration),
+      updatedTemperature(world.temperature, world.currentIteration))
   }
 
 }
