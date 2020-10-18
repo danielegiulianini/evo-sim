@@ -22,13 +22,13 @@ object EntityBehaviour {
         /*movementDirection = movement.angle,
         stepToNextDirection = movement.stepToNextDirection,*/
         life = self.degradationEffect(self),
-        fieldOfViewRadius = self.fieldOfViewRadius + world.luminosity
+        fieldOfViewRadius = self.fieldOfViewRadius /* + world.luminosity */
       ))
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
-        case food: Food => Set(self)//food.effect(self)
+        case food: Food => food.effect(self)
         case obstacle: Obstacle => Set(self)//obstacle.effect(self)
         case _ => Set(self)
       }
@@ -68,8 +68,7 @@ object EntityBehaviour {
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case _: Blob => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), Constants.DEF_FOOD_HEIGHT),
-        self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
+      case _: Blob => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, 0, self.effect))
       case _ => Set(self)
     }
   }
