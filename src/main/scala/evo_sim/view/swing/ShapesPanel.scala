@@ -1,5 +1,6 @@
 package evo_sim.view.swing
 
+import java.awt.geom.Ellipse2D
 import java.awt.{Color, Dimension, Graphics, Toolkit}
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
@@ -10,25 +11,31 @@ import javax.swing.JPanel
 
 class ShapesPanel(world: World) extends JPanel {
 
-  private val fieldOfViewColor = new Color(255, 255, 125)
+  private val fieldOfViewColor = new Color(255, 255, 0)
 
   override def paintComponent(g: Graphics): Unit = {
     super.paintComponent(g)
-    println("lum"+ world.luminosity)
+
+    // draw temperature filter
+    val temperatureColor = new Color(modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE), 0,
+      255 - modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE),
+      75)
+    g.setColor(temperatureColor)
+    g.fillRect(0, 0, getWidth, getHeight)
 
     // draw rectangles and triangles before transparent filter and circles
     world.entities.foreach(e => drawRectangleOrTriangle(g, e.boundingBox))
 
     // draw luminosity filter
     g.setColor(new Color(0, 0, 0, 255 - modelToViewRatio(world.luminosity, 255, MAX_LUMINOSITY).max(0).min(255)))
-    g.fillRect(0, 0, modelToViewRatio(Toolkit.getDefaultToolkit.getScreenSize.width, this.getSize().width, world.width), modelToViewRatio(Toolkit.getDefaultToolkit.getScreenSize.height, this.getSize().width, world.width))
+    g.fillRect(0, 0, getWidth, getHeight)
 
     // draw blob circles with field of view
     world.entities.foreach(e => {
       e match {
         case b : Blob =>
           g.setColor(fieldOfViewColor)
-          g.fillOval(modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, this.getSize().width, world.width),
+          g.drawOval(modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, this.getSize().width, world.width),
             modelToViewRatio(e.boundingBox.point.y - b.fieldOfViewRadius, this.getSize().height, world.height),
             modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().width, world.width),
             modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().height, world.height))
@@ -36,7 +43,7 @@ class ShapesPanel(world: World) extends JPanel {
             .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
         case tb : BlobWithTemporaryStatus =>
           g.setColor(fieldOfViewColor)
-          g.fillOval(modelToViewRatio(e.boundingBox.point.x - tb.blob.fieldOfViewRadius, this.getSize().width, world.width),
+          g.drawOval(modelToViewRatio(e.boundingBox.point.x - tb.blob.fieldOfViewRadius, this.getSize().width, world.width),
             modelToViewRatio(e.boundingBox.point.y - tb.blob.fieldOfViewRadius, this.getSize().height, world.height),
             modelToViewRatio(tb.blob.fieldOfViewRadius * 2, this.getSize().width, world.width),
             modelToViewRatio(tb.blob.fieldOfViewRadius * 2, this.getSize().height, world.height))
