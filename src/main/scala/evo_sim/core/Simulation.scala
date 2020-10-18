@@ -14,6 +14,7 @@ object Simulation {
   //helper to create StateT monad from a IO monad
   def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
 
+  //helper to create StateT monad from a World to (World, A) function
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
   //helper to create StateT monad from a World to World function
