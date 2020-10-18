@@ -3,39 +3,22 @@ package evo_sim.view.swing
 import java.awt.{Color, Dimension, Graphics, Toolkit}
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.{Point2D, World}
+import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import evo_sim.model.Constants._
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import javax.swing.JPanel
 
 class ShapesPanel(world: World) extends JPanel {
 
-  private val fieldOfViewColor = new Color(255, 255, 125, 75)
+  private val fieldOfViewColor = new Color(255, 255, 125)
 
   override def paintComponent(g: Graphics): Unit = {
     super.paintComponent(g)
     println("lum"+ world.luminosity)
 
     // draw rectangles and triangles before transparent filter and circles
-    world.entities.foreach(e => {
-      e.boundingBox match {
-        case Rectangle(point2D, w, h) =>
-          g.setColor(Color.red)
-          g.fillRect(modelToViewRatio(point2D.x - w / 2, this.getSize().width, world.width),
-            modelToViewRatio(point2D.y - h / 2, this.getSize().height, world.height),
-            modelToViewRatio(w, this.getSize().width, world.width),
-            modelToViewRatio(h, this.getSize().height, world.height))
-        case Triangle(point2D, h, a) =>
-          val vertices = triangleVertices(Triangle(point2D, h, a))
-          g.setColor(Color.green)
-          g.fillPolygon(vertices.productIterator.map({
-            case p: Point2D => modelToViewRatio(p.x, this.getSize().width, world.width)
-          }).toArray, vertices.productIterator.map({
-            case p: Point2D => modelToViewRatio(p.y, this.getSize().height, world.height)
-          }).toArray, vertices.productIterator.length)
-        case _ =>
-      }
-    })
+    world.entities.foreach(e => drawRectangleOrTriangle(g, e.boundingBox))
+
     // draw luminosity filter
     g.setColor(new Color(0, 0, 0, 255 - modelToViewRatio(world.luminosity, 255, MAX_LUMINOSITY).max(0).min(255)))
     g.fillRect(0, 0, modelToViewRatio(Toolkit.getDefaultToolkit.getScreenSize.width, this.getSize().width, world.width), modelToViewRatio(Toolkit.getDefaultToolkit.getScreenSize.height, this.getSize().width, world.width))
@@ -49,12 +32,16 @@ class ShapesPanel(world: World) extends JPanel {
             modelToViewRatio(e.boundingBox.point.y - b.fieldOfViewRadius, this.getSize().height, world.height),
             modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().width, world.width),
             modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().height, world.height))
+          world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point, b.fieldOfViewRadius), e2.boundingBox))
+            .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
         case tb : BlobWithTemporaryStatus =>
           g.setColor(fieldOfViewColor)
           g.fillOval(modelToViewRatio(e.boundingBox.point.x - tb.blob.fieldOfViewRadius, this.getSize().width, world.width),
             modelToViewRatio(e.boundingBox.point.y - tb.blob.fieldOfViewRadius, this.getSize().height, world.height),
             modelToViewRatio(tb.blob.fieldOfViewRadius * 2, this.getSize().width, world.width),
             modelToViewRatio(tb.blob.fieldOfViewRadius * 2, this.getSize().height, world.height))
+          world.entities.filter(e2 => Intersection.intersected(Circle(tb.blob.boundingBox.point, tb.blob.fieldOfViewRadius), e2.boundingBox))
+            .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
         case _ =>
       }
       e.boundingBox match {
@@ -83,6 +70,26 @@ class ShapesPanel(world: World) extends JPanel {
 
   private def modelToViewRatio(modelProperty: Int, viewDimension: Int, modelDimension: Int): Int = {
     modelProperty * viewDimension / modelDimension
+  }
+
+  private def drawRectangleOrTriangle(g: Graphics, boundingBox: BoundingBox): Unit = {
+    boundingBox match {
+      case Rectangle(point2D, w, h) =>
+        g.setColor(Color.red)
+        g.fillRect(modelToViewRatio(point2D.x - w / 2, this.getSize().width, world.width),
+          modelToViewRatio(point2D.y - h / 2, this.getSize().height, world.height),
+          modelToViewRatio(w, this.getSize().width, world.width),
+          modelToViewRatio(h, this.getSize().height, world.height))
+      case Triangle(point2D, h, a) =>
+        val vertices = triangleVertices(Triangle(point2D, h, a))
+        g.setColor(Color.green)
+        g.fillPolygon(vertices.productIterator.map({
+          case p: Point2D => modelToViewRatio(p.x, this.getSize().width, world.width)
+        }).toArray, vertices.productIterator.map({
+          case p: Point2D => modelToViewRatio(p.y, this.getSize().height, world.height)
+        }).toArray, vertices.productIterator.length)
+      case _ =>
+    }
   }
 
 }
