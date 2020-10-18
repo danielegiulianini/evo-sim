@@ -3,8 +3,10 @@ package evo_sim.view.swing
 import java.awt.event.ActionEvent
 import java.awt.{BorderLayout, Dimension, Toolkit}
 
+import cats.effect.IO
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
+import evo_sim.view.swing.SwingEffects._
 import javax.swing._
 import javax.swing.event.ChangeEvent
 
@@ -21,84 +23,102 @@ object View extends View {
 
   override def inputViewBuiltAndShowed(): Unit = {
 
-    val inputPanel = new JPanel
-    val inputLayout = new BoxLayout(inputPanel, BoxLayout.Y_AXIS)
-    inputPanel.setLayout(inputLayout)
-
-    def addDataInputRow(text: String, min: Int, max: Int, default: Int): JSlider = {
-      val rowPanel = new JPanel
-      rowPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10))
-      val rowLayout = new BorderLayout()
-      rowPanel.setLayout(rowLayout)
-
-      val counter = new JLabel(default.toString)
-
-      val slider: JSlider = new JSlider(min, max, default)
-      slider.addChangeListener((e: ChangeEvent) => {
-        val source = e.getSource.asInstanceOf[JSlider]
-        counter.setText(source.getValue.toString)
+    def inputViewShowedInFrame(frame: JFrame, inputPanel: JPanel, startButton: JButton): IO[Unit] = IO {
+      SwingUtilities.invokeAndWait(() => {
+        frame.removeAll()
+        frame.getContentPane.add(inputPanel, BorderLayout.CENTER)
+        frame.getContentPane.add(startButton, BorderLayout.SOUTH)
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+        frame.pack()
+        frame.setResizable(false)
+        frame.setVisible(true)
       })
-      slider.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0))
+    }
+
+    def sliderChangeUpdatesLabelAdded(slider: JSlider, label: JLabel): IO[Unit] = IO {
+      slider.addChangeListener((event: ChangeEvent) => {
+        val source = event.getSource.asInstanceOf[JSlider]
+        label.setText(source.getValue.toString)
+      })
+    }
+
+    def buttonEffectUpdatesSliderAdded(button: JButton, slider: JSlider, checkCondition: Int => Boolean,
+                                       updateFunction: Int => Int): IO[Unit] = IO {
+      button.addActionListener((_: ActionEvent) => {
+        if (checkCondition(slider.getValue))
+          slider.setValue(updateFunction(slider.getValue))
+      })
+    }
+
+    def sliderGraphicsUpdated(slider: JSlider): IO[Unit] = IO {
       slider.setMajorTickSpacing(slider.getMaximum / 5)
       slider.setMinorTickSpacing(1)
       slider.setPaintTicks(true)
       slider.setPaintLabels(true)
-
-      val incrementButton = new JButton("+")
-      incrementButton.addActionListener((_: ActionEvent) => if (slider.getValue < max) slider.setValue(slider.getValue + 1))
-
-      val decrementButton = new JButton("-")
-      decrementButton.addActionListener((_: ActionEvent) => if (slider.getValue > min) slider.setValue(slider.getValue - 1))
-
-      val infoPanel = new JPanel()
-      infoPanel.add(new JLabel(text + ":"))
-      infoPanel.add(counter)
-      infoPanel.setBorder(BorderFactory.createEmptyBorder((1.5 * counter.getFont.getSize).toInt, 0, 0, 0))
-      rowPanel.add(infoPanel, BorderLayout.WEST)
-
-      val commandPanel = new JPanel()
-      commandPanel.add(decrementButton)
-      commandPanel.add(slider)
-      commandPanel.add(incrementButton)
-      rowPanel.add(commandPanel, BorderLayout.EAST)
-
-      inputPanel.add(rowPanel)
-
-      slider
     }
 
-    val blobComponent = addDataInputRow("#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS, Constants.DEF_BLOBS)
-    val foodComponent = addDataInputRow("#Food", Constants.MIN_FOODS, Constants.MAX_FOODS, Constants.DEF_FOODS)
-    val obstacleComponent = addDataInputRow("#Obstacle", Constants.MIN_OBSTACLES, Constants.MAX_OBSTACLES, Constants.DEF_OBSTACLES)
-    val luminosityComponent = addDataInputRow("Luminosity (cd)", Constants.MIN_LUMINOSITY, Constants.MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
-    val temperatureComponent = addDataInputRow("Temperature (°C)", Constants.MIN_TEMPERATURE, Constants.MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
-    val daysComponent = addDataInputRow("#Days", Constants.MIN_DAYS, Constants.MAX_DAYS, Constants.DEF_DAYS)
+    def createDataInputRow(mainPanel: JPanel, text: String, minValue: Int, maxValue: Int, defaultValue: Int): IO[JSlider] = {
+      for {
+        rowPanel <- panelCreated
+        _ <- componentBorderSet(rowPanel, 10, 10, 10, 10)
+        _ <- panelLayoutSet(rowPanel.asInstanceOf[JPanel])
+        description <- labelCreated(text + ":")
+        counter <- labelCreated(defaultValue.toString)
+        slider <- sliderCreated(minValue, maxValue, defaultValue)
+        _ <- sliderChangeUpdatesLabelAdded(slider, counter)
+        _ <- componentBorderSet(slider, 5, 0, 5, 0)
+        _ <- sliderGraphicsUpdated(slider)
+        increment <- buttonCreated("+")
+        _ <- buttonEffectUpdatesSliderAdded(increment, slider, _ < maxValue, _ + 1)
+        decrement <- buttonCreated("-")
+        _ <- buttonEffectUpdatesSliderAdded(decrement, slider, _ > minValue, _ - 1)
+        infoPanel <- panelCreated
+        _ <- panelComponentsAdded(infoPanel, description, counter)
+        _ <- componentBorderSet(infoPanel, (1.5 * counter.getFont.getSize).toInt, 0, 0, 0)
+        commandPanel <- panelCreated
+        _ <- panelComponentsAdded(commandPanel, decrement, slider, increment)
+        _ <- panelComponentAdded(rowPanel, infoPanel, BorderLayout.WEST)
+        _ <- panelComponentAdded(rowPanel, commandPanel, BorderLayout.EAST)
+        _ <- panelComponentAdded(mainPanel, rowPanel)
+      } yield slider
+    }
 
-    val startButton = new JButton("Start")
-    startButton.addActionListener((_: ActionEvent) => {
-      userInput.success(Environment(
-        temperature = temperatureComponent.getValue,
-        luminosity = luminosityComponent.getValue,
-        initialBlobNumber = blobComponent.getValue,
-        initialFoodNumber = foodComponent.getValue,
-        initialObstacleNumber = obstacleComponent.getValue,
-        daysNumber = daysComponent.getValue
-      ))
-      frame.setVisible(false)
-    })
+    def buttonEffectCompletesEnvironment(button: JButton, promise: Promise[Environment], temperature: JSlider,
+                                         luminosity: JSlider, initialBlobNumber: JSlider, initialFoodNumber: JSlider,
+                                         initialObstacleNumber: JSlider, daysNumber: JSlider): IO[Unit] =
+      IO {
+        button.addActionListener((_: ActionEvent) =>
+          promise.success(Environment(temperature.getValue, luminosity.getValue, initialBlobNumber.getValue,
+            initialFoodNumber.getValue, initialObstacleNumber.getValue, daysNumber.getValue)))
+      }
 
-    SwingUtilities.invokeAndWait(() => {
-      frame.getContentPane.removeAll()
-      frame.getContentPane.add(inputPanel, BorderLayout.CENTER)
-      frame.getContentPane.add(startButton, BorderLayout.SOUTH)
-      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-      frame.pack()
-      frame.setResizable(false)
-      frame.setVisible(true)
-    })
+    val buildAndShowView = {
+      for {
+        inputPanel <- panelCreated
+        initialBlobNumber <- createDataInputRow(inputPanel, "#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS,
+          Constants.DEF_BLOBS)
+        initialFoodNumber <- createDataInputRow(inputPanel, "#Food", Constants.MIN_FOODS, Constants.MAX_FOODS,
+          Constants.DEF_FOODS)
+        initialObstacleNumber <- createDataInputRow(inputPanel, "#Obstacle", Constants.MIN_OBSTACLES,
+          Constants.MAX_OBSTACLES, Constants.DEF_OBSTACLES)
+        luminosity <- createDataInputRow(inputPanel, "Luminosity (cd)", Constants.MIN_LUMINOSITY,
+          Constants.MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
+        temperature <- createDataInputRow(inputPanel, "Temperature (°C)", Constants.MIN_TEMPERATURE,
+          Constants.MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
+        days <- createDataInputRow(inputPanel, "#Days", Constants.MIN_DAYS, Constants.MAX_DAYS, Constants.DEF_DAYS)
+        start <- buttonCreated("Start")
+        _ <- buttonEffectCompletesEnvironment(start, userInput, temperature, luminosity, initialBlobNumber,
+          initialFoodNumber, initialObstacleNumber, days)
+        _ <- panelComponentAdded(inputPanel, start)
+        _ <- inputViewShowedInFrame(frame, inputPanel, start)
+      } yield ()
+    }
+
+    buildAndShowView.unsafeRunSync()
   }
 
-  override def inputReadFromUser(): Environment = Await.result(userInput.future, Duration.Inf)
+  override def inputReadFromUser(): Environment =
+    Await.result(userInput.future, Duration.Inf)
 
   override def simulationViewBuiltAndShowed(): Unit = {
     SwingUtilities.invokeAndWait(() => {
