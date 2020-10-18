@@ -22,7 +22,7 @@ object EntityBehaviour {
         /*movementDirection = movement.angle,
         stepToNextDirection = movement.stepToNextDirection,*/
         life = self.degradationEffect(self),
-        fieldOfViewRadius = self.fieldOfViewRadius + world.luminosity
+        fieldOfViewRadius = self.fieldOfViewRadius /* + world.luminosity */
       ))
     }
 

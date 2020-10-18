@@ -56,7 +56,7 @@ object World {
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
 
-  case class EnvironmentParameters(temperature: Int, luminosity: Int)
+  case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
   object DayPhase extends Enumeration {
     type DayPhase = Value
