@@ -5,6 +5,9 @@ import cats.effect.IO
 import evo_sim.core.TupleUtils.toTuple
 import evo_sim.model.World
 import evo_sim.view.swing.View
+import evo_sim.core.TimingOps._
+
+import scala.concurrent.duration.FiniteDuration
 
 
 object Simulation {
@@ -43,6 +46,13 @@ object Simulation {
       IO {
         View.inputReadFromUser()
       }
+
+
+    
+    def getTime() = liftIo {IO( TimingOps.getTime())}
+
+    def waitUntil(from: FiniteDuration, period: FiniteDuration) =
+      liftIo{ IO(TimingOps.waitUntil(from, period))}
   }
 
 }
