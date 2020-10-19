@@ -24,7 +24,7 @@ object EntityBehaviour {
           /*movementDirection = movement.angle,
           stepToNextDirection = movement.stepToNextDirection,*/
           life = self.degradationEffect(self),
-          fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self, world.luminosity)
+          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
         ))
         case _ => Set()
       }
@@ -99,7 +99,7 @@ object EntityBehaviour {
               /*movementDirection = movement.angle,
               stepToNextDirection = movement.stepToNextDirection,*/
               life = base.degradationEffect(base),
-              fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self.blob, world.luminosity)),
+              fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
             self.boundingBox,
             self.cooldown - 1)
           //TODO case _ => // other blobs
@@ -114,7 +114,7 @@ object EntityBehaviour {
             /*movementDirection = movement.angle,
             stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
-            fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self.blob, world.luminosity)
+            fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
           )
           //TODO case _ => // other blobs
         }
@@ -135,7 +135,7 @@ object EntityBehaviour {
               /*movementDirection = movement.angle,
               stepToNextDirection = movement.stepToNextDirection,*/
               life = base.degradationEffect(base),
-              fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self.blob, world.luminosity)),
+              fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
             self.boundingBox,
             self.cooldown - 1,
             self.initialVelocity)
@@ -149,7 +149,7 @@ object EntityBehaviour {
             /*movementDirection = movement.angle,
             stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
-            fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self.blob, world.luminosity),
+            fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
             velocity = TemperatureEffect.standardTemperatureEffect(self.blob, world.temperature))
           //TODO case _ => // other blobs
         }
