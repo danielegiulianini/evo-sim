@@ -7,8 +7,6 @@ import evo_sim.model.World
 import evo_sim.view.swing.View
 
 
-
-
 object Simulation {
   type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
