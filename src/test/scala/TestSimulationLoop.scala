@@ -12,10 +12,13 @@ class TestSimulationLoop {
     initialObstacleNumber= 3,
     daysNumber = 5)
 
-  //test 1
-  val w = simulationLoop().runS(World(initialEnvironment)).run()
+  val initialWorld = World(initialEnvironment)
+
+  //test 1: check correct iteration count progress
+  val w = simulationLoop().runS(initialWorld).run()
   w.currentIteration //should be equal to daysNumber * iterationPerDay
 
-  //test 2
+  //test 2: check for constant framerate of gameLoop
+  
 
 }
