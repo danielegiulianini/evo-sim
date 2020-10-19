@@ -50,11 +50,8 @@ object EntityBehaviour {
       Set(newSelf)
     }
 
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case food: Food => Set(self) //food.effect(self.blob)
-      case obstacle: Obstacle => Set(self) //obstacle.effect(self.blob)
-      case _ => Set(self)
-    }
+    // Temporary blob collisions must not have effect
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
 
   }
 
@@ -65,7 +62,7 @@ object EntityBehaviour {
       val life = self.degradationEffect(self)
       life match {
         case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
-        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), Constants.DEF_FOOD_HEIGHT),
+        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), self.boundingBox.height),
           self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
       }
     }

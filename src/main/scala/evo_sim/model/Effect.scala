@@ -7,17 +7,17 @@ import evo_sim.model.EntityStructure.DomainImpl.Velocity
 
 object Effect {
 
-  // adds 10 to blob life and creates new BaseBlob
+  // adds 10 to blob life
   def standardFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    val newBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + Constants.DEF_FOOD_ENERGY,
+    val updatedBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + Constants.DEF_FOOD_ENERGY,
       randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
       MovingStrategies.baseMovement, blob.direction/*blob.movementDirection, blob.stepToNextDirection*/)
-    Set(newBlob)
+    Set(updatedBlob)
   }
 
   def reproduceBlobFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    val newBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + Constants.DEF_FOOD_ENERGY,
+    val newBlob = BaseBlob(blob.name+"-son", blob.boundingBox, blob.life + Constants.DEF_FOOD_ENERGY,
       randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
       MovingStrategies.baseMovement, blob.direction/*blob.movementDirection, blob.stepToNextDirection*/)

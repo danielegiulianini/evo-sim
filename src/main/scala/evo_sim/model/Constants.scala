@@ -14,6 +14,7 @@ object Constants {
   val DEF_BLOB_FOW_RADIUS = 50
 
   val DEF_FOOD_HEIGHT = 10
+  val DEF_REPRODUCING_FOOD_HEIGHT = 15
   val DEF_FOOD_LIFE = 500
 
   val DEF_PUDDLE_WIDTH = 50
