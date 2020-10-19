@@ -17,7 +17,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world)
       self.life match {
-        case _ => Set(self.copy(
+        case n if n > 0 => Set(self.copy(
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
           velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
@@ -26,6 +26,7 @@ object EntityBehaviour {
           life = self.degradationEffect(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
         ))
+        case _ => Set()
       }
     }
 
@@ -50,8 +51,8 @@ object EntityBehaviour {
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case food: Food => Set(self) //food.effect(self.blob)
-      case obstacle: Obstacle => Set(self) //obstacle.effect(self.blob)
+      case food: Food => food.effect(self.blob)
+      case obstacle: Obstacle => obstacle.effect(self.blob)
       case _ => Set(self)
     }
 
