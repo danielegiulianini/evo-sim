@@ -7,7 +7,6 @@ import evo_sim.model.World
 import evo_sim.view.swing.View
 
 
-import scala.concurrent.duration.FiniteDuration
 
 
 object Simulation {
@@ -42,17 +41,18 @@ object Simulation {
       liftIo(IO {
         View.rendered(worldAfterCollisions)
       })
+
+   /* def getTime() = liftIo {TimingOps.getTime()}
+
+    def waitUntil(from: FiniteDuration, period: FiniteDuration) =
+      liftIo{ IO(TimingOps.waitUntil(from, period))}*/
+  }
+
+  object toIoConversions {
     def inputReadFromUser() =
       IO {
         View.inputReadFromUser()
       }
-
-
-
-    def getTime() = liftIo {IO( TimingOps.getTime())}
-
-    def waitUntil(from: FiniteDuration, period: FiniteDuration) =
-      liftIo{ IO(TimingOps.waitUntil(from, period))}
   }
 
 }
