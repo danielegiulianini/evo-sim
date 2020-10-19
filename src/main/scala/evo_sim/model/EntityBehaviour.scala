@@ -144,21 +144,6 @@ object EntityBehaviour {
     }
   }
 
-  //is good for blob, baseBlob, slowBlob
-  trait Reproducing[B <: Blob with SimulableEntity] extends Collidable {
-    self: B =>
-
-    override def collided(other: SimulableEntity): Set[SimulableEntity] =
-      (other match {
-        case _: B => createFetusWith(other.asInstanceOf[B])
-        case _ => Set(self)
-      }) ++ self.collided(other)
-
-    def createFetusWith(other: B): Set[SimulableEntity] = reproduceWith(self, other)
-
-    def reproduceWith[A](a: A, b:A) : Set[A] = Set[A]()
-
-  }
 
 
 }
