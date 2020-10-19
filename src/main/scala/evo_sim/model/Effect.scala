@@ -16,18 +16,14 @@ object Effect {
     Set(newBlob)
   }
 
-  /*def standardFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    val newBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + Constants.DEF_FOOD_ENERGY,
-      randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
-      randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
-      MovingStrategies.baseMovement, blob.direction/*blob.movementDirection, blob.stepToNextDirection*/)
-    Set(newBlob, blob match {
+  def reproduceBlobFoodEffect(blob: Blob): Set[SimulableEntity] = {
+    Set(blob, blob match {
       case b : BaseBlob => BaseBlob(b.name, b.boundingBox, b.life + Constants.DEF_FOOD_ENERGY,
         b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.direction/*b.movementDirection, b.stepToNextDirection*/)
       case b: PoisonBlob => PoisonBlob(b.name, b.blob, b.boundingBox, b.cooldown)
       case b: SlowBlob => SlowBlob(b.name, b.blob, b.boundingBox, b.cooldown, b.initialVelocity)
     })
-  }*/
+  }
 
   /*def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
     Set(PoisonBlob(blob.name, blob, blob.boundingBox, Constants.DEF_COOLDOWN))
