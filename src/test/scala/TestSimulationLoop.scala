@@ -12,7 +12,10 @@ class TestSimulationLoop {
     initialObstacleNumber= 3,
     daysNumber=5)
 
-
-  val w = simulationLoop().runS(World(initialEnvironment)).unsafeRunSync()
+  //test 1
+  val w = simulationLoop().runS(World(initialEnvironment)).run()
   w.currentIteration //should be equal to daysNumber * iterationPerDay
+
+  //test 2
+  
 }
