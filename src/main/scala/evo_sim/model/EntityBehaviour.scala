@@ -50,11 +50,8 @@ object EntityBehaviour {
       Set(newSelf)
     }
 
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case food: Food => food.effect(self.blob)
-      case obstacle: Obstacle => obstacle.effect(self.blob)
-      case _ => Set(self)
-    }
+    // Temporary blob collisions must not have effect
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
 
   }
 

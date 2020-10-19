@@ -45,7 +45,7 @@ class FoodTests extends FunSuite {
   test("newBlob") {
     assert(blob.collided(standardFood).size == 1)
     assert(blob.collided(reproducingFood).size == 2)
-    assert(poisonBlob.collided(reproducingFood).size == 2)
+    assert(poisonBlob.collided(reproducingFood).size == 1)
   }
 }
 
