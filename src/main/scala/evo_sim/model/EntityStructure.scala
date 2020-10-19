@@ -11,7 +11,6 @@ object EntityStructure {
     type Velocity
     type DegradationEffect[A] >: A => Life
     type Effect = Blob => Set[SimulableEntity]  //name to be changed
-    //type Rivals
     type Position
     type MovementStrategy
     type Cooldown
