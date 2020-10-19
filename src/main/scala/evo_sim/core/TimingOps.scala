@@ -11,14 +11,14 @@ object TimingOps {
   implicit val timer = IO.timer(ExecutionContext.global)
 
   //as IO:
-  def getTime() = IO { System.currentTimeMillis().millis }
+  /*def getTime() = IO { System.currentTimeMillis().millis }
 
   def waitUntil(from: FiniteDuration, period: FiniteDuration) =
     if (from < period) {
       IO.sleep(period - from)
-    } else unit
+    } else unit*/
 
-  /*
+
   //as StateT:
   def getTime() = liftIo(IO { System.currentTimeMillis().millis })   //def getTime() = liftIo(IO( (w: World) => (w, System.currentTimeMillis().millis)) ) //as a statet monad returns a identical new world but x seconds older
 
@@ -26,5 +26,5 @@ object TimingOps {
     liftIo(if (from < period) {
       IO.sleep(period - from)
     } else unit)
-   */
+
 }
