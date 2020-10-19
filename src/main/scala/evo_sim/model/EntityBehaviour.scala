@@ -130,7 +130,7 @@ object EntityBehaviour {
             base.copy(
               boundingBox = Circle(movement.point, base.boundingBox.radius),
               direction = movement.direction,
-              velocity = TemperatureEffect.standardTemperatureEffect(self.blob, world.temperature),
+              velocity =  Constants.DEF_BLOB_SLOW_VELOCITY,
               /*movementDirection = movement.angle,
               stepToNextDirection = movement.stepToNextDirection,*/
               life = base.degradationEffect(base),
