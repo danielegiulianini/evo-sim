@@ -16,15 +16,18 @@ object EntityBehaviour {
 
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world)
-      Set(self.copy(
-        boundingBox = Circle(movement.point, self.boundingBox.radius),
-        direction = movement.direction,
-        velocity = TemperatureEffect.standardTemperatureEffect(self, world.temperature),
-        /*movementDirection = movement.angle,
-        stepToNextDirection = movement.stepToNextDirection,*/
-        life = self.degradationEffect(self),
-        fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self, world.luminosity)
-      ))
+      self.life match {
+        case n if n > 0 => Set(self.copy(
+          boundingBox = Circle(movement.point, self.boundingBox.radius),
+          direction = movement.direction,
+          velocity = TemperatureEffect.standardTemperatureEffect(self, world.temperature),
+          /*movementDirection = movement.angle,
+          stepToNextDirection = movement.stepToNextDirection,*/
+          life = self.degradationEffect(self),
+          fieldOfViewRadius = LuminosityEffect.standardLuminosityEffect(self, world.luminosity)
+        ))
+        case _ => Set()
+      }
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
