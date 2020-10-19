@@ -33,7 +33,7 @@ object EntityBehaviour {
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
         case food: Food => food.effect(self)
-        case obstacle: Obstacle => Set(self) //obstacle.effect(self)
+        case obstacle: Obstacle => obstacle.effect(self)
         case _ => Set(self)
       }
     }
@@ -42,12 +42,11 @@ object EntityBehaviour {
   trait TempBlobBehaviour extends Simulable {
     self: TempBlob =>
     override def updated(world: World): Set[SimulableEntity] = {
-      def newSelf = self.blob match {
+      def newSelf = self match {
         case blob: PoisonBlob => poisonBehaviour(blob, world)
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
-
       Set(newSelf)
     }
 
@@ -100,7 +99,7 @@ object EntityBehaviour {
               stepToNextDirection = movement.stepToNextDirection,*/
               life = base.degradationEffect(base),
               fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
-            self.boundingBox,
+            base.boundingBox,
             self.cooldown - 1)
           //TODO case _ => // other blobs
         }
@@ -136,7 +135,7 @@ object EntityBehaviour {
               stepToNextDirection = movement.stepToNextDirection,*/
               life = base.degradationEffect(base),
               fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
-            self.boundingBox,
+            base.boundingBox,
             self.cooldown - 1,
             self.initialVelocity)
           //TODO case _ => // other blobs

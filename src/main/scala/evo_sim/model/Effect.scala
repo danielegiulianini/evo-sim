@@ -29,9 +29,9 @@ object Effect {
     })
   }
 
-  /*def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
+  def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
     Set(PoisonBlob(blob.name, blob, blob.boundingBox, Constants.DEF_COOLDOWN))
-  }*/
+  }
 
   // used for static entities
   def neutralEffect(blob: Blob): Set[SimulableEntity] = {
