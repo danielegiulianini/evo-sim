@@ -38,13 +38,13 @@ object World {
 
 
     val stones: Set[BaseObstacle] = Iterator.tabulate((env.initialObstacleNumber / 2).ceil.toInt)(i => BaseObstacle(
-      name = "obstacle" + i,
+      name = "stone" + i,
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
       effect = Effect.damageEffect)).toSet
 
 
     val puddles: Set[BaseObstacle] = Iterator.tabulate((env.initialObstacleNumber / 2).floor.toInt)(i => BaseObstacle(
-      name = "obstacle" + i,
+      name = "puddle" + i,
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.mudEffect)).toSet
 
@@ -56,44 +56,12 @@ object World {
 
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
-  /*
-  object DayPhase extends Enumeration {
-    type DayPhase = Value
-    val Morning, Afternoon, Evening, Night = Value
-  }
-  */
-
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
-
-    /*
-    val phaseDuration: Int = Constants.ITERATIONS_PER_DAY / DayPhase.values.size
-
-    def asDayPhase(iteration: Int): DayPhase = iteration % Constants.ITERATIONS_PER_DAY match {
-      case i if phaseDuration >= i => DayPhase.Night
-      case i if phaseDuration + 1 to phaseDuration * 2 contains i => DayPhase.Morning
-      case i if phaseDuration * 2 + 1 to phaseDuration * 3 contains i => DayPhase.Afternoon
-      case i if phaseDuration * 3 < i => DayPhase.Evening
-    }
-
-    val currentDayPhase = asDayPhase(world.currentIteration)
-    val nextDayPhase = asDayPhase(world.currentIteration + 1)
-
-    (currentDayPhase != nextDayPhase, nextDayPhase) match {
-      case (true, DayPhase.Night) => EnvironmentParameters((world.luminosity * 0.20).toInt, world.temperature - 12)
-      case (true, DayPhase.Morning) => EnvironmentParameters(world.luminosity * 4, world.temperature + 8)
-      case (true, DayPhase.Afternoon) => EnvironmentParameters((world.luminosity * 1.5).toInt, world.temperature + 10)
-      case (true, DayPhase.Evening) => EnvironmentParameters((world.luminosity * 0.75).toInt, world.temperature - 6)
-      case _ => EnvironmentParameters(world.luminosity, world.temperature)
-    }
-    */
-
-    // TODO: luminosity deve essere il valore medio, non minimo
     def updatedLuminosity(luminosity: Int, currentIteration: Int) =
-      luminosity + (3 * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+      luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
 
-    // TODO: temperature deve essere il valore medio, non minimo
     def updatedTemperature(temperature: Int, currentIteration: Int) =
-      temperature + (1 * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+      temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
 
     EnvironmentParameters(updatedLuminosity(world.luminosity, world.currentIteration),
       updatedTemperature(world.temperature, world.currentIteration))
