@@ -70,8 +70,8 @@ object View extends View {
     val blobComponent = addDataInputRow("#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS, Constants.DEF_BLOBS)
     val foodComponent = addDataInputRow("#Food", Constants.MIN_FOODS, Constants.MAX_FOODS, Constants.DEF_FOODS)
     val obstacleComponent = addDataInputRow("#Obstacle", Constants.MIN_OBSTACLES, Constants.MAX_OBSTACLES, Constants.DEF_OBSTACLES)
-    val luminosityComponent = addDataInputRow("Luminosity (cd)", Constants.MIN_LUMINOSITY, Constants.MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
-    val temperatureComponent = addDataInputRow("Temperature (°C)", Constants.MIN_TEMPERATURE, Constants.MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
+    val luminosityComponent = addDataInputRow("Luminosity (cd)", Constants.SELECTABLE_MIN_LUMINOSITY, Constants.SELECTABLE_MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
+    val temperatureComponent = addDataInputRow("Temperature (°C)", Constants.SELECTABLE_MIN_TEMPERATURE, Constants.SELECTABLE_MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
     val daysComponent = addDataInputRow("#Days", Constants.MIN_DAYS, Constants.MAX_DAYS, Constants.DEF_DAYS)
 
     val startButton = new JButton("Start")

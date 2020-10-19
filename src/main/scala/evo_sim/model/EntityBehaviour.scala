@@ -16,20 +16,24 @@ object EntityBehaviour {
 
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world)
-      Set(self.copy(
-        boundingBox = Circle(movement.point, self.boundingBox.radius),
-        direction = movement.direction,
-        /*movementDirection = movement.angle,
-        stepToNextDirection = movement.stepToNextDirection,*/
-        life = self.degradationEffect(self),
-        fieldOfViewRadius = self.fieldOfViewRadius /* + world.luminosity */
-      ))
+      self.life match {
+        case n if n > 0 => Set(self.copy(
+          boundingBox = Circle(movement.point, self.boundingBox.radius),
+          direction = movement.direction,
+          velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
+          /*movementDirection = movement.angle,
+          stepToNextDirection = movement.stepToNextDirection,*/
+          life = self.degradationEffect(self),
+          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
+        ))
+        case _ => Set()
+      }
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
         case food: Food => food.effect(self)
-        case obstacle: Obstacle => Set(self)//obstacle.effect(self)
+        case obstacle: Obstacle => obstacle.effect(self)
         case _ => Set(self)
       }
     }
@@ -38,18 +42,17 @@ object EntityBehaviour {
   trait TempBlobBehaviour extends Simulable {
     self: TempBlob =>
     override def updated(world: World): Set[SimulableEntity] = {
-      def newSelf = self.blob match {
+      def newSelf = self match {
         case blob: PoisonBlob => poisonBehaviour(blob, world)
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
-
       Set(newSelf)
     }
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-      case food: Food => Set(self)//food.effect(self.blob)
-      case obstacle: Obstacle => Set(self)//obstacle.effect(self.blob)
+      case food: Food => Set(self) //food.effect(self.blob)
+      case obstacle: Obstacle => Set(self) //obstacle.effect(self.blob)
       case _ => Set(self)
     }
 
@@ -89,13 +92,12 @@ object EntityBehaviour {
           case base: BaseBlob => PoisonBlob(
             name = base.name,
             base.copy(
-            boundingBox = Circle(movement.point, base.boundingBox.radius),
-            direction = movement.direction,
-            /*movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,*/
-            life = base.degradationEffect(base),
-            fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity),
-            self.boundingBox,
+              boundingBox = Circle(movement.point, base.boundingBox.radius),
+              direction = movement.direction,
+              velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
+              life = base.degradationEffect(base),
+              fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
+            base.boundingBox,
             self.cooldown - 1)
           //TODO case _ => // other blobs
         }
@@ -105,10 +107,9 @@ object EntityBehaviour {
             name = base.name,
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             direction = movement.direction,
-            /*movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,*/
+            velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
             life = base.degradationEffect(base),
-            fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity
+            fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
           )
           //TODO case _ => // other blobs
         }
@@ -123,15 +124,14 @@ object EntityBehaviour {
           case base: BaseBlob => SlowBlob(
             name = base.name,
             base.copy(
-            boundingBox = Circle(movement.point, base.boundingBox.radius),
-            direction = movement.direction,
-            /*movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,*/
-            life = base.degradationEffect(base),
-            fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity),
-            self.boundingBox,
+              boundingBox = Circle(movement.point, base.boundingBox.radius),
+              direction = movement.direction,
+              velocity =  Constants.DEF_BLOB_SLOW_VELOCITY,
+              life = base.degradationEffect(base),
+              fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
+            base.boundingBox,
             self.cooldown - 1,
-            self.initialVelocity)
+            self.initialVelocity + LuminosityEffect.standardLuminosityEffect(world.currentIteration))
           //TODO case _ => // other blobs
         }
       case _ =>
@@ -139,12 +139,10 @@ object EntityBehaviour {
           case base: BaseBlob => base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             direction = movement.direction,
-            /*movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
-            fieldOfViewRadius = base.fieldOfViewRadius + world.luminosity,
-            velocity = self.initialVelocity)
-            //TODO case _ => // other blobs
+            fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+            velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration))
+          //TODO case _ => // other blobs
         }
     }
   }
