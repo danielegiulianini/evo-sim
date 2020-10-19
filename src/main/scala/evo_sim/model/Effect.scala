@@ -7,7 +7,7 @@ import evo_sim.model.EntityStructure.DomainImpl.Velocity
 
 object Effect {
 
-  // adds 10 to blob life and creates new BaseBlob
+  // adds 10 to blob life
   def standardFoodEffect(blob: Blob): Set[SimulableEntity] = {
     val newBlob = BaseBlob(blob.name, blob.boundingBox, blob.life + Constants.DEF_FOOD_ENERGY,
       randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
@@ -22,10 +22,14 @@ object Effect {
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
       MovingStrategies.baseMovement, blob.direction/*blob.movementDirection, blob.stepToNextDirection*/)
     Set(newBlob, blob match {
-      case b : BaseBlob => BaseBlob(b.name, b.boundingBox, b.life + Constants.DEF_FOOD_ENERGY,
+      case b : BaseBlob => BaseBlob(b.name+"-son", b.boundingBox, b.life + Constants.DEF_FOOD_ENERGY,
         b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.direction/*b.movementDirection, b.stepToNextDirection*/)
-      case b: PoisonBlob => PoisonBlob(b.name, b.blob, b.boundingBox, b.cooldown)
-      case b: SlowBlob => SlowBlob(b.name, b.blob, b.boundingBox, b.cooldown, b.initialVelocity)
+      case b: PoisonBlob => PoisonBlob(b.name+"-son", b.blob match {
+        case bb : BaseBlob => bb.copy(name=b.blob.name+"-son")
+      }, b.boundingBox, b.cooldown)
+      case b: SlowBlob => SlowBlob(b.name+"-son", b.blob match {
+        case bb : BaseBlob => bb.copy(name=b.blob.name+"-son")
+      }, b.boundingBox, b.cooldown, b.initialVelocity)
     })
   }
 

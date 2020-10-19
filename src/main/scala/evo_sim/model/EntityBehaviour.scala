@@ -17,7 +17,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world)
       self.life match {
-        case n if n > 0 => Set(self.copy(
+        case _ => Set(self.copy(
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
           velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
@@ -26,7 +26,6 @@ object EntityBehaviour {
           life = self.degradationEffect(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
         ))
-        case _ => Set()
       }
     }
 
@@ -65,7 +64,7 @@ object EntityBehaviour {
       val life = self.degradationEffect(self)
       life match {
         case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
-        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), Constants.DEF_FOOD_HEIGHT),
+        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), self.boundingBox.height),
           self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
       }
     }

@@ -1,4 +1,4 @@
-import evo_sim.model.Entities.{BaseBlob, BaseFood}
+import evo_sim.model.Entities.{BaseBlob, BaseFood, PoisonBlob}
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model._
 import org.scalatest.FunSuite
@@ -16,20 +16,36 @@ class FoodTests extends FunSuite {
     direction = Direction(0, 15)
     /*movementDirection = 0,
     stepToNextDirection = 15*/)
-  val food: BaseFood = BaseFood(
+  val poisonBlob: PoisonBlob = PoisonBlob(
+    name = "blob2",
+    blob = blob,
+    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    cooldown = Constants.DEF_COOLDOWN)
+
+  val standardFood: BaseFood = BaseFood(
     name = "food1",
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.foodDegradation,
     life = 100,
     effect = Effect.standardFoodEffect /*Effect.standardFoodEffect*/)
+  val reproducingFood: BaseFood = BaseFood(
+    name = "food2",
+    boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
+    degradationEffect = DegradationEffect.foodDegradation,
+    life = 100,
+    effect = Effect.reproduceBlobFoodEffect /*Effect.standardFoodEffect*/)
 
   test("BlobIncreasedLife") {
-    val updatedBlob = blob.collided(food).toVector(0).asInstanceOf[Blob]
+    val updatedBlob = blob.collided(standardFood).toVector(0).asInstanceOf[Blob]
     assert(updatedBlob.life == blob.life + 10)
+    val updatedBlob2 = blob.collided(reproducingFood).toVector(0).asInstanceOf[Blob]
+    assert(updatedBlob2.life == blob.life + 10)
   }
 
   test("newBlob") {
-    assert(blob.collided(food).size == 2)
+    assert(blob.collided(standardFood).size == 1)
+    assert(blob.collided(reproducingFood).size == 2)
+    assert(poisonBlob.collided(reproducingFood).size == 2)
   }
 }
 
