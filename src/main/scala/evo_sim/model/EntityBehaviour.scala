@@ -20,7 +20,7 @@ object EntityBehaviour {
         case n if n > 0 => Set(self.copy(
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
-          velocity = TemperatureEffect.standardTemperatureEffect(self, world.temperature),
+          velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
           /*movementDirection = movement.angle,
           stepToNextDirection = movement.stepToNextDirection,*/
           life = self.degradationEffect(self),
@@ -94,9 +94,7 @@ object EntityBehaviour {
             base.copy(
               boundingBox = Circle(movement.point, base.boundingBox.radius),
               direction = movement.direction,
-              velocity = TemperatureEffect.standardTemperatureEffect(self.blob, world.temperature),
-              /*movementDirection = movement.angle,
-              stepToNextDirection = movement.stepToNextDirection,*/
+              velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
               life = base.degradationEffect(base),
               fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
             base.boundingBox,
@@ -109,9 +107,7 @@ object EntityBehaviour {
             name = base.name,
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             direction = movement.direction,
-            velocity = TemperatureEffect.standardTemperatureEffect(self.blob, world.temperature),
-            /*movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,*/
+            velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
           )
@@ -131,13 +127,11 @@ object EntityBehaviour {
               boundingBox = Circle(movement.point, base.boundingBox.radius),
               direction = movement.direction,
               velocity =  Constants.DEF_BLOB_SLOW_VELOCITY,
-              /*movementDirection = movement.angle,
-              stepToNextDirection = movement.stepToNextDirection,*/
               life = base.degradationEffect(base),
               fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
             base.boundingBox,
             self.cooldown - 1,
-            self.initialVelocity)
+            self.initialVelocity + LuminosityEffect.standardLuminosityEffect(world.currentIteration))
           //TODO case _ => // other blobs
         }
       case _ =>
@@ -145,11 +139,9 @@ object EntityBehaviour {
           case base: BaseBlob => base.copy(
             boundingBox = Circle(movement.point, base.boundingBox.radius),
             direction = movement.direction,
-            /*movementDirection = movement.angle,
-            stepToNextDirection = movement.stepToNextDirection,*/
             life = base.degradationEffect(base),
             fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
-            velocity = TemperatureEffect.standardTemperatureEffect(self.blob, world.temperature))
+            velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration))
           //TODO case _ => // other blobs
         }
     }
