@@ -8,7 +8,7 @@ import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
 import evo_sim.model.World
 import scala.concurrent.duration._
 import evo_sim.core.Logging._
-import evo_sim.core.TimingOps.{getTime, waitUntil}
+//import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.view.swing.View //import evo_sim.view.cli.View
 
 object SimulationEngine {
