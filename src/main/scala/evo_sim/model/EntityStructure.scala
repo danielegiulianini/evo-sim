@@ -4,7 +4,6 @@ import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
 
-
 object EntityStructure {
   trait Domain {
     type Life
@@ -54,8 +53,6 @@ object EntityStructure {
   trait Intelligent extends Perceptive with Moving {
     def movementStrategy: MovementStrategy
     def direction: Direction
-    /*def movementDirection: Int
-    def stepToNextDirection: Int*/
   }
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {
