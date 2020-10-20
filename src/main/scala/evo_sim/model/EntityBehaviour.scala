@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
-import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
+import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle}
 import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.World._
 
@@ -18,9 +18,6 @@ object EntityBehaviour {
       self : Entity =>
     }
   }
-
-
-
   
   //Base blob behaviour implementation
   trait BaseBlobBehaviour extends Simulable {
@@ -33,8 +30,6 @@ object EntityBehaviour {
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
           velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-          /*movementDirection = movement.angle,
-          stepToNextDirection = movement.stepToNextDirection,*/
           life = self.degradationEffect(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
         ))
@@ -51,8 +46,8 @@ object EntityBehaviour {
     }
   }
 
-  trait TempBlobBehaviour extends Simulable {
-    self: TempBlob =>
+  trait TempBlobBehaviour extends Simulable with NeutralCollidable {
+    self: BlobWithTemporaryStatus =>
     override def updated(world: World): Set[SimulableEntity] = {
       def newSelf = self match {
         case blob: PoisonBlob => poisonBehaviour(blob, world)
@@ -61,10 +56,6 @@ object EntityBehaviour {
       }
       Set(newSelf)
     }
-
-    // Temporary blob collisions must not have effect
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
-
   }
 
   trait BaseFoodBehaviour extends Simulable {
@@ -84,7 +75,6 @@ object EntityBehaviour {
       case _ => Set(self)
     }
   }
-
 
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {

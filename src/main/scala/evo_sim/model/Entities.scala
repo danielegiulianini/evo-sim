@@ -30,9 +30,6 @@ object Entities {
                           override val boundingBox: Rectangle,
                           override val effect: Effect) extends Obstacle with NeutralBehaviour
 
-  //blobs with temporary status changes refactored
-  trait TempBlob extends BlobWithTemporaryStatus with Entity with Simulable
-
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
                         override val life: Life,
@@ -41,7 +38,7 @@ object Entities {
                         override val fieldOfViewRadius: Int,
                         override val movementStrategy: MovementStrategy,
                         override val direction: Direction,
-                        override val cooldown: Cooldown) extends TempBlob with TempBlobBehaviour
+                        override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TempBlobBehaviour
 
   case class SlowBlob(override val name: String,
                       override val boundingBox: Circle,
@@ -52,7 +49,7 @@ object Entities {
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction,
                       override val cooldown: Cooldown,
-                      initialVelocity: Velocity) extends TempBlob with TempBlobBehaviour
+                      initialVelocity: Velocity) extends BlobWithTemporaryStatus with TempBlobBehaviour
 }
 
 
