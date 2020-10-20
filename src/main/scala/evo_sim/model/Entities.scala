@@ -34,13 +34,23 @@ object Entities {
   trait TempBlob extends BlobWithTemporaryStatus with Entity with Simulable
 
   case class PoisonBlob(override val name: String,
-                        override val blob: Blob,
                         override val boundingBox: Circle,
+                        override val life: Life,
+                        override val velocity: Velocity,
+                        override val degradationEffect: DegradationEffect[Blob],
+                        override val fieldOfViewRadius: Int,
+                        override val movementStrategy: MovementStrategy,
+                        override val direction: Direction,
                         override val cooldown: Cooldown) extends TempBlob with TempBlobBehaviour
 
   case class SlowBlob(override val name: String,
-                      override val blob: Blob,
                       override val boundingBox: Circle,
+                      override val life: Life,
+                      override val velocity: Velocity,
+                      override val degradationEffect: DegradationEffect[Blob],
+                      override val fieldOfViewRadius: Int,
+                      override val movementStrategy: MovementStrategy,
+                      override val direction: Direction,
                       override val cooldown: Cooldown,
                       initialVelocity: Velocity) extends TempBlob with TempBlobBehaviour
 }

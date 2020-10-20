@@ -18,8 +18,13 @@ class FoodTests extends FunSuite {
     stepToNextDirection = 15*/)
   val poisonBlob: PoisonBlob = PoisonBlob(
     name = "blob2",
-    blob = blob,
     boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    life = 100,
+    velocity = 3,
+    degradationEffect = DegradationEffect.standardDegradation,
+    fieldOfViewRadius = 10,
+    movementStrategy = MovingStrategies.baseMovement,
+    direction = Direction(0, 15),
     cooldown = Constants.DEF_COOLDOWN)
 
   val standardFood: BaseFood = BaseFood(

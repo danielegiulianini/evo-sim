@@ -43,11 +43,11 @@ class ShapesPanel(world: World) extends JPanel {
             .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
         case tb : BlobWithTemporaryStatus =>
           g.setColor(fieldOfViewColor)
-          g.drawOval(modelToViewRatio(e.boundingBox.point.x - tb.blob.fieldOfViewRadius, this.getSize().width, world.width),
-            modelToViewRatio(e.boundingBox.point.y - tb.blob.fieldOfViewRadius, this.getSize().height, world.height),
-            modelToViewRatio(tb.blob.fieldOfViewRadius * 2, this.getSize().width, world.width),
-            modelToViewRatio(tb.blob.fieldOfViewRadius * 2, this.getSize().height, world.height))
-          world.entities.filter(e2 => Intersection.intersected(Circle(tb.blob.boundingBox.point, tb.blob.fieldOfViewRadius), e2.boundingBox))
+          g.drawOval(modelToViewRatio(e.boundingBox.point.x - tb.fieldOfViewRadius, this.getSize().width, world.width),
+            modelToViewRatio(e.boundingBox.point.y - tb.fieldOfViewRadius, this.getSize().height, world.height),
+            modelToViewRatio(tb.fieldOfViewRadius * 2, this.getSize().width, world.width),
+            modelToViewRatio(tb.fieldOfViewRadius * 2, this.getSize().height, world.height))
+          world.entities.filter(e2 => Intersection.intersected(Circle(tb.boundingBox.point, tb.fieldOfViewRadius), e2.boundingBox))
             .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
         case _ =>
       }
