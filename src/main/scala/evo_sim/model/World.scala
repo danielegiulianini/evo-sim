@@ -3,6 +3,8 @@ package evo_sim.model
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 
+
+
 case class World(temperature: Int,
                  luminosity: Int,
                  width: Int, //to move in environment?
@@ -70,6 +72,14 @@ object World {
 
     EnvironmentParameters(updatedLuminosity(world.luminosity, world.currentIteration),
       updatedTemperature(world.temperature, world.currentIteration))
+  }
+
+
+
+  object MemoHelper {
+    def memoize[I, O](f: I => O): I => O = new collection.mutable.HashMap[I, O]() {
+      override def apply(key: I) = getOrElseUpdate(key, f(key))
+    }
   }
 
 }
