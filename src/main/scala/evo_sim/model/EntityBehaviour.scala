@@ -21,7 +21,7 @@ object EntityBehaviour {
 
 
 
-  
+
   //Base blob behaviour implementation
   trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
