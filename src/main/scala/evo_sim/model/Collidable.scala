@@ -1,10 +1,31 @@
 package evo_sim.model
 
-import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
+import evo_sim.model.EntityStructure.{Entity}
 
 trait Collidable {
   def collided(other: SimulableEntity) : Set[SimulableEntity]
 }
+
+//companion object with some collidable implementations ready to be (re)used (in the future)
+object Collidable {
+
+  trait NeutralCollidable extends Simulable {
+    self: Entity with Updatable =>
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
 
 /**
  * collided(blob, blob)
