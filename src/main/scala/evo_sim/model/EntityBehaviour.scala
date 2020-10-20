@@ -1,8 +1,10 @@
 package evo_sim.model
 
 import evo_sim.model.BoundingBox.Circle
+import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
+import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.World._
 
 object EntityBehaviour {
@@ -73,10 +75,8 @@ object EntityBehaviour {
     }
   }
 
-  trait NeutralBehaviour extends Simulable {
-    self: Obstacle =>
-    override def updated(world: World): Set[SimulableEntity] = Set(self)
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
+  trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
+    self : Entity =>
   }
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
