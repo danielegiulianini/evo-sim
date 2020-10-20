@@ -26,7 +26,7 @@ object Constants {
   val DEF_COOLDOWN = 50
   val DEF_DAMAGE = 25
   val DEF_MOD_PROP_RANGE = 5
-  val DEF_FOOD_ENERGY = 10
+  val DEF_FOOD_ENERGY = 20
 
   val MIN_BLOBS = 0
   val MAX_BLOBS = 300
@@ -57,5 +57,7 @@ object Constants {
 
   val SELECTABLE_MAX_TEMPERATURE: Int = MAX_TEMPERATURE - 25
   val SELECTABLE_MIN_TEMPERATURE: Int = MIN_TEMPERATURE + 25
+
+  val NEXT_DIRECTION = 0
 
 }
