@@ -8,9 +8,11 @@ import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import evo_sim.model.Constants._
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import javax.swing.JPanel
+import javax.swing.border.EmptyBorder
 
 class ShapesPanel(world: World) extends JPanel {
 
+  private val borderValue = 15
   private val fieldOfViewColor = new Color(255, 255, 0)
 
   override def paintComponent(g: Graphics): Unit = {
@@ -21,7 +23,7 @@ class ShapesPanel(world: World) extends JPanel {
       255 - modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE),
       75)
     g.setColor(temperatureColor)
-    g.fillRect(0, 0, getWidth, getHeight)
+    g.fillRect(0  , 0, getWidth, getHeight)
 
     // draw rectangles and triangles before transparent filter and circles
     world.entities.foreach(e => drawRectangleOrTriangle(g, e.boundingBox))
@@ -63,7 +65,7 @@ class ShapesPanel(world: World) extends JPanel {
     })
   }
 
-  override def getPreferredSize = new Dimension(this.getParent.getSize())
+  override def getPreferredSize = new Dimension(this.getParent.getSize().width - borderValue, this.getParent.getSize().height - borderValue)
 
   private def triangleVertices(tri: Triangle) = {
     /** return a tuple3 with the vertices
