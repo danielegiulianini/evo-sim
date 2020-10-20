@@ -45,11 +45,11 @@ object SimulationLogic {
       else if (e.isInstanceOf[PoisonBlob]) blobpoison=blobpoison+1)
 
     println("--------")
-    println(blobnormal)
-    println(blobpoison)
-    println(blobslow)
-    println(foodsn)
-    println(obstaclen)
+    println("BaseBlob: " + blobnormal)
+    println("PoisonBlob: " + blobpoison)
+    println("SlowBlob: " + blobslow)
+    println("Food: " + foodsn)
+    println("Obstacle: " + obstaclen)
 
     world.copy(
       entities = entitiesAfterCollision,

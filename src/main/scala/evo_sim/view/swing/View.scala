@@ -101,10 +101,10 @@ object View extends View {
           Constants.DEF_FOODS)
         initialObstacleNumber <- createDataInputRow(inputPanel, "#Obstacle", Constants.MIN_OBSTACLES,
           Constants.MAX_OBSTACLES, Constants.DEF_OBSTACLES)
-        luminosity <- createDataInputRow(inputPanel, "Luminosity (cd)", Constants.MIN_LUMINOSITY,
-          Constants.MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
-        temperature <- createDataInputRow(inputPanel, "Temperature (°C)", Constants.MIN_TEMPERATURE,
-          Constants.MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
+        luminosity <- createDataInputRow(inputPanel, "Luminosity (cd)", Constants.SELECTABLE_MIN_LUMINOSITY,
+          Constants.SELECTABLE_MAX_LUMINOSITY, Constants.DEFAULT_LUMINOSITY)
+        temperature <- createDataInputRow(inputPanel, "Temperature (°C)", Constants.SELECTABLE_MIN_TEMPERATURE,
+          Constants.SELECTABLE_MAX_TEMPERATURE, Constants.DEF_TEMPERATURE)
         days <- createDataInputRow(inputPanel, "#Days", Constants.MIN_DAYS, Constants.MAX_DAYS, Constants.DEF_DAYS)
         start <- buttonCreated("Start")
         _ <- buttonEffectCompletesEnvironment(start, userInput, temperature, luminosity, initialBlobNumber,
