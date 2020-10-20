@@ -7,7 +7,7 @@ trait Updatable {
   def updated(world: World) : Set[SimulableEntity]
 }
 
-//companion object with some collidable implementations ready to be (re)used (in the future)
+//companion object with some updatable implementations ready to be (re)used (in the future)
 object Updatable {
 
   trait NeutralUpdatable extends Simulable {

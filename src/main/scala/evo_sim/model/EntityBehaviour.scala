@@ -12,6 +12,16 @@ object EntityBehaviour {
   trait Simulable extends Updatable with Collidable //-able suffix refers to behaviour only
   type SimulableEntity = Entity with Simulable
 
+  //companion object with some simulable implementations ready to be (re)used (in the future)
+  object Simulable {
+    trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
+      self : Entity =>
+    }
+  }
+
+
+
+  
   //Base blob behaviour implementation
   trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
@@ -75,9 +85,7 @@ object EntityBehaviour {
     }
   }
 
-  trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
-    self : Entity =>
-  }
+
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
     val movement = self.blob.movementStrategy(self.blob, world)
