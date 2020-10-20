@@ -1,7 +1,6 @@
 package evo_sim.view.swing
 
-import java.awt.geom.Ellipse2D
-import java.awt.{Color, Dimension, Graphics, Toolkit}
+import java.awt.{Color, Dimension, Graphics}
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
@@ -11,6 +10,7 @@ import javax.swing.JPanel
 
 class ShapesPanel(world: World) extends JPanel {
 
+  private val borderValue = 15
   private val fieldOfViewColor = new Color(255, 255, 0)
 
   override def paintComponent(g: Graphics): Unit = {
@@ -63,7 +63,7 @@ class ShapesPanel(world: World) extends JPanel {
     })
   }
 
-  override def getPreferredSize = new Dimension(this.getParent.getSize())
+  override def getPreferredSize = new Dimension(this.getParent.getSize().width - borderValue, this.getParent.getSize().height - borderValue)
 
   private def triangleVertices(tri: Triangle) = {
     /** return a tuple3 with the vertices
