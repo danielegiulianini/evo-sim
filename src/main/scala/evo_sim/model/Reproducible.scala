@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.BaseBlob
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.u13.typeclasses.Reproducible.reproduce
+import evo_sim.model.Reproducible.reproduce
 
 //type class for reproduction
 trait Reproducible[A] {
