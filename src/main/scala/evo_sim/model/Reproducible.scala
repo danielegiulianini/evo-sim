@@ -19,7 +19,7 @@ object Reproducible {
   }
 }
 
-object PlusImplicits {
+object ReproducibleImplicits {
 
   implicit object BaseBlobReproduction extends Reproducible[BaseBlob]{
     override def reproduce(a1: BaseBlob, a2: BaseBlob) =
