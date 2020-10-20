@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
-import evo_sim.model.EntityStructure.{Blob, Entity, Food, Obstacle}
+import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle}
 import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.World._
 
@@ -19,9 +19,6 @@ object EntityBehaviour {
     }
   }
 
-
-
-
   //Base blob behaviour implementation
   trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
@@ -33,8 +30,6 @@ object EntityBehaviour {
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
           velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-          /*movementDirection = movement.angle,
-          stepToNextDirection = movement.stepToNextDirection,*/
           life = self.degradationEffect(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
         ))
@@ -51,8 +46,8 @@ object EntityBehaviour {
     }
   }
 
-  trait TempBlobBehaviour extends Simulable {
-    self: TempBlob =>
+  trait TempBlobBehaviour extends Simulable with NeutralCollidable {
+    self: BlobWithTemporaryStatus =>
     override def updated(world: World): Set[SimulableEntity] = {
       def newSelf = self match {
         case blob: PoisonBlob => poisonBehaviour(blob, world)
@@ -61,10 +56,6 @@ object EntityBehaviour {
       }
       Set(newSelf)
     }
-
-    // Temporary blob collisions must not have effect
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
-
   }
 
   trait BaseFoodBehaviour extends Simulable {
@@ -86,67 +77,52 @@ object EntityBehaviour {
   }
 
 
-
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
-    val movement = self.blob.movementStrategy(self.blob, world)
+    val movement = self.movementStrategy(self, world)
     self.cooldown match {
       case n if n > 1 =>
-        self.blob match {
-          case base: BaseBlob => PoisonBlob(
-            name = base.name,
-            base.copy(
-              boundingBox = Circle(movement.point, base.boundingBox.radius),
-              direction = movement.direction,
-              velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-              life = base.degradationEffect(base),
-              fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
-            base.boundingBox,
-            self.cooldown - 1)
-          //TODO case _ => // other blobs
-        }
-      case _ =>
-        self.blob match {
-          case base: BaseBlob => base.copy(
-            name = base.name,
-            boundingBox = Circle(movement.point, base.boundingBox.radius),
-            direction = movement.direction,
-            velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-            life = base.degradationEffect(base),
-            fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
-          )
-          //TODO case _ => // other blobs
-        }
+        self.copy(
+          boundingBox = Circle(movement.point, self.boundingBox.radius),
+          direction = movement.direction,
+          velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
+          life = self.degradationEffect(self),
+          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          cooldown=self.cooldown - 1
+        )
+      case _ => BaseBlob(
+        self.name,
+        Circle(movement.point, self.boundingBox.radius),
+        self.degradationEffect(self),
+        self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
+        DegradationEffect.baseBlobDegradation,
+        self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+        self.movementStrategy,
+        movement.direction)
     }
   }
 
   private def slowBehaviour(self: SlowBlob, world: World): SimulableEntity = {
-    val movement = self.blob.movementStrategy(self.blob, world)
+    val movement = self.movementStrategy(self, world)
     self.cooldown match {
       case n if n > 1 =>
-        self.blob match {
-          case base: BaseBlob => SlowBlob(
-            name = base.name,
-            base.copy(
-              boundingBox = Circle(movement.point, base.boundingBox.radius),
-              direction = movement.direction,
-              velocity =  Constants.DEF_BLOB_SLOW_VELOCITY,
-              life = base.degradationEffect(base),
-              fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)),
-            base.boundingBox,
-            self.cooldown - 1,
-            self.initialVelocity + LuminosityEffect.standardLuminosityEffect(world.currentIteration))
-          //TODO case _ => // other blobs
-        }
+        self.copy(
+          boundingBox = Circle(movement.point, self.boundingBox.radius),
+          direction = movement.direction,
+          velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
+          life = self.degradationEffect(self),
+          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          cooldown=self.cooldown - 1
+        )
       case _ =>
-        self.blob match {
-          case base: BaseBlob => base.copy(
-            boundingBox = Circle(movement.point, base.boundingBox.radius),
-            direction = movement.direction,
-            life = base.degradationEffect(base),
-            fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
-            velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration))
-          //TODO case _ => // other blobs
-        }
+        BaseBlob(
+          self.name,
+          Circle(movement.point, self.boundingBox.radius),
+          self.degradationEffect(self),
+          self.initialVelocity,
+          DegradationEffect.baseBlobDegradation,
+          self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          self.movementStrategy,
+          movement.direction)
     }
   }
 

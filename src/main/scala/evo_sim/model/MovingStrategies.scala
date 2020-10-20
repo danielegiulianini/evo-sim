@@ -36,7 +36,7 @@ object MovingStrategies {
   @scala.annotation.tailrec
   private def standardMovement(entity: Intelligent, angle: Int, world: World): Movement = {
     val direction = entity.direction.stepToNextDirection match {
-      case 0 => Direction(random.nextInt(360), random.nextInt(50))
+      case Constants.NEXT_DIRECTION => Direction(random.nextInt(360), random.nextInt(50))
       case x => Direction(angle, x-1)
     }
 

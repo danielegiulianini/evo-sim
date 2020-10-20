@@ -1,6 +1,6 @@
 package evo_sim.core
 
-import evo_sim.model.Entities.{PoisonBlob, SlowBlob}
+import evo_sim.model.Entities.{BaseBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
 import evo_sim.model.Intersection.intersected
@@ -39,7 +39,7 @@ object SimulationLogic {
     var foodsn = 0
     entitiesAfterCollision.foreach(e =>
       if (e.isInstanceOf[Food]) foodsn=foodsn+1
-      else if (e.isInstanceOf[Blob]) blobnormal=blobnormal+1
+      else if (e.isInstanceOf[BaseBlob]) blobnormal=blobnormal+1
       else if (e.isInstanceOf[Obstacle]) obstaclen=obstaclen+1
       else if (e.isInstanceOf[SlowBlob]) blobslow=blobslow+1
       else if (e.isInstanceOf[PoisonBlob]) blobpoison=blobpoison+1)
