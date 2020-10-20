@@ -1,7 +1,5 @@
 package evo_sim.model
 
-package u13.typeclasses
-
 import evo_sim.model.Entities.BaseBlob
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.u13.typeclasses.Reproducible.reproduce
@@ -32,8 +30,10 @@ object ReproducibleImplicits {
 
 object ReproducibleExample {
   import ReproducibleImplicits._
-  def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-    case _ : BaseBlob => Set(reproduce(other.asInstanceOf[BaseBlob], other.asInstanceOf[BaseBlob]))
+  def collided(other: SimulableEntity): Set[SimulableEntity] = {
+    other match {
+      case _ : BaseBlob => Set(reproduce(other.asInstanceOf[BaseBlob], other.asInstanceOf[BaseBlob]))
+    }
   }
 }
 
