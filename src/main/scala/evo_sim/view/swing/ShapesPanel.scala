@@ -1,14 +1,12 @@
 package evo_sim.view.swing
 
-import java.awt.geom.Ellipse2D
-import java.awt.{Color, Dimension, Graphics, Toolkit}
+import java.awt.{Color, Dimension, Graphics}
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import evo_sim.model.Constants._
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import javax.swing.JPanel
-import javax.swing.border.EmptyBorder
 
 class ShapesPanel(world: World) extends JPanel {
 
@@ -23,7 +21,7 @@ class ShapesPanel(world: World) extends JPanel {
       255 - modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE),
       75)
     g.setColor(temperatureColor)
-    g.fillRect(0  , 0, getWidth, getHeight)
+    g.fillRect(0, 0, getWidth, getHeight)
 
     // draw rectangles and triangles before transparent filter and circles
     world.entities.foreach(e => drawRectangleOrTriangle(g, e.boundingBox))
