@@ -3,6 +3,7 @@ package evo_sim.model
 import evo_sim.model.Entities.BaseBlob
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Reproducible.reproduce
+import evo_sim.model.Utils._
 
 //type class for reproduction
 trait Reproducible[A] {
@@ -22,9 +23,12 @@ object Reproducible {
 object ReproducibleImplicits {
 
   implicit object BaseBlobReproduction extends Reproducible[BaseBlob]{
-    override def reproduce(a1: BaseBlob, a2: BaseBlob) =
-/*REPRODUCTION LOGIC GOES HERE*/
-      a1
+    override def reproduce(b1: BaseBlob, b2: BaseBlob) =
+      b1.copy(
+        name = b1.name + "-son" + nextValue,
+        velocity = randomValueChange((b1.velocity + b2.velocity) / 2, Constants.DEF_MOD_PROP_RANGE),
+        fieldOfViewRadius = randomValueChange((b1.fieldOfViewRadius + b2.fieldOfViewRadius) / 2, Constants.DEF_MOD_PROP_RANGE)
+      )
   }
 }
 

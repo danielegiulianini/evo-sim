@@ -1,10 +1,9 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.EntityStructure.DomainImpl.Velocity
+import evo_sim.model.Utils._
 
 object Effect {
 
@@ -14,20 +13,22 @@ object Effect {
       blob.velocity,
       blob.degradationEffect,
       blob.fieldOfViewRadius,
+      blob.gender,
       MovingStrategies.baseMovement, blob.direction)
     Set(updatedBlob)
   }
 
   def reproduceBlobFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    val newBlob = BaseBlob(blob.name+"-son",
+    val newBlob = BaseBlob(blob.name + "-son" + nextValue,
       blob.boundingBox,
       Constants.DEF_BLOB_LIFE,
       randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
+      randomGender(),
       MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.NEXT_DIRECTION))
     Set(newBlob, blob match {
       case b : BaseBlob => BaseBlob(b.name, b.boundingBox, b.life + Constants.DEF_FOOD_ENERGY,
-        b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.movementStrategy, b.direction)
+        b.velocity, b.degradationEffect, b.fieldOfViewRadius, b.gender, b.movementStrategy, b.direction)
       case b: PoisonBlob => b.copy()
       case b: SlowBlob => b.copy()
     })
@@ -35,7 +36,7 @@ object Effect {
 
   def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = {
     Set(PoisonBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
-      blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN))
+      blob.fieldOfViewRadius, blob.gender, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN))
   }
 
   // used for static entities
@@ -50,7 +51,7 @@ object Effect {
     //val currentVelocity: Velocity = if (blob.velocity > 0) blob.velocity - 1 else blob.velocity
     blob match {
       case _ : BaseBlob => Set(SlowBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
-        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN, blob.velocity))
+        blob.fieldOfViewRadius, blob.gender, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN, blob.velocity))
       case _ => Set()
     }
   }

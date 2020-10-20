@@ -12,6 +12,7 @@ class FoodTests extends FunSuite {
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
+    gender = GenderEnum.Male,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15)
     /*movementDirection = 0,
@@ -23,6 +24,7 @@ class FoodTests extends FunSuite {
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
+    gender = GenderEnum.Male,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15),
     cooldown = Constants.DEF_COOLDOWN)

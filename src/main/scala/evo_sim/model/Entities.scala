@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Gender, Life, MovementStrategy, Velocity}
 import evo_sim.model.EntityStructure._
 
 object Entities {
@@ -15,6 +15,7 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
+                      override val gender: Gender,
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction
                       /*override val movementDirection: Int,
@@ -36,6 +37,7 @@ object Entities {
                         override val velocity: Velocity,
                         override val degradationEffect: DegradationEffect[Blob],
                         override val fieldOfViewRadius: Int,
+                        override val gender: Gender,
                         override val movementStrategy: MovementStrategy,
                         override val direction: Direction,
                         override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TempBlobBehaviour
@@ -46,6 +48,7 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
+                      override val gender: Gender,
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction,
                       override val cooldown: Cooldown,

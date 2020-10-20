@@ -2,7 +2,13 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Gender, Life, MovementStrategy, Velocity}
+import evo_sim.model.GenderEnum.GenderEnum
+
+object GenderEnum extends Enumeration {
+  type GenderEnum = Value
+  val Male, Female = Value
+}
 
 object EntityStructure {
   trait Domain {
@@ -13,6 +19,7 @@ object EntityStructure {
     type Position
     type MovementStrategy
     type Cooldown
+    type Gender
   }
 
   object DomainImpl extends Domain {
@@ -22,6 +29,7 @@ object EntityStructure {
     override type Position = Movement
     override type MovementStrategy = (Intelligent, World) => Position
     override type Cooldown = Int
+    override type Gender = GenderEnum
   }
 
   trait Entity {
@@ -55,7 +63,11 @@ object EntityStructure {
     def direction: Direction
   }
 
-  trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {
+  trait Sexed extends Entity {
+    def gender: Gender
+  }
+
+  trait Blob extends Entity with Living with Moving with Perceptive with Intelligent with Sexed {
     override def boundingBox: Circle
     def degradationEffect: DegradationEffect[Blob]
   }

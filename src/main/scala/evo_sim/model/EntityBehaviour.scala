@@ -6,6 +6,8 @@ import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle}
 import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.World._
+import evo_sim.model.Reproducible._
+import evo_sim.model.ReproducibleImplicits._
 
 object EntityBehaviour {
 
@@ -39,6 +41,10 @@ object EntityBehaviour {
 
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
+        case blob: BaseBlob => blob.gender match {
+          case GenderEnum.Male if self.gender == GenderEnum.Female => Set(self, reproduce(self, blob))
+          case _ => Set(self)
+        }
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case _ => Set(self)
@@ -96,6 +102,7 @@ object EntityBehaviour {
         self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
         DegradationEffect.baseBlobDegradation,
         self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+        self.gender,
         self.movementStrategy,
         movement.direction)
     }
@@ -121,6 +128,7 @@ object EntityBehaviour {
           self.initialVelocity,
           DegradationEffect.baseBlobDegradation,
           self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          self.gender,
           self.movementStrategy,
           movement.direction)
     }

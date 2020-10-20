@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-
+import evo_sim.model.Utils._
 
 
 case class World(temperature: Int,
@@ -28,6 +28,7 @@ object World {
       velocity = Constants.DEF_BLOB_VELOCITY,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
+      gender = randomGender(),
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction(0, 20))).toSet
 
