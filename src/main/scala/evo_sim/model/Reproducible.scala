@@ -3,14 +3,16 @@ package evo_sim.model
 package u13.typeclasses
 
 import evo_sim.model.Entities.BaseBlob
+import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.u13.typeclasses.Reproducible.reproduce
 
 //type class for reproduction
 trait Reproducible[A] {
-  def reproduce(b1: A, b2: A): Set[A]
+  def reproduce(b1: A, b2: A): A
 }
 
 object Reproducible {
-  def reproduce[A: Reproducible](b1: A, b2: A): Set[A] =
+  def reproduce[A: Reproducible](b1: A, b2: A): A =
     implicitly[Reproducible[A]].reproduce(b1, b2)
 
   //dot notation
@@ -24,7 +26,14 @@ object ReproducibleImplicits {
   implicit object BaseBlobReproduction extends Reproducible[BaseBlob]{
     override def reproduce(a1: BaseBlob, a2: BaseBlob) =
 /*REPRODUCTION LOGIC GOES HERE*/
-      Set()
+      a1
+  }
+}
+
+object ReproducibleExample {
+  import ReproducibleImplicits._
+  def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
+    case _ : BaseBlob => Set(reproduce(other.asInstanceOf[BaseBlob], other.asInstanceOf[BaseBlob]))
   }
 }
 
