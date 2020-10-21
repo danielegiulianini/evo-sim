@@ -94,7 +94,7 @@ object World {
     def sinusoidalSin(yTranslation: Int)(yDilatation: Float)(x:Float)(phase: Int) =
       ((yTranslation + yDilatation) * Math.sin(2 * Math.PI * x + phase)).toInt
 
-    //most used sinusoidalSin partially-applied functions
+    //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
     def zeroPhasedSinusoidalSin = sinusoidalSin (_:Int) (_:Float) (_:Float) (0)
     //sinusoidalSin ((_:Int) (_:Float) (_:Float) (0)).curried
     def zeroYTranslatedSinusoidalSin = sinusoidalSin (0) (_:Float) (_:Float) (_:Int)
