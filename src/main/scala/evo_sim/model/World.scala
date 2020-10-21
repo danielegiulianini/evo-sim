@@ -96,13 +96,9 @@ object World {
 
     //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
     def zeroPhasedSinusoidalSin = sinusoidalSin  (_:Float) (_:Float) (0) (_:Int)
-    //sinusoidalSin ((_:Float) (_:Float) (0) (_:Int) ).curried
     def zeroYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
-    //sinusoidalSin ((_:Float) (_:Float) (_:Int) (0)).curried
     def oneYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
-    //sinusoidalSin ((_:Float) (_:Float) (_:Int) (1) ).curried
     def zeroPhasedOneYTranslatedSinusoidalSin : (Float, Float) => Int = sinusoidalSin (_:Float) (_:Float) (0)  (1)
-    //sinusoidalSin ((_:Float) (_:Float) (0) (1)).curried
 
     object Curried {
       def zeroPhasedSinusoidalSin = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
@@ -112,8 +108,8 @@ object World {
     }
 
     /*example of use:
-    instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call:
-    oneYTranslatedZeroPhasedSinusoidalSin(1f)(2)            -------->(reuse)
+    instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call this instead:
+    zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
     */
 
   }
