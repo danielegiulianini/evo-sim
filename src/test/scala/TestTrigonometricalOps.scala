@@ -1,5 +1,6 @@
+import evo_sim.model.World.TrigonometricalOps.sinusoidalSin
 import org.scalacheck.{Arbitrary, Prop, Properties}
-import org.scalacheck.Prop.{forAll, exists}
+import org.scalacheck.Prop.{exists, forAll}
 
 
 class TestTrigonometricalOps {
@@ -11,6 +12,10 @@ class TestTrigonometricalOps {
 
   //check periodic cycle
 
-  
+  object SinusoidalSpecifications extends Properties("Sinusoidal") {
+    /*("max and min value respected") = forAll { (: Int, b: Float, x:Float, c) =>
+      sinusoidalSin(a)(3)(3f)(0: Int)
+    }*/
+  }
 
 }

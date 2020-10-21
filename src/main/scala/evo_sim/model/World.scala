@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.TrigonometricalOps.{oneYTranslatedZeroPhasedSinusoidalSin, sinusoidalSin}
+import evo_sim.model.World.TrigonometricalOps.{zeroPhasedOneYTranslatedSinusoidalSin, sinusoidalSin}
 
 
 
@@ -73,7 +73,7 @@ object World {
 
     val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
       case (temperature, currentIteration) =>
-        temperature + oneYTranslatedZeroPhasedSinusoidalSin(1f/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
+        temperature + zeroPhasedOneYTranslatedSinusoidalSin(1f/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
     }
 
 
@@ -91,21 +91,21 @@ object World {
   }
 
   object TrigonometricalOps {
-    def sinusoidalSin(yTranslation: Int)(yDilatation: Float)(x:Float)(phase: Int) =
-      ((yTranslation + yDilatation) * Math.sin(2 * Math.PI * x + phase)).toInt
+    def sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int) =
+      (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename ytranslation to amplitude
 
     //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-    def zeroPhasedSinusoidalSin = sinusoidalSin (_:Int) (_:Float) (_:Float) (0)
-    //sinusoidalSin ((_:Int) (_:Float) (_:Float) (0)).curried
-    def zeroYTranslatedSinusoidalSin = sinusoidalSin (0) (_:Float) (_:Float) (_:Int)
-    //sinusoidalSin ((0) (_:Float) (_:Float) (_:Int)).curried
-    def oneYTranslatedSinusoidalSin = sinusoidalSin (1) (_:Float) (_:Float) (_:Int)
-    //sinusoidalSin ((1) (_:Float) (_:Float) (_:Int)).curried
-    def oneYTranslatedZeroPhasedSinusoidalSin : (Float, Float) => Int = sinusoidalSin(1) (_:Float) (_:Float) (0)
-    //sinusoidalSin ((1) (_:Float) (_:Float) (0)).curried
+    def zeroPhasedSinusoidalSin = sinusoidalSin  (_:Float) (_:Float) (0) (_:Int)
+    //sinusoidalSin ((_:Float) (_:Float) (0) (_:Int) ).curried
+    def zeroYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
+    //sinusoidalSin ((_:Float) (_:Float) (_:Int) (0)).curried
+    def oneYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
+    //sinusoidalSin ((_:Float) (_:Float) (_:Int) (1) ).curried
+    def zeroPhasedOneYTranslatedSinusoidalSin : (Float, Float) => Int = sinusoidalSin (_:Float) (_:Float) (0)  (1)
+    //sinusoidalSin ((_:Float) (_:Float) (0) (1)).curried
 
     /*example of use:
-    instead of calling: sinusoidalSin(1)(1f)(2)(0) in many places in our code, call:
+    instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call:
     oneYTranslatedZeroPhasedSinusoidalSin(1f)(2)            -------->(reuse)
     */
 
