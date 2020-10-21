@@ -96,9 +96,13 @@ object World {
 
     //most used sinusoidalSin partially-applied functions
     def zeroPhasedSinusoidalSin = sinusoidalSin (_:Int) (_:Float) (_:Float) (0)
+    //sinusoidalSin ((_:Int) (_:Float) (_:Float) (0)).curried
     def zeroYTranslatedSinusoidalSin = sinusoidalSin (0) (_:Float) (_:Float) (_:Int)
+    //sinusoidalSin ((0) (_:Float) (_:Float) (_:Int)).curried
     def oneYTranslatedSinusoidalSin = sinusoidalSin (1) (_:Float) (_:Float) (_:Int)
+    //sinusoidalSin ((1) (_:Float) (_:Float) (_:Int)).curried
     def oneYTranslatedZeroPhasedSinusoidalSin : (Float, Float) => Int = sinusoidalSin(1) (_:Float) (_:Float) (0)
+    //sinusoidalSin ((1) (_:Float) (_:Float) (0)).curried
 
     /*example of use:
     instead of calling: sinusoidalSin(1)(1f)(2)(0) in many places in our code, call:
