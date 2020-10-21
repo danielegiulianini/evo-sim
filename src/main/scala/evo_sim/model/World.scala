@@ -71,11 +71,17 @@ object World {
         luminosity + zeroPhasedSinusoidalSin(1 + 1/32f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
     }
 
+    /*def updatedLuminosity(luminosity: Int, currentIteration: Int) =
+  luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
+
+
     val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
       case (temperature, currentIteration) =>
         temperature + zeroPhasedOneYTranslatedSinusoidalSin(1 + 1/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
     }
 
+    /*def updatedTemperature(tempera: Int, currentIteration: Int) =
+  luminosity + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
 
 
     EnvironmentParameters(luminosityUpdated(world.luminosity, world.currentIteration),

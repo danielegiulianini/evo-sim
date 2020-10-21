@@ -10,7 +10,7 @@ object SinusoidalSpecifications extends Properties("Sinusoidal") {
   property("max and min value respected") = forAll {
     (yDilatation: Float, x: Float, phase: Int, yTranslation: Int) => {
       val value = sinusoidalSin(yDilatation)(x)(phase)(yTranslation: Int)
-      value <= yDilatation /* *1 */ + yTranslation && value <= -yDilatation /* *1 */ + yTranslation
+      value <= yDilatation /* *1 */ + yTranslation || value >= -yDilatation /* *1 */ + yTranslation
     }
   }
 
