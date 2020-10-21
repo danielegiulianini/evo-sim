@@ -68,12 +68,9 @@ object World {
       luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
 
     val updatedLuminosity: ((Int, Int)) => Int = MemoHelper.memoize {
-      case (luminosity, currentIteration) => luminosity + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+      case (luminosity, currentIteration) => luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
     }
 
-
-    /*def updatedTemperature(temperature: Int, currentIteration: Int) =
-      temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
 
     val updatedTemperature: ((Int, Int)) => Int = MemoHelper.memoize {
       case (temperature, currentIteration) => temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration /Constants.ITERATIONS_PER_DAY)).toInt
