@@ -67,12 +67,13 @@ object World {
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
 
     val luminosityUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
-      case (luminosity, currentIteration) => luminosity + sinusoidalSin(1)(1/32f)(currentIteration / Constants.ITERATIONS_PER_DAY)(0)
+      case (luminosity, currentIteration) =>
+        luminosity + sinusoidalSin(1)(1/32f)(currentIteration / Constants.ITERATIONS_PER_DAY)(0)
     }
 
     val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
-      case (temperature, currentIteration) => temperature + sinusoidalSin(yTranslation = 1)(1/64f)(currentIteration /Constants.ITERATIONS_PER_DAY)(phase= 0)
-        //((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration /Constants.ITERATIONS_PER_DAY)).toInt
+      case (temperature, currentIteration) =>
+        temperature + sinusoidalSin(yTranslation = 1)(1/64f)(currentIteration /Constants.ITERATIONS_PER_DAY)(phase= 0)
     }
 
 
@@ -96,8 +97,14 @@ object World {
     //most used sinusoidalSin partially-applied functions
     def zeroPhasedSinusoidalSin = sinusoidalSin (_) (_) (_) (0)
     def zeroYTranslatedSinusoidalSin = sinusoidalSin (0) (_) (_) (_)
-    def unoYTranslatedSinusoidalSin = sinusoidalSin (1) (_) (_) (_)
-    def unoYTranslatedZeroPhasedSinusoidalSin = sinusoidalSin(1) (_) (_) (0)
+    def oneYTranslatedSinusoidalSin = sinusoidalSin (1) (_) (_) (_)
+    def oneYTranslatedZeroPhasedSinusoidalSin = sinusoidalSin(1) (_) (_) (0)
+
+    /*example of use:
+    instead of calling: sinusoidalSin(1)(1f)(2)(0) in many places on our code, call:
+    oneYTranslatedZeroPhasedSinusoidalSin(1f)(2) (reuse)
+    */
+
   }
 
 }
