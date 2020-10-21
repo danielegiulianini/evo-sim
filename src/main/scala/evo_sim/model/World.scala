@@ -96,7 +96,7 @@ object World {
     //most used sinusoidalSin partial applications
     def zeroPhasedSinusoidalSin(yTranslation: Int)(yDilatation: Float)(x:Int) = sinusoidalSin (_) (_) (_) (0)
 
-
+    def zeroYTranslatedSinusoidalSin(yDilatation: Float)(x:Int)(phase:Int) = sinusoidalSin (0) (_) (_) (_)
 
 
   }
