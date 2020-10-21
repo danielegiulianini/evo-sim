@@ -5,6 +5,7 @@ import evo_sim.model.Entities.{BaseBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.EntityStructure.DomainImpl.Velocity
+import evo_sim.model.Utils._
 
 object Effect {
 
@@ -19,7 +20,7 @@ object Effect {
   }
 
   def reproduceBlobFoodEffect(blob: Blob): Set[SimulableEntity] = {
-    val newBlob = BaseBlob(blob.name+"-son",
+    val newBlob = BaseBlob(blob.name + "-son" + nextValue,
       blob.boundingBox,
       Constants.DEF_BLOB_LIFE,
       randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
@@ -60,8 +61,4 @@ object Effect {
     case _ => Set()
     }
 
-  /* min = value - range, max = value + range */
-  private def randomValueChange(value: Int, range: Int): Int = {
-    value + new java.util.Random().nextInt(range * 2 + 1) - range
-  }
 }

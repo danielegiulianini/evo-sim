@@ -1,6 +1,7 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood, PoisonBlob}
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model._
+import evo_sim.model.Constants._
 import org.scalatest.FunSuite
 
 class FoodTests extends FunSuite {
@@ -42,9 +43,8 @@ class FoodTests extends FunSuite {
 
   test("BlobIncreasedLife") {
     val updatedBlob = blob.collided(standardFood).toVector(0).asInstanceOf[Blob]
-    assert(updatedBlob.life == blob.life + 10)
-    val updatedBlob2 = blob.collided(reproducingFood).toVector(0).asInstanceOf[Blob]
-    assert(updatedBlob2.life == blob.life + 10)
+    assert(updatedBlob.life == blob.life + DEF_FOOD_ENERGY)
+    assert(blob.collided(reproducingFood).exists(b => b.asInstanceOf[Blob].life == DEF_BLOB_LIFE))
   }
 
   test("newBlob") {
