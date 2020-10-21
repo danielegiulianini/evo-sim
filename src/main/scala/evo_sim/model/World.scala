@@ -71,7 +71,8 @@ object World {
     }
 
     val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
-      case (temperature, currentIteration) => temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration /Constants.ITERATIONS_PER_DAY)).toInt
+      case (temperature, currentIteration) => temperature + sinusoidalSin(yTranslation = 1)(1/64f)(currentIteration /Constants.ITERATIONS_PER_DAY)(phase= 0)
+        //((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration /Constants.ITERATIONS_PER_DAY)).toInt
     }
 
 
