@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
-import evo_sim.model.EntityStructure.{Entity}
+import evo_sim.model.EntityStructure.{Entity, Moving}
 
 trait Collidable {
   def collided(other: SimulableEntity) : Set[SimulableEntity]
@@ -14,6 +14,9 @@ object Collidable {
     self: Entity with Updatable =>
     override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
   }
+
+
+
 
 }
 

@@ -64,8 +64,13 @@ object World {
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
-    def updatedLuminosity(luminosity: Int, currentIteration: Int) =
-      luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+    /*def updatedLuminosity(luminosity: Int, currentIteration: Int) =
+      luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
+    
+    val updatedLuminosity: ((Int, Int)) => Int = MemoHelper.memoize {
+      case (luminosity, currentIteration) => luminosity + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+    }
+
 
     def updatedTemperature(temperature: Int, currentIteration: Int) =
       temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
