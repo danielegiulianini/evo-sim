@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.TrigonometricalOps.sinusoidalSin
+import evo_sim.model.World.TrigonometricalOps.{oneYTranslatedZeroPhasedSinusoidalSin, sinusoidalSin}
 
 
 
@@ -73,7 +73,7 @@ object World {
 
     val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
       case (temperature, currentIteration) =>
-        temperature + sinusoidalSin(yTranslation = 1)(1/64f)(currentIteration /Constants.ITERATIONS_PER_DAY)(phase= 0)
+        temperature + oneYTranslatedZeroPhasedSinusoidalSin(1f/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
     }
 
 
@@ -91,18 +91,18 @@ object World {
   }
 
   object TrigonometricalOps {
-    def sinusoidalSin(yTranslation: Int)(yDilatation: Float)(x:Int)(phase: Int) =
+    def sinusoidalSin(yTranslation: Int)(yDilatation: Float)(x:Float)(phase: Int) =
       ((yTranslation + yDilatation) * Math.sin(2 * Math.PI * x + phase)).toInt
 
     //most used sinusoidalSin partially-applied functions
-    def zeroPhasedSinusoidalSin = sinusoidalSin (_) (_) (_) (0)
-    def zeroYTranslatedSinusoidalSin = sinusoidalSin (0) (_) (_) (_)
-    def oneYTranslatedSinusoidalSin = sinusoidalSin (1) (_) (_) (_)
-    def oneYTranslatedZeroPhasedSinusoidalSin = sinusoidalSin(1) (_) (_) (0)
+    def zeroPhasedSinusoidalSin = sinusoidalSin (_:Int) (_:Float) (_:Float) (0)
+    def zeroYTranslatedSinusoidalSin = sinusoidalSin (0) (_:Float) (_:Float) (_:Int)
+    def oneYTranslatedSinusoidalSin = sinusoidalSin (1) (_:Float) (_:Float) (_:Int)
+    def oneYTranslatedZeroPhasedSinusoidalSin : (Float, Float) => Int = sinusoidalSin(1) (_:Float) (_:Float) (0)
 
     /*example of use:
-    instead of calling: sinusoidalSin(1)(1f)(2)(0) in many places on our code, call:
-    oneYTranslatedZeroPhasedSinusoidalSin(1f)(2) (reuse)
+    instead of calling: sinusoidalSin(1)(1f)(2)(0) in many places in our code, call:
+    oneYTranslatedZeroPhasedSinusoidalSin(1f)(2)            -------->(reuse)
     */
 
   }
