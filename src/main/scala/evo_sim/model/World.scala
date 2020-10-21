@@ -2,6 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.World.TrigonometricalOps.sinusoidalSin
 
 
 
@@ -64,21 +65,19 @@ object World {
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
-    /*def updatedLuminosity(luminosity: Int, currentIteration: Int) =
-      luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
 
-    val updatedLuminosity: ((Int, Int)) => Int = MemoHelper.memoize {
-      case (luminosity, currentIteration) => luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+    val luminosityUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
+      case (luminosity, currentIteration) => luminosity + sinusoidalSin(1)(1/32f)(currentIteration / Constants.ITERATIONS_PER_DAY)(0)
     }
 
-
-    val updatedTemperature: ((Int, Int)) => Int = MemoHelper.memoize {
+    val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
       case (temperature, currentIteration) => temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration /Constants.ITERATIONS_PER_DAY)).toInt
     }
 
 
-    EnvironmentParameters(updatedLuminosity(world.luminosity, world.currentIteration),
-      updatedTemperature(world.temperature, world.currentIteration))
+
+    EnvironmentParameters(luminosityUpdated(world.luminosity, world.currentIteration),
+      temperatureUpdated(world.temperature, world.currentIteration))
   }
 
 
@@ -87,6 +86,12 @@ object World {
     def memoize[I, O](f: I => O): I => O = new collection.mutable.HashMap[I, O]() {
       override def apply(key: I) = getOrElseUpdate(key, f(key))
     }
+  }
+
+  object TrigonometricalOps {
+    def sinusoidalSin(yTranslation: Int)(yDilatation: Float)(x:Int)(phase: Int) =
+      ((yTranslation + yDilatation) * Math.sin(2 * Math.PI * x + phase)).toInt
+
   }
 
 }
