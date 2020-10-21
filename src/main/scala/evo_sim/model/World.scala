@@ -104,8 +104,12 @@ object World {
     def zeroPhasedOneYTranslatedSinusoidalSin : (Float, Float) => Int = sinusoidalSin (_:Float) (_:Float) (0)  (1)
     //sinusoidalSin ((_:Float) (_:Float) (0) (1)).curried
 
-
-
+    object Curried {
+      def zeroPhasedSinusoidalSin = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
+      def zeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroYTranslatedSinusoidalSin.curried
+      def oneYTranslatedSinusoidalSin = TrigonometricalOps.oneYTranslatedSinusoidalSin.curried
+      def zeroPhasedOneYTranslatedSinusoidalSin : (Float, Float) => Int =TrigonometricalOps.zeroPhasedOneYTranslatedSinusoidalSin.curried
+    }
     /*example of use:
     instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call:
     oneYTranslatedZeroPhasedSinusoidalSin(1f)(2)            -------->(reuse)
