@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.TrigonometricalOps.{zeroPhasedOneYTranslatedSinusoidalSin, sinusoidalSin}
+import evo_sim.model.World.TrigonometricalOps.{sinusoidalSin, zeroPhasedOneYTranslatedSinusoidalSin, zeroPhasedSinusoidalSin}
 
 
 
@@ -68,12 +68,12 @@ object World {
 
     val luminosityUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
       case (luminosity, currentIteration) =>
-        luminosity + sinusoidalSin(1)(1/32f)(currentIteration / Constants.ITERATIONS_PER_DAY)(0)
+        luminosity + zeroPhasedSinusoidalSin(1 + 1/32f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
     }
 
     val temperatureUpdated: ((Int, Int)) => Int = MemoHelper.memoize {
       case (temperature, currentIteration) =>
-        temperature + zeroPhasedOneYTranslatedSinusoidalSin(1f/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
+        temperature + zeroPhasedOneYTranslatedSinusoidalSin(1 + 1/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
     }
 
 
@@ -103,6 +103,8 @@ object World {
     //sinusoidalSin ((_:Float) (_:Float) (_:Int) (1) ).curried
     def zeroPhasedOneYTranslatedSinusoidalSin : (Float, Float) => Int = sinusoidalSin (_:Float) (_:Float) (0)  (1)
     //sinusoidalSin ((_:Float) (_:Float) (0) (1)).curried
+
+
 
     /*example of use:
     instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call:
