@@ -65,24 +65,22 @@ object World {
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
+    /*def updatedLuminosity(luminosity: Int, currentIteration: Int) =
+      luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+
+    def updatedTemperature(temperature: Int, currentIteration: Int) = {
+      val newTemp  = temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
+      newTemp
+    }*/
 
     val luminosityUpdated: Function1[Tuple2[Int, Int], Int] = MemoHelper.memoize({
       case (luminosity, currentIteration) =>
-        luminosity + TrigonometricalOps.zeroPhasedSinusoidalSin(1 + 1/32f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
+        luminosity + TrigonometricalOps.zeroPhasedSinusoidalSin(1 + 1 / 32f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
     })
-
-    /*def updatedLuminosity(luminosity: Int, currentIteration: Int) =
-  luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
-
 
     val temperatureUpdated: Function1[Tuple2[Int, Int], Int] = MemoHelper.memoize({
-      case (temperature, currentIteration) =>
-        temperature + TrigonometricalOps.zeroPhasedOneYTranslatedSinusoidalSin(1 + 1/64f, currentIteration/Constants.ITERATIONS_PER_DAY)
+      case (temperature, currentIteration) => temperature + TrigonometricalOps.zeroPhasedSinusoidalSin(1 + 1 / 64f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
     })
-
-    /*def updatedTemperature(tempera: Int, currentIteration: Int) =
-  luminosity + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt*/
-
 
     EnvironmentParameters.apply(luminosityUpdated(world.luminosity, world.currentIteration),
       temperatureUpdated(world.temperature, world.currentIteration))
@@ -101,13 +99,9 @@ object World {
       (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename ytranslation to amplitude
 
     //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-    def zeroPhasedSinusoidalSin: Function3[Float, Float, Int, Int] = (fl1: Float, fl2: Float, i: Int) => TrigonometricalOps.sinusoidalSin  (fl1) (fl2) (0) (i)
-
+    def zeroPhasedSinusoidalSin: Function3[Float, Float, Int, Int] = (fl1: Float, fl2: Float, i: Int) => TrigonometricalOps.sinusoidalSin (fl1) (fl2) (0) (i)
     def zeroYTranslatedSinusoidalSin: Function3[Float, Float, Int, Int] = (fl1: Float, fl2: Float, i: Int) => TrigonometricalOps.sinusoidalSin (fl1) (fl2) (i) (0)
-
     def oneYTranslatedSinusoidalSin: Function3[Float, Float, Int, Int] = (fl1: Float, fl2: Float, i: Int) => TrigonometricalOps.sinusoidalSin (fl1) (fl2) (i) (1)
-
-    def zeroPhasedOneYTranslatedSinusoidalSin : Function2[Float, Float, Int] = (fl1: Float, fl2: Float) => TrigonometricalOps.sinusoidalSin (fl1) (fl2) (0)  (1)
 
     object Curried {
       def zeroPhasedSinusoidalSin: Function1[Float, Float => Int => Int] = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
@@ -122,7 +116,6 @@ object World {
     */
 
   }
-
 }
 
 
