@@ -10,7 +10,7 @@ import org.scalatest.prop.Checkers
 
 //run with: test;  from Intellij sbt shell
 //or: sbt test     from cmd from the the folder cotaining build.sbt file
-object SinusoidalSpecifications extends PropSpec with Checkers { //extends Properties("Sinusoidal") {
+class SinusoidalSpecifications extends PropSpec with Checkers { //extends Properties("Sinusoidal") {
   //signature: sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int)
 
   //1. check codomain is respected (max = amplitude * 1 + ytranslation, min = amplitude * -1 + ytraslation)
