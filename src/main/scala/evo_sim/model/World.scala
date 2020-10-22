@@ -73,12 +73,12 @@ object World {
       newTemp
     }*/
 
-    val luminosityUpdated: Function1[Tuple2[Int, Int], Int] = MemoHelper.memoize({
+    val luminosityUpdated:((Int, Int)) => Int = MemoHelper.memoize({
       case (luminosity, currentIteration) =>
         luminosity + zeroPhasedSinusoidalSin(1 + 1 / 32f)( currentIteration / Constants.ITERATIONS_PER_DAY)(0)
     })
 
-    val temperatureUpdated: Function1[Tuple2[Int, Int], Int] = MemoHelper.memoize({
+    val temperatureUpdated:((Int, Int)) => Int = MemoHelper.memoize({
       case (temperature, currentIteration) => temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
     })
 
