@@ -19,13 +19,7 @@ object MovingStrategies {
     }
 
     chasedEntity match {
-      case Some(chasedEntity) if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius) => {
-        /*println("entity: " + entity.boundingBox)
-        println("chased: " + chasedEntity.boundingBox)
-        println("FOV: " + entity.fieldOfViewRadius + ", distance: " + distanceBetweenEntities(entity, chasedEntity))
-        Thread.sleep(10000)*/
-        chaseMovement(entity, chasedEntity)
-      }
+      case Some(chasedEntity) if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius) => chaseMovement(entity, chasedEntity)
       case _ => standardMovement(entity, entity.direction.angle, world)
     }
 
@@ -70,6 +64,5 @@ object MovingStrategies {
   private def distanceBetweenEntities(a: Intelligent, b: SimulableEntity): Double = {
     sqrt(pow(b.boundingBox.point.x - a.boundingBox.point.x, 2) + pow(b.boundingBox.point.y - a.boundingBox.point.y, 2))
   }
-
 
 }

@@ -15,3 +15,5 @@ libraryDependencies += "org.typelevel" %% "cats-effect" % "2.2.0"
 
 libraryDependencies += "com.github.wookietreiber" %% "scala-chart" % "latest.integration"
 libraryDependencies += "org.knowm.xchart" % "xchart" % "3.6.5"
+
+libraryDependencies += "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0"
