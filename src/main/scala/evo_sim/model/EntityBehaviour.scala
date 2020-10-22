@@ -41,11 +41,9 @@ object EntityBehaviour {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case base: BaseBlob => {
-          println("okbase")
           if(self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life=self.life+base.life)) else Set(self.copy())
         }
         case cannibal: CannibalBlob => {
-          println("ok")
           if(self.boundingBox.radius > cannibal.boundingBox.radius) Set(self.copy(life=self.life+cannibal.life)) else Set(self.copy(life = Constants.DEF_BLOB_DEAD))}
         case _ => Set(self)
       }
