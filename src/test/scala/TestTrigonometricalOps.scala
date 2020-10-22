@@ -3,11 +3,14 @@ import evo_sim.model.World.TrigonometricalOps.Curried._
 import evo_sim.model.World.TrigonometricalOps.sinusoidalSin
 import org.scalacheck.{Arbitrary, Prop, Properties}
 import org.scalacheck.Prop.{exists, forAll}
+import org.scalactic.TolerantNumerics
+import org.scalatest.PropSpec
+import org.scalatest.prop.Checkers
 
 
 //run with: test;  from Intellij sbt shell
 //or: sbt test     from cmd from the the folder cotaining build.sbt file
-object SinusoidalSpecifications extends Properties("Sinusoidal") {
+object SinusoidalSpecifications extends PropSpec with Checkers { //extends Properties("Sinusoidal") {
   //signature: sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int)
 
   //1. check codomain is respected (max = amplitude * 1 + ytranslation, min = amplitude * -1 + ytraslation)
@@ -31,14 +34,20 @@ object SinusoidalSpecifications extends Properties("Sinusoidal") {
   def oldSinusoidal(x: Int) =
     ((oldYDilatation) * Math.sin(2 * Math.PI * x / Constants.ITERATIONS_PER_DAY)).toInt
 
-  property("new sinusoidal result equals old (working but not tested) sinusoidal result") = forAll {
-    (x: Int) => {
-      val newVersionValue = sinusoidalSin((oldYDilatation))(x / Constants.ITERATIONS_PER_DAY)(0)(0)
-      val oldVersionValue = oldSinusoidal(x)
-      newVersionValue == oldVersionValue
+  val epsilon = 1e-4f
+  implicit val doubleEq = TolerantNumerics.tolerantDoubleEquality(epsilon)
+
+  property("new sinusoidal result equals old (working but not tested) sinusoidal result") {
+    check {
+      Prop.forAll {
+        (x: Int) => {
+          val newVersionValue = sinusoidalSin((oldYDilatation))(x / Constants.ITERATIONS_PER_DAY)(0)(0)
+          val oldVersionValue = oldSinusoidal(x)
+          newVersionValue === oldVersionValue
+        }
+      }
     }
   }
 }
-
 
 
