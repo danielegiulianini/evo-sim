@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.TrigonometricalOps.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
+import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
 
 
 
@@ -65,10 +65,10 @@ object World {
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
-    /*def updatedLuminosity(luminosity: Int, currentIteration: Int) =
+    /*def luminosityUpdated(luminosity: Int, currentIteration: Int) =
       luminosity + ((1 + 1 / 32f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
 
-    def updatedTemperature(temperature: Int, currentIteration: Int) = {
+    def temperatureUpdated(temperature: Int, currentIteration: Int) = {
       val newTemp  = temperature + ((1 + 1 / 64f) * Math.sin(2 * Math.PI * currentIteration / Constants.ITERATIONS_PER_DAY)).toInt
       newTemp
     }*/
@@ -82,7 +82,7 @@ object World {
       case (temperature, currentIteration) => temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
     })
 
-    EnvironmentParameters.apply(luminosityUpdated(world.luminosity, world.currentIteration),
+    EnvironmentParameters(luminosityUpdated(world.luminosity, world.currentIteration),
       temperatureUpdated(world.temperature, world.currentIteration))
   }
 
@@ -95,20 +95,22 @@ object World {
   }
 
   object TrigonometricalOps {
-    def sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int): Int =
-      (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename ytranslation to amplitude
+    object Sinusoidal {
+      def sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int): Int =
+        (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename ytranslation to amplitude
 
-    //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-    def zeroPhasedSinusoidalSin= TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
-    def zeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
-    def oneYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
-    def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (0)
+      //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
+      def zeroPhasedSinusoidalSin= TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
+      def zeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
+      def oneYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
+      def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (0)
 
-    object Curried {
-      def zeroPhasedSinusoidalSin = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
-      def zeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroYTranslatedSinusoidalSin.curried
-      def oneYTranslatedSinusoidalSin = TrigonometricalOps.oneYTranslatedSinusoidalSin.curried
-      def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroPhasedZeroYTranslatedSinusoidalSin.curried
+      object Curried {
+        def zeroPhasedSinusoidalSin = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
+        def zeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroYTranslatedSinusoidalSin.curried
+        def oneYTranslatedSinusoidalSin = TrigonometricalOps.oneYTranslatedSinusoidalSin.curried
+        def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroPhasedZeroYTranslatedSinusoidalSin.curried
+      }
     }
 
     /*example of use:
