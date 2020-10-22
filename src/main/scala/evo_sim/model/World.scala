@@ -100,16 +100,16 @@ object World {
         (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename ytranslation to amplitude
 
       //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-      def zeroPhasedSinusoidalSin= TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
-      def zeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
-      def oneYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
-      def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (0)
+      def zeroPhasedSinusoidalSin= Sinusoidal.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
+      def zeroYTranslatedSinusoidalSin = Sinusoidal.sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
+      def oneYTranslatedSinusoidalSin = Sinusoidal.sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
+      def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.sinusoidalSin (_:Float) (_:Float) (0) (0)
 
       object Curried {
-        def zeroPhasedSinusoidalSin = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
-        def zeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroYTranslatedSinusoidalSin.curried
-        def oneYTranslatedSinusoidalSin = TrigonometricalOps.oneYTranslatedSinusoidalSin.curried
-        def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroPhasedZeroYTranslatedSinusoidalSin.curried
+        def zeroPhasedSinusoidalSin = Sinusoidal.zeroPhasedSinusoidalSin.curried
+        def zeroYTranslatedSinusoidalSin = Sinusoidal.zeroYTranslatedSinusoidalSin.curried
+        def oneYTranslatedSinusoidalSin = Sinusoidal.oneYTranslatedSinusoidalSin.curried
+        def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidalSin.curried
       }
     }
 
