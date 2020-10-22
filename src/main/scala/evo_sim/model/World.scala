@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, CannibalBlob}
+import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, BasePlant, CannibalBlob, ReproducingPlant, StandardPlant}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
 
@@ -67,8 +67,19 @@ object World {
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.mudEffect)).toSet
 
+    // TODO: integrate view for plants
+    val standardPlants: Set[StandardPlant] = Iterator.tabulate(5)((i: Int) => StandardPlant(
+      name = "standardPlant".+(i),
+      boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STANDARD_PLANT_WIDTH, height = Constants.DEF_STANDARD_PLANT_HEIGHT),
+      lifeCycle = Constants.DEF_LIFECYCLE)).toSet
 
-    val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles
+    // TODO: integrate view for plants
+    val reproducingPlants: Set[ReproducingPlant] = Iterator.tabulate(5)((i: Int) => ReproducingPlant(
+      name = "reproducingPlant".+(i),
+      boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_REPRODUCING_PLANT_WIDTH * 3 / 2, height = Constants.DEF_REPRODUCING_PLANT_WIDTH),
+      lifeCycle = Constants.DEF_LIFECYCLE)).toSet
+
+    val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles ++ standardPlants ++ reproducingPlants
 
     World.apply(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
