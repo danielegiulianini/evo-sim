@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.World.TrigonometricalOps.{sinusoidalSin, zeroPhasedOneYTranslatedSinusoidalSin, zeroPhasedSinusoidalSin}
+import evo_sim.model.World.TrigonometricalOps.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
 
 
 
@@ -75,11 +75,11 @@ object World {
 
     val luminosityUpdated: Function1[Tuple2[Int, Int], Int] = MemoHelper.memoize({
       case (luminosity, currentIteration) =>
-        luminosity + TrigonometricalOps.zeroPhasedSinusoidalSin(1 + 1 / 32f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
+        luminosity + zeroPhasedSinusoidalSin(1 + 1 / 32f)( currentIteration / Constants.ITERATIONS_PER_DAY)(0)
     })
 
     val temperatureUpdated: Function1[Tuple2[Int, Int], Int] = MemoHelper.memoize({
-      case (temperature, currentIteration) => temperature + TrigonometricalOps.zeroPhasedSinusoidalSin(1 + 1 / 64f, currentIteration / Constants.ITERATIONS_PER_DAY, 0)
+      case (temperature, currentIteration) => temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
     })
 
     EnvironmentParameters.apply(luminosityUpdated(world.luminosity, world.currentIteration),
@@ -102,11 +102,13 @@ object World {
     def zeroPhasedSinusoidalSin= TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
     def zeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
     def oneYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
+    def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.sinusoidalSin (_:Float) (_:Float) (0) (0)
 
     object Curried {
-      def zeroPhasedSinusoidalSin: Function1[Float, Float => Int => Int] = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
-      def zeroYTranslatedSinusoidalSin: Function1[Float, Float => Int => Int] = TrigonometricalOps.zeroYTranslatedSinusoidalSin.curried
-      def oneYTranslatedSinusoidalSin: Function1[Float, Float => Int => Int] = TrigonometricalOps.oneYTranslatedSinusoidalSin.curried
+      def zeroPhasedSinusoidalSin = TrigonometricalOps.zeroPhasedSinusoidalSin.curried
+      def zeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroYTranslatedSinusoidalSin.curried
+      def oneYTranslatedSinusoidalSin = TrigonometricalOps.oneYTranslatedSinusoidalSin.curried
+      def zeroPhasedZeroYTranslatedSinusoidalSin = TrigonometricalOps.zeroPhasedZeroYTranslatedSinusoidalSin.curried
     }
 
     /*example of use:
