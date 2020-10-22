@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
+import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, CannibalBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 
 
@@ -21,7 +21,7 @@ object World {
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT + 1))
 
   def apply(env: Environment): World = {
-    val blobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber)(i => BaseBlob(
+    val baseBlobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber / 2)(i => BaseBlob(
       name = "blob" + i,
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
@@ -31,14 +31,24 @@ object World {
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction(0, 20))).toSet
 
-    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 2).ceil.toInt)(i => BaseFood(
+    val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber / 2)(i => CannibalBlob(
+      name = "cannibalBlob" + i,
+      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2*Constants.DEF_BLOB_RADIUS),
+      life = Constants.DEF_BLOB_LIFE,
+      velocity = Constants.DEF_BLOB_VELOCITY,
+      degradationEffect = DegradationEffect.standardDegradation,
+      fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
+      movementStrategy = MovingStrategies.baseMovement,
+      direction = Direction(0, 20))).toSet
+
+    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 10 * 9).ceil.toInt)(i => BaseFood(
       name = "standardFood" + i,
       boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
       life = Constants.DEF_FOOD_LIFE,
       effect = Effect.standardFoodEffect)).toSet
 
-    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 2).floor.toInt)(i => BaseFood(
+    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 10).floor.toInt)(i => BaseFood(
       name = "reproducingFood" + i,
       boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_REPRODUCING_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
@@ -55,7 +65,7 @@ object World {
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.mudEffect)).toSet
 
-    val entities: Set[SimulableEntity] = blobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles
+    val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles
 
     World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)

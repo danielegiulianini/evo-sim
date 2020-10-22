@@ -4,7 +4,7 @@ import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle}
-import evo_sim.model.Updatable.NeutralUpdatable
+import evo_sim.model.Updatable.{BaseBlobUpdatable, NeutralUpdatable}
 import evo_sim.model.World._
 
 object EntityBehaviour {
@@ -20,27 +20,26 @@ object EntityBehaviour {
   }
 
   //Base blob behaviour implementation
-  trait BaseBlobBehaviour extends Simulable {
+  trait BaseBlobBehaviour extends Simulable with BaseBlobUpdatable {
     self: BaseBlob =>
-
-    override def updated(world: World): Set[SimulableEntity] = {
-      val movement = self.movementStrategy(self, world)
-      self.life match {
-        case n if n > 0 => Set(self.copy(
-          boundingBox = Circle(movement.point, self.boundingBox.radius),
-          direction = movement.direction,
-          velocity = velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-          life = self.degradationEffect(self),
-          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration)
-        ))
-        case _ => Set()
-      }
-    }
-
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
+        case blob: CannibalBlob => if(blob.boundingBox.radius > self.boundingBox.radius) Set(self.copy(life = Constants.DEF_BLOB_DEAD)) else Set(self.copy())
+        case _ => Set(self)
+      }
+    }
+  }
+
+  trait CannibalBlobBehaviour extends Simulable with BaseBlobUpdatable{
+    self: CannibalBlob =>
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = {
+      other match {
+        case food: Food => food.effect(self)
+        case obstacle: Obstacle => obstacle.effect(self)
+        case base: BaseBlob => if(self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life=self.life+base.life)) else Set(self.copy())
+        case cannibal: CannibalBlob => if(self.boundingBox.radius > cannibal.boundingBox.radius) Set(self.copy(life=self.life+cannibal.life)) else Set(self.copy(life = Constants.DEF_BLOB_DEAD))
         case _ => Set(self)
       }
     }
