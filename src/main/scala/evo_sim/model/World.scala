@@ -113,11 +113,12 @@ object World {
         (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename yDilatation to amplitude
 
       //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-      def zeroPhasedSinusoidalSin= Sinusoidal.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
-      def zeroYTranslatedSinusoidalSin = Sinusoidal.sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
-      def oneYTranslatedSinusoidalSin = Sinusoidal.sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
-      def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.sinusoidalSin (_:Float) (_:Float) (0) (0)
+      def zeroPhasedSinusoidalSin= sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
+      def zeroYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (0)
+      def oneYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
+      def zeroPhasedZeroYTranslatedSinusoidalSin = Curried.zeroPhasedSinusoidalSin (_:Float) (_:Float) (0)
 
+      //object with curried versions to leverage IDE automatic named parameters
       object Curried {
         def zeroPhasedSinusoidalSin = Sinusoidal.zeroPhasedSinusoidalSin.curried
         def zeroYTranslatedSinusoidalSin = Sinusoidal.zeroYTranslatedSinusoidalSin.curried
@@ -125,6 +126,7 @@ object World {
         def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidalSin.curried
       }
     }
+
     /*example of use:
     instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call this instead:
     zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
