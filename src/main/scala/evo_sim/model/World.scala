@@ -87,7 +87,7 @@ object World {
 
     val luminosityUpdated:((Int, Int)) => Int = MemoHelper.memoize({
       case (luminosity, currentIteration) =>
-        luminosity + zeroPhasedSinusoidalSin(1 + 1 / 32f)( currentIteration / Constants.ITERATIONS_PER_DAY)(0)
+        luminosity + zeroPhasedSinusoidalSin(1 + 1 / 32f)(currentIteration / Constants.ITERATIONS_PER_DAY)(0)
     })
 
     val temperatureUpdated:((Int, Int)) => Int = MemoHelper.memoize({
@@ -110,7 +110,7 @@ object World {
   object TrigonometricalOps {
     object Sinusoidal {
       def sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int): Int =
-        (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename ytranslation to amplitude
+        (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation  //should rename yDilatation to amplitude
 
       //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
       def zeroPhasedSinusoidalSin= Sinusoidal.sinusoidalSin (_:Float) (_:Float) (0) (_:Int)
@@ -125,12 +125,10 @@ object World {
         def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidalSin.curried
       }
     }
-
     /*example of use:
     instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call this instead:
     zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
     */
-
   }
 }
 
