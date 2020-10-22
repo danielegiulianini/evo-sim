@@ -16,9 +16,16 @@ object Entities {
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy,
-                      override val direction: Direction
-                      /*override val movementDirection: Int,
-                      override val stepToNextDirection: Int*/) extends Blob with BaseBlobBehaviour
+                      override val direction: Direction) extends Blob with BaseBlobBehaviour
+
+  case class CannibalBlob(override val name: String,
+                      override val boundingBox: Circle,
+                      override val life: Life,
+                      override val velocity: Velocity,
+                      override val degradationEffect: DegradationEffect[Blob],
+                      override val fieldOfViewRadius: Int,
+                      override val movementStrategy: MovementStrategy,
+                      override val direction: Direction) extends Blob with CannibalBlobBehaviour
 
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,

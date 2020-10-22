@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle}
+import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, CannibalBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
 
@@ -22,9 +22,10 @@ object World {
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
 
   def apply(env: Environment): World = {
-    val blobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber)((i: Int) => BaseBlob.apply(
-      name = "blob".+(i),
-      boundingBox = BoundingBox.Circle(point = World.randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
+
+    val baseBlobs: Set[BaseBlob] = Iterator.tabulate(env.initialBlobNumber / 2)(i => BaseBlob(
+      name = "blob" + i,
+      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
       degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
@@ -32,17 +33,27 @@ object World {
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction.apply(0, 20))).toSet
 
-    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber./(2)).ceil.toInt)((i: Int) => BaseFood.apply(
-      name = "standardFood".+(i),
-      boundingBox = BoundingBox.Triangle(point = World.randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
-      degradationEffect = (food: EntityStructure.Food) => DegradationEffect.foodDegradation(food),
+    val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber / 2)(i => CannibalBlob(
+      name = "cannibalBlob" + i,
+      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2*Constants.DEF_BLOB_RADIUS),
+      life = Constants.DEF_BLOB_LIFE,
+      velocity = Constants.DEF_BLOB_VELOCITY,
+      degradationEffect = DegradationEffect.standardDegradation,
+      fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
+      movementStrategy = MovingStrategies.baseMovement,
+      direction = Direction(0, 20))).toSet
+
+    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 10 * 9).ceil.toInt)(i => BaseFood(
+      name = "standardFood" + i,
+      boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
+      degradationEffect = DegradationEffect.foodDegradation,
       life = Constants.DEF_FOOD_LIFE,
       effect = Effect.standardFoodEffect)).toSet
 
-    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber./(2)).floor.toInt)((i: Int) => BaseFood.apply(
-      name = "reproducingFood".+(i),
-      boundingBox = BoundingBox.Triangle(point = World.randomPosition(), height = Constants.DEF_REPRODUCING_FOOD_HEIGHT),
-      degradationEffect = (food: EntityStructure.Food) => DegradationEffect.foodDegradation(food),
+    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 10).floor.toInt)(i => BaseFood(
+      name = "reproducingFood" + i,
+      boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_REPRODUCING_FOOD_HEIGHT),
+      degradationEffect = DegradationEffect.foodDegradation,
       life = Constants.DEF_FOOD_LIFE,
       effect = Effect.reproduceBlobFoodEffect)).toSet
 
@@ -56,7 +67,8 @@ object World {
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.mudEffect)).toSet
 
-    val entities: Set[SimulableEntity] = (blobs ++ standardFoods ++ reproducingFoods ++ stones.++(puddles)) (Set.canBuildFrom)
+
+    val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles
 
     World.apply(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
@@ -79,7 +91,8 @@ object World {
     })
 
     val temperatureUpdated:((Int, Int)) => Int = MemoHelper.memoize({
-      case (temperature, currentIteration) => temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
+      case (temperature, currentIteration) =>
+        temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
     })
 
     EnvironmentParameters(luminosityUpdated(world.luminosity, world.currentIteration),

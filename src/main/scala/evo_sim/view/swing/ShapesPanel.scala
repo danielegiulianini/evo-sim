@@ -5,6 +5,7 @@ import java.awt.{Color, Dimension, Graphics}
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import evo_sim.model.Constants._
+import evo_sim.model.Entities.CannibalBlob
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import javax.swing.JPanel
 
@@ -33,6 +34,14 @@ class ShapesPanel(world: World) extends JPanel {
     // draw blob circles with field of view
     world.entities.foreach(e => {
       e match {
+        case b : CannibalBlob =>
+          g.setColor(new Color(0, 0, 0))
+          g.drawOval(modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, this.getSize().width, world.width),
+            modelToViewRatio(e.boundingBox.point.y - b.fieldOfViewRadius, this.getSize().height, world.height),
+            modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().width, world.width),
+            modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().height, world.height))
+          world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point, b.fieldOfViewRadius), e2.boundingBox))
+            .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
         case b : Blob =>
           g.setColor(fieldOfViewColor)
           g.drawOval(modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, this.getSize().width, world.width),

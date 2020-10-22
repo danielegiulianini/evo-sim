@@ -12,6 +12,7 @@ object Constants {
   val DEF_BLOB_VELOCITY = 50
   val DEF_BLOB_SLOW_VELOCITY = DEF_BLOB_VELOCITY/2
   val DEF_BLOB_FOW_RADIUS = 50
+  val DEF_BLOB_DEAD = 0
 
   val DEF_FOOD_HEIGHT = 10
   val DEF_REPRODUCING_FOOD_HEIGHT = 15
@@ -26,7 +27,7 @@ object Constants {
   val DEF_COOLDOWN = 50
   val DEF_DAMAGE = 25
   val DEF_MOD_PROP_RANGE = 5
-  val DEF_FOOD_ENERGY = 20
+  val DEF_FOOD_ENERGY = 10
 
   val MIN_BLOBS = 0
   val MAX_BLOBS = 300
