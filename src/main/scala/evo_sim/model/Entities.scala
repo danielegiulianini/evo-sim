@@ -2,9 +2,9 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
-import evo_sim.model.EntityBehaviour._
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
-import evo_sim.model.EntityStructure._
+import evo_sim.model.EntityBehaviour.{_}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.{Plant, _}
 
 object Entities {
 
@@ -36,6 +36,20 @@ object Entities {
   case class BaseObstacle(override val name: String,
                           override val boundingBox: Rectangle,
                           override val effect: Effect) extends Obstacle with NeutralBehaviour
+
+  trait BasePlant extends Plant {
+    override val name: String
+    override val boundingBox: Rectangle
+    override val lifeCycle: LifeCycle
+  }
+
+  case class StandardPlant(override val name: String,
+                       override val boundingBox: Rectangle,
+                       override val lifeCycle: LifeCycle) extends BasePlant with StandardPlantBehaviour
+
+  case class ReproducingPlant(override val name: String,
+                       override val boundingBox: Rectangle,
+                       override val lifeCycle: LifeCycle) extends BasePlant with ReproducingPlantBehaviour
 
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,

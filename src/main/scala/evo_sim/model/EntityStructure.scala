@@ -2,26 +2,29 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
 
 object EntityStructure {
   trait Domain {
     type Life
     type Velocity
     type DegradationEffect[A] >: A => Life
-    type Effect = Blob => Set[SimulableEntity]  //name to be changed
+    type Effect //name to be changed
     type Position
     type MovementStrategy
     type Cooldown
+    type LifeCycle
   }
 
   object DomainImpl extends Domain {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
+    override type Effect = Blob => Set[SimulableEntity]  //name to be changed
     override type Position = Movement
     override type MovementStrategy = (Intelligent, World) => Position
     override type Cooldown = Int
+    override type LifeCycle = Int
   }
 
   trait Entity {
@@ -67,6 +70,10 @@ object EntityStructure {
 
   trait Obstacle extends Entity with Effectful {
     override def boundingBox: Rectangle
+  }
+
+  trait Plant extends Entity {
+    def lifeCycle: LifeCycle
   }
 
   trait BlobWithTemporaryStatus extends Blob {

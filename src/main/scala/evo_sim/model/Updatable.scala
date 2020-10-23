@@ -26,11 +26,11 @@ object Updatable {
           case _: BaseBlob => Set(BaseBlob(self.name, Circle(movement.point, self.boundingBox.radius),
             self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
             self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
-            self.movementStrategy, self.direction))
+            self.movementStrategy, movement.direction))
           case _: CannibalBlob => Set(CannibalBlob(self.name, Circle(movement.point, self.boundingBox.radius),
             self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
             self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
-            self.movementStrategy, self.direction))
+            self.movementStrategy, movement.direction))
         }
         case _ => Set()
       }
