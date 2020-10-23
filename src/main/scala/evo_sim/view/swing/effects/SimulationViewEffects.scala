@@ -14,35 +14,28 @@ object SimulationViewEffects {
 
   def shapesPanelCreated(world: World): IO[ShapesPanel] = IO pure new ShapesPanel(world)
 
+  def blobDrawn(g: Graphics, b: Blob, world: World, viewWidth: Int, viewHeight: Int): IO[(Int, Int)] = for {
+    _ <- IO apply g.setColor(fieldOfViewColor)
+    x <- modelToViewRatio(b.boundingBox.point.x - b.fieldOfViewRadius, viewWidth,
+      world.width)
+    y <- modelToViewRatio(b.boundingBox.point.y - b.fieldOfViewRadius, viewHeight,
+      world.height)
+    width <- modelToViewRatio(b.fieldOfViewRadius * 2, viewWidth, world.width)
+    height <- modelToViewRatio(b.fieldOfViewRadius * 2, viewHeight, world.height)
+    _ <- IO apply g.drawOval(x, y, width, height)
+    _ <- IO apply world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point,
+      b.fieldOfViewRadius), e2.boundingBox)).foreach(e2 =>
+      drawFoodOrObstacle(g, e2.boundingBox, width, height, world.width, world.height))
+  } yield (width, height)
+
   def drawBlobs(g: Graphics, world: World, viewWidth: Int, viewHeight: Int): IO[Unit] =
     IO apply world.entities.foreach(e => {
       e match {
         case b: Blob => (for {
-          _ <- IO apply g.setColor(fieldOfViewColor)
-          x <- modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, viewWidth,
-            world.width)
-          y <- modelToViewRatio(e.boundingBox.point.y - b.fieldOfViewRadius, viewHeight,
-            world.height)
-          width <- modelToViewRatio(b.fieldOfViewRadius * 2, viewWidth, world.width)
-          height <- modelToViewRatio(b.fieldOfViewRadius * 2, viewHeight, world.height)
-          _ <- IO apply g.drawOval(x, y, width, height)
-          _ <- IO apply world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point,
-            b.fieldOfViewRadius), e2.boundingBox)).foreach(e2 =>
-            drawFoodOrObstacle(g, e2.boundingBox, width, height, world.width, world.height))
+          _ <- blobDrawn(g, b, world, viewWidth, viewHeight)
         } yield ()).unsafeRunSync()
         case tb: BlobWithTemporaryStatus => (for {
-          _ <- IO apply g.setColor(fieldOfViewColor)
-          x <- modelToViewRatio(e.boundingBox.point.x - tb.blob.fieldOfViewRadius,
-            viewWidth, world.width)
-          y <- modelToViewRatio(e.boundingBox.point.y - tb.blob.fieldOfViewRadius,
-            viewHeight, world.height)
-          width <- modelToViewRatio(tb.blob.fieldOfViewRadius * 2, viewWidth,
-            world.width)
-          height <- modelToViewRatio(tb.blob.fieldOfViewRadius * 2, viewHeight, world.height)
-          _ <- IO apply g.drawOval(x, y, width, height)
-          _ <- IO apply world.entities.filter(e2 => Intersection.intersected(Circle(tb.blob.boundingBox.point,
-            tb.blob.fieldOfViewRadius), e2.boundingBox)).foreach(e2 =>
-            drawFoodOrObstacle(g, e2.boundingBox, width, height, world.width, world.height))
+          _ <- blobDrawn(g, tb.blob, world, viewWidth, viewHeight)
         } yield ()).unsafeRunSync()
         case _ =>
       }

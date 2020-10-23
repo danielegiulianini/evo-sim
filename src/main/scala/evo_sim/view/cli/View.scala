@@ -1,25 +1,26 @@
 package evo_sim.view.cli
 
+import cats.effect.IO
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 
 object View extends View {
-  override def inputViewBuiltAndShowed(): Unit = println("Ready")
+  override def inputViewBuiltAndShowed(): IO[Unit] = IO apply println("Ready")
 
-  override def inputReadFromUser(): Environment = {
-    print("#Blobs: ")
-    val blobs = scala.io.StdIn.readInt()
-    print("#Foods: ")
-    val foods = scala.io.StdIn.readInt()
-    print("#Obstacles: ")
-    val obstacles = scala.io.StdIn.readInt()
-    print("Luminosity (cd): ")
-    val luminosity = scala.io.StdIn.readInt()
-    print("Temperature (°C): ")
-    val temperature = scala.io.StdIn.readInt()
-    print("#Days: ")
-    val days = scala.io.StdIn.readInt()
-    Environment(
+  override def inputReadFromUser(): IO[Environment] = for {
+    _ <- IO apply print("#Blobs: ")
+    blobs <- IO apply scala.io.StdIn.readInt()
+    _ <- IO apply print("#Foods: ")
+    foods <- IO apply scala.io.StdIn.readInt()
+    _ <- IO apply print("#Obstacles: ")
+    obstacles <- IO apply scala.io.StdIn.readInt()
+    _ <- IO apply print("Luminosity (cd): ")
+    luminosity <- IO apply scala.io.StdIn.readInt()
+    _ <- IO apply print("Temperature (°C): ")
+    temperature <- IO apply scala.io.StdIn.readInt()
+    _ <- IO apply print("#Days: ")
+    days = scala.io.StdIn.readInt()
+    environment <- IO pure Environment(
       temperature = temperature,
       luminosity = luminosity,
       initialBlobNumber = blobs,
@@ -27,18 +28,17 @@ object View extends View {
       initialObstacleNumber = obstacles,
       daysNumber = days
     )
-  }
+  } yield environment
 
-  override def simulationViewBuiltAndShowed(): Unit = println("Simulation started")
-
-  override def rendered(world: World): Unit = {
-    println("Iteration " + world.currentIteration + " of " + world.totalIterations)
-    println("Temperature: " + world.temperature)
-    println("Luminosity: " + world.luminosity)
+  override def rendered(world: World): IO[Unit] = for {
+    _ <- IO apply println("Iteration " + world.currentIteration + " of " + world.totalIterations)
+    _ <- IO apply println("Temperature: " + world.temperature)
+    _ <- IO apply println("Luminosity: " + world.luminosity)
     // TODO print real-time indicators
-  }
+  } yield ()
 
-  override def resultViewBuiltAndShowed(world: World): Unit = {
+  override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
+    _ <- IO apply {}
     // TODO: print final indicators
-  }
+  } yield ()
 }

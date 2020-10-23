@@ -2,6 +2,7 @@ package evo_sim.view.swing
 
 import java.awt.BorderLayout
 
+import cats.effect.IO
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.effects.InputViewEffects._
@@ -15,12 +16,9 @@ import scala.concurrent.{Await, Promise}
 object View extends View {
 
   private val frame = new JFrame("evo-sim")
-  private val barPanel = new JPanel
-  private val entityPanel = new JPanel
-
   private val userInput: Promise[Environment] = Promise[Environment]()
 
-  override def inputViewBuiltAndShowed(): Unit = (for {
+  override def inputViewBuiltAndShowed(): IO[Unit] = for {
       inputPanel <- panelCreated
       _ <- verticalLayoutSet(inputPanel)
       blobSlider <- createDataInputRow(inputPanel, "#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS,
@@ -44,29 +42,26 @@ object View extends View {
       _ <- isPacked(frame)
       _ <- isNotResizable(frame)
       _ <- isVisible(frame)
-    } yield ()).unsafeRunSync()
+    } yield ()
 
-  override def inputReadFromUser(): Environment =
-    Await.result(userInput.future, Duration.Inf)
+  override def inputReadFromUser(): IO[Environment] =
+    IO pure Await.result(userInput.future, Duration.Inf)
 
-  override def simulationViewBuiltAndShowed(): Unit = (for {
+  override def rendered(world: World): IO[Unit] = for {
+    barPanel <- panelCreated
+    entityPanel <- panelCreated
+    // TODO statistiche
+    shapes <- shapesPanelCreated(world)
+    _ <- componentAdded(entityPanel, shapes)
     _ <- allRemoved(frame)
     _ <- componentInContentPaneAdded(frame, barPanel, BorderLayout.NORTH)
     _ <- componentInContentPaneAdded(frame, entityPanel, BorderLayout.CENTER)
     _ <- screenSizeSet(frame)
     _ <- isPacked(frame)
-  } yield ()).unsafeRunSync()
+  } yield ()
 
-  override def rendered(world: World): Unit = (for {
-    _ <- allRemoved(entityPanel)
-    // TODO statistiche
-    shapes <- shapesPanelCreated(world)
-    _ <- componentAdded(entityPanel, shapes)
-    _ <- isPacked(frame)
-  } yield ()).unsafeRunSync()
-
-  override def resultViewBuiltAndShowed(world: World): Unit = (for {
-    _ <- allRemoved(entityPanel)
+  override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
+    _ <- IO apply {}
     // TODO grafici
-  } yield ()).unsafeRunSync()
+  } yield ()
 }
