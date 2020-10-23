@@ -31,7 +31,7 @@ object World {
       degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(0, 20))).toSet
+      direction = Direction.apply(0, Constants.NEXT_DIRECTION))).toSet
 
     val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber / 2)(i => CannibalBlob(
       name = "cannibalBlob" + i,
@@ -41,7 +41,7 @@ object World {
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, 20))).toSet
+      direction = Direction(0, Constants.NEXT_DIRECTION))).toSet
 
     val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 10 * 9).ceil.toInt)(i => BaseFood(
       name = "standardFood" + i,
