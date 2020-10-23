@@ -70,7 +70,7 @@ object World {
 
     val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles
 
-    World.apply(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
+    World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
 
@@ -95,7 +95,8 @@ object World {
         temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
     })
 
-    EnvironmentParameters(luminosityUpdated(world.luminosity, world.currentIteration),
+    EnvironmentParameters(
+      luminosityUpdated(world.luminosity, world.currentIteration),
       temperatureUpdated(world.temperature, world.currentIteration))
   }
 
@@ -118,7 +119,7 @@ object World {
       def oneYTranslatedSinusoidalSin = sinusoidalSin (_:Float) (_:Float) (_:Int) (1)
       def zeroPhasedZeroYTranslatedSinusoidalSin = Curried.zeroPhasedSinusoidalSin (_:Float) (_:Float) (0)
 
-      //object with curried versions to leverage IDE automatic named parameters
+      //object with curried versions to leverage, among the other, IDE automatic named parameters
       object Curried {
         def zeroPhasedSinusoidalSin = Sinusoidal.zeroPhasedSinusoidalSin.curried
         def zeroYTranslatedSinusoidalSin = Sinusoidal.zeroYTranslatedSinusoidalSin.curried
