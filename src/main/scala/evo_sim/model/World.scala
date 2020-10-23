@@ -2,6 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, CannibalBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
 
 
@@ -85,12 +86,15 @@ object World {
       newTemp
     }*/
 
-    val luminosityUpdated:((Int, Int)) => Int = MemoHelper.memoize({
+    //leveraging Flyweight pattern for sin computation (sin is: 1. cyclic, periodic and 2. computationally-expensive
+    // (wrt integer arithmetics) function so caching is effective as the values would be recomputed
+    // every time, unnecessarily)
+    val luminosityUpdated:((Int, Int)) => Int = memoize({
       case (luminosity, currentIteration) =>
         luminosity + zeroPhasedSinusoidalSin(1 + 1 / 32f)(currentIteration / Constants.ITERATIONS_PER_DAY)(0)
     })
 
-    val temperatureUpdated:((Int, Int)) => Int = MemoHelper.memoize({
+    val temperatureUpdated:((Int, Int)) => Int = memoize({
       case (temperature, currentIteration) =>
         temperature + zeroPhasedZeroYTranslatedSinusoidalSin(1 + 1 / 64f)(currentIteration / Constants.ITERATIONS_PER_DAY)
     })
@@ -103,7 +107,7 @@ object World {
 
 
   object MemoHelper {
-    def memoize[I, O](f: Function1[I, O]): Function1[I, O] = new collection.mutable.HashMap[I, O]() {
+    def memoize[I, O](f: I => O): I => O = new collection.mutable.HashMap[I, O]() {
       override def apply(key: I): O = getOrElseUpdate(key, f(key))
     }
   }
