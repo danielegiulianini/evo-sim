@@ -1,6 +1,6 @@
 import evo_sim.model.Constants
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried._
-import evo_sim.model.World.TrigonometricalOps.Sinusoidal.sinusoidalSin
+import evo_sim.model.World.TrigonometricalOps.Sinusoidal.sinusoidal
 import org.scalacheck.{Arbitrary, Prop, Properties}
 import org.scalacheck.Prop.{exists, forAll}
 import org.scalactic.TolerantNumerics

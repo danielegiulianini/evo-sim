@@ -127,27 +127,27 @@ object World {
   object TrigonometricalOps {
 
     object Sinusoidal {
-      def sinusoidalSin(yDilatation: Float)(x: Float)(phase: Int)(yTranslation: Int): Int =
+      def sinusoidal(yDilatation: Float)(x: Float)(phase: Int)(yTranslation: Int): Int =
         (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation //should rename yDilatation to amplitude
 
       //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-      def zeroPhasedSinusoidalSin = sinusoidalSin(_: Float)(_: Float)(0)(_: Int)
+      def zeroPhasedSinusoidal = sinusoidal(_: Float)(_: Float)(0)(_: Int)
 
-      def zeroYTranslatedSinusoidalSin = sinusoidalSin(_: Float)(_: Float)(_: Int)(0)
+      def zeroYTranslatedSinusoidal = sinusoidal(_: Float)(_: Float)(_: Int)(0)
 
-      def oneYTranslatedSinusoidalSin = sinusoidalSin(_: Float)(_: Float)(_: Int)(1)
+      def oneYTranslatedSinusoidal = sinusoidal(_: Float)(_: Float)(_: Int)(1)
 
-      def zeroPhasedZeroYTranslatedSinusoidalSin = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
+      def zeroPhasedZeroYTranslatedSinusoidal = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
 
-      //object with curried versions to leverage, among the other, IDE automatic named parameters
+      //object with curried versions to leverage, among the others, IDE automatic named parameters
       object Curried {
-        def zeroPhasedSinusoidalSin = Sinusoidal.zeroPhasedSinusoidalSin.curried
+        def zeroPhasedSinusoidalSin = Sinusoidal.zeroPhasedSinusoidal.curried
 
-        def zeroYTranslatedSinusoidalSin = Sinusoidal.zeroYTranslatedSinusoidalSin.curried
+        def zeroYTranslatedSinusoidalSin = Sinusoidal.zeroYTranslatedSinusoidal.curried
 
-        def oneYTranslatedSinusoidalSin = Sinusoidal.oneYTranslatedSinusoidalSin.curried
+        def oneYTranslatedSinusoidalSin = Sinusoidal.oneYTranslatedSinusoidal.curried
 
-        def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidalSin.curried
+        def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidal.curried
       }
 
     }
