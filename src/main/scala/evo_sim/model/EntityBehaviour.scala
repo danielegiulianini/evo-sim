@@ -116,7 +116,7 @@ object EntityBehaviour {
   }
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
-    val movement = self.movementStrategy(self, world)
+    val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
       case n if n > 1 =>
         self.copy(
@@ -140,7 +140,7 @@ object EntityBehaviour {
   }
 
   private def slowBehaviour(self: SlowBlob, world: World): SimulableEntity = {
-    val movement = self.movementStrategy(self, world)
+    val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
       case n if n > 1 =>
         self.copy(
