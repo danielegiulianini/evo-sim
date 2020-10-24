@@ -2,14 +2,10 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, BasePlant, CannibalBlob, ReproducingPlant, StandardPlant}
 import evo_sim.model.EntityBehaviour.SimulableEntity
-//<<<<<<< HEAD
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
 
 
-//=======
-import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried._
-//>>>>>>> 897807aa99870b19dd46429708d8f135fd38f370
 
 case class World(temperature: Int,
                  luminosity: Int,
