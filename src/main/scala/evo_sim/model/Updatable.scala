@@ -24,12 +24,12 @@ object Updatable {
       self.life match {
         case n if n > 0 => self match {
           case _: BaseBlob => Set(BaseBlob(self.name, Circle(movement.point, self.boundingBox.radius),
-            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
             self.movementStrategy, movement.direction))
           case _: CannibalBlob => Set(CannibalBlob(self.name, Circle(movement.point, self.boundingBox.radius),
-            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
             self.movementStrategy, movement.direction))
         }
         case _ => Set()
