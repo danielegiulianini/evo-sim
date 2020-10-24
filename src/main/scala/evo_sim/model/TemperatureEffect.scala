@@ -1,16 +1,19 @@
 package evo_sim.model
 
-import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.EntityStructure.DomainImpl.Velocity
+import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 
+/** Provides functions to determine a temperature-dependent velocity variation */
 object TemperatureEffect {
 
-  // TODO: normalizzare sul range della temperatura raggiungibile (?)
-  def standardTemperatureEffect(currentIteration: Int): Velocity = {
-    val deviation: Int = 3 //CONST -> si può calibrare
-    val x: Int = (deviation * Math.sin(2.00 * (currentIteration / Constants.ITERATIONS_PER_DAY.toDouble * Math.PI))).toInt
-    val lambda: Int = 2   //normalizzatore (volendo si possono usare altre tecniche di normalizzazione)
-    val normalize: Int = 3 //-> valore della temperatura deciso dall'utente
-    ((x / lambda) * deviation / normalize)
+  /** Sinusoidal Sin algorithm
+   *
+   * @param temperature the temperature value to use
+   * @return the velocity variation
+   */
+  def standardTemperatureEffect(temperature: Int): Velocity = {
+    val x = temperature.toFloat / Constants.TEMPERATURE_MAX_DELTA.toFloat
+    zeroPhasedZeroYTranslatedSinusoidalSin(Constants.VELOCITY_AMPLITUDE)(x)
   }
+
 }

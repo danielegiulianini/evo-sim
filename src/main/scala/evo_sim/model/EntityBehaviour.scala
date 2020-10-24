@@ -77,7 +77,7 @@ object EntityBehaviour {
     }
   }
 
-  abstract trait PlantBehaviour extends Simulable with NeutralCollidable {
+  trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
 
     override def updated(world: World): Set[SimulableEntity] = {
@@ -116,31 +116,31 @@ object EntityBehaviour {
   }
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
-    val movement = self.movementStrategy(self, world)
+    val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
       case n if n > 1 =>
         self.copy(
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
-          velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
+          velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
           life = self.degradationEffect(self),
-          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown=self.cooldown - 1
         )
       case _ => BaseBlob(
         self.name,
         Circle(movement.point, self.boundingBox.radius),
         self.degradationEffect(self),
-        self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
+        self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
         DegradationEffect.baseBlobDegradation,
-        self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+        self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
         self.movementStrategy,
         movement.direction)
     }
   }
 
   private def slowBehaviour(self: SlowBlob, world: World): SimulableEntity = {
-    val movement = self.movementStrategy(self, world)
+    val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
       case n if n > 1 =>
         self.copy(
@@ -148,7 +148,7 @@ object EntityBehaviour {
           direction = movement.direction,
           velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
           life = self.degradationEffect(self),
-          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown=self.cooldown - 1
         )
       case _ =>
@@ -158,7 +158,7 @@ object EntityBehaviour {
           self.degradationEffect(self),
           self.initialVelocity,
           DegradationEffect.baseBlobDegradation,
-          self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+          self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           self.movementStrategy,
           movement.direction)
     }

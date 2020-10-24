@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob}
 import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
-import evo_sim.model.EntityStructure.{Blob, Entity}
+import evo_sim.model.EntityStructure.{Blob, Entity, Food}
 
 trait Updatable {
   def updated(world: World) : Set[SimulableEntity]
@@ -20,16 +20,16 @@ object Updatable {
   trait BaseBlobUpdatable extends Simulable {
     self: Blob with Collidable =>
     override def updated(world: World): Set[SimulableEntity] = {
-      val movement = self.movementStrategy(self, world)
+      val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.life match {
         case n if n > 0 => self match {
           case _: BaseBlob => Set(BaseBlob(self.name, Circle(movement.point, self.boundingBox.radius),
-            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
             self.movementStrategy, movement.direction))
           case _: CannibalBlob => Set(CannibalBlob(self.name, Circle(movement.point, self.boundingBox.radius),
-            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.currentIteration),
-            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.currentIteration),
+            self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+            self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
             self.movementStrategy, movement.direction))
         }
         case _ => Set()
