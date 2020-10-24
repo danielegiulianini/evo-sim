@@ -98,20 +98,20 @@ object World {
     // (wrt integer arithmetics) function so caching is effective as the values would be recomputed
     // every time, unnecessarily)
     val luminosityUpdated: ((Int, Float)) => Int = memoize({
-      case (luminosity, x) => {
-        val lu = luminosity + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.LUMINOSITY_AMPLITUDE)(x)
-        println("-----------la x che passo e'" + x)
+      case (luminosity, timeOfTheDay) => {
+        val lu = luminosity + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.LUMINOSITY_AMPLITUDE)(timeOfTheDay)
+        //println("-----------la x che passo e'" + x)
         lu
       }
     })
 
     val temperatureUpdated: ((Int, Float)) => Int = memoize({
-      case (temperature, x) =>
-        temperature + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.TEMPERATURE_AMPLITUDE)(x)
+      case (temperature, timeOfTheDay) =>
+        temperature + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.TEMPERATURE_AMPLITUDE)(timeOfTheDay)
     })
 
-    val timeOfTheDay = world.currentIteration / Constants.ITERATIONS_PER_DAY.toFloat
-    /*val timeOfTheDay = world.currentIteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat*/
+    //val timeOfTheDay = world.currentIteration / Constants.ITERATIONS_PER_DAY.toFloat
+    val timeOfTheDay = world.currentIteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
     EnvironmentParameters(
       luminosityUpdated(world.luminosity, timeOfTheDay),
       temperatureUpdated(world.temperature, timeOfTheDay))
