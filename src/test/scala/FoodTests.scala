@@ -14,9 +14,7 @@ class FoodTests extends FunSuite {
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
     movementStrategy = MovingStrategies.baseMovement,
-    direction = Direction(0, 15)
-    /*movementDirection = 0,
-    stepToNextDirection = 15*/)
+    direction = Direction(0, 15))
   val poisonBlob: PoisonBlob = PoisonBlob(
     name = "blob2",
     boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
@@ -42,15 +40,26 @@ class FoodTests extends FunSuite {
     effect = Effect.reproduceBlobFoodEffect /*Effect.standardFoodEffect*/)
 
   test("BlobIncreasedLife") {
-    val updatedBlob = blob.collided(standardFood).toVector(0).asInstanceOf[Blob]
-    assert(updatedBlob.life == blob.life + DEF_FOOD_ENERGY)
-    assert(blob.collided(reproducingFood).exists(b => b.asInstanceOf[Blob].life == DEF_BLOB_LIFE))
+    assert(blob.collided(standardFood).exists(e => e match {
+      case b : Blob => b.life == blob.life + DEF_FOOD_ENERGY
+      case _ => false
+    }))
+    assert(blob.collided(reproducingFood).exists(e => e match {
+      case b : Blob => b.life == DEF_BLOB_LIFE
+      case _ => false
+    }))
   }
 
   test("newBlob") {
     assert(blob.collided(standardFood).size == 1)
     assert(blob.collided(reproducingFood).size == 2)
+    assert(poisonBlob.collided(standardFood).size == 1)
     assert(poisonBlob.collided(reproducingFood).size == 1)
+  }
+
+  test("foodDespawn") {
+    assert(standardFood.collided(blob).size == 0)
+    assert(reproducingFood.collided(blob).size == 0)
   }
 }
 
