@@ -68,10 +68,8 @@ object TupleUtils {
     (acc , t) =>
       if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
-  //nessun elemento deve contenere questo elemento
   def contained[T1](t: (T1, T1), element: T1) : Boolean = t._1 == element || t._2 == element
-  //enabling pimping?
-  implicit class TupleCanContain[T](t: (T, T)) {
+  implicit class TupleCanContain[T](t: (T, T)) {    //enabling pimping?
     def contained(elem: T) = TupleUtils.contained(t, elem)
   }
   def contained[T1](mySet: Set[(T1, T1)], elem : T1) : Boolean = mySet.exists(_.contained(elem))
