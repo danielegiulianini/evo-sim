@@ -140,7 +140,7 @@ object EntityBehaviour {
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown = self.cooldown - 1
         )
-      case _ => depack(self, world)
+      case _ => depack(self, world, movement)
     }
   }
 
@@ -156,12 +156,11 @@ object EntityBehaviour {
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown = self.cooldown - 1
         )
-      case _ => depack(self, world)
+      case _ => depack(self, world, movement)
     }
   }
 
-  def depack[A <: Blob](self: A, world: World): SimulableEntity = {
-    val movement = self movementStrategy(self, world, e => e.isInstanceOf[Food])
+  def depack[A <: Blob](self: A, world: World, movement: Movement): SimulableEntity = {
     var velocity = self.velocity
     self match {
       case s:SlowBlob =>  velocity = s initialVelocity
