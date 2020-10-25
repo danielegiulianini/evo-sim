@@ -24,13 +24,18 @@ object SimulationLogic {
 
     def multipleCollisionsRemoved[T1](mySet : Set[(T1, T1)]) =
       TupleUtils.everyElementPairedWithOnlyOneOtherElement(mySet)
-
+    /*
         val collisions = for {
           i <- world.entities
           j <- world.entities
           if i != j && intersected(i.boundingBox, j.boundingBox)} yield(i,j)
+    */
 
-
+    val collisions = multipleCollisionsRemoved((for {
+      i <- world.entities
+      j <- world.entities
+      if i != j && intersected(i.boundingBox, j.boundingBox)
+    } yield (i, j)))
 
     def collidingEntities = collisions.map(_._1)
 
