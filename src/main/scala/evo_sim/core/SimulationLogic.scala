@@ -21,11 +21,16 @@ object SimulationLogic {
   }
 
   def collisionsHandled(world: World): World = {
-    def collisions = for {
-      i <- world.entities
-      j <- world.entities
-      if i != j && intersected(i.boundingBox, j.boundingBox)
-    } yield (i, j)
+
+    def multipleCollisionsRemoved[T1](mySet : Set[(T1, T1)]) =
+      TupleUtils.everyElementPairedWithOnlyOneOtherElement(mySet)
+
+        val collisions = for {
+          i <- world.entities
+          j <- world.entities
+          if i != j && intersected(i.boundingBox, j.boundingBox)} yield(i,j)
+
+
 
     def collidingEntities = collisions.map(_._1)
 
@@ -38,13 +43,16 @@ object SimulationLogic {
     var blobslow = 0
     var obstaclen = 0
     var foodsn = 0
-    entitiesAfterCollision.foreach(e =>
-      if (e.isInstanceOf[Food]) foodsn=foodsn+1
-      else if (e.isInstanceOf[CannibalBlob]) cannibal=cannibal+1
-      else if (e.isInstanceOf[BaseBlob]) blobnormal=blobnormal+1
-      else if (e.isInstanceOf[Obstacle]) obstaclen=obstaclen+1
-      else if (e.isInstanceOf[SlowBlob]) blobslow=blobslow+1
-      else if (e.isInstanceOf[PoisonBlob]) blobpoison=blobpoison+1)
+    val a: List[SimulableEntity] = entitiesAfterCollision.toList
+      a.sortWith(_.name < _.name).foreach(e => {
+      println(e.name)
+      if (e.isInstanceOf[Food]) foodsn = foodsn + 1
+      else if (e.isInstanceOf[CannibalBlob]) cannibal = cannibal + 1
+      else if (e.isInstanceOf[BaseBlob]) blobnormal = blobnormal + 1
+      else if (e.isInstanceOf[Obstacle]) obstaclen = obstaclen + 1
+      else if (e.isInstanceOf[SlowBlob]) blobslow = blobslow + 1
+      else if (e.isInstanceOf[PoisonBlob]) blobpoison = blobpoison + 1
+    })
 
     println("--------")
     println("BaseBlob: " + blobnormal)
