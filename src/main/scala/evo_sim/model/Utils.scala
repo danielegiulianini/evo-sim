@@ -13,12 +13,12 @@ object Utils {
     index
   }
 
-  /** Perform function on an object, then do it again on the result, and so on for n-times. The type of the
+  /** Performs a function on an object, then does it again on the result, and so on for n-times. The type of the
    * object must be the same both in input and in output
    *
    * @param times number of times to perform the operation
-   * @param initial object perform the function on
-   * @param operation function whose type in input equals the one in output
+   * @param initial object on which to perform the function on
+   * @param operation function to use
    * @tparam B type of the initial object, and of the input and output types of the function
    * @return result object after all of the applications of the function
    */
