@@ -60,4 +60,15 @@ object Simulation {
 
 object TupleUtils {
   def toTuple[A](a: A) = (a, a)
+
+  //givenElementIntoOnlyOneTupleOrReversed
+  //givenElementPairedWithOnlyOneOtherElement
+
+  //nessun elemento deve contenere questo elemento
+  def contained[T1](t: (T1, T1), element: T1) : Boolean = t._1 == element || t._2 == element
+  //enabling pimping?
+  implicit class TupleCanContain[T](t: (T, T)) {
+    def contained(elem: T) = TupleUtils.contained(t, elem)
+  }
+
 }
