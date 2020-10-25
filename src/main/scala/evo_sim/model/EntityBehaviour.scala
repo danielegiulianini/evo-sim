@@ -140,15 +140,7 @@ object EntityBehaviour {
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown = self.cooldown - 1
         )
-      case _ => BaseBlob(
-        self.name,
-        Circle(movement.point, self.boundingBox.radius),
-        self.degradationEffect(self),
-        self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
-        DegradationEffect.baseBlobDegradation,
-        self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-        self.movementStrategy,
-        movement.direction)
+      case _ => depack(self, world)
     }
   }
 
@@ -164,18 +156,25 @@ object EntityBehaviour {
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown = self.cooldown - 1
         )
-      case _ =>
-        BaseBlob(
-          self.name,
-          Circle(movement.point, self.boundingBox.radius),
-          self.degradationEffect(self),
-          self.initialVelocity,
-          DegradationEffect.baseBlobDegradation,
-          self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-          self.movementStrategy,
-          movement.direction)
+      case _ => depack(self, world)
     }
   }
 
+  def depack[A <: Blob](self: A, world: World): SimulableEntity = {
+    val movement = self movementStrategy(self, world, e => e.isInstanceOf[Food])
+    var velocity = self.velocity
+    self match {
+      case s:SlowBlob =>  velocity = s initialVelocity
+    }
+    BaseBlob(
+      self name,
+      Circle(movement point, self.boundingBox.radius),
+      self degradationEffect self,
+      velocity,
+      DegradationEffect baseBlobDegradation,
+      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
+      self movementStrategy,
+      movement direction)
+  }
 
 }
