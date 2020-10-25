@@ -7,9 +7,9 @@ import javax.swing.JComponent
 
 class JComponentIO {
   class IOJComponent(jComponent: JComponent) {
-    def setMinimumSize(dimension: Dimension): IO[Unit] =
+    def minimumSizeSet(dimension: Dimension): IO[Unit] =
       IO {jComponent.setMinimumSize(dimension)}
-    def setMaximumSize(dimension: Dimension): IO[Unit] =
+    def maximumSizeSet(dimension: Dimension): IO[Unit] =
       IO{ jComponent.setMaximumSize(dimension)}
   }
 }
