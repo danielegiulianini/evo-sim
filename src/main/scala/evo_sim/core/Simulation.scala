@@ -71,5 +71,6 @@ object TupleUtils {
     def contained(elem: T) = TupleUtils.contained(t, elem)
   }
   def contained[T1](mySet: Set[(T1, T1)], elem : T1) : Boolean = mySet.exists(_.contained(elem))
+  def containedAnyOf[T1](mySet: Set[(T1, T1)], elem : (T1, T1)): Boolean = contained(mySet, elem._1) || contained(mySet, elem._2)
 
 }
