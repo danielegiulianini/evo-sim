@@ -63,7 +63,7 @@ object World {
     val puddles: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber./(2).floor.toInt)((i: Int) => BaseObstacle.apply(
       name = "puddle".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
-      effect = Effect.mudEffect)).toSet
+      effect = Effect.slowEffect)).toSet
 
     // TODO: integrate view for plants
     val standardPlants: Set[StandardPlant] = Iterator.tabulate(5)((i: Int) => StandardPlant(

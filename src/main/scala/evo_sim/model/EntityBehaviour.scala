@@ -16,9 +16,11 @@ object EntityBehaviour {
 
   //companion object with some simulable implementations ready to be (re)used (in the future)
   object Simulable {
+
     trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
-      self : Entity =>
+      self: Entity =>
     }
+
   }
 
   //Base blob behaviour implementation
@@ -28,20 +30,21 @@ object EntityBehaviour {
       other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
-        case blob: CannibalBlob => if(blob.boundingBox.radius > self.boundingBox.radius) Set(self.copy(life = Constants.DEF_BLOB_DEAD)) else Set(self.copy())
+        case blob: CannibalBlob => if (blob.boundingBox.radius > self.boundingBox.radius)
+          Set(self.copy(life = Constants.DEF_BLOB_DEAD)) else Set(self.copy())
         case _ => Set(self)
       }
     }
   }
 
-  trait CannibalBlobBehaviour extends Simulable with BaseBlobUpdatable{
+  trait CannibalBlobBehaviour extends Simulable with BaseBlobUpdatable {
     self: CannibalBlob =>
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
-        case base: BaseBlob => if(self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life=self.life+base.life)) else Set(self.copy())
-        case cannibal: CannibalBlob => if(self.boundingBox.radius > cannibal.boundingBox.radius) Set(self.copy(life=self.life+cannibal.life)) else Set(self.copy(life = Constants.DEF_BLOB_DEAD))
+        case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
+        case cannibal: CannibalBlob => if (self.boundingBox.radius > cannibal.boundingBox.radius) Set(self.copy(life = self.life + cannibal.life)) else Set(self.copy(life = Constants.DEF_BLOB_DEAD))
         case _ => Set(self)
       }
     }
@@ -55,6 +58,7 @@ object EntityBehaviour {
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
+
       Set(newSelf)
     }
   }
@@ -94,24 +98,33 @@ object EntityBehaviour {
     }
 
     def updatedPlant: Plant with PlantBehaviour
+
     def defaultPlant: Plant with PlantBehaviour
+
     def foodEffect: Effect
+
     def foodHeight: Int
   }
 
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
     override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
+
     override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+
     override def foodEffect: Effect = Effect.standardFoodEffect
+
     override def foodHeight: Int = Constants.DEF_FOOD_HEIGHT
   }
 
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
     override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
+
     override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+
     override def foodEffect: Effect = Effect.reproduceBlobFoodEffect
+
     override def foodHeight: Int = Constants.DEF_REPRODUCING_FOOD_HEIGHT
   }
 
@@ -125,7 +138,7 @@ object EntityBehaviour {
           velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
           life = self.degradationEffect(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-          cooldown=self.cooldown - 1
+          cooldown = self.cooldown - 1
         )
       case _ => BaseBlob(
         self.name,
@@ -149,7 +162,7 @@ object EntityBehaviour {
           velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
           life = self.degradationEffect(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-          cooldown=self.cooldown - 1
+          cooldown = self.cooldown - 1
         )
       case _ =>
         BaseBlob(
@@ -163,7 +176,6 @@ object EntityBehaviour {
           movement.direction)
     }
   }
-
 
 
 }

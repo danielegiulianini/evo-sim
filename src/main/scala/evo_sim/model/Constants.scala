@@ -76,4 +76,6 @@ object Constants {
 
   val NEXT_DIRECTION = 0
 
+  val VELOCITY_SLOW_DECREMENT = 10
+
 }
