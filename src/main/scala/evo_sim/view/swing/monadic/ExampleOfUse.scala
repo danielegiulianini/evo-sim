@@ -39,7 +39,8 @@ object Example2 extends App{
     _ <- panel.added(sb, BorderLayout.SOUTH)
     eb <- JButtonIO("East")
     _ <- panel.added(eb, BorderLayout.EAST)
-    wb <- JButtonIO("West")
+    wb <- JButtonIO("West (close program)")
+    _ <- wb.actionListenerAdded(_ => System.exit(0))
     _ <- panel.added(wb, BorderLayout.WEST)
   } yield panel
 
