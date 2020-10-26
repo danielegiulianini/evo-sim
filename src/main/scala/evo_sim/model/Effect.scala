@@ -23,8 +23,8 @@ object Effect {
   }
 
   def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = blob match {
-    case base: BaseBlob => Set(base.as[PoisonBlob])
-    case cannibal: CannibalBlob => Set(cannibal.as[CannibalBlob])
+    case base: BaseBlob => Set(base.as(BaseBlob.PoisonBlobMapper))
+    case cannibal: CannibalBlob => Set(cannibal.as(CannibalBlob.PoisonBlobMapper))
     case _ => Set()
   }
 
@@ -39,8 +39,8 @@ object Effect {
 
   def slowEffect(blob: Blob): Set[SimulableEntity] = {
     blob match {
-      case base: BaseBlob => Set(base.as[SlowBlob])
-      case cannibal: CannibalBlob => Set(cannibal.as[SlowBlob])
+      case base: BaseBlob => Set(base.as(BaseBlob.SlowBlobMapper))
+      case cannibal: CannibalBlob => Set(cannibal.as(CannibalBlob.SlowBlobMapper))
       case _ => Set()
     }
   }
@@ -53,13 +53,13 @@ object Effect {
 
   private def createChild(blob: Blob): SimulableEntity = blob match{
     case _: BaseBlob => BaseBlob(blob.name + "-son" + nextValue,
-      Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS, Constants.DEF_MOD_PROP_RANGE)),
-      Constants.DEF_BLOB_LIFE, randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
+      Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS, Constants.DEF_BLOB_RADIUS)),
+      Constants.DEF_BLOB_LIFE, randomValueChange(blob.velocity, blob.velocity), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
       MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.NEXT_DIRECTION))
     case _: CannibalBlob => CannibalBlob(blob.name + "-son" + nextValue,
-      Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS, Constants.DEF_MOD_PROP_RANGE)),
-      Constants.DEF_BLOB_LIFE, randomValueChange(blob.velocity, Constants.DEF_MOD_PROP_RANGE), blob.degradationEffect,
+      Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS, Constants.DEF_BLOB_RADIUS)),
+      Constants.DEF_BLOB_LIFE, randomValueChange(blob.velocity, blob.velocity), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
       MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.NEXT_DIRECTION))
   }

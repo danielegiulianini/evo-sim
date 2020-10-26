@@ -30,7 +30,7 @@ object Updatable {
               self.movementStrategy, movement.direction))
           }
           case _: CannibalBlob => {
-            val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Living])
+            val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food] || e.isInstanceOf[BaseBlob])
             Set(CannibalBlob(self.name, Circle(movement.point, self.boundingBox.radius),
               self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
               self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),

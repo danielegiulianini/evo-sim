@@ -21,11 +21,11 @@ object Entities {
   }
 
   object BaseBlob {
-    implicit def SlowBlobMapper = (blob: BaseBlob) =>
+    def SlowBlobMapper = (blob: BaseBlob) =>
       SlowBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
         blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN, blob.velocity)
 
-    implicit def PoisonBlobMapper = (blob: BaseBlob) =>
+    def PoisonBlobMapper = (blob: BaseBlob) =>
       PoisonBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
         blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN)
   }
@@ -42,11 +42,11 @@ object Entities {
   }
 
   object CannibalBlob {
-    implicit def SlowBlobMapper = (blob: CannibalBlob) =>
+    def SlowBlobMapper = (blob: CannibalBlob) =>
       SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
         blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN, blob velocity)
 
-    implicit def PoisonBlobMapper = (blob: CannibalBlob) =>
+    def PoisonBlobMapper = (blob: CannibalBlob) =>
       PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
         blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN)
   }
