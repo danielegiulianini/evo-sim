@@ -10,6 +10,7 @@ libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.1" % "test"
 
 
 scalacOptions += "-Ypartial-unification"
+scalacOptions += "-feature"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
 libraryDependencies += "org.typelevel" %% "cats-effect" % "2.2.0"
 

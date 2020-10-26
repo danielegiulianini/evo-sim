@@ -20,7 +20,6 @@ object EntityBehaviour {
     trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
       self: Entity =>
     }
-
   }
 
   //Base blob behaviour implementation
@@ -44,7 +43,6 @@ object EntityBehaviour {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
-        case cannibal: CannibalBlob => if (self.boundingBox.radius > cannibal.boundingBox.radius) Set(self.copy(life = self.life + cannibal.life)) else Set(self.copy(life = Constants.DEF_BLOB_DEAD))
         case _ => Set(self)
       }
     }
@@ -58,20 +56,17 @@ object EntityBehaviour {
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
-
       Set(newSelf)
     }
   }
 
   trait BaseFoodBehaviour extends Simulable {
     self: Food =>
-
     override def updated(world: World): Set[SimulableEntity] = {
       val life = self.degradationEffect(self)
       life match {
         case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
-        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), self.boundingBox.height),
-          self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
+        case _ => Set()
       }
     }
 
@@ -83,7 +78,6 @@ object EntityBehaviour {
 
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
-
     override def updated(world: World): Set[SimulableEntity] = {
       self.lifeCycle match {
         case n if n > 1 =>
@@ -109,23 +103,25 @@ object EntityBehaviour {
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
     override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-
     override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-
     override def foodEffect: Effect = Effect.standardFoodEffect
-
     override def foodHeight: Int = Constants.DEF_FOOD_HEIGHT
   }
 
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
     override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-
     override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-
     override def foodEffect: Effect = Effect.reproduceBlobFoodEffect
-
     override def foodHeight: Int = Constants.DEF_REPRODUCING_FOOD_HEIGHT
+  }
+
+  trait PoisonousPlantBehaviour extends PlantBehaviour {
+    self: PoisonousPlant =>
+    override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Effect = Effect.poisonousFoodEffect
+    override def foodHeight: Int = Constants.DEF_POISONOUS_FOOD_HEIGHT
   }
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
@@ -136,7 +132,7 @@ object EntityBehaviour {
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
           velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
-          life = self.degradationEffect(self),
+          life = DegradationEffect.poisonBlobDegradation(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown = self.cooldown - 1
         )
@@ -166,14 +162,8 @@ object EntityBehaviour {
       case s:SlowBlob =>  velocity = s initialVelocity
     }
     BaseBlob(
-      self name,
-      Circle(movement point, self.boundingBox.radius),
-      self degradationEffect self,
-      velocity,
-      DegradationEffect baseBlobDegradation,
-      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-      self movementStrategy,
-      movement direction)
+      self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
+      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity), self movementStrategy, movement direction)
   }
 
 }

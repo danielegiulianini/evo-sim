@@ -4,7 +4,7 @@ import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
-import evo_sim.model.EntityStructure.{Plant, _}
+import evo_sim.model.EntityStructure._
 
 object Entities {
 
@@ -16,7 +16,19 @@ object Entities {
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy,
-                      override val direction: Direction) extends Blob with BaseBlobBehaviour
+                      override val direction: Direction) extends Blob with BaseBlobBehaviour {
+    def as[T](f: BaseBlob => T) = f(this)
+  }
+
+  object BaseBlob {
+    def SlowBlobMapper = (blob: BaseBlob) =>
+      SlowBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
+        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN, blob.velocity)
+
+    def PoisonBlobMapper = (blob: BaseBlob) =>
+      PoisonBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
+        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN)
+  }
 
   case class CannibalBlob(override val name: String,
                           override val boundingBox: Circle,
@@ -25,7 +37,19 @@ object Entities {
                           override val degradationEffect: DegradationEffect[Blob],
                           override val fieldOfViewRadius: Int,
                           override val movementStrategy: MovementStrategy,
-                          override val direction: Direction) extends Blob with CannibalBlobBehaviour
+                          override val direction: Direction) extends Blob with CannibalBlobBehaviour {
+    def as[T](f: CannibalBlob => T) = f(this)
+  }
+
+  object CannibalBlob {
+    def SlowBlobMapper = (blob: CannibalBlob) =>
+      SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
+        blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN, blob velocity)
+
+    def PoisonBlobMapper = (blob: CannibalBlob) =>
+      PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
+        blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN)
+  }
 
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,
@@ -50,6 +74,10 @@ object Entities {
   case class ReproducingPlant(override val name: String,
                               override val boundingBox: Rectangle,
                               override val lifeCycle: LifeCycle) extends BasePlant with ReproducingPlantBehaviour
+
+  case class PoisonousPlant(override val name: String,
+                              override val boundingBox: Rectangle,
+                              override val lifeCycle: LifeCycle) extends BasePlant with PoisonousPlantBehaviour
 
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
