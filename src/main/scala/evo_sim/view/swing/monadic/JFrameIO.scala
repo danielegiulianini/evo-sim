@@ -6,7 +6,7 @@ import cats.effect.IO
 import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 
 
-class JFrameIO(jFrame: JFrame) {
+class JFrameIO(jFrame: JFrame) extends ContainerIO(jFrame) {
   //invoke and wait versions (for finer granularity for task assignment to EDT thread)
   def resizableInvokingAndWaiting(frame: JFrame): IO[Unit] = IO { SwingUtilities.invokeAndWait(() => frame.setResizable(false))}
   def visibleInvokingAndWaiting(b: Boolean): IO[Unit] = IO{ SwingUtilities.invokeAndWait(() => jFrame.setVisible(b)) }
@@ -14,7 +14,7 @@ class JFrameIO(jFrame: JFrame) {
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =
     IO {SwingUtilities.invokeAndWait(() => jFrame.setDefaultCloseOperation(operation))}
 
-  def contentPaneGot() = IO { jFrame.getContentPane }
+  def contentPane() = IO { jFrame.getContentPane }
   def sizeSet(width: Int, height: Int) = IO { jFrame.setSize(width, height)}
   def locationRelativeToSet(c:Component) = IO {jFrame.setLocationRelativeTo(c)}
   def defaultCloseOperationSet(operation:Int): IO[Unit] = IO {jFrame.setDefaultCloseOperation(operation)}
