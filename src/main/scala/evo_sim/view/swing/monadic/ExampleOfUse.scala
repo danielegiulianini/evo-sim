@@ -1,7 +1,5 @@
 package evo_sim.view.swing.monadic
 
-import javax.swing.JFrame
-
 object ExampleOfUse extends App {
   val guiBuilt = for {
     jf <- JFrameIO()
@@ -9,8 +7,12 @@ object ExampleOfUse extends App {
     _<- jf.sizeSet(300, 200)
     _<- jf.locationRelativeToSet(null)
     //_<- jf.defaultCloseOperationSet(JFrame.EXIT_ON_CLOSE)
+  } yield jf
+
+  val program = for {
+    jf <- guiBuilt
     _<- jf.visibleSetInvokingAndWaiting(true)
   } yield ()
 
-  guiBuilt.unsafeRunSync()
+  program unsafeRunSync
 }
