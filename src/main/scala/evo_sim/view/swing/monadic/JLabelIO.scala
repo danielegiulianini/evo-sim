@@ -8,4 +8,7 @@ class JLabelIO(jLabel: JLabel) {
   def textGot() = IO {jLabel.getText}
 }
 
-//companion object with utilities to be added
+//companion object with utilities
+object JLabelIO{
+  def apply() = IO { new JLabelIO(new JLabel) }
+}
