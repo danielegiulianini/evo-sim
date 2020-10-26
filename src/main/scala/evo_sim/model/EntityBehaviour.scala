@@ -22,7 +22,6 @@ object EntityBehaviour {
     trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
       self: Entity =>
     }
-
   }
 
   //Base blob behaviour implementation
@@ -50,7 +49,6 @@ object EntityBehaviour {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
-        case cannibal: CannibalBlob => if (self.boundingBox.radius > cannibal.boundingBox.radius) Set(self.copy(life = self.life + cannibal.life)) else Set(self.copy(life = Constants.DEF_BLOB_DEAD))
         case _ => Set(self)
       }
     }
@@ -64,14 +62,12 @@ object EntityBehaviour {
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
-
       Set(newSelf)
     }
   }
 
   trait BaseFoodBehaviour extends Simulable {
     self: Food =>
-
     override def updated(world: World): Set[SimulableEntity] = {
       val life = self.degradationEffect(self)
       life match {
@@ -89,7 +85,6 @@ object EntityBehaviour {
 
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
-
     override def updated(world: World): Set[SimulableEntity] = {
       self.lifeCycle match {
         case n if n > 1 =>
@@ -172,15 +167,8 @@ object EntityBehaviour {
       case s:SlowBlob =>  velocity = s initialVelocity
     }
     BaseBlob(
-      self name,
-      Circle(movement point, self.boundingBox.radius),
-      self degradationEffect self,
-      velocity,
-      DegradationEffect baseBlobDegradation,
-      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-      self gender,
-      self movementStrategy,
-      movement direction)
+      self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
+      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity), self gender, self movementStrategy, movement direction)
   }
 
 }
