@@ -1,5 +1,5 @@
 import evo_sim.model.Entities.BaseBlob
-import evo_sim.model.{BoundingBox, DegradationEffect, Direction, GenderEnum, MovingStrategies, Point2D}
+import evo_sim.model.{BoundingBox, DegradationEffect, Direction, GenderValue, MovingStrategies, Point2D}
 import org.scalatest.FunSuite
 
 class ReproduceTests extends FunSuite {
@@ -11,7 +11,7 @@ class ReproduceTests extends FunSuite {
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
-    gender = GenderEnum.Male,
+    gender = GenderValue.Male,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15))
   val blobF: BaseBlob = BaseBlob(
@@ -21,7 +21,7 @@ class ReproduceTests extends FunSuite {
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
-    gender = GenderEnum.Female,
+    gender = GenderValue.Female,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15))
   val blobGenderless: BaseBlob = BaseBlob(
@@ -31,7 +31,7 @@ class ReproduceTests extends FunSuite {
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
     fieldOfViewRadius = 10,
-    gender = GenderEnum.Genderless,
+    gender = GenderValue.Genderless,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15))
 

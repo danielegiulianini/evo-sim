@@ -2,11 +2,11 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
-import evo_sim.model.GenderEnum.GenderEnum
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Gender, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.GenderValue.GenderType
 
-object GenderEnum extends Enumeration {
-  type GenderEnum = Value
+object GenderValue extends Enumeration {
+  type GenderType = Value
   val Male, Female, Genderless = Value
 }
 
@@ -32,7 +32,7 @@ object EntityStructure {
     override type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
     override type Cooldown = Int
     override type LifeCycle = Int
-    override type Gender = GenderEnum
+    override type Gender = GenderType
   }
 
   trait Entity {
@@ -67,7 +67,7 @@ object EntityStructure {
   }
 
   trait Sexed extends Entity {
-    def gender: GenderEnum
+    def gender: Gender
   }
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent with Sexed {

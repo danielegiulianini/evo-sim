@@ -33,7 +33,7 @@ object EntityBehaviour {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case blob: BaseBlob => blob.gender match {
-          case GenderEnum.Male if self.gender == GenderEnum.Female => Set(self, reproduce(self, blob))
+          case GenderValue.Male if self.gender == GenderValue.Female => Set(self, reproduce(self, blob))
           case _ => Set(self)
         }
         case blob: CannibalBlob => if (blob.boundingBox.radius > self.boundingBox.radius)

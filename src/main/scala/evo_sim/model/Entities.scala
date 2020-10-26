@@ -3,9 +3,8 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Gender, Life, LifeCycle, MovementStrategy, Velocity}
 import evo_sim.model.EntityStructure.{Plant, _}
-import evo_sim.model.GenderEnum.GenderEnum
 
 object Entities {
 
@@ -16,7 +15,7 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
-                      override val gender: GenderEnum,
+                      override val gender: Gender,
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction) extends Blob with BaseBlobBehaviour
 
@@ -26,7 +25,7 @@ object Entities {
                           override val velocity: Velocity,
                           override val degradationEffect: DegradationEffect[Blob],
                           override val fieldOfViewRadius: Int,
-                          override val gender: GenderEnum,
+                          override val gender: Gender,
                           override val movementStrategy: MovementStrategy,
                           override val direction: Direction) extends Blob with CannibalBlobBehaviour
 
@@ -60,7 +59,7 @@ object Entities {
                         override val velocity: Velocity,
                         override val degradationEffect: DegradationEffect[Blob],
                         override val fieldOfViewRadius: Int,
-                        override val gender: GenderEnum,
+                        override val gender: Gender,
                         override val movementStrategy: MovementStrategy,
                         override val direction: Direction,
                         override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TempBlobBehaviour
@@ -71,7 +70,7 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
-                      override val gender: GenderEnum,
+                      override val gender: Gender,
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction,
                       override val cooldown: Cooldown,

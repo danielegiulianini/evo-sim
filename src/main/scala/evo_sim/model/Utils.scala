@@ -8,11 +8,11 @@ object Utils {
     value + new java.util.Random().nextInt(range * 2 + 1) - range
   }
 
-  def randomGender(): GenderEnum.Value = {
+  def randomGender(): GenderValue.Value = {
     new java.util.Random().nextInt(3) match {
-      case 0 => GenderEnum.Male
-      case 1 => GenderEnum.Female
-      case 2 => GenderEnum.Genderless
+      case 0 => GenderValue.Male
+      case 1 => GenderValue.Female
+      case 2 => GenderValue.Genderless
     }
   }
 
