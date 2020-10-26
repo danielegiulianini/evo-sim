@@ -18,7 +18,7 @@ object ExampleOfUse {
       _ <- jf.visibleInvokingAndWaiting(true)
     } yield ()
 
-    //program unsafeRunSync
+    program unsafeRunSync
   }
 
   object Example2 {

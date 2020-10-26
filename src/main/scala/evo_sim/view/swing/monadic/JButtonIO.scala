@@ -12,7 +12,7 @@ class JButtonIO(jButton: JButton) extends ComponentIO(jButton){
   def textGot() = IO {jButton.getText}
 }
 
-//companion object with utilities to be added
+//companion object with utilities
 object JButtonIO {
   def apply(text:String) = IO { new JButtonIO(new JButton(text)) }
 }
