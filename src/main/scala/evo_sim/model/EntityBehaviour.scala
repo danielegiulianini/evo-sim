@@ -132,7 +132,7 @@ object EntityBehaviour {
           boundingBox = Circle(movement.point, self.boundingBox.radius),
           direction = movement.direction,
           velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
-          life = DegradationEffect.posionBlobDegradation(self),
+          life = DegradationEffect.poisonBlobDegradation(self),
           fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
           cooldown = self.cooldown - 1
         )
