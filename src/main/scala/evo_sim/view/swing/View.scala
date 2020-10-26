@@ -1,5 +1,8 @@
 package evo_sim.view.swing
 
+import java.awt.BorderLayout
+import java.awt.event.ActionEvent
+
 import cats.effect.IO
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
@@ -11,12 +14,16 @@ import org.jfree.ui.tabbedui.VerticalLayout
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
 
+import evo_sim.view.swing.monadic.FrameUtilsTOBEREPLACED._
+
 object View extends View {
 
   private val frame = new JFrame("evo-sim")
 
   override def inputReadFromUser(): IO[Environment] = for {
-    environmentPromise <- IO pure { Promise[Environment]() }
+    environmentPromise <- IO pure {
+      Promise[Environment]()
+    }
     inputPanel <- JPanelIO()
     _ <- inputPanel.layoutSet(new VerticalLayout())
     blobSlider <- createDataInputRow(inputPanel, "#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS,
@@ -32,29 +39,42 @@ object View extends View {
     daysSlider <- createDataInputRow(inputPanel, "#Days", Constants.MIN_DAYS, Constants.MAX_DAYS,
       Constants.DEF_DAYS)
     start <- JButtonIO("Start")
-    _ <- clickCompletesEnvironmentListenerAdded(start, environmentPromise, temperatureSlider, luminositySlider,
-      blobSlider, plantSlider, obstacleSlider, daysSlider, frame)
-    //_ <- frame.add(inputPanel, BorderLayout.CENTER)
-    //_ <- componentInContentPaneAdded(frame, inputPanel, BorderLayout.CENTER)
-    //_ <- componentInContentPaneAdded(frame, start, BorderLayout.SOUTH)
-    //_ <- exitOnCloseOperationSet(frame)
-    //_ <- isPacked(frame)
-    //_ <- isNotResizable(frame)
-    //_ <- isVisible(frame)
-    environment <- IO { Await.result(environmentPromise.future, Duration.Inf) }
+    _ <- start.actionListenerAdded((_: ActionEvent) => for {
+      _ <- IO apply println("premuto")
+      t <- temperatureSlider.valueGot
+      l <- luminositySlider.valueGot
+      b <- blobSlider.valueGot
+      p <- plantSlider.valueGot
+      o <- obstacleSlider.valueGot
+      d <- daysSlider.valueGot
+      _ <- IO {
+        environmentPromise.success(Environment(t, l, b, p, o, d))
+      }
+    } yield ())
+    _ <- componentInContentPaneAdded(frame, inputPanel, BorderLayout.CENTER)
+    _ <- buttonInContentPaneAdded(frame, start, BorderLayout.SOUTH)
+    _ <- exitOnCloseOperationSet(frame)
+    _ <- isPacked(frame)
+    _ <- isNotResizable(frame)
+    _ <- isVisible(frame)
+    environment <- IO {
+      Await.result(environmentPromise.future, Duration.Inf)
+    }
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
     barPanel <- JPanelIO()
     entityPanel <- JPanelIO()
     // TODO statistiche
-    shapes <- IO { new JPanelIO(new ShapesPanel(world)) }
+    shapes <- IO {
+      new JPanelIO(new ShapesPanel(world))
+    }
     _ <- entityPanel.added(shapes)
-    //_ <- allRemoved(frame)
-    //_ <- componentInContentPaneAdded(frame, barPanel, BorderLayout.NORTH)
-    //_ <- componentInContentPaneAdded(frame, entityPanel, BorderLayout.CENTER)
-    //_ <- screenSizeSet(frame)
-    //_ <- isPacked(frame)
+    _ <- allRemoved(frame)
+    _ <- componentInContentPaneAdded(frame, barPanel, BorderLayout.NORTH)
+    _ <- componentInContentPaneAdded(frame, entityPanel, BorderLayout.CENTER)
+    _ <- screenSizeSet(frame)
+    _ <- isPacked(frame)
   } yield ()
 
   override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
