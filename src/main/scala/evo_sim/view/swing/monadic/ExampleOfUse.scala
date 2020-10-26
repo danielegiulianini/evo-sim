@@ -27,7 +27,7 @@ object Example2 extends App{
     frame <- JFrameIO()
     _ <- frame.titleSet("example")
     _ <- frame.sizeSet(320, 200)
-    _ <- jf.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
+    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
   val panelBuilt = for {
