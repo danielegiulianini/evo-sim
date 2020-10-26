@@ -21,7 +21,7 @@ object ExampleOfUse {
     program unsafeRunSync
   }
 
-  object Example2 {
+  object Example2 extends App{
     val frameBuilt = for {
       frame <- JFrameIO()
       _ <- frame.titleSet("example")
