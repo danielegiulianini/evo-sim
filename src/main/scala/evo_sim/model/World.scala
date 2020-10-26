@@ -120,6 +120,11 @@ object World {
     def memoize[I, O](f: I => O): I => O = new collection.mutable.HashMap[I, O]() {
       override def apply(key: I): O = getOrElseUpdate(key, f(key))
     }
+
+    /*example of use:
+    instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call this instead:
+    zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
+    */
   }
 
   object TrigonometricalOps {
