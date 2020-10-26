@@ -10,3 +10,9 @@ class JSliderIO(jSlider: JSlider) extends JComponentIO(jSlider){
   def minimumSet(min: Int) = IO { jSlider.setMinimum(min) }
   def maximumSet(max: Int) = IO { jSlider.setMinimum(max) }
 }
+
+
+//companion object with utilities
+object JSliderIO{
+  def apply() = IO { new JSliderIO(new JSlider) }
+}
