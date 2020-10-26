@@ -5,7 +5,7 @@ import java.awt.event.{ComponentListener, MouseListener}
 
 import cats.effect.IO
 
-class ComponentIO(component: Component){
+class ComponentIO(val component: Component){
   def componentListenerAdded(l: ComponentListener) = IO {
     component.addComponentListener(l)
   }
