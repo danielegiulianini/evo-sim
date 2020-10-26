@@ -2,6 +2,8 @@ package evo_sim.view.swing.monadic
 
 import java.awt.BorderLayout
 
+import javax.swing.WindowConstants
+
 
 object Example1 extends App {
   val guiBuilt = for {
@@ -9,7 +11,7 @@ object Example1 extends App {
     _ <- jf.titleSet("Simple example")
     _ <- jf.sizeSet(300, 200)
     _ <- jf.locationRelativeToSet(null)
-    //_<- jf.defaultCloseOperationSet(JFrame.EXIT_ON_CLOSE)
+    _ <- jf.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield jf
 
   val program = for {
@@ -25,6 +27,7 @@ object Example2 extends App{
     frame <- JFrameIO()
     _ <- frame.titleSet("example")
     _ <- frame.sizeSet(320, 200)
+    _ <- jf.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
   val panelBuilt = for {
