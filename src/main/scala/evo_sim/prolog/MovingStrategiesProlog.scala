@@ -3,39 +3,66 @@ package evo_sim.prolog
 import java.io.FileInputStream
 
 import alice.tuprolog._
+import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Intelligent
-import evo_sim.model.World
+import evo_sim.model.{Direction, Movement, Point2D}
 
 object MovingStrategiesProlog {
 
-  def movement(entity: Intelligent, world: World):Unit = {
-    val engine = new Prolog()
+  val engine = new Prolog()
 
-    val theory = new Theory(new FileInputStream("file.pl"))
-    engine.setTheory(theory)
+  val theory = new Theory(new FileInputStream("file.pl"))
+  engine.setTheory(theory)
 
-    var blobs: Term = new Struct()
+  implicit def termToInt(t:Term): scala.Int = t.toString.toInt
 
-    world.entities.foreach(elem => {
-      val point: Term = new Struct("point", new Int(elem.boundingBox.point.x), new Int(elem.boundingBox.point.y))
-      blobs = new Struct(point, blobs)
+  def chasedEntity(entity: Intelligent, entitiesSet: Set[SimulableEntity]):Option[Point2D] = {
+
+    var entities: Term = new Struct()
+
+    entitiesSet.foreach(elem => {
+      entities = new Struct(new Struct("point", new Int(elem.boundingBox.point.x), new Int(elem.boundingBox.point.y)), entities)
     })
 
-    val nextPos = new Struct("nextPos", new Int(/*entity.direction.angle*/1), new Double(Math.PI), new Var("Y"))
-    //0 to 10 foreach(elem => t = new Struct(new Struct("blob", new Struct("point", new Int(elem.bo)), new Int(0)), t))
-
-    val goal: Term = new Struct("lista", blobs, new Var("X"))
-    //val goal = nextPos
-
+    val blob: Term = new Struct("point", new Int(entity.boundingBox.point.x), new Int(entity.boundingBox.point.y))
+    val goal: Term = new Struct("chasedMovement", blob, new Int(entity.fieldOfViewRadius), entities, new Var("X"))
 
     val sol = engine.solve(goal)
 
-    println(sol)
-    println(sol.getSolution)
-    while(engine.hasOpenAlternatives){
+    if(sol.isSuccess){
+      val x: scala.Int = sol.getTerm("X").asInstanceOf[Struct].getArg(0)
+      val y: scala.Int = sol.getTerm("X").asInstanceOf[Struct].getArg(1)
+      Some(Point2D(x, y))
+    } else {
+      None
+    }
+
+    /*while(engine.hasOpenAlternatives){
       val sol = engine.solveNext()
       println("\n"+sol)
       println(sol.getSolution)
-    }
+    }*/
+  }
+
+  def standardMovement(entity: Intelligent): Movement = {
+    val entityPoint: Term = new Struct("point", new Int(entity.boundingBox.point.x), new Int(entity.boundingBox.point.y))
+    val goal: Term = new Struct("standardMov", entityPoint, new Int(entity.velocity),
+                                  new Int(entity.direction.angle), new Int(entity.direction.stepToNextDirection),
+                                  new Double(scala.math.Pi), new Var("Point"), new Var("Direction"))
+
+    println(goal)
+
+    val sol = engine.solve(goal)
+    val x: scala.Int = sol.getTerm("Point").asInstanceOf[Struct].getArg(0)
+    val y: scala.Int = sol.getTerm("Point").asInstanceOf[Struct].getArg(1)
+    println(x)
+    println(y)
+    val angle: scala.Int = sol.getTerm("Direction").asInstanceOf[Struct].getArg(0)
+    val step: scala.Int = sol.getTerm("Direction").asInstanceOf[Struct].getArg(1)
+    println(angle)
+    println(step)
+
+    Movement(Point2D(x,y), Direction(angle,step))
+
   }
 }
