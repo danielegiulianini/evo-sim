@@ -8,7 +8,7 @@ import javax.swing.border.Border
 
 
 //class JComponentIO[T<:JComponent](jComponent: T) {
-class JComponentIO(jComponent: JComponent) extends ContainerIO(jComponent) {
+class JComponentIO[T<:JComponent](jComponent: T) extends ContainerIO(jComponent) {
   def minimumSizeSet(dimension: Dimension): IO[Unit] =
     IO {jComponent.setMinimumSize(dimension)}
   def maximumSizeSet(dimension: Dimension): IO[Unit] =
