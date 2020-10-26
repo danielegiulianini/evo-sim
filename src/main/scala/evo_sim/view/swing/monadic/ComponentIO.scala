@@ -15,6 +15,7 @@ class ComponentIO(val component: Component){
   def mouseListenerRemoved(l:MouseListener): Unit = IO {
     component.removeMouseListener(l)
   }
+  def fontGot() = IO {component.getFont}
 }
 
 //companion object with utilities to be added
