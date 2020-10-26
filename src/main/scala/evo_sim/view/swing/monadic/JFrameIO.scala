@@ -13,11 +13,12 @@ class JFrameIO(jFrame: JFrame) {
   def packedInvokingAndWaiting(): IO[Unit] = IO { SwingUtilities.invokeAndWait(() => jFrame.pack()) }
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =
     IO {SwingUtilities.invokeAndWait(() => jFrame.setDefaultCloseOperation(operation))}
-  
+
   def contentPaneGot() = IO { jFrame.getContentPane }
   def sizeSet(width: Int, height: Int) = IO { jFrame.setSize(width, height)}
   def locationRelativeToSet(c:Component) = IO {jFrame.setLocationRelativeTo(c)}
   def defaultCloseOperationSet(operation:Int): IO[Unit] = IO {jFrame.setDefaultCloseOperation(operation)}
+  def titleSet(title: String) = IO{jFrame.setTitle(title)}
 }
 
 //companion object with utilities to be added
