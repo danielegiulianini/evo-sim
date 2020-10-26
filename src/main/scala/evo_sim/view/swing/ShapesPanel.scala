@@ -5,7 +5,8 @@ import java.awt.{Color, Dimension, Graphics}
 import cats.effect.IO
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.Constants._
-import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
+import evo_sim.model.Entities.{PoisonousPlant, ReproducingPlant, StandardPlant}
+import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Obstacle, Plant}
 import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import javax.swing.JPanel
 
@@ -24,7 +25,7 @@ class ShapesPanel(world: World) extends JPanel {
     _ <- IO apply g.fillRect(0, 0, getWidth, getHeight)
     // draw rectangles and triangles before transparent filter and circles
     _ <- IO apply world.entities.foreach(e =>
-      drawFoodOrObstacle(g, e.boundingBox, getWidth, getHeight, world.width, world.height).unsafeRunSync())
+      drawFoodsObstaclesAndPlants(g, e, getWidth, getHeight, world.width, world.height).unsafeRunSync())
     // draw luminosity filter
     maxAlpha <- IO pure 255
     notAlpha <- modelToViewRatio(world.luminosity, 255, MAX_LUMINOSITY)
@@ -45,7 +46,7 @@ class ShapesPanel(world: World) extends JPanel {
 
   def shapesPanelCreated(world: World): IO[ShapesPanel] = IO pure new ShapesPanel(world)
 
-  def blobDrawn(g: Graphics, b: Blob, world: World, viewWidth: Int, viewHeight: Int): IO[(Int, Int)] = for {
+  def drawFieldOfView(g: Graphics, b: Blob, world: World, viewWidth: Int, viewHeight: Int): IO[(Int, Int)] = for {
     _ <- IO apply g.setColor(fieldOfViewColor)
     x <- modelToViewRatio(b.boundingBox.point.x - b.fieldOfViewRadius, viewWidth,
       world.width)
@@ -56,17 +57,14 @@ class ShapesPanel(world: World) extends JPanel {
     _ <- IO apply g.drawOval(x, y, width, height)
     _ <- IO apply world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point,
       b.fieldOfViewRadius), e2.boundingBox)).foreach(e2 =>
-      drawFoodOrObstacle(g, e2.boundingBox, width, height, world.width, world.height))
+      drawFoodsObstaclesAndPlants(g, e2, width, height, world.width, world.height))
   } yield (width, height)
 
   def drawBlobs(g: Graphics, world: World, viewWidth: Int, viewHeight: Int): IO[Unit] =
     IO apply world.entities.foreach(e => {
       e match {
         case b: Blob => (for {
-          _ <- blobDrawn(g, b, world, viewWidth, viewHeight)
-        } yield ()).unsafeRunSync()
-        case tb: BlobWithTemporaryStatus => (for {
-          _ <- blobDrawn(g, tb, world, viewWidth, viewHeight)
+          _ <- drawFieldOfView(g, b, world, viewWidth, viewHeight)
         } yield ()).unsafeRunSync()
         case _ =>
       }
@@ -83,11 +81,17 @@ class ShapesPanel(world: World) extends JPanel {
       }
     })
 
-  def drawFoodOrObstacle(g: Graphics, boundingBox: BoundingBox, viewWidth: Int, viewHeight: Int,
-                         worldWidth: Int, worldHeight: Int): IO[Unit] = IO apply {
-    boundingBox match {
+  def drawFoodsObstaclesAndPlants(g: Graphics, entity: Entity, viewWidth: Int, viewHeight: Int,
+                                  worldWidth: Int, worldHeight: Int): IO[Unit] = IO apply {
+    entity.boundingBox match {
       case Rectangle(point2D, w, h) => (for {
-        _ <- IO apply g.setColor(Color.red)
+        _ <- entity match {
+          case _ : Obstacle => IO apply g.setColor(Color.red)
+          case _ : StandardPlant => IO apply g.setColor(Color.orange)
+          case _ : ReproducingPlant => IO apply g.setColor(Color.magenta)
+          case _ : PoisonousPlant => IO apply g.setColor(Color.pink)
+          case _ => IO apply g.setColor(Color.black)
+        }
         x <- modelToViewRatio(point2D.x - w / 2, viewWidth, viewWidth)
         y <- modelToViewRatio(point2D.y - h / 2, viewHeight, viewHeight)
         width <- modelToViewRatio(w, viewWidth, worldWidth)
