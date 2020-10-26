@@ -5,7 +5,7 @@ import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.DomainImpl.Effect
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle, Plant}
-import evo_sim.model.Updatable.{BaseBlobUpdatable, NeutralUpdatable}
+import evo_sim.model.Updatable.{NeutralUpdatable}
 import evo_sim.model.World._
 import evo_sim.model.Utils._
 import evo_sim.model.Reproducible._
@@ -25,8 +25,15 @@ object EntityBehaviour {
   }
 
   //Base blob behaviour implementation
-  trait BaseBlobBehaviour extends Simulable with BaseBlobUpdatable {
+  trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
+    override def updated(world: World): Set[SimulableEntity] = {
+      val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
+      self.life match {
+        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case _ => Set()
+      }
+    }
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
         case food: Food => food.effect(self)
@@ -42,8 +49,15 @@ object EntityBehaviour {
     }
   }
 
-  trait CannibalBlobBehaviour extends Simulable with BaseBlobUpdatable {
+  trait CannibalBlobBehaviour extends Simulable {
     self: CannibalBlob =>
+    override def updated(world: World): Set[SimulableEntity] = {
+      val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food] || e.isInstanceOf[BaseBlob])
+      self.life match {
+        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case _ => Set()
+      }
+    }
     override def collided(other: SimulableEntity): Set[SimulableEntity] = {
       other match {
         case food: Food => food.effect(self)
@@ -133,43 +147,16 @@ object EntityBehaviour {
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
     val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
-      case n if n > 1 =>
-        self.copy(
-          boundingBox = Circle(movement.point, self.boundingBox.radius),
-          direction = movement.direction,
-          velocity = self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
-          life = self.degradationEffect(self),
-          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-          cooldown = self.cooldown - 1
-        )
-      case _ => depack(self, world, movement)
+      case n if n > 1 => BlobEntityHelper.updateTemporaryBlob(self, movement, world)
+      case _ => BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement)
     }
   }
 
   private def slowBehaviour(self: SlowBlob, world: World): SimulableEntity = {
     val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
-      case n if n > 1 =>
-        self.copy(
-          boundingBox = Circle(movement.point, self.boundingBox.radius),
-          direction = movement.direction,
-          velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
-          life = self.degradationEffect(self),
-          fieldOfViewRadius = self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-          cooldown = self.cooldown - 1
-        )
-      case _ => depack(self, world, movement)
+      case n if n > 1 => BlobEntityHelper.updateTemporaryBlob(self, movement, world)
+      case _ => BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement)
     }
   }
-
-  def depack[A <: Blob](self: A, world: World, movement: Movement): SimulableEntity = {
-    var velocity = self.velocity
-    self match {
-      case s:SlowBlob =>  velocity = s initialVelocity
-    }
-    BaseBlob(
-      self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
-      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity), self gender, self movementStrategy, movement direction)
-  }
-
 }

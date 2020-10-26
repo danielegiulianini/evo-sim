@@ -2,6 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Entity, Intelligent}
+import evo_sim.prolog.MovingStrategiesProlog
 
 import scala.math._
 
@@ -13,38 +14,33 @@ object MovingStrategies {
 
   def baseMovement(entity: Intelligent, world: World, entitiesFilter: Entity => Boolean): Movement = {
 
-    /*MovingStrategiesProlog.movement(entity, world)
-    Thread.sleep(10000)*/
+    val chasedEntity = MovingStrategiesProlog.chasedEntity(entity, (world.entities - entity.asInstanceOf[SimulableEntity]).filter(entitiesFilter))
 
-    val chasedEntity = (world.entities - entity.asInstanceOf[SimulableEntity]).filter(entitiesFilter/*elem => elem.isInstanceOf[Food]*/) match {
-      case set if set.nonEmpty => Option(set.minBy(distanceBetweenEntities(entity, _)))
+    chasedEntity match {
+      case Some(chasedEntity) if (distanceBetweenEntities(entity.boundingBox.point, chasedEntity) < entity.fieldOfViewRadius) => chaseMovement(entity, chasedEntity)
+      case _ => MovingStrategiesProlog.standardMovement(entity)
+    }
+
+    /*val chasedEntity = (world.entities - entity.asInstanceOf[SimulableEntity]).filter(entitiesFilter) match {
+      case set if set.nonEmpty => Option(set.minBy(elem => distanceBetweenEntities(entity.boundingBox.point, elem.boundingBox.point)))
       case _ => None
     }
 
     chasedEntity match {
-      case Some(chasedEntity) if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius) => chaseMovement(entity, chasedEntity)
+      case Some(chasedEntity) if (distanceBetweenEntities(entity.boundingBox.point, chasedEntity.boundingBox.point) < entity.fieldOfViewRadius) => chaseMovement(entity, chasedEntity.boundingBox.point)
       case _ => standardMovement(entity, entity.direction.angle, world)
-    }
+    }*/
 
   }
 
-  //def crazyMovement(entity: Intelligent, entities: Set[Intelligent]): Intelligent = ???
 
   @scala.annotation.tailrec
   private def standardMovement(entity: Intelligent, angle: Int, world: World): Movement = {
-
-    /*println(entity.direction)
-
-    Thread.sleep(2000)*/
 
     val direction = entity.direction.stepToNextDirection match {
       case Constants.NEXT_DIRECTION => Direction(random.nextInt(360), random.nextInt(50))
       case x => Direction(angle, x-1)
     }
-
-    /*println(direction)
-
-    Thread.sleep(2000)*/
 
     val positionUpdated = nextPosition(entity, direction.angle)
 
@@ -55,26 +51,25 @@ object MovingStrategies {
   }
 
   private def nextPosition(entity: Intelligent, angle: Int): Point2D = {
-    val deltaX = /*dt * */ entity.velocity * cos(toRadians(angle)) * 0.05
-    val deltaY = /*dt * */ entity.velocity * sin(toRadians(angle)) * 0.05
+    val deltaX = entity.velocity * cos(toRadians(angle)) * 0.05
+    val deltaY = entity.velocity * sin(toRadians(angle)) * 0.05
     val x = (entity.boundingBox.point.x + deltaX).toFloat.round
     val y = (entity.boundingBox.point.y + deltaY).toFloat.round
     Point2D(x, y)
   }
 
-  private def chaseMovement(entity: Intelligent, chasedEntity: SimulableEntity): Movement = {
-    val angle = toDegrees(atan2(chasedEntity.boundingBox.point.y - entity.boundingBox.point.y, chasedEntity.boundingBox.point.x - entity.boundingBox.point.x)).toFloat.round
+  private def chaseMovement(entity: Intelligent, chasedEntity: Point2D): Movement = {
+    val angle = toDegrees(atan2(chasedEntity.y - entity.boundingBox.point.y, chasedEntity.x - entity.boundingBox.point.x)).toFloat.round
     Movement(nextPosition(entity, angle), Direction(angle, entity.direction.stepToNextDirection - 1))
   }
 
-  //TODO: Bisogna considerare anche il raggio di grandezza del blob
   private def isBoundaryCollision(entityPosition: Point2D, worldDimension: Point2D): Boolean = (entityPosition.x, entityPosition.y) match {
     case (x, y) if (0 until worldDimension.x contains x) && (0 until worldDimension.y contains y) => false
     case _ => true
   }
 
-  private def distanceBetweenEntities(a: Intelligent, b: SimulableEntity): Double = {
-    sqrt(pow(b.boundingBox.point.x - a.boundingBox.point.x, 2) + pow(b.boundingBox.point.y - a.boundingBox.point.y, 2))
+  private def distanceBetweenEntities(a: Point2D, b: Point2D): Double = {
+    sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
   }
 
 }
