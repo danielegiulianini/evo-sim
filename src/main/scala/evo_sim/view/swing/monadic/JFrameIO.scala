@@ -8,8 +8,8 @@ import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 
 class JFrameIO(jFrame: JFrame) {
   //invoke and wait versions (for finer granularity for task assignment to EDT thread)
-  def resizableSetInvokingAndWaiting(frame: JFrame): IO[Unit] = IO { SwingUtilities.invokeAndWait(() => frame.setResizable(false))}
-  def visibleSetInvokingAndWaiting(b: Boolean): IO[Unit] = IO{ SwingUtilities.invokeAndWait(() => jFrame.setVisible(b)) }
+  def resizableInvokingAndWaiting(frame: JFrame): IO[Unit] = IO { SwingUtilities.invokeAndWait(() => frame.setResizable(false))}
+  def visibleInvokingAndWaiting(b: Boolean): IO[Unit] = IO{ SwingUtilities.invokeAndWait(() => jFrame.setVisible(b)) }
   def packedInvokingAndWaiting(): IO[Unit] = IO { SwingUtilities.invokeAndWait(() => jFrame.pack()) }
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =
     IO {SwingUtilities.invokeAndWait(() => jFrame.setDefaultCloseOperation(operation))}
