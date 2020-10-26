@@ -2,39 +2,39 @@ package evo_sim.model
 
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, MovementStrategy, Velocity}
-
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
 
 object EntityStructure {
   trait Domain {
     type Life
     type Velocity
     type DegradationEffect[A] >: A => Life
-    type Effect = Blob => Set[SimulableEntity]  //name to be changed
-    //type Rivals
+    type Effect //name to be changed
     type Position
     type MovementStrategy
     type Cooldown
+    type LifeCycle
   }
 
   object DomainImpl extends Domain {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
-    //override type Rivals = Set[SimulableEntity]
+    override type Effect = Blob => Set[SimulableEntity]  //name to be changed
     override type Position = Movement
-    override type MovementStrategy = (Intelligent, World) => Position
+    override type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
     override type Cooldown = Int
+    override type LifeCycle = Int
   }
 
   trait Entity {
     def name : String
     def boundingBox: BoundingBox
-    override def equals(obj: Any): Boolean = obj match {
+    /*override def equals(obj: Any): Boolean = obj match {
       case _ : Entity => name.equals(obj.asInstanceOf[Entity].name)
       case _ => false
     }
-    override def hashCode(): Int = name.hashCode()
+    override def hashCode(): Int = name.hashCode()*/
   }
 
   trait Living extends Entity {
@@ -56,8 +56,6 @@ object EntityStructure {
   trait Intelligent extends Perceptive with Moving {
     def movementStrategy: MovementStrategy
     def direction: Direction
-    /*def movementDirection: Int
-    def stepToNextDirection: Int*/
   }
 
   trait Blob extends Entity with Living with Moving with Perceptive with Intelligent {
@@ -74,8 +72,11 @@ object EntityStructure {
     override def boundingBox: Rectangle
   }
 
-  trait BlobWithTemporaryStatus {
-    def blob: Blob
+  trait Plant extends Entity {
+    def lifeCycle: LifeCycle
+  }
+
+  trait BlobWithTemporaryStatus extends Blob {
     def cooldown: Cooldown
   }
 }

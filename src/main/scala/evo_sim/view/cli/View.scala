@@ -22,7 +22,7 @@ object View extends View {
       temperature = temperature,
       luminosity = luminosity,
       initialBlobNumber = blobs,
-      initialPlantsNumber = foods,
+      initialPlantNumber = foods,
       initialObstacleNumber = obstacles,
       daysNumber = days
     )

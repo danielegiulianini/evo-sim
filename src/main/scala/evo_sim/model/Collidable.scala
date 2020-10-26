@@ -1,10 +1,34 @@
 package evo_sim.model
 
-import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
+import evo_sim.model.EntityStructure.{Entity, Moving}
 
 trait Collidable {
   def collided(other: SimulableEntity) : Set[SimulableEntity]
 }
+
+//companion object with some collidable implementations ready to be (re)used (in the future)
+object Collidable {
+
+  trait NeutralCollidable extends Simulable {
+    self: Entity with Updatable =>
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
+  }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 /**
  * collided(blob, blob)
@@ -12,7 +36,7 @@ trait Collidable {
  * collided(blob, obstacle)
  * -> note, every collided with the specific type of entity, this permits to define the effect occurred to the blob
  *
-  def collided(other: Blob) : Set[Simulable] = {
+def collided(other: Blob) : Set[Simulable] = {
     val set = Set(other)
     set -> this cant be done since Blob does not extend Simulable (so does not extends Collidable and Updatable either)
   }

@@ -1,11 +1,8 @@
 package evo_sim.controller
 
-import evo_sim.core.SimulationEngine
 import evo_sim.core.Simulation._
-import javax.swing.{JComponent, JFrame}
-
+import evo_sim.core.SimulationEngine
 
 object Launcher extends App {
-  SimulationEngine.started run
+  SimulationEngine.started run()
 }
-

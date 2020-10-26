@@ -66,7 +66,7 @@ class ShapesPanel(world: World) extends JPanel {
           _ <- blobDrawn(g, b, world, viewWidth, viewHeight)
         } yield ()).unsafeRunSync()
         case tb: BlobWithTemporaryStatus => (for {
-          _ <- blobDrawn(g, tb.blob, world, viewWidth, viewHeight)
+          _ <- blobDrawn(g, tb, world, viewWidth, viewHeight)
         } yield ()).unsafeRunSync()
         case _ =>
       }

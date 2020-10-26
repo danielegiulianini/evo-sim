@@ -1,19 +1,19 @@
 package evo_sim.core
 
-
-import cats.effect.{ContextShift, IO}
+import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
 //import cats.effect.IO.{fromFuture, unit}
-import evo_sim.core.Simulation.{Simulation, liftIo, toStateTWorld}
-import evo_sim.model.World
-import scala.concurrent.duration._
 import evo_sim.core.Logging._
+import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
-import evo_sim.view.swing.View //import evo_sim.view.cli.View
+import evo_sim.model.World
+import evo_sim.view.swing.View
+
+import scala.concurrent.duration._ //import evo_sim.view.cli.View
 
 object SimulationEngine {
 
-  def started() = {
+  def started(): IO[Unit] = {
     for {
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
       /*- <- IO {
@@ -43,9 +43,6 @@ object SimulationEngine {
       } yield ())
   } yield ()
 }
-
-
-
 
 //to remove after debugging complete
 object Logging {
