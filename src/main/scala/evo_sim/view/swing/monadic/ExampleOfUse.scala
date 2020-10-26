@@ -22,7 +22,7 @@ object Example1 extends App {
   program unsafeRunSync
 }
 
-object Example2 extends App{
+object Example2 extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
     _ <- frame.titleSet("example")
@@ -53,4 +53,34 @@ object Example2 extends App{
 
   program2 unsafeRunSync
 }
+
+object Example3 extends App {
+
+  val frameBuilt = for {
+    frame <- JFrameIO()
+    _ <- frame.titleSet("example")
+    _ <- frame.sizeSet(320, 200)
+    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
+  } yield frame
+
+  val panelBuilt = for {
+    panel <- JPanelIO()
+    _ <- panel.layoutSet(new BorderLayout())
+    l <- JLabelIO()
+    sl <- JSliderIO()
+    _ <- sl.changeListenerAdded(e => l.textSet(""+sl.valueGot.unsafeRunSync()).unsafeRunSync())
+    _ <- panel.added(l, BorderLayout.EAST)
+    _ <- panel.added(sl, BorderLayout.CENTER)
+  } yield panel
+
+  val program2 = for {
+    frame <- frameBuilt
+    panel <- panelBuilt
+    _ <- frame.added(panel)
+    _ <- frame.visibleInvokingAndWaiting(true)
+  } yield ()
+
+  program2 unsafeRunSync
+}
+
 
