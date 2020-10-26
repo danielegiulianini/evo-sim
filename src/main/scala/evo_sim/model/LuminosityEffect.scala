@@ -14,7 +14,6 @@ object LuminosityEffect {
    */
   def standardLuminosityEffect(luminosity: Int): Int = {
     val x = luminosity.toFloat / Constants.LUMINOSITY_MAX_DELTA.toFloat
-    println(luminosity + " XXXXXXXXXXXXX " + x)
     zeroPhasedZeroYTranslatedSinusoidalSin(Constants.FOW_AMPLITUDE)(x)
   }
 

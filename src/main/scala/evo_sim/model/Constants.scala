@@ -9,8 +9,8 @@ object Constants {
 
   val TEMPERATURE_AMPLITUDE = 1.0125f
   val LUMINOSITY_AMPLITUDE = 1.05f
-  val FOW_AMPLITUDE = 5f
-  val VELOCITY_AMPLITUDE = 5f
+  val FOW_AMPLITUDE = 2f
+  val VELOCITY_AMPLITUDE = 2f
 
   val DEF_BLOB_RADIUS = 5
   val DEF_BLOB_LIFE = 300
@@ -46,9 +46,9 @@ object Constants {
   val MAX_BLOBS = 300
   val DEF_BLOBS = 50
 
-  val MIN_FOODS = 0
-  val MAX_FOODS = 300
-  val DEF_FOODS = 50
+  val MIN_PLANTS = 0
+  val MAX_PLANTS = 300
+  val DEF_PLANTS = 50
 
   val MIN_OBSTACLES = 0
   val MAX_OBSTACLES = 100

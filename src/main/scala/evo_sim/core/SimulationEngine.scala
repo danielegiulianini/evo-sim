@@ -1,36 +1,26 @@
 package evo_sim.core
 
-import cats.effect.{ContextShift, IO}
-import evo_sim.core.Simulation.toIoConversions.inputReadFromUser
+import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
 //import cats.effect.IO.{fromFuture, unit}
-import evo_sim.core.Simulation._//{Simulation, liftIo, toStateTWorld}
-import evo_sim.model.World
-import scala.concurrent.duration._
 import evo_sim.core.Logging._
+import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
-import evo_sim.view.swing.View //import evo_sim.view.cli.View
+import evo_sim.model.World
+import evo_sim.view.swing.View
+
+import scala.concurrent.duration._ //import evo_sim.view.cli.View
 
 object SimulationEngine {
 
-  def started() = {
+  def started(): IO[Unit] = {
     for {
-      - <- IO {
-        log("building gui")
-        View.inputViewBuiltAndShowed()
-      }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
       /*- <- IO {
         log("building simulation gui")
         SwingGUI.simulationViewBuiltAndShowed()
       }*/
-      _ <- IO {
-        log("calling sim loop")
-        (for {
-          _ <- IO {View.simulationViewBuiltAndShowed()}
-          _ <- simulationLoop().runS(World(env))
-        } yield()).unsafeRunSync()
-      }
+      _ <- simulationLoop().runS(World(env))
     } yield ()
   }
 
@@ -53,9 +43,6 @@ object SimulationEngine {
       } yield ())
   } yield ()
 }
-
-
-
 
 //to remove after debugging complete
 object Logging {

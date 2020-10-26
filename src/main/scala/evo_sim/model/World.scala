@@ -1,10 +1,9 @@
 package evo_sim.model
 
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, BasePlant, CannibalBlob, ReproducingPlant, StandardPlant}
+import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
-import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.{zeroPhasedSinusoidalSin, zeroPhasedZeroYTranslatedSinusoidalSin}
-
+import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 
 
 case class World(temperature: Int,
@@ -44,14 +43,14 @@ object World {
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction(0, Constants.NEXT_DIRECTION))).toSet
 
-    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber.toDouble / 10 * 9).ceil.toInt)(i => BaseFood(
+    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialPlantNumber.toDouble / 10 * 9).ceil.toInt)(i => BaseFood(
       name = "standardFood" + i,
       boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
       life = Constants.DEF_FOOD_LIFE,
       effect = Effect.standardFoodEffect)).toSet
 
-    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber.toDouble / 10).floor.toInt)(i => BaseFood(
+    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialPlantNumber.toDouble / 10).floor.toInt)(i => BaseFood(
       name = "reproducingFood" + i,
       boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_REPRODUCING_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
@@ -94,11 +93,8 @@ object World {
     // (wrt integer arithmetics) function so caching is effective as the values would be recomputed
     // every time, unnecessarily)
     val luminosityUpdated: ((Int, Float)) => Int = memoize({
-      case (luminosity, timeOfTheDay) => {
-        val lu = luminosity + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.LUMINOSITY_AMPLITUDE)(timeOfTheDay)
-        //println("-----------la x che passo e'" + x)
-        lu
-      }
+      case (luminosity, timeOfTheDay) =>
+        luminosity + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.LUMINOSITY_AMPLITUDE)(timeOfTheDay)
     })
 
     val temperatureUpdated: ((Int, Float)) => Int = memoize({
@@ -127,23 +123,23 @@ object World {
         (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation //should rename yDilatation to amplitude
 
       //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
-      def zeroPhasedSinusoidal = sinusoidal(_: Float)(_: Float)(0)(_: Int)
+      def zeroPhasedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(0)(_: Int)
 
-      def zeroYTranslatedSinusoidal = sinusoidal(_: Float)(_: Float)(_: Int)(0)
+      def zeroYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(0)
 
-      def oneYTranslatedSinusoidal = sinusoidal(_: Float)(_: Float)(_: Int)(1)
+      def oneYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(1)
 
-      def zeroPhasedZeroYTranslatedSinusoidal = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
+      def zeroPhasedZeroYTranslatedSinusoidal: (Float, Float) => Int = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
 
       //object with curried versions to leverage, among the others, IDE automatic named parameters
       object Curried {
-        def zeroPhasedSinusoidalSin = Sinusoidal.zeroPhasedSinusoidal.curried
+        def zeroPhasedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried
 
-        def zeroYTranslatedSinusoidalSin = Sinusoidal.zeroYTranslatedSinusoidal.curried
+        def zeroYTranslatedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroYTranslatedSinusoidal.curried
 
-        def oneYTranslatedSinusoidalSin = Sinusoidal.oneYTranslatedSinusoidal.curried
+        def oneYTranslatedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.oneYTranslatedSinusoidal.curried
 
-        def zeroPhasedZeroYTranslatedSinusoidalSin = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidal.curried
+        def zeroPhasedZeroYTranslatedSinusoidalSin: Float => Float => Int = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidal.curried
       }
 
     }

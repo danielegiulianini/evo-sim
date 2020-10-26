@@ -2,102 +2,128 @@ package evo_sim.view.swing
 
 import java.awt.{Color, Dimension, Graphics}
 
+import cats.effect.IO
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import evo_sim.model.Constants._
-import evo_sim.model.Entities.CannibalBlob
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
+import evo_sim.model.{BoundingBox, Intersection, Point2D, World}
 import javax.swing.JPanel
 
 class ShapesPanel(world: World) extends JPanel {
 
-  private val borderValue = 15
+  override def paintComponent(g: Graphics): Unit = (for {
+    _ <- IO apply super.paintComponent(g)
+    // draw temperature filter
+    red <- modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE)
+    maxBlue <- IO pure 255
+    notBlue <- modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255,
+      MAX_TEMPERATURE - MIN_TEMPERATURE)
+    blue <- IO apply maxBlue - notBlue
+    temperatureColor <- IO pure new Color(red, 0, blue, 75)
+    _ <- IO apply g.setColor(temperatureColor)
+    _ <- IO apply g.fillRect(0, 0, getWidth, getHeight)
+    // draw rectangles and triangles before transparent filter and circles
+    _ <- IO apply world.entities.foreach(e =>
+      drawFoodOrObstacle(g, e.boundingBox, getWidth, getHeight, world.width, world.height).unsafeRunSync())
+    // draw luminosity filter
+    maxAlpha <- IO pure 255
+    notAlpha <- modelToViewRatio(world.luminosity, 255, MAX_LUMINOSITY)
+    alpha <- IO apply maxAlpha - notAlpha.max(0).min(255)
+    luminosityColor <- IO pure new Color(0, 0, 0, alpha)
+    _ <- IO apply g.setColor(luminosityColor)
+    _ <- IO apply g.fillRect(0, 0, getWidth, getHeight)
+    // draw blob circles with field of view
+    _ <- drawBlobs(g, world, getWidth, getHeight)
+  } yield ()).unsafeRunSync()
+
+  override def getPreferredSize: Dimension = {
+    val borderValue = 15
+    new Dimension(getParent.getSize().width - borderValue, getParent.getSize().height - borderValue)
+  }
+
   private val fieldOfViewColor = new Color(255, 255, 0)
 
-  override def paintComponent(g: Graphics): Unit = {
-    super.paintComponent(g)
+  def shapesPanelCreated(world: World): IO[ShapesPanel] = IO pure new ShapesPanel(world)
 
-    // draw temperature filter
-    val temperatureColor = new Color(modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE), 0,
-      255 - modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE),
-      75)
-    g.setColor(temperatureColor)
-    g.fillRect(0, 0, getWidth, getHeight)
+  def blobDrawn(g: Graphics, b: Blob, world: World, viewWidth: Int, viewHeight: Int): IO[(Int, Int)] = for {
+    _ <- IO apply g.setColor(fieldOfViewColor)
+    x <- modelToViewRatio(b.boundingBox.point.x - b.fieldOfViewRadius, viewWidth,
+      world.width)
+    y <- modelToViewRatio(b.boundingBox.point.y - b.fieldOfViewRadius, viewHeight,
+      world.height)
+    width <- modelToViewRatio(b.fieldOfViewRadius * 2, viewWidth, world.width)
+    height <- modelToViewRatio(b.fieldOfViewRadius * 2, viewHeight, world.height)
+    _ <- IO apply g.drawOval(x, y, width, height)
+    _ <- IO apply world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point,
+      b.fieldOfViewRadius), e2.boundingBox)).foreach(e2 =>
+      drawFoodOrObstacle(g, e2.boundingBox, width, height, world.width, world.height))
+  } yield (width, height)
 
-    // draw rectangles and triangles before transparent filter and circles
-    world.entities.foreach(e => drawRectangleOrTriangle(g, e.boundingBox))
-
-    // draw luminosity filter
-    g.setColor(new Color(0, 0, 0, 255 - modelToViewRatio(world.luminosity, 255, MAX_LUMINOSITY).max(0).min(255)))
-    g.fillRect(0, 0, getWidth, getHeight)
-
-    // draw blob circles with field of view
-    world.entities.foreach(e => {
+  def drawBlobs(g: Graphics, world: World, viewWidth: Int, viewHeight: Int): IO[Unit] =
+    IO apply world.entities.foreach(e => {
       e match {
-        case b : CannibalBlob =>
-          g.setColor(new Color(0, 0, 0))
-          g.drawOval(modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, this.getSize().width, world.width),
-            modelToViewRatio(e.boundingBox.point.y - b.fieldOfViewRadius, this.getSize().height, world.height),
-            modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().width, world.width),
-            modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().height, world.height))
-          world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point, b.fieldOfViewRadius), e2.boundingBox))
-            .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
-        case b : Blob =>
-          g.setColor(fieldOfViewColor)
-          g.drawOval(modelToViewRatio(e.boundingBox.point.x - b.fieldOfViewRadius, this.getSize().width, world.width),
-            modelToViewRatio(e.boundingBox.point.y - b.fieldOfViewRadius, this.getSize().height, world.height),
-            modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().width, world.width),
-            modelToViewRatio(b.fieldOfViewRadius * 2, this.getSize().height, world.height))
-          world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point, b.fieldOfViewRadius), e2.boundingBox))
-            .foreach(e2 => drawRectangleOrTriangle(g, e2.boundingBox))
+        case b: Blob => (for {
+          _ <- blobDrawn(g, b, world, viewWidth, viewHeight)
+        } yield ()).unsafeRunSync()
+        case tb: BlobWithTemporaryStatus => (for {
+          _ <- blobDrawn(g, tb, world, viewWidth, viewHeight)
+        } yield ()).unsafeRunSync()
         case _ =>
       }
       e.boundingBox match {
-      case Circle(point2D, r) =>
-        g.setColor(Color.blue)
-        g.fillOval(modelToViewRatio(point2D.x - r, this.getSize().width, world.width),
-          modelToViewRatio(point2D.y - r, this.getSize().height, world.height),
-          modelToViewRatio(r * 2, this.getSize().width, world.width),
-          modelToViewRatio(r * 2, this.getSize().height, world.height))
-      case _ =>
+        case Circle(point2D, r) => (for {
+          _ <- IO apply g.setColor(Color.blue)
+          x <- modelToViewRatio(point2D.x - r, viewWidth, world.width)
+          y <- modelToViewRatio(point2D.y - r, viewHeight, world.height)
+          width <- modelToViewRatio(r * 2, viewWidth, world.width)
+          height <- modelToViewRatio(r * 2, viewHeight, world.height)
+          _ <- IO apply g.fillOval(x, y, width, height)
+        } yield ()).unsafeRunSync()
+        case _ =>
       }
     })
-  }
 
-  override def getPreferredSize = new Dimension(this.getParent.getSize().width - borderValue, this.getParent.getSize().height - borderValue)
-
-  private def triangleVertices(tri: Triangle) = {
-    /** return a tuple3 with the vertices
-     *  v1 = center.x, center.y  + radius           -> upper vertices
-     *  v2 = center.x - radius, center.y  - radius  -> bottom left vertices
-     *  v1 = center.x + radius, center.y  - radius  -> bottom right vertices
-     */
-    val radius = tri.height/3*2
-    (Point2D(tri.point.x, tri.point.y + radius), Point2D(tri.point.x - radius, tri.point.y - radius), Point2D(tri.point.x + radius, tri.point.y - radius))
-  }
-
-  private def modelToViewRatio(modelProperty: Int, viewDimension: Int, modelDimension: Int): Int = {
-    modelProperty * viewDimension / modelDimension
-  }
-
-  private def drawRectangleOrTriangle(g: Graphics, boundingBox: BoundingBox): Unit = {
+  def drawFoodOrObstacle(g: Graphics, boundingBox: BoundingBox, viewWidth: Int, viewHeight: Int,
+                         worldWidth: Int, worldHeight: Int): IO[Unit] = IO apply {
     boundingBox match {
-      case Rectangle(point2D, w, h) =>
-        g.setColor(Color.red)
-        g.fillRect(modelToViewRatio(point2D.x - w / 2, this.getSize().width, world.width),
-          modelToViewRatio(point2D.y - h / 2, this.getSize().height, world.height),
-          modelToViewRatio(w, this.getSize().width, world.width),
-          modelToViewRatio(h, this.getSize().height, world.height))
-      case Triangle(point2D, h, a) =>
-        val vertices = triangleVertices(Triangle(point2D, h, a))
-        g.setColor(Color.green)
-        g.fillPolygon(vertices.productIterator.map({
-          case p: Point2D => modelToViewRatio(p.x, this.getSize().width, world.width)
-        }).toArray, vertices.productIterator.map({
-          case p: Point2D => modelToViewRatio(p.y, this.getSize().height, world.height)
-        }).toArray, vertices.productIterator.length)
+      case Rectangle(point2D, w, h) => (for {
+        _ <- IO apply g.setColor(Color.red)
+        x <- modelToViewRatio(point2D.x - w / 2, viewWidth, viewWidth)
+        y <- modelToViewRatio(point2D.y - h / 2, viewHeight, viewHeight)
+        width <- modelToViewRatio(w, viewWidth, worldWidth)
+        height <- modelToViewRatio(h, viewHeight, worldHeight)
+        _ <- IO apply g.fillRect(x, y, width, height)
+      } yield ()).unsafeRunSync()
+      case Triangle(point2D, h, a) => (for {
+        vertices <- triangleVertices(Triangle(point2D, h, a))
+        _ <- IO apply g.setColor(Color.green)
+        xPoints <- IO pure vertices.productIterator.map({
+          case p: Point2D =>
+            modelToViewRatio(p.x, viewWidth, worldWidth).unsafeRunSync()
+        }).toArray
+        yPoints <- IO pure vertices.productIterator.map({
+          case p: Point2D =>
+            modelToViewRatio(p.y, viewHeight, worldHeight).unsafeRunSync()
+        }).toArray
+        nPoints <- IO pure vertices.productIterator.length
+        _ <- IO apply g.fillPolygon(xPoints, yPoints, nPoints)
+      } yield ()).unsafeRunSync()
       case _ =>
     }
   }
+
+  /** return a tuple3 with the vertices
+   * v1 = center.x, center.y  + radius           -> upper vertices
+   * v2 = center.x - radius, center.y  - radius  -> bottom left vertices
+   * v1 = center.x + radius, center.y  - radius  -> bottom right vertices
+   */
+  def triangleVertices(tri: Triangle): IO[(Point2D, Point2D, Point2D)] = {
+    val radius = tri.height / 3 * 2
+    IO pure(Point2D(tri.point.x, tri.point.y + radius), Point2D(tri.point.x - radius, tri.point.y - radius),
+      Point2D(tri.point.x + radius, tri.point.y - radius))
+  }
+
+  def modelToViewRatio(modelProperty: Int, viewDimension: Int, modelDimension: Int): IO[Int] =
+    IO pure modelProperty * viewDimension / modelDimension
 
 }

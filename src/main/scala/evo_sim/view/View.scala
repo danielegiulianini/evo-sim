@@ -1,16 +1,12 @@
 package evo_sim.view
 
+import cats.effect.IO
 import evo_sim.model.{Environment, World}
-import evo_sim.view.swing.View
 
 trait View {
-  def inputViewBuiltAndShowed(): Unit
+  def inputReadFromUser(): IO[Environment]
 
-  def inputReadFromUser(): Environment
+  def rendered(world: World): IO[Unit]
 
-  def simulationViewBuiltAndShowed(): Unit
-
-  def rendered(world: World): Unit
-
-  def resultViewBuiltAndShowed(world: World): Unit
+  def resultViewBuiltAndShowed(world: World): IO[Unit]
 }

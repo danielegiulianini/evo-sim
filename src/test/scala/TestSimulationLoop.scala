@@ -9,7 +9,7 @@ class TestSimulationLoop {
     temperature = 2,
     luminosity = 3,
     initialBlobNumber = 10,
-    initialFoodNumber = 3,
+    initialPlantNumber = 3,
     initialObstacleNumber = 3,
     daysNumber = 5)
 
