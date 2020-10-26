@@ -16,7 +16,19 @@ object Entities {
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy,
-                      override val direction: Direction) extends Blob with BaseBlobBehaviour
+                      override val direction: Direction) extends Blob with BaseBlobBehaviour {
+    def as[T](f: BaseBlob => T) = f(this)
+  }
+
+  object BaseBlob {
+    implicit def SlowBlobMapper = (blob: BaseBlob) =>
+      SlowBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
+        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN, blob.velocity)
+
+    implicit def PoisonBlobMapper = (blob: BaseBlob) =>
+      PoisonBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
+        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN)
+  }
 
   case class CannibalBlob(override val name: String,
                           override val boundingBox: Circle,
@@ -25,7 +37,19 @@ object Entities {
                           override val degradationEffect: DegradationEffect[Blob],
                           override val fieldOfViewRadius: Int,
                           override val movementStrategy: MovementStrategy,
-                          override val direction: Direction) extends Blob with CannibalBlobBehaviour
+                          override val direction: Direction) extends Blob with CannibalBlobBehaviour {
+    def as[T](f: CannibalBlob => T) = f(this)
+  }
+
+  object CannibalBlob {
+    implicit def SlowBlobMapper = (blob: CannibalBlob) =>
+      SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
+        blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN, blob velocity)
+
+    implicit def PoisonBlobMapper = (blob: CannibalBlob) =>
+      PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
+        blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN)
+  }
 
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,

@@ -20,7 +20,6 @@ object EntityBehaviour {
     trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
       self: Entity =>
     }
-
   }
 
   //Base blob behaviour implementation
@@ -58,14 +57,12 @@ object EntityBehaviour {
         case blob: SlowBlob => slowBehaviour(blob, world)
         case _ => self
       }
-
       Set(newSelf)
     }
   }
 
   trait BaseFoodBehaviour extends Simulable {
     self: Food =>
-
     override def updated(world: World): Set[SimulableEntity] = {
       val life = self.degradationEffect(self)
       life match {
@@ -83,7 +80,6 @@ object EntityBehaviour {
 
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
-
     override def updated(world: World): Set[SimulableEntity] = {
       self.lifeCycle match {
         case n if n > 1 =>
@@ -166,14 +162,8 @@ object EntityBehaviour {
       case s:SlowBlob =>  velocity = s initialVelocity
     }
     BaseBlob(
-      self name,
-      Circle(movement point, self.boundingBox.radius),
-      self degradationEffect self,
-      velocity,
-      DegradationEffect baseBlobDegradation,
-      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-      self movementStrategy,
-      movement direction)
+      self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
+      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity), self movementStrategy, movement direction)
   }
 
 }
