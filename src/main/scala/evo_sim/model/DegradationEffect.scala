@@ -16,5 +16,5 @@ object DegradationEffect{
   //blob specific degradation effect, velocity + standardDegradation
   def baseBlobDegradation(blob: Blob) : Life = blob. life - (/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
   //poison degradation effect
-  def posionBlobDegradation(blob: Blob) : Life = blob. life - 2*(/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
+  def poisonBlobDegradation(blob: Blob) : Life = blob. life - 2*(/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
 }
