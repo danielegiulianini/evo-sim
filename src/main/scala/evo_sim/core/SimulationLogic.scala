@@ -1,5 +1,6 @@
 package evo_sim.core
 
+import evo_sim.core.TupleUtils.{everyElementPairedWithOnlyOneOtherElement => multipleCollisionsRemoved}
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
@@ -21,9 +22,6 @@ object SimulationLogic {
   }
 
   def collisionsHandled(world: World): World = {
-
-    def multipleCollisionsRemoved(mySet: Set[(SimulableEntity, SimulableEntity)]) =
-      TupleUtils.everyElementPairedWithOnlyOneOtherElement(mySet)
 
     val collisions = multipleCollisionsRemoved(for {
       i <- world.entities
