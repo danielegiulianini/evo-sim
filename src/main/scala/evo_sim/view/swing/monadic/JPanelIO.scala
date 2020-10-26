@@ -1,8 +1,12 @@
 package evo_sim.view.swing.monadic
 
-import javax.swing.JPanel
+import cats.effect.IO
+import javax.swing.{JPanel}
 
 class JPanelIO (jPanel: JPanel) {
 }
 
 //companion object with utilities to be added
+object JPanelIO{
+  def apply() = IO { new JPanelIO(new JPanel) }
+}
