@@ -1,7 +1,6 @@
 package evo_sim.view.swing.monadic
 
 import java.awt.BorderLayout
-
 object ExampleOfUse {
 
   object Example1 extends App {
@@ -50,4 +49,5 @@ object ExampleOfUse {
 
     program2 unsafeRunSync
   }
+
 }
