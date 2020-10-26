@@ -15,22 +15,12 @@ object SimulationEngine {
 
   def started() = {
     for {
-      - <- IO {
-        log("building gui")
-        View.inputViewBuiltAndShowed()
-      }
       env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
       /*- <- IO {
         log("building simulation gui")
         SwingGUI.simulationViewBuiltAndShowed()
       }*/
-      _ <- IO {
-        log("calling sim loop")
-        (for {
-          _ <- IO {View.simulationViewBuiltAndShowed()}
-          _ <- simulationLoop().runS(World(env))
-        } yield()).unsafeRunSync()
-      }
+      _ <- simulationLoop().runS(World(env))
     } yield ()
   }
 

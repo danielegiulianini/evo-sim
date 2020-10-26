@@ -29,14 +29,14 @@ object World {
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction(0, 20))).toSet
 
-    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 2).ceil.toInt)(i => BaseFood(
+    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialPlantsNumber / 2).ceil.toInt)(i => BaseFood(
       name = "standardFood" + i,
       boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,
       life = Constants.DEF_FOOD_LIFE,
       effect = Effect.standardFoodEffect)).toSet
 
-    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialFoodNumber / 2).floor.toInt)(i => BaseFood(
+    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialPlantsNumber / 2).floor.toInt)(i => BaseFood(
       name = "reproducingFood" + i,
       boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_REPRODUCING_FOOD_HEIGHT),
       degradationEffect = DegradationEffect.foodDegradation,

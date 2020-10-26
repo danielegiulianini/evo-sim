@@ -35,13 +35,8 @@ object Simulation {
     }
     //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
     def worldRendered(worldAfterCollisions: World) =
-      liftIo(IO {
-        View.rendered(worldAfterCollisions)
-      })
-    def inputReadFromUser() =
-      IO {
-        View.inputReadFromUser()
-      }
+      liftIo(View.rendered(worldAfterCollisions))
+    def inputReadFromUser() = View.inputReadFromUser()
   }
 
 }

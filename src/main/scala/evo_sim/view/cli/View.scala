@@ -5,12 +5,10 @@ import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 
 object View extends View {
-  override def inputViewBuiltAndShowed(): IO[Unit] = IO apply println("Ready")
-
   override def inputReadFromUser(): IO[Environment] = for {
     _ <- IO apply print("#Blobs: ")
     blobs <- IO apply scala.io.StdIn.readInt()
-    _ <- IO apply print("#Foods: ")
+    _ <- IO apply print("#Plants: ")
     foods <- IO apply scala.io.StdIn.readInt()
     _ <- IO apply print("#Obstacles: ")
     obstacles <- IO apply scala.io.StdIn.readInt()
@@ -24,7 +22,7 @@ object View extends View {
       temperature = temperature,
       luminosity = luminosity,
       initialBlobNumber = blobs,
-      initialFoodNumber = foods,
+      initialPlantsNumber = foods,
       initialObstacleNumber = obstacles,
       daysNumber = days
     )

@@ -32,9 +32,9 @@ object Constants {
   val MAX_BLOBS = 300
   val DEF_BLOBS = 50
 
-  val MIN_FOODS = 0
-  val MAX_FOODS = 300
-  val DEF_FOODS = 50
+  val MIN_PLANTS = 0
+  val MAX_PLANTS = 300
+  val DEF_PLANTS = 50
 
   val MIN_OBSTACLES = 0
   val MAX_OBSTACLES = 100

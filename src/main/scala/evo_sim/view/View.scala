@@ -4,8 +4,6 @@ import cats.effect.IO
 import evo_sim.model.{Environment, World}
 
 trait View {
-  def inputViewBuiltAndShowed(): IO[Unit]
-
   def inputReadFromUser(): IO[Environment]
 
   def rendered(world: World): IO[Unit]
