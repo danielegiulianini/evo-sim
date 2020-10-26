@@ -21,7 +21,7 @@ class JFrameIO(jFrame: JFrame) extends ContainerIO(jFrame) {
   def titleSet(title: String) = IO{jFrame.setTitle(title)}
 }
 
-//companion object with utilities to be added
+//companion object with utilities
 object JFrameIO{
   def apply() = IO { new JFrameIO(new JFrame) }
 }
