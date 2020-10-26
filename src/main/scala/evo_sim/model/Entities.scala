@@ -6,6 +6,8 @@ import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
 import evo_sim.model.EntityStructure._
 
+import scala.reflect.ClassTag
+
 object Entities {
 
   //leaves of model hierarchy
@@ -16,19 +18,7 @@ object Entities {
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
                       override val movementStrategy: MovementStrategy,
-                      override val direction: Direction) extends Blob with BaseBlobBehaviour {
-    def as[T](f: BaseBlob => T) = f(this)
-  }
-
-  object BaseBlob {
-    def SlowBlobMapper = (blob: BaseBlob) =>
-      SlowBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
-        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN, blob.velocity)
-
-    def PoisonBlobMapper = (blob: BaseBlob) =>
-      PoisonBlob(blob.name, blob.boundingBox, blob.life, blob.velocity, blob.degradationEffect,
-        blob.fieldOfViewRadius, blob.movementStrategy, blob.direction, Constants.DEF_COOLDOWN)
-  }
+                      override val direction: Direction) extends Blob with BaseBlobBehaviour
 
   case class CannibalBlob(override val name: String,
                           override val boundingBox: Circle,
@@ -37,19 +27,7 @@ object Entities {
                           override val degradationEffect: DegradationEffect[Blob],
                           override val fieldOfViewRadius: Int,
                           override val movementStrategy: MovementStrategy,
-                          override val direction: Direction) extends Blob with CannibalBlobBehaviour {
-    def as[T](f: CannibalBlob => T) = f(this)
-  }
-
-  object CannibalBlob {
-    def SlowBlobMapper = (blob: CannibalBlob) =>
-      SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
-        blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN, blob velocity)
-
-    def PoisonBlobMapper = (blob: CannibalBlob) =>
-      PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
-        blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN)
-  }
+                          override val direction: Direction) extends Blob with CannibalBlobBehaviour
 
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,

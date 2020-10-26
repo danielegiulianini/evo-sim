@@ -16,29 +16,4 @@ object Updatable {
     self : Entity with Collidable =>
     override def updated(world:World): Set[SimulableEntity] = Set(self)
   }
-
-  trait BaseBlobUpdatable extends Simulable {
-    self: Blob with Collidable =>
-    override def updated(world: World): Set[SimulableEntity] = {
-      self.life match {
-        case n if n > 0 => self match {
-          case _: BaseBlob => {
-            val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
-            Set(BaseBlob(self.name, Circle(movement.point, self.boundingBox.radius),
-              self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
-              self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-              self.movementStrategy, movement.direction))
-          }
-          case _: CannibalBlob => {
-            val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food] || e.isInstanceOf[BaseBlob])
-            Set(CannibalBlob(self.name, Circle(movement.point, self.boundingBox.radius),
-              self.degradationEffect(self), self.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
-              self.degradationEffect, self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
-              self.movementStrategy, movement.direction))
-          }
-        }
-        case _ => Set()
-      }
-    }
-  }
 }

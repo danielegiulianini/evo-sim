@@ -81,4 +81,7 @@ object Constants {
 
   val VELOCITY_SLOW_DECREMENT = 10
 
+  val SLOWBLOB_TYPE = "SlowBlob"
+  val POISONBLOB_TYPE = "PoisonBlob"
+
 }

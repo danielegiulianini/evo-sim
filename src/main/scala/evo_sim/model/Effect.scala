@@ -23,8 +23,8 @@ object Effect {
   }
 
   def poisonousFoodEffect(blob: Blob): Set[SimulableEntity] = blob match {
-    case base: BaseBlob => Set(base.as(BaseBlob.PoisonBlobMapper))
-    case cannibal: CannibalBlob => Set(cannibal.as(CannibalBlob.PoisonBlobMapper))
+    case _: BaseBlob => Set(BlobEntityHelper.fromBlobToTemporaryBlob(blob, Constants.POISONBLOB_TYPE))
+    case _: CannibalBlob => Set(BlobEntityHelper.fromBlobToTemporaryBlob(blob, Constants.POISONBLOB_TYPE))
     case _ => Set()
   }
 
@@ -39,8 +39,8 @@ object Effect {
 
   def slowEffect(blob: Blob): Set[SimulableEntity] = {
     blob match {
-      case base: BaseBlob => Set(base.as(BaseBlob.SlowBlobMapper))
-      case cannibal: CannibalBlob => Set(cannibal.as(CannibalBlob.SlowBlobMapper))
+      case _: BaseBlob => Set(BlobEntityHelper.fromBlobToTemporaryBlob(blob, Constants.SLOWBLOB_TYPE))
+      case _: CannibalBlob => Set(BlobEntityHelper.fromBlobToTemporaryBlob(blob, Constants.SLOWBLOB_TYPE))
       case _ => Set()
     }
   }
