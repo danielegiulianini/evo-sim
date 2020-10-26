@@ -3,8 +3,9 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Gender, Life, MovementStrategy, Velocity}
-import evo_sim.model.EntityStructure._
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.{Plant, _}
+import evo_sim.model.GenderEnum.GenderEnum
 
 object Entities {
 
@@ -15,11 +16,19 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
-                      override val gender: Gender,
+                      override val gender: GenderEnum,
                       override val movementStrategy: MovementStrategy,
-                      override val direction: Direction
-                      /*override val movementDirection: Int,
-                      override val stepToNextDirection: Int*/) extends Blob with BaseBlobBehaviour
+                      override val direction: Direction) extends Blob with BaseBlobBehaviour
+
+  case class CannibalBlob(override val name: String,
+                          override val boundingBox: Circle,
+                          override val life: Life,
+                          override val velocity: Velocity,
+                          override val degradationEffect: DegradationEffect[Blob],
+                          override val fieldOfViewRadius: Int,
+                          override val gender: GenderEnum,
+                          override val movementStrategy: MovementStrategy,
+                          override val direction: Direction) extends Blob with CannibalBlobBehaviour
 
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,
@@ -31,13 +40,27 @@ object Entities {
                           override val boundingBox: Rectangle,
                           override val effect: Effect) extends Obstacle with NeutralBehaviour
 
+  trait BasePlant extends Plant {
+    override val name: String
+    override val boundingBox: Rectangle
+    override val lifeCycle: LifeCycle
+  }
+
+  case class StandardPlant(override val name: String,
+                           override val boundingBox: Rectangle,
+                           override val lifeCycle: LifeCycle) extends BasePlant with StandardPlantBehaviour
+
+  case class ReproducingPlant(override val name: String,
+                              override val boundingBox: Rectangle,
+                              override val lifeCycle: LifeCycle) extends BasePlant with ReproducingPlantBehaviour
+
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
                         override val life: Life,
                         override val velocity: Velocity,
                         override val degradationEffect: DegradationEffect[Blob],
                         override val fieldOfViewRadius: Int,
-                        override val gender: Gender,
+                        override val gender: GenderEnum,
                         override val movementStrategy: MovementStrategy,
                         override val direction: Direction,
                         override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TempBlobBehaviour
@@ -48,11 +71,12 @@ object Entities {
                       override val velocity: Velocity,
                       override val degradationEffect: DegradationEffect[Blob],
                       override val fieldOfViewRadius: Int,
-                      override val gender: Gender,
+                      override val gender: GenderEnum,
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction,
                       override val cooldown: Cooldown,
                       initialVelocity: Velocity) extends BlobWithTemporaryStatus with TempBlobBehaviour
+
 }
 
 

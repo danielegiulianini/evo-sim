@@ -60,4 +60,19 @@ object Simulation {
 
 object TupleUtils {
   def toTuple[A](a: A) = (a, a)
+
+  //givenElementIntoOnlyOneTupleOrReversed
+  //givenElementPairedWithOnlyOneOtherElement
+  def everyElementPairedWithOnlyOneOtherElement[T1](mySet: Set[(T1, T1)]) =
+    mySet.foldLeft(Set[(T1, T1)]())(
+    (acc , t) =>
+      if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
+
+  def contained[T1](t: (T1, T1), element: T1) : Boolean = t._1 == element || t._2 == element
+  implicit class TupleCanContain[T](t: (T, T)) {    //pimping DOT NOTATION
+    def contained(elem: T) = TupleUtils.contained(t, elem)
+  }
+  def contained[T1](mySet: Set[(T1, T1)], elem : T1) : Boolean = mySet.exists(_.contained(elem))
+  def containedAnyOf[T1](mySet: Set[(T1, T1)], elem : (T1, T1)): Boolean = contained(mySet, elem._1) || contained(mySet, elem._2)
+
 }

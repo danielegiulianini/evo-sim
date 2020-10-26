@@ -26,7 +26,6 @@ object ReproducibleImplicits {
     override def reproduce(b1: BaseBlob, b2: BaseBlob) =
       b1.copy(
         name = b1.name + "-son" + nextValue,
-        gender = randomGender(),
         velocity = randomValueChange((b1.velocity + b2.velocity) / 2, Constants.DEF_MOD_PROP_RANGE),
         fieldOfViewRadius = randomValueChange((b1.fieldOfViewRadius + b2.fieldOfViewRadius) / 2, Constants.DEF_MOD_PROP_RANGE)
       )

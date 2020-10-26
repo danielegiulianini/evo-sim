@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.{Food, Intelligent}
+import evo_sim.model.EntityStructure.{Entity, Intelligent}
 
 import scala.math._
 
@@ -11,21 +11,18 @@ case class Direction(angle: Int, stepToNextDirection: Int)
 object MovingStrategies {
   private val random = new java.util.Random()
 
-  def baseMovement(entity: Intelligent, world: World): Movement = {
+  def baseMovement(entity: Intelligent, world: World, entitiesFilter: Entity => Boolean): Movement = {
 
-    val chasedEntity = (world.entities - entity.asInstanceOf[SimulableEntity]).filter(elem => elem.isInstanceOf[Food]) match {
+    /*MovingStrategiesProlog.movement(entity, world)
+    Thread.sleep(10000)*/
+
+    val chasedEntity = (world.entities - entity.asInstanceOf[SimulableEntity]).filter(entitiesFilter/*elem => elem.isInstanceOf[Food]*/) match {
       case set if set.nonEmpty => Option(set.minBy(distanceBetweenEntities(entity, _)))
       case _ => None
     }
 
     chasedEntity match {
-      case Some(chasedEntity) if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius) => {
-        /*println("entity: " + entity.boundingBox)
-        println("chased: " + chasedEntity.boundingBox)
-        println("FOV: " + entity.fieldOfViewRadius + ", distance: " + distanceBetweenEntities(entity, chasedEntity))
-        Thread.sleep(10000)*/
-        chaseMovement(entity, chasedEntity)
-      }
+      case Some(chasedEntity) if (distanceBetweenEntities(entity, chasedEntity) < entity.fieldOfViewRadius) => chaseMovement(entity, chasedEntity)
       case _ => standardMovement(entity, entity.direction.angle, world)
     }
 
@@ -35,10 +32,19 @@ object MovingStrategies {
 
   @scala.annotation.tailrec
   private def standardMovement(entity: Intelligent, angle: Int, world: World): Movement = {
+
+    /*println(entity.direction)
+
+    Thread.sleep(2000)*/
+
     val direction = entity.direction.stepToNextDirection match {
       case Constants.NEXT_DIRECTION => Direction(random.nextInt(360), random.nextInt(50))
       case x => Direction(angle, x-1)
     }
+
+    /*println(direction)
+
+    Thread.sleep(2000)*/
 
     val positionUpdated = nextPosition(entity, direction.angle)
 
@@ -70,6 +76,5 @@ object MovingStrategies {
   private def distanceBetweenEntities(a: Intelligent, b: SimulableEntity): Double = {
     sqrt(pow(b.boundingBox.point.x - a.boundingBox.point.x, 2) + pow(b.boundingBox.point.y - a.boundingBox.point.y, 2))
   }
-
 
 }
