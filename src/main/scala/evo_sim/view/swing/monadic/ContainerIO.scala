@@ -11,7 +11,10 @@ class ContainerIO(container: Container) extends ComponentIO(container) {
   def added(name: String, component: Component) = IO {
     container.add(name, component)
   }
-  def setLayout(mgr : LayoutManager): IO[Unit] = IO {
+  def added(component: Component,  constraints : Object) = IO {
+    container.add(component, constraints)
+  }
+  def layoutSet(mgr : LayoutManager): IO[Unit] = IO {
     container.setLayout(mgr)
   }
 }
