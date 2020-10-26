@@ -16,3 +16,4 @@ class JComponentIO[T<:JComponent](jComponent: T) {
   def borderSet(border: Border): IO[Unit] =
     IO {jComponent.setBorder(border)}
 }
+//companion object with utilities to be added

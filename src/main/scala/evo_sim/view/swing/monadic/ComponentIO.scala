@@ -16,3 +16,6 @@ class ComponentIO(component: Component){
     component.removeMouseListener(l)
   }
 }
+
+//companion object with utilities to be added
+

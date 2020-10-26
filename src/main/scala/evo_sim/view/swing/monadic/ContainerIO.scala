@@ -12,3 +12,6 @@ class ContainerIO(container: Container) {
     container.add(name, component)
   }
 }
+
+//companion object with utilities to be added
+

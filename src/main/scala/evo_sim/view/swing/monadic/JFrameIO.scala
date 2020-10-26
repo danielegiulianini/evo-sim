@@ -11,3 +11,5 @@ class JFrameIO(jFrame: JFrame) {
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =
     IO {SwingUtilities.invokeAndWait(() => jFrame.setDefaultCloseOperation(operation))}
 }
+
+//companion object with utilities to be added

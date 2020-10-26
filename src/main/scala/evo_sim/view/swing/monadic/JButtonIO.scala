@@ -11,3 +11,5 @@ class JButtonIO(jButton: JButton) {
   def textSet(text: String) = IO {jButton.setText(text)}
   def textGot() = IO {jButton.getText}
 }
+
+//companion object with utilities to be added
