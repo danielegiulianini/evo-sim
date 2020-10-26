@@ -6,13 +6,13 @@ import java.awt.event.{ComponentListener, MouseListener}
 import cats.effect.IO
 
 class ComponentIO(component: Component){
-  def addComponentListener(l: ComponentListener) = IO {
+  def componentListenerAdded(l: ComponentListener) = IO {
     component.addComponentListener(l)
   }
-  def addMouseListener(l:MouseListener) = IO {
+  def mouseListenerAdded(l:MouseListener) = IO {
     component.addMouseListener(l)
   }
-  def removeMouseListener(l:MouseListener): Unit = IO {
+  def mouseListenerRemoved(l:MouseListener): Unit = IO {
     component.removeMouseListener(l)
   }
 }
