@@ -57,7 +57,8 @@ object InputViewEffects {
       println("click")
       val currentValue = slider.valueGot.unsafeRunSync()
       if (checkCondition(currentValue)) slider.valueSet(updateFunction(currentValue)).unsafeRunSync()
-    })
+      //}) //COME ERA PRIMA TODO
+    }).unsafeRunSync()
   }
 
 }

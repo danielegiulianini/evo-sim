@@ -44,14 +44,14 @@ object Example2 extends App {
     _ <- panel.added(wb, BorderLayout.WEST)
   } yield panel
 
-  val program2 = for {
+  val program = for {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
     _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
 
-  program2 unsafeRunSync
+  program unsafeRunSync
 }
 
 object Example3 extends App {
@@ -73,14 +73,14 @@ object Example3 extends App {
     _ <- panel.added(sl, BorderLayout.CENTER)
   } yield panel
 
-  val program2 = for {
+  val program = for {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
     _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
 
-  program2 unsafeRunSync
+  program unsafeRunSync
 }
 
 

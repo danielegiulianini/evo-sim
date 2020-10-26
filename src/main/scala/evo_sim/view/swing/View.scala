@@ -39,7 +39,7 @@ object View extends View {
     daysSlider <- createDataInputRow(inputPanel, "#Days", Constants.MIN_DAYS, Constants.MAX_DAYS,
       Constants.DEF_DAYS)
     start <- JButtonIO("Start")
-    _ <- start.actionListenerAdded((_: ActionEvent) => for {
+    _ <- start.actionListenerAdded((_: ActionEvent) => (for {
       _ <- IO apply println("premuto")
       t <- temperatureSlider.valueGot
       l <- luminositySlider.valueGot
@@ -50,7 +50,8 @@ object View extends View {
       _ <- IO {
         environmentPromise.success(Environment(t, l, b, p, o, d))
       }
-    } yield ())
+      //    } yield ()) //as was before
+    } yield ()).unsafeRunSync) //TODO
     _ <- componentInContentPaneAdded(frame, inputPanel, BorderLayout.CENTER)
     _ <- buttonInContentPaneAdded(frame, start, BorderLayout.SOUTH)
     _ <- exitOnCloseOperationSet(frame)
