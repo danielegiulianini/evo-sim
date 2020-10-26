@@ -66,8 +66,7 @@ object EntityBehaviour {
       val life = self.degradationEffect(self)
       life match {
         case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
-        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), self.boundingBox.height),
-          self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
+        case _ => Set()
       }
     }
 
@@ -104,23 +103,25 @@ object EntityBehaviour {
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
     override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-
     override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-
     override def foodEffect: Effect = Effect.standardFoodEffect
-
     override def foodHeight: Int = Constants.DEF_FOOD_HEIGHT
   }
 
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
     override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-
     override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-
     override def foodEffect: Effect = Effect.reproduceBlobFoodEffect
-
     override def foodHeight: Int = Constants.DEF_REPRODUCING_FOOD_HEIGHT
+  }
+
+  trait PoisonousPlantBehaviour extends PlantBehaviour {
+    self: PoisonousPlant =>
+    override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Effect = Effect.poisonousFoodEffect
+    override def foodHeight: Int = Constants.DEF_POISONOUS_FOOD_HEIGHT
   }
 
   private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {

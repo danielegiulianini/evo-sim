@@ -4,7 +4,7 @@ import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
-import evo_sim.model.EntityStructure.{Plant, _}
+import evo_sim.model.EntityStructure._
 
 object Entities {
 
@@ -74,6 +74,10 @@ object Entities {
   case class ReproducingPlant(override val name: String,
                               override val boundingBox: Rectangle,
                               override val lifeCycle: LifeCycle) extends BasePlant with ReproducingPlantBehaviour
+
+  case class PoisonousPlant(override val name: String,
+                              override val boundingBox: Rectangle,
+                              override val lifeCycle: LifeCycle) extends BasePlant with PoisonousPlantBehaviour
 
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
