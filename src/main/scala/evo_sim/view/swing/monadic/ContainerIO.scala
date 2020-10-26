@@ -4,7 +4,7 @@ import java.awt.{Component, Container}
 
 import cats.effect.IO
 
-class ContainerIO(container: Container) {
+class ContainerIO(container: Container) extends ComponentIO(container) {
   def added(component: Component) = IO {
     container.add(component)
   }
