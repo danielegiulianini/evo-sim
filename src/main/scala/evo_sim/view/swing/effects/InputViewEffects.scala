@@ -13,6 +13,7 @@ object InputViewEffects {
                          defaultValue: Int): IO[JSliderIO] = {
     for {
       rowPanel <- JPanelIO()
+      _ <- rowPanel.layoutSet(new BorderLayout)
       border <- BorderFactoryIO.emptyBorderCreated(10, 10, 10, 10)
       _ <- rowPanel.borderSet(border)
       description <- JLabelIO()
@@ -24,7 +25,7 @@ object InputViewEffects {
       _ <- slider.maximumSet(maxValue)
       _ <- slider.valueSet(defaultValue)
       _ <- slider.changeListenerAdded((event: ChangeEvent) =>
-        (counter.textSet(event.getSource.asInstanceOf[JSlider].getValue.toString)).unsafeRunSync())
+        counter.textSet(event.getSource.asInstanceOf[JSlider].getValue.toString).unsafeRunSync())
       border <- BorderFactoryIO.emptyBorderCreated(5, 0, 5, 0)
       _ <- slider.borderSet(border)
       _ <- slider.majorTickSpacingSet(maxValue / 5)
@@ -38,8 +39,8 @@ object InputViewEffects {
       infoPanel <- JPanelIO()
       _ <- infoPanel.added(description)
       _ <- infoPanel.added(counter)
-      // get font size from component label
-      border <- BorderFactoryIO.emptyBorderCreated((1.5 * counter.component.getFont.getSize).toInt, 0, 0, 0)
+      font <- counter.fontGot()
+      border <- BorderFactoryIO.emptyBorderCreated((1.5 * font.getSize).toInt, 0, 0, 0)
       _ <- infoPanel.borderSet(border)
       commandPanel <- JPanelIO()
       _ <- commandPanel.added(decrement)
