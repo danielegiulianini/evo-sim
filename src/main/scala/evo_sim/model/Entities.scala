@@ -75,6 +75,10 @@ object Entities {
                               override val boundingBox: Rectangle,
                               override val lifeCycle: LifeCycle) extends BasePlant with ReproducingPlantBehaviour
 
+  case class PoisonousPlant(override val name: String,
+                              override val boundingBox: Rectangle,
+                              override val lifeCycle: LifeCycle) extends BasePlant with PoisonousPlantBehaviour
+
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
                         override val life: Life,
