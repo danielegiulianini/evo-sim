@@ -64,13 +64,10 @@ object EntityBehaviour {
 
   trait TempBlobBehaviour extends Simulable with NeutralCollidable {
     self: BlobWithTemporaryStatus =>
-    override def updated(world: World): Set[SimulableEntity] = {
-      def newSelf = self match {
-        case blob: PoisonBlob => poisonBehaviour(blob, world)
-        case blob: SlowBlob => slowBehaviour(blob, world)
-        case _ => self
-      }
-      Set(newSelf)
+    override def updated(world: World): Set[SimulableEntity] = self match {
+        case blob: PoisonBlob => Set(poisonBehaviour(blob, world))
+        case blob: SlowBlob => Set(slowBehaviour(blob, world))
+        case _ => Set()
     }
   }
 
@@ -138,7 +135,7 @@ object EntityBehaviour {
     override def foodHeight: Int = Constants.DEF_POISONOUS_FOOD_HEIGHT
   }
 
-  private def poisonBehaviour(self: PoisonBlob, world: World): SimulableEntity = {
+  private def poisonBehaviour(self: PoisonBlob, world: World) = {
     val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
       case n if n > 1 => BlobEntityHelper.updateTemporaryBlob(self, movement, world)
@@ -146,7 +143,7 @@ object EntityBehaviour {
     }
   }
 
-  private def slowBehaviour(self: SlowBlob, world: World): SimulableEntity = {
+  private def slowBehaviour(self: SlowBlob, world: World) = {
     val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
       case n if n > 1 => BlobEntityHelper.updateTemporaryBlob(self, movement, world)

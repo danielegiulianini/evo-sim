@@ -12,29 +12,20 @@ trait BoundingBox {
 object BoundingBox {
   //case classes for the different types of Bounding Boxes
   //Circle: Point & Radius
-  case class Circle private[BoundingBox](point: Point2D, radius: Int) extends BoundingBox
+  case class Circle (point: Point2D, radius: Int) extends BoundingBox
   //Rectangle: Point & w + h
-  case class Rectangle private[BoundingBox](point: Point2D, width: Int, height: Int) extends BoundingBox
+  case class Rectangle (point: Point2D, width: Int, height: Int) extends BoundingBox
   //Triangle: Point & h + angle (angle is defaulted as 60 -> equilateral), apothem = h/3*2 -> circe radius circumscribed in the triangle
-  case class Triangle private[BoundingBox](point: Point2D, height: Int, angle: Double = 60.0) extends BoundingBox
+  case class Triangle (point: Point2D, height: Int, angle: Double = 60.0) extends BoundingBox
   //apply methods
   def apply(point: Point2D, radius: Int): Circle = Circle(point, radius)
   def apply(point: Point2D, width: Int, height: Int): Rectangle = Rectangle(point, width, height)
   def apply(point: Point2D, height: Int, angle : Double): Triangle = Triangle(point, height, angle)
 }
 
-//creation bounding boxes
-/*
-val circle = Circle((1,2), 4)
-println(circle.point + ", " + circle.radius + "->" + circle.getClass)
-val rect = Rectangle((0,0), 5, 5)
-println(rect.point + ", " + rect.width + ", " + rect.height + "->" + rect.getClass)
-val tri = Triangle((7,7), 8)
-println(tri.point + ", " + tri.height + ", " + tri.angle + "->" + tri.getClass)*/
-
 object Intersection {
 
-  //Intersection between a circle and any other entity (Circle, Rect, Triangle)
+  //Intersection between entities (Circle, Rect, Triangle)
   def intersected(body1: BoundingBox, body2: BoundingBox): Boolean = (body1, body2) match {
     case (body1: Circle, circle: Circle) => circleIntersectsCircle(body1, circle)
     case (body1: Circle, rectangle: Rectangle) => circleIntersectsRectangle(body1, rectangle)
@@ -62,12 +53,7 @@ object Intersection {
       circle.point.x + circle.radius > rectangle.point.x && circle.point.y + circle.radius > rectangle.point.y
 
   // Collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)
-  /**
-   * Bx + Bw > Ax &&
-   * By + Bh > Ay &&
-   * Ax + Aw > Bx &&
-   * Ay + Ah > By;
-   */
+
   private def rectangleIntersectsRectangle(rectangle1: Rectangle, rectangle2: Rectangle) = false
 
   private def rectangleIntersectsTriangle(rectangle: Rectangle, triangle: Triangle) = false

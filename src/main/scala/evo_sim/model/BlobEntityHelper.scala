@@ -5,16 +5,13 @@ import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 
-import scala.reflect.ClassTag
-
 object BlobEntityHelper {
   protected[model] def fromTemporaryBlobToBaseBlob[A <: Blob](self: A, world: World, movement: Movement): SimulableEntity = {
     var velocity = self.velocity
     self match {
       case s:SlowBlob =>  velocity = s initialVelocity
     }
-    BaseBlob(
-      self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
+    BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity,DegradationEffect baseBlobDegradation,
       self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity), self movementStrategy, movement direction)
   }
 
