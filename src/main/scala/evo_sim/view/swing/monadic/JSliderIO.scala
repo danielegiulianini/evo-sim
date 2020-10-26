@@ -9,6 +9,7 @@ class JSliderIO(jSlider: JSlider) extends JComponentIO(jSlider){
   def changeListenerRemoved(l: ChangeListener) = IO {jSlider.addChangeListener(l)}
   def minimumSet(min: Int) = IO { jSlider.setMinimum(min) }
   def maximumSet(max: Int) = IO { jSlider.setMinimum(max) }
+  def value() = IO {jSlider.getValue}
 }
 
 
