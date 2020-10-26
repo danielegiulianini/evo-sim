@@ -66,8 +66,7 @@ object EntityBehaviour {
       val life = self.degradationEffect(self)
       life match {
         case n if n > 0 => Set(BaseFood(self.name, self.boundingBox, self.degradationEffect, life, self.effect))
-        case _ => Set(BaseFood(self.name, BoundingBox.Triangle(randomPosition(), self.boundingBox.height),
-          self.degradationEffect, Constants.DEF_FOOD_LIFE, self.effect))
+        case _ => Set()
       }
     }
 
