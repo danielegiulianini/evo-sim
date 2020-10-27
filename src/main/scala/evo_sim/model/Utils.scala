@@ -1,13 +1,24 @@
 package evo_sim.model
 
+/** Utils object used through the project */
 object Utils {
 
   var index = 0
 
+  /** Returns a value with variable range from an initial value.
+   *
+   * @param value initial value
+   * @param range
+   * @return a value between value - range and value + range
+   */
   def randomValueChange(value: Int, range: Int): Int = {
     value + new java.util.Random().nextInt(range * 2 + 1) - range
   }
 
+  /** A counter starting from [[evo_sim.model.Utils.index]].
+   *
+   * @return updated counter value
+   */
   def nextValue(): Int = {
     index += 1
     index
