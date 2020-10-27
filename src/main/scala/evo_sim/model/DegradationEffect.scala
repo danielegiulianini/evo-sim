@@ -1,7 +1,8 @@
 package evo_sim.model
 
+import evo_sim.model.Entities.PoisonBlob
 import evo_sim.model.EntityStructure.DomainImpl.Life
-import evo_sim.model.EntityStructure.{Blob, Food}
+import evo_sim.model.EntityStructure.{Blob, Food, Living}
 
 
 /**
@@ -9,12 +10,9 @@ import evo_sim.model.EntityStructure.{Blob, Food}
  * Foods will have simplier degradation effect while Blob will have some specific degradations based on their velocity, dimension, resistance ecc...
  */
 object DegradationEffect{
-  //standard degradation effect
-  def standardDegradation(blob: Blob): Life = blob.life - 1
+  val STANDARD_LIFE_DECREASE = 1
   //extends the standard Degradation
-  def foodDegradation(food: Food): Life = food.life - 1
-  //blob specific degradation effect, velocity + standardDegradation
-  def baseBlobDegradation(blob: Blob) : Life = blob. life - (/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
+  def standardDegradation[A <: Living](entity: A): Life = entity.life - 2 * STANDARD_LIFE_DECREASE
   //poison degradation effect
-  def poisonBlobDegradation(blob: Blob) : Life = blob. life - 2*(/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
+  def poisonBlobDegradation(blob: PoisonBlob) : Life = blob.life - 2 * ( 1 + STANDARD_LIFE_DECREASE)
 }

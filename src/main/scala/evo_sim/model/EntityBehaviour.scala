@@ -95,7 +95,7 @@ object EntityBehaviour {
         case _ => Set(BaseFood(
           name = "generatedFood" + nextValue,
           boundingBox = BoundingBox.Triangle(point = randomPosition(), height = foodHeight),
-          degradationEffect = DegradationEffect.foodDegradation,
+          degradationEffect = DegradationEffect.standardDegradation,
           life = Constants.DEF_FOOD_LIFE,
           effect = foodEffect), defaultPlant)
       }
