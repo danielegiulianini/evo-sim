@@ -40,6 +40,7 @@ object View extends View {
       Constants.DEF_DAYS)
     start <- JButtonIO("Start")
     _ <- start.actionListenerAdded((_: ActionEvent) => (for {
+      _ <- start.enabledSet(false)
       t <- temperatureSlider.valueGot
       l <- luminositySlider.valueGot
       b <- blobSlider.valueGot

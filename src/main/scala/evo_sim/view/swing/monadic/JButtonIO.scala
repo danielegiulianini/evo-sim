@@ -10,6 +10,7 @@ class JButtonIO(jButton: JButton) extends ComponentIO(jButton){
   def actionListenerRemoved(l:ActionListener) = IO {jButton.removeActionListener(l)}
   def textSet(text: String) = IO {jButton.setText(text)}
   def textGot() = IO {jButton.getText}
+  def enabledSet(b: Boolean): IO[Unit] = IO { jButton.setEnabled(b) }
 }
 
 //companion object with utilities
