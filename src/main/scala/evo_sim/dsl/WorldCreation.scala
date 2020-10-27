@@ -5,7 +5,7 @@ object WorldCreation {
     def °<() = temperature
   }
 
-  implicit class IntWithMeters(length: Int){
-    def km() = 1000*length
+  implicit class IntWithMeters(lengthInMeters: Int){
+    def km() = 1000*lengthInMeters
   }
 }
