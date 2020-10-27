@@ -30,7 +30,7 @@ class FoodTests extends FunSpec {
   val standardFood: BaseFood = BaseFood(
     name = "food1",
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
-    degradationEffect = DegradationEffect.foodDegradation,
+    degradationEffect = DegradationEffect.standardDegradation,
     life = 100,
     effect = Effect.standardFoodEffect)
 
