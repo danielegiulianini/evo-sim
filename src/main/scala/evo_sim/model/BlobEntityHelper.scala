@@ -13,7 +13,7 @@ object BlobEntityHelper {
       case s: SlowBlob => velocity = s initialVelocity
       case _ => velocity = self.velocity
     }
-    BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
+    BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect standardDegradation,
       self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration), self movementStrategy, movement direction)
   }
 
