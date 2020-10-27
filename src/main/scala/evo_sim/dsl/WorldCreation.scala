@@ -7,5 +7,6 @@ object WorldCreation {
 
   implicit class IntWithMeters(lengthInMeters: Int){
     def km() = 1000*lengthInMeters
+    def hm(): Int = 100 * lengthInMeters
   }
 }
