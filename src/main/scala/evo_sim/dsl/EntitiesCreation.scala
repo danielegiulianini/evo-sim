@@ -3,8 +3,8 @@ package evo_sim.dsl
 object EntitiesCreation {
   /*This method enables syntax like this:
   World(
-    ...properties...
-    15 of BaseBlob(life = 3,...)
+    ...world properties...
+    15 of BaseBlob(...baseblob properties...)
   )*/
 
   implicit class FromIntToSet(int:Int) {
