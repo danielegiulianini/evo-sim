@@ -6,20 +6,21 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 
 object BlobEntityHelper {
+
   protected[model] def fromTemporaryBlobToBaseBlob[A <: Blob](self: A, world: World, movement: Movement): SimulableEntity = {
     var velocity = self.velocity
     self match {
-      case s:SlowBlob =>  velocity = s initialVelocity
+      case s: SlowBlob => velocity = s initialVelocity
       case _ => velocity = self.velocity
     }
-    BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity,DegradationEffect baseBlobDegradation,
-      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity), self movementStrategy, movement direction)
+    BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect baseBlobDegradation,
+      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration), self movementStrategy, movement direction)
   }
 
   protected[model] def fromBlobToTemporaryBlob[A <: Blob](blob: A, blobType: String): SimulableEntity = blobType match {
     case Constants.POISONBLOB_TYPE => PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
       blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN)
-    case Constants.SLOWBLOB_TYPE =>SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
+    case Constants.SLOWBLOB_TYPE => SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
       blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN, blob velocity)
   }
 
@@ -27,31 +28,31 @@ object BlobEntityHelper {
     case base: BaseBlob => base.copy(
       boundingBox = base.boundingBox.copy(point = movement.point),
       direction = movement.direction,
-      velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+      velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature, world.currentIteration),
       life = base.degradationEffect(base),
-      fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity)
+      fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)
     )
     case cannibal: CannibalBlob => cannibal.copy(
       boundingBox = cannibal.boundingBox.copy(point = movement.point),
       direction = movement.direction,
-      velocity = cannibal.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+      velocity = cannibal.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature, world.currentIteration),
       life = cannibal.degradationEffect(cannibal),
-      fieldOfViewRadius = cannibal.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity)
+      fieldOfViewRadius = cannibal.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)
     )
     case slow: SlowBlob => slow.copy(
       boundingBox = slow.boundingBox.copy(point = movement.point),
       direction = movement.direction,
       velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
       life = slow.degradationEffect(slow),
-      fieldOfViewRadius = slow.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
+      fieldOfViewRadius = slow.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration),
       cooldown = slow.cooldown - 1
     )
     case poison: PoisonBlob => poison.copy(
       boundingBox = poison.boundingBox.copy(point = movement.point),
       direction = movement.direction,
-      velocity = poison.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature),
+      velocity = poison.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature, world.currentIteration),
       life = DegradationEffect.poisonBlobDegradation(poison),
-      fieldOfViewRadius = poison.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity),
+      fieldOfViewRadius = poison.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration),
       cooldown = poison.cooldown - 1
     )
   }

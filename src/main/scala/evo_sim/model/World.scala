@@ -4,7 +4,7 @@ import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
-
+import evo_sim.model.Utils.timeOfTheDay
 
 case class World(temperature: Int,
                  luminosity: Int,
@@ -91,11 +91,10 @@ object World {
         temperature + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.TEMPERATURE_AMPLITUDE)(timeOfTheDay)
     })
 
-    //val timeOfTheDay = world.currentIteration / Constants.ITERATIONS_PER_DAY.toFloat
-    val timeOfTheDay = world.currentIteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
+    val time = timeOfTheDay(world.currentIteration)
     EnvironmentParameters(
-      luminosityUpdated(world.luminosity, timeOfTheDay),
-      temperatureUpdated(world.temperature, timeOfTheDay))
+      luminosityUpdated(world.luminosity, time),
+      temperatureUpdated(world.temperature, time))
   }
 
 

@@ -1,20 +1,20 @@
 package evo_sim.model
 
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
+import evo_sim.model.World.MemoHelper.memoize
+import evo_sim.model.Utils.timeOfTheDay
 
-/** Provides functions to determine a luminosity-dependent field of view range variation
- *
- */
+/** Provides functions to determine a luminosity-dependent field of view range variation */
 object LuminosityEffect {
 
-  /** Sinusoidal Sin algorithm
+  /** Sinusoidal Sin algorithm, time of the day dependent.
    *
-   * @param luminosity the luminosity value to use
    * @return the field of view range variation
    */
-  def standardLuminosityEffect(luminosity: Int): Int = {
-    val x = luminosity.toFloat / Constants.LUMINOSITY_MAX_DELTA.toFloat
-    zeroPhasedZeroYTranslatedSinusoidalSin(Constants.FOW_AMPLITUDE)(x)
-  }
+  def standardLuminosityEffect: ((Int, Int)) => Int = memoize({
+    case (luminosity, currentIteration) =>
+      (Constants.FOW_MODIFIER * luminosity *
+        zeroPhasedZeroYTranslatedSinusoidalSin(Constants.FOW_AMPLITUDE)(timeOfTheDay(currentIteration))).toInt
+  })
 
 }

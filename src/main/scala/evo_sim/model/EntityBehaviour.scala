@@ -1,13 +1,12 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.DomainImpl.Effect
-import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle, Plant}
-import evo_sim.model.Updatable.{NeutralUpdatable}
-import evo_sim.model.World._
+import evo_sim.model.EntityStructure._
+import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.Utils._
+import evo_sim.model.World._
 
 object EntityBehaviour {
 
