@@ -7,12 +7,13 @@ object Utils {
 
   /** Returns a value with variable range from an initial value.
    *
-   * @param value initial value
-   * @param range
+   * @param value value that determines the range
    * @return a value between value - range and value + range
    */
-  def randomValueChange(value: Int, range: Int): Int = {
-    value + new java.util.Random().nextInt(range * 2 + 1) - range
+  def randomValueChange(value: Int): Int = {
+    val max: Int = (value * 1.5).toInt
+    val min: Int = (value * 0.8).toInt
+    new java.util.Random().nextInt(max + 1 - min) - min
   }
 
   /** A counter starting from [[evo_sim.model.Utils.index]].
