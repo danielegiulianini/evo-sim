@@ -99,12 +99,12 @@ object Effect {
       Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS, Constants.DEF_BLOB_RADIUS)),
       Constants.DEF_BLOB_LIFE, randomValueChange(blob.velocity, blob.velocity), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
-      MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.NEXT_DIRECTION))
+      MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
     case _: CannibalBlob => CannibalBlob(blob.name + "-son" + nextValue,
       Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS, Constants.DEF_BLOB_RADIUS)),
       Constants.DEF_BLOB_LIFE, randomValueChange(blob.velocity, blob.velocity), blob.degradationEffect,
       randomValueChange(blob.fieldOfViewRadius, Constants.DEF_MOD_PROP_RANGE),
-      MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.NEXT_DIRECTION))
+      MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
   }
 
 }

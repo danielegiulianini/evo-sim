@@ -1,6 +1,6 @@
 package evo_sim.model
 
-/** Utils object used through the project */
+/** General-purpose utils */
 object Utils {
 
   var index = 0
@@ -8,7 +8,7 @@ object Utils {
   /** Returns a value with variable range from an initial value.
    *
    * @param value initial value
-   * @param range
+   * @param range range
    * @return a value between value - range and value + range
    */
   def randomValueChange(value: Int, range: Int): Int = {
