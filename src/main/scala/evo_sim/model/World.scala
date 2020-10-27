@@ -43,20 +43,6 @@ object World {
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction(0, Constants.NEXT_DIRECTION))).toSet
 
-    val standardFoods: Set[BaseFood] = Iterator.tabulate((env.initialPlantNumber.toDouble / 10 * 9).ceil.toInt)(i => BaseFood(
-      name = "standardFood" + i,
-      boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_FOOD_HEIGHT),
-      degradationEffect = DegradationEffect.foodDegradation,
-      life = Constants.DEF_FOOD_LIFE,
-      effect = Effect.standardFoodEffect)).toSet
-
-    val reproducingFoods: Set[BaseFood] = Iterator.tabulate((env.initialPlantNumber.toDouble / 10).floor.toInt)(i => BaseFood(
-      name = "reproducingFood" + i,
-      boundingBox = BoundingBox.Triangle(point = randomPosition(), height = Constants.DEF_REPRODUCING_FOOD_HEIGHT),
-      degradationEffect = DegradationEffect.foodDegradation,
-      life = Constants.DEF_FOOD_LIFE,
-      effect = Effect.reproduceBlobFoodEffect)).toSet
-
     val stones: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).ceil.toInt)((i: Int) => BaseObstacle.apply(
       name = "stone".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
@@ -67,19 +53,22 @@ object World {
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.slowEffect)).toSet
 
-    // TODO: integrate view for plants
-    val standardPlants: Set[StandardPlant] = Iterator.tabulate(5)((i: Int) => StandardPlant(
+    val standardPlants: Set[StandardPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 2).floor.toInt)((i: Int) => StandardPlant(
       name = "standardPlant".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STANDARD_PLANT_WIDTH, height = Constants.DEF_STANDARD_PLANT_HEIGHT),
       lifeCycle = Constants.DEF_LIFECYCLE)).toSet
 
-    // TODO: integrate view for plants
-    val reproducingPlants: Set[ReproducingPlant] = Iterator.tabulate(5)((i: Int) => ReproducingPlant(
+    val reproducingPlants: Set[ReproducingPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 4).ceil.toInt)((i: Int) => ReproducingPlant(
       name = "reproducingPlant".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_REPRODUCING_PLANT_WIDTH * 3 / 2, height = Constants.DEF_REPRODUCING_PLANT_WIDTH),
       lifeCycle = Constants.DEF_LIFECYCLE)).toSet
 
-    val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ standardFoods ++ reproducingFoods ++ stones ++ puddles ++ standardPlants ++ reproducingPlants
+    val poisonousPlants: Set[PoisonousPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 4).ceil.toInt)((i: Int) => PoisonousPlant(
+      name = "poisonousPlant".+(i),
+      boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_POISONOUS_PLANT_WIDTH * 3 / 2, height = Constants.DEF_POISONOUS_PLANT_WIDTH),
+      lifeCycle = Constants.DEF_LIFECYCLE)).toSet
+
+    val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ stones ++ puddles ++ standardPlants ++ reproducingPlants ++ poisonousPlants
 
     World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
