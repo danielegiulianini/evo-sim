@@ -7,7 +7,7 @@ object EntitiesCreation {
     15 of BaseBlob(...baseblob properties...)
   )*/
 
-  implicit class FromIntToSet(int:Int) {
+  implicit class FromIntToList(int:Int) {
     def of[T](t: =>T) = Iterator.fill(int)(t).toList
   }
 }
