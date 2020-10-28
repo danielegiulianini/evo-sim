@@ -31,15 +31,13 @@ object EntityBehaviour {
         case _ => Set()
       }
     }
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = {
-      other match {
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case blob: CannibalBlob => if (blob.boundingBox.radius > self.boundingBox.radius)
           Set(self.copy(life = Constants.DEF_BLOB_DEAD)) else Set(self.copy())
         case _ => Set(self)
       }
-    }
   }
 
   trait CannibalBlobBehaviour extends Simulable {
@@ -94,8 +92,7 @@ object EntityBehaviour {
    */
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
-    override def updated(world: World): Set[SimulableEntity] = {
-      self.lifeCycle match {
+    override def updated(world: World): Set[SimulableEntity] = self.lifeCycle match {
         case n if n > 0 =>
           Set(updatedPlant)
         case _ => Set(BaseFood(
@@ -105,7 +102,6 @@ object EntityBehaviour {
           life = Constants.DEF_FOOD_LIFE,
           effect = foodEffect), defaultPlant)
       }
-    }
 
     def updatedPlant: Plant with PlantBehaviour
     def defaultPlant: Plant with PlantBehaviour

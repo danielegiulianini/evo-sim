@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
@@ -30,7 +31,7 @@ object World {
       degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))).toSet
+      direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
 
     val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber.toDouble./(2).floor.toInt)(i => CannibalBlob(
       name = "cannibalBlob" + i,
@@ -40,7 +41,7 @@ object World {
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))).toSet
+      direction = Direction(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
 
     val stones: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).ceil.toInt)((i: Int) => BaseObstacle.apply(
       name = "stone".+(i),
@@ -146,6 +147,9 @@ object World {
     zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
     */
   }
+
+  def fromIterationsToDays(iteration : Int) = iteration / ITERATIONS_PER_DAY
+  def fromDaysToIterations(days : Int) = days * ITERATIONS_PER_DAY
 
 }
 

@@ -1,23 +1,29 @@
 package evo_sim.view.swing
 
-import java.awt.{BorderLayout, Dimension, Toolkit}
+import java.awt.{BorderLayout, Container, Dimension, Toolkit}
 import java.awt.event.ActionEvent
 
 import cats.effect.IO
+import evo_sim.model.Constants.ITERATIONS_PER_DAY
+import evo_sim.model.World.fromIterationsToDays
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
+import evo_sim.view.swing.chart.JFreeChart.{JFreeChart, XYSeries, XYSeriesCollection}
+import evo_sim.view.swing.chart.View.{setContentPane, setDefaultCloseOperation, setSize, setVisible}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects._
-import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JPanelIO, ShapesPanelIO}
+import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JLabelIO, JPanelIO}
 import javax.swing._
+import org.jfree.chart.ChartFactory
 import org.jfree.ui.tabbedui.VerticalLayout
+import org.knowm.xchart.{XChartPanel, XYChartBuilder}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
 
 object View extends View {
 
-  val frameEncapsulated = new JFrameIO(new JFrame("evo-sim"))
+  val frame = new JFrameIO(new JFrame("evo-sim"))
 
   override def inputReadFromUser(): IO[Environment] = for {
     environmentPromise <- IO pure {
@@ -50,13 +56,13 @@ object View extends View {
         environmentPromise.success(Environment(t, l, b, p, o, d))
       }
     } yield ()).unsafeRunSync)
-    cp <- frameEncapsulated.contentPane()
+    cp <- frame.contentPane()
     _ <- cp.added(inputPanel, BorderLayout.CENTER)
     _ <- cp.added(start, BorderLayout.SOUTH)
-    _ <- frameEncapsulated.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
-    _ <- frameEncapsulated.packedInvokingAndWaiting()
-    _ <- frameEncapsulated.resizableInvokingAndWaiting(false)
-    _ <- frameEncapsulated.visibleInvokingAndWaiting(true)
+    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.resizableInvokingAndWaiting(false)
+    _ <- frame.visibleInvokingAndWaiting(true)
     environment <- IO {
       Await.result(environmentPromise.future, Duration.Inf)
     }
@@ -65,22 +71,38 @@ object View extends View {
   override def rendered(world: World): IO[Unit] = for {
     barPanel <- JPanelIO()
     entityPanel <- JPanelIO()
-    // TODO statistiche
-    shapes <- ShapesPanelIO(world)
+    _ <- indicatorsUpdated(world, barPanel)
+    shapes <- IO { new JPanelIO(new ShapesPanel(world)) }
     _ <- entityPanel.added(shapes)
-    cp <- frameEncapsulated.contentPane()
+    cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
     _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
-    _ <- frameEncapsulated.packedInvokingAndWaiting()
-    _ <- frameEncapsulated.visibleInvokingAndWaiting(true)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.visibleInvokingAndWaiting(true)
     dimension <- IO {
       new Dimension(Toolkit.getDefaultToolkit.getScreenSize.width,
         Toolkit.getDefaultToolkit.getScreenSize.height)
     }
-    _ <- frameEncapsulated.setPreferredSizeInvokingAndWaiting(dimension)
-    _ <- frameEncapsulated.packedInvokingAndWaiting()
+    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
+    _ <- frame.packedInvokingAndWaiting()
   } yield ()
+
+  //inside rendered?
+  def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
+    for {
+      //barPanel has default FlowLayout
+      _ <- barPanel.allRemoved()
+      days <- JLabelIO("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
+      _ <- barPanel.added(days)
+      population <- JLabelIO("population: " + world.entities.size)
+      _ <- barPanel.added(population)
+      population <- JLabelIO("temp: " + world.temperature)
+      _ <- barPanel.added(population)
+      population <- JLabelIO("luminosity: " + world.luminosity)
+      _ <- barPanel.added(population)
+    } yield ()
+  }
 
   override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
     _ <- IO {}

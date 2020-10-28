@@ -11,4 +11,5 @@ class JLabelIO(val jLabel: JLabel) extends JComponentIO[JLabel](jLabel) {
 //companion object with utilities
 object JLabelIO{
   def apply() = IO { new JLabelIO(new JLabel) }
+  def apply(text:String) = IO { new JLabelIO(new JLabel(text)) }
 }
