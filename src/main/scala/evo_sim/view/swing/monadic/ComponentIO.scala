@@ -19,6 +19,10 @@ class ComponentIO[T<:Component](val component: T){
   def setPreferredSize(d: Dimension) = IO {
     component.setPreferredSize(d)
   }
+
+  def setPreferredSizeInvokingAndWaiting(d: Dimension) = IO {
+    component.setPreferredSize(d)
+  }
 }
 
 //companion object with utilities to be added
