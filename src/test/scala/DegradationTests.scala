@@ -5,7 +5,7 @@ import org.scalatest.FunSuite
 
 class DegradationTests extends FunSuite {
   private val LIFE_AFTER_STANDARD_EFFECT = 998
-  private val LIFE_AFTER_POISON_EFFECT = 996
+  private val LIFE_AFTER_POISON_EFFECT = 994
 
   val blob = PoisonBlob(
     name = "blob",

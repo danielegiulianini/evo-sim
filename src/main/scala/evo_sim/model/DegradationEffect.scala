@@ -10,6 +10,7 @@ import evo_sim.model.EntityStructure.Living
  * Foods will have simpler degradation effect while Blob will have some specific degradations based his status.
  */
 object DegradationEffect{
+  private val DOUBLE = 2
   /**
    * Standard degradation effect for [[evo_sim.model.EntityStructure.Living]] entities.
    * A degradation effect reduce the life of an entity during time.
@@ -17,12 +18,12 @@ object DegradationEffect{
    * @tparam A the entity is a subtype of [[evo_sim.model.EntityStructure.Living]].
    * @return the life with the new value decreased.
    */
-  def standardDegradation[A <: Living](entity: A): Life = entity.life - 2 * Constants.STANDARD_LIFE_DECREASE
+  def standardDegradation[A <: Living](entity: A): Life = entity.life - DOUBLE * Constants.STANDARD_LIFE_DECREASE
   //poison degradation effect
   /**
    * Degradation effect that is applied when a blob is poisoned.
    * @param blob the degradation effect will be applied to this blob [[evo_sim.model.Entities.PoisonBlob]].
    * @return the life with the new value decreased.
    */
-  def poisonBlobDegradation(blob: PoisonBlob) : Life = blob.life - 2 * ( 1 + Constants.STANDARD_LIFE_DECREASE)
+  def poisonBlobDegradation(blob: PoisonBlob) : Life = blob.life - DOUBLE * ( DOUBLE + Constants.STANDARD_LIFE_DECREASE)
 }

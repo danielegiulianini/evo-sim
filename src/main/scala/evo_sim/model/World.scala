@@ -30,7 +30,7 @@ object World {
       degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))).toSet
+      direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
 
     val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber.toDouble./(2).floor.toInt)(i => CannibalBlob(
       name = "cannibalBlob" + i,
@@ -40,7 +40,7 @@ object World {
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))).toSet
+      direction = Direction(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
 
     val stones: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).ceil.toInt)((i: Int) => BaseObstacle.apply(
       name = "stone".+(i),

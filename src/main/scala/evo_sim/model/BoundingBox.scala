@@ -51,7 +51,7 @@ object BoundingBox {
    * @param height represent the height of the Triangle.
    * @param angle  represent the angle of the Triangle.
    */
-  case class Triangle(point: Point2D, height: Int, angle: Double = 60.0) extends BoundingBox
+  case class Triangle(point: Point2D, height: Int, angle: Double = Constants.DEF_EQUILATERAL_ANGLE) extends BoundingBox
 
   //apply methods
   /**
