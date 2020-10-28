@@ -4,11 +4,13 @@ import java.awt.{BorderLayout, Dimension, Toolkit}
 import java.awt.event.ActionEvent
 
 import cats.effect.IO
+import evo_sim.model.Constants.ITERATIONS_PER_DAY
+import evo_sim.model.World.fromIterationsToDays
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects._
-import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JPanelIO, ShapesPanelIO}
+import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JLabelIO, JPanelIO, ShapesPanelIO}
 import javax.swing._
 import org.jfree.ui.tabbedui.VerticalLayout
 
@@ -65,8 +67,8 @@ object View extends View {
   override def rendered(world: World): IO[Unit] = for {
     barPanel <- JPanelIO()
     entityPanel <- JPanelIO()
-    // TODO statistiche
-    shapes <- ShapesPanelIO(world)
+    _ <- indicatorsUpdated(world, barPanel)
+      shapes <- ShapesPanelIO(world)
     _ <- entityPanel.added(shapes)
     cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
@@ -84,7 +86,10 @@ object View extends View {
 
   //inside rendered?
   def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = for {
-     cp <- barPanel.allRemoved()
+    //barPanel has default FlowLayout
+     _ <- barPanel.allRemoved()
+    days <- JLabelIO("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
+    _ <- barPanel.added(days)
   } yield ()
 
   override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
