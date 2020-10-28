@@ -14,7 +14,7 @@ class JFrameIO(val jFrame: JFrame) extends ContainerIO(jFrame) {
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =
     IO {SwingUtilities.invokeAndWait(() => jFrame.setDefaultCloseOperation(operation))}
 
-  def contentPane() = IO { jFrame.getContentPane }
+  def contentPane() = IO { new ContainerIO (jFrame.getContentPane) }
   def sizeSet(width: Int, height: Int) = IO { jFrame.setSize(width, height)}
   def locationRelativeToSet(c:Component) = IO {jFrame.setLocationRelativeTo(c)}
   def defaultCloseOperationSet(operation:Int): IO[Unit] = IO {jFrame.setDefaultCloseOperation(operation)}
