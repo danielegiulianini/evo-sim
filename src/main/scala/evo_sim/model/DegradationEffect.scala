@@ -2,7 +2,7 @@ package evo_sim.model
 
 import evo_sim.model.Entities.PoisonBlob
 import evo_sim.model.EntityStructure.DomainImpl.Life
-import evo_sim.model.EntityStructure.{Blob, Food, Living}
+import evo_sim.model.EntityStructure.Living
 
 
 /**

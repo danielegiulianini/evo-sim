@@ -8,12 +8,11 @@ import evo_sim.model.Utils.timeOfTheDay
 
 case class World(temperature: Int,
                  luminosity: Int,
-                 width: Int, //to move in environment?
-                 height: Int, //to move in environment?
+                 width: Int,
+                 height: Int,
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
-                 totalIterations: Int, //to move in environment?
-                )
+                 totalIterations: Int)
 
 //companion object
 object World {
@@ -74,8 +73,18 @@ object World {
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
 
+  /** The EnvironmentParameters class holds the set of parameters of the world that can be updated.
+   *
+   * @param luminosity  a luminosity value
+   * @param temperature a temperature value
+   */
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
+  /** Updates the world parameters according to the time of the dat of the simulation.
+   *
+   * @param world the world with the parameters to update
+   * @return the [[evo_sim.model.World.EnvironmentParameters]] container with updated parameters
+   */
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
 
     //leveraging Flyweight pattern for sin computation (sin is: 1. cyclic, periodic and 2. computationally-expensive

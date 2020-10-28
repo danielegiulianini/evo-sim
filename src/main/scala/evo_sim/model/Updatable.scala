@@ -1,9 +1,7 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Circle
-import evo_sim.model.Entities.{BaseBlob, CannibalBlob}
 import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
-import evo_sim.model.EntityStructure.{Blob, Entity, Food, Living}
+import evo_sim.model.EntityStructure.Entity
 
 trait Updatable {
   def updated(world: World) : Set[SimulableEntity]

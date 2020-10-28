@@ -118,10 +118,10 @@ object EntityBehaviour {
    */
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
-    override def updatedPlant = self.copy(lifeCycle = self.lifeCycle - 1)
-    override def defaultPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-    override def foodEffect = Effect.standardFoodEffect
-    override def foodHeight = Constants.DEF_FOOD_HEIGHT
+    override def updatedPlant: StandardPlant = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: StandardPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Blob => Set[SimulableEntity] = Effect.standardFoodEffect
+    override def foodHeight: Int = Constants.DEF_FOOD_HEIGHT
   }
 
   /**
@@ -129,10 +129,10 @@ object EntityBehaviour {
    */
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
-    override def updatedPlant = self.copy(lifeCycle = self.lifeCycle - 1)
-    override def defaultPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-    override def foodEffect = Effect.reproduceBlobFoodEffect
-    override def foodHeight = Constants.DEF_REPRODUCING_FOOD_HEIGHT
+    override def updatedPlant: ReproducingPlant = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: ReproducingPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Blob => Set[SimulableEntity] = Effect.reproduceBlobFoodEffect
+    override def foodHeight: Int = Constants.DEF_REPRODUCING_FOOD_HEIGHT
   }
 
   /**
@@ -140,10 +140,10 @@ object EntityBehaviour {
    */
   trait PoisonousPlantBehaviour extends PlantBehaviour {
     self: PoisonousPlant =>
-    override def updatedPlant = self.copy(lifeCycle = self.lifeCycle - 1)
-    override def defaultPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-    override def foodEffect = Effect.poisonousFoodEffect
-    override def foodHeight = Constants.DEF_POISONOUS_FOOD_HEIGHT
+    override def updatedPlant: PoisonousPlant = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: PoisonousPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Blob => Set[SimulableEntity] = Effect.poisonousFoodEffect
+    override def foodHeight: Int = Constants.DEF_POISONOUS_FOOD_HEIGHT
   }
 
   private def poisonBehaviour(self: PoisonBlob, world: World) = {

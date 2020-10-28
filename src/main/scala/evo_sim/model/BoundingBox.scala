@@ -4,15 +4,17 @@ import BoundingBox._
 
 /**
  * The Point2D class defines a point representing a location in (x,y) coordinate space.
+ *
  * @param x first coordinate
  * @param y second coordinate
  */
-case class Point2D(x: Int, y:Int)
+case class Point2D(x: Int, y: Int)
 
 /**
  * Bounding Box trait, [[evo_sim.model.Point2D]] represent the center of the Bounding Box.
  */
 trait BoundingBox {
+  /** The center of the Bounding box */
   def point: Point2D
 }
 
@@ -20,34 +22,42 @@ trait BoundingBox {
  * Bounding Box object, creates different Bounding Box types.
  */
 object BoundingBox {
+
   //case classes for the different types of Bounding Boxes
   //Circle: Point & Radius
   /**
    * Circle Shape, used by [[evo_sim.model.EntityStructure.Blob]].
-   * @param point a [[evo_sim.model.Point2D]] represent the center of the Circle.
+   *
+   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Circle.
    * @param radius represent the radius of the Circle.
    */
-  case class Circle (point: Point2D, radius: Int) extends BoundingBox
+  case class Circle(point: Point2D, radius: Int) extends BoundingBox
+
   //Rectangle: Point & w + h
   /**
    * Rectangle Shape, used by [[evo_sim.model.EntityStructure.Obstacle]].
-   * @param point a [[evo_sim.model.Point2D]] represent the center of the Rectangle.
-   * @param width represent the width of the Rectangle.
+   *
+   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Rectangle.
+   * @param width  represent the width of the Rectangle.
    * @param height represent the height of the Rectangle.
    */
-  case class Rectangle (point: Point2D, width: Int, height: Int) extends BoundingBox
+  case class Rectangle(point: Point2D, width: Int, height: Int) extends BoundingBox
+
   //Triangle: Point & h + angle (angle is defaulted as 60 -> equilateral), apothem = h/3*2 -> circe radius circumscribed in the triangle
   /**
    * Triangle Shape, used by [[evo_sim.model.EntityStructure.Food]].
-   * @param point a [[evo_sim.model.Point2D]] represent the center of the Triangle.
+   *
+   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Triangle.
    * @param height represent the height of the Triangle.
-   * @param angle represent the angle of the Triangle.
+   * @param angle  represent the angle of the Triangle.
    */
-  case class Triangle (point: Point2D, height: Int, angle: Double = 60.0) extends BoundingBox
+  case class Triangle(point: Point2D, height: Int, angle: Double = 60.0) extends BoundingBox
+
   //apply methods
   /**
    * Apply Circle constructor.
-   * @param point a [[evo_sim.model.Point2D]] represent the center of the Circle.
+   *
+   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Circle.
    * @param radius represent the radius of the Circle.
    * @return the Circle object.
    */
@@ -55,8 +65,9 @@ object BoundingBox {
 
   /**
    * Apply Rectangle constructor.
-   * @param point a [[evo_sim.model.Point2D]] represent the center of the Rectangle.
-   * @param width represent the width of the Rectangle.
+   *
+   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Rectangle.
+   * @param width  represent the width of the Rectangle.
    * @param height represent the height of the Rectangle.
    * @return the Rectangle object.
    */
@@ -64,18 +75,20 @@ object BoundingBox {
 
   /**
    * Apply Triangle constructor.
-   * @param point a [[evo_sim.model.Point2D]] represent the center of the Triangle.
+   *
+   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Triangle.
    * @param height represent the height of the Triangle.
-   * @param angle represent the angle of the Triangle.
+   * @param angle  represent the angle of the Triangle.
    * @return the Triangle object.
    */
-  def apply(point: Point2D, height: Int, angle : Double): Triangle = Triangle(point, height, angle)
+  def apply(point: Point2D, height: Int, angle: Double): Triangle = Triangle(point, height, angle)
 }
 
 object Intersection {
 
   /**
    * Given two bounding box, verify if the two boxes are colliding.
+   *
    * @param body1 the first body.
    * @param body2 the second body.
    * @return true if the bodies intersect, false otherwise.
@@ -90,13 +103,14 @@ object Intersection {
     case (body1: Rectangle, triangle: Triangle) => rectangleIntersectsTriangle(body1, triangle)
     case (body1: Triangle, circle: Circle) => circleIntersectsTriangle(circle, body1)
     case (body1: Triangle, rectangle: Rectangle) => rectangleIntersectsTriangle(rectangle, body1)
-    case (body1: Triangle, triangle: Triangle) =>triangleIntersectsTriangle(body1, triangle)
+    case (body1: Triangle, triangle: Triangle) => triangleIntersectsTriangle(body1, triangle)
     case _ => false
   }
 
   // distance between centers, then check if is less than the sum of both the circle radius
   /**
    * Intersection between two circles.
+   *
    * @param circle1 first circle.
    * @param circle2 second circle.
    * @return true if the bodies intersect, false otherwise.
@@ -107,7 +121,8 @@ object Intersection {
   // Treat the triangle as a circle, simpler collision, apothem * 2 = circe radius circumscribed in the triangle
   /**
    * Intersection between two circles.
-   * @param circle circle shape.
+   *
+   * @param circle   circle shape.
    * @param triangle triangle shape.
    * @return true if the bodies intersect, false otherwise.
    */
@@ -116,7 +131,8 @@ object Intersection {
 
   /**
    * Intersection between two circles.
-   * @param circle circle shape.
+   *
+   * @param circle    circle shape.
    * @param rectangle triangle shape.
    * @return true if the bodies intersect, false otherwise.
    */

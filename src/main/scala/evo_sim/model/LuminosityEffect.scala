@@ -9,6 +9,7 @@ object LuminosityEffect {
 
   /**
    * Sinusoidal Sin algorithm, time of the day dependent.
+   *
    * @return the field of view range variation
    */
   def standardLuminosityEffect: ((Int, Int)) => Int = memoize({
