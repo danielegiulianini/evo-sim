@@ -17,9 +17,8 @@ import evo_sim.view.swing.monadic.FrameUtilsTOBEREPLACED._
 
 object View extends View {
 
-  private val frame = new JFrame("evo-sim")
-
-  lazy val frameEncapsulated = new JFrameIO(frame)
+  //private val frame = new JFrame("evo-sim")
+  val frameEncapsulated = new JFrameIO(new JFrame("evo-sim") )
 
   override def inputReadFromUser(): IO[Environment] = for {
     environmentPromise <- IO pure {
