@@ -3,6 +3,7 @@ package evo_sim.view.swing.monadic
 import java.awt.{Component, Container, LayoutManager}
 
 import cats.effect.IO
+import javax.swing.SwingUtilities
 
 class ContainerIO[T<:Container](val container: Container) extends ComponentIO(container) {
   def added(component: ComponentIO[_<:Component]) = IO {container.add(component.component)}
@@ -11,6 +12,11 @@ class ContainerIO[T<:Container](val container: Container) extends ComponentIO(co
   def removed(component: ComponentIO[ _<:Component]) = IO {    container.remove(component.component)  }
   def allRemoved() = IO {    container.removeAll()  }
   def layoutSet(mgr : LayoutManager): IO[Unit] = IO {    container.setLayout(mgr)  }
+
+  //versions with invokeAndWait for finer granularity in thread assignment
+  def addedInvokingAndWaiting(component: ComponentIO[ _<:Component], constraints : Object) = IO {    SwingUtilities.invokeAndWait( () => container.add(component.component, constraints))}
+  def removedInvokingAndWaiting(component: ComponentIO[ _<:Component]) = IO {   SwingUtilities.invokeAndWait( () =>  container.remove(component.component) ) }
+  def allRemovedInvokingAndWaiting() = IO {   SwingUtilities.invokeAndWait( () =>  container.removeAll() ) }
 }
 
 //companion object with utilities to be added
