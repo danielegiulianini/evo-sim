@@ -4,17 +4,17 @@ import cats.effect.IO
 import javax.swing.event.ChangeListener
 import javax.swing.{JComponent, JSlider}
 
-class JSliderIO(val jSlider: JSlider) extends JComponentIO(jSlider){
-  def changeListenerAdded(l: ChangeListener) = IO {jSlider.addChangeListener(l)}
-  def changeListenerRemoved(l: ChangeListener) = IO {jSlider.removeChangeListener(l)}
-  def minimumSet(min: Int) = IO { jSlider.setMinimum(min) }
-  def maximumSet(max: Int) = IO { jSlider.setMaximum(max) }
-  def valueSet(value: Int): IO[Unit] = IO { jSlider.setValue(value) }
-  def valueGot: IO[Int] = IO { jSlider.getValue }
-  def majorTickSpacingSet(spacing: Int): IO[Unit] = IO { jSlider.setMajorTickSpacing(spacing) }
-  def minorTickSpacingSet(spacing: Int): IO[Unit] = IO { jSlider.setMinorTickSpacing(spacing) }
-  def paintTicksSet(b: Boolean): IO[Unit] = IO { jSlider.setPaintTicks(b) }
-  def paintLabelsSet(b: Boolean): IO[Unit] = IO { jSlider.setPaintLabels(b) }
+class JSliderIO(override val component: JSlider) extends JComponentIO(component){
+  def changeListenerAdded(l: ChangeListener) = IO {component.addChangeListener(l)}
+  def changeListenerRemoved(l: ChangeListener) = IO {component.removeChangeListener(l)}
+  def minimumSet(min: Int) = IO { component.setMinimum(min) }
+  def maximumSet(max: Int) = IO { component.setMaximum(max) }
+  def valueSet(value: Int): IO[Unit] = IO { component.setValue(value) }
+  def valueGot: IO[Int] = IO { component.getValue }
+  def majorTickSpacingSet(spacing: Int): IO[Unit] = IO { component.setMajorTickSpacing(spacing) }
+  def minorTickSpacingSet(spacing: Int): IO[Unit] = IO { component.setMinorTickSpacing(spacing) }
+  def paintTicksSet(b: Boolean): IO[Unit] = IO { component.setPaintTicks(b) }
+  def paintLabelsSet(b: Boolean): IO[Unit] = IO { component.setPaintLabels(b) }
 }
 
 
