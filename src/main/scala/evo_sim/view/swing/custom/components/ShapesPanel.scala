@@ -82,10 +82,10 @@ class ShapesPanel(world: World) extends JPanel {
     entity.boundingBox match {
       case Rectangle(point2D, w, h) =>
         entity match {
-          case _: Obstacle => g.setColor(Color.red)
-          case _: StandardPlant => g.setColor(Color.orange)
-          case _: ReproducingPlant => g.setColor(Color.magenta)
-          case _: PoisonousPlant => g.setColor(Color.pink)
+          case _: Obstacle => g.setColor(Color.RED)
+          case _: StandardPlant => g.setColor(Color.GREEN)
+          case _: ReproducingPlant => g.setColor(Color.PINK)
+          case _: PoisonousPlant => g.setColor(Color.MAGENTA)
           case _ => g.setColor(Color.black)
         }
         val x = modelToViewRatio(point2D.x - w / 2, viewWidth, viewWidth)
