@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
@@ -146,6 +147,9 @@ object World {
     zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
     */
   }
+
+  def fromIterationsToDays(iteration : Int) = iteration / ITERATIONS_PER_DAY
+  def fromDaysToIterations(days : Int) = days * ITERATIONS_PER_DAY
 
 }
 
