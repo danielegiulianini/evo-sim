@@ -1,6 +1,6 @@
 package evo_sim.view.swing
 
-import java.awt.{BorderLayout, Dimension, Toolkit}
+import java.awt.{BorderLayout, Container, Dimension, Toolkit}
 import java.awt.event.ActionEvent
 
 import cats.effect.IO
@@ -8,11 +8,15 @@ import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.World.fromIterationsToDays
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
+import evo_sim.view.swing.chart.JFreeChart.{JFreeChart, XYSeries, XYSeriesCollection}
+import evo_sim.view.swing.chart.View.{setContentPane, setDefaultCloseOperation, setSize, setVisible}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects._
 import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JLabelIO, JPanelIO, ShapesPanelIO}
 import javax.swing._
+import org.jfree.chart.ChartFactory
 import org.jfree.ui.tabbedui.VerticalLayout
+import org.knowm.xchart.{XChartPanel, XYChartBuilder}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
@@ -85,12 +89,20 @@ object View extends View {
   } yield ()
 
   //inside rendered?
-  def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = for {
-    //barPanel has default FlowLayout
-     _ <- barPanel.allRemoved()
-    days <- JLabelIO("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
-    _ <- barPanel.added(days)
-  } yield ()
+  def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
+    for {
+      //barPanel has default FlowLayout
+      _ <- barPanel.allRemoved()
+      days <- JLabelIO("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
+      _ <- barPanel.added(days)
+      population <- JLabelIO("population: " + world.entities.size)
+      _ <- barPanel.added(population)
+      population <- JLabelIO("temp: " + world.temperature)
+      _ <- barPanel.added(population)
+      population <- JLabelIO("luminosity: " + world.luminosity)
+      _ <- barPanel.added(population)
+    } yield ()
+  }
 
   override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
     _ <- IO {}
