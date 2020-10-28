@@ -49,7 +49,7 @@ class ShapesPanel(world: World) extends JPanel {
     g.drawOval(x, y, width, height)
     world.entities.filter(e2 => Intersection.intersected(Circle(b.boundingBox.point,
       b.fieldOfViewRadius), e2.boundingBox)).foreach(e2 =>
-      drawFoodsObstaclesAndPlants(g, e2, width, height, world.width, world.height))
+      drawFoodsObstaclesAndPlants(g, e2, getWidth, getHeight, world.width, world.height))
   }
 
   private def drawBlobs(g: Graphics, world: World, viewWidth: Int, viewHeight: Int): Unit = {
