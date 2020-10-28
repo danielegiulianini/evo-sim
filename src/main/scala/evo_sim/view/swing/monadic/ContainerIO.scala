@@ -15,7 +15,7 @@ class ContainerIO[T<:Container](val container: Container) extends ComponentIO(co
     container.add(component.component, constraints)
   }
   def removed(component: ComponentIO[ _<:Component]) = IO {
-    container.removed(component.component)
+    container.remove(component.component)
   }
   def allRemoved() = IO {
     container.removeAll()
