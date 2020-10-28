@@ -14,9 +14,17 @@ class ContainerIO[T<:Container](val container: Container) extends ComponentIO(co
   def added(component: ComponentIO[ _<:Component], constraints : Object) = IO {
     container.add(component.component, constraints)
   }
+  def removed(component: ComponentIO[ _<:Component]) = IO {
+    container.removed(component.component)
+  }
+  def allRemoved() = IO {
+    container.removeAll()
+  }
   def layoutSet(mgr : LayoutManager): IO[Unit] = IO {
     container.setLayout(mgr)
   }
+
+
 }
 
 //companion object with utilities to be added
