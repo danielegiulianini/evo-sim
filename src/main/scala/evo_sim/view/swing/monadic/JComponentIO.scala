@@ -8,13 +8,13 @@ import javax.swing.border.Border
 
 
 //class JComponentIO[T<:JComponent](jComponent: T) {
-class JComponentIO[T<:JComponent](val jComponent: T) extends ContainerIO(jComponent) {
+class JComponentIO[T<:JComponent](override val component: T) extends ContainerIO(component) {
   def minimumSizeSet(dimension: Dimension): IO[Unit] =
-    IO {jComponent.setMinimumSize(dimension)}
+    IO {component.setMinimumSize(dimension)}
   def maximumSizeSet(dimension: Dimension): IO[Unit] =
-    IO{ jComponent.setMaximumSize(dimension)}
+    IO{ component.setMaximumSize(dimension)}
   def borderSet(border: Border): IO[Unit] = {
-    IO {jComponent.setBorder(border)}
+    IO {component.setBorder(border)}
   }
 }
 
