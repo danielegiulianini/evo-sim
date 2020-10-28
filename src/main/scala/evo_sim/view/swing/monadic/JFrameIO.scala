@@ -6,7 +6,7 @@ import cats.effect.IO
 import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 
 
-class JFrameIO(jFrame: JFrame) extends ContainerIO(jFrame) {
+class JFrameIO(val jFrame: JFrame) extends ContainerIO(jFrame) {
   //invoke and wait versions (for finer granularity for task assignment to EDT thread)
   def resizableInvokingAndWaiting(frame: JFrame): IO[Unit] = IO { SwingUtilities.invokeAndWait(() => frame.setResizable(false))}
   def visibleInvokingAndWaiting(b: Boolean): IO[Unit] = IO{ SwingUtilities.invokeAndWait(() => jFrame.setVisible(b)) }
