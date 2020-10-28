@@ -2,7 +2,7 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.IO
-import evo_sim.core.TupleUtils.toTuple
+import evo_sim.core.TupleUtils.toTuple2
 import evo_sim.model.{Environment, World}
 import evo_sim.view.swing.View
 
@@ -18,7 +18,7 @@ object Simulation {
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
   //helper to create StateT monad from a World to World function
-  def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple(f(w)))
+  def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple2(f(w)))
 
   //prettier method name than "unsafeRunAsync for starting simulation"
   implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
@@ -44,7 +44,7 @@ object Simulation {
 }
 
 object TupleUtils {
-  def toTuple[A](a: A): (A, A) = (a, a)
+  def toTuple2[A](a: A): (A, A) = (a, a)
 
   //givenElementIntoOnlyOneTupleOrReversed
   //givenElementPairedWithOnlyOneOtherElement
