@@ -2,21 +2,20 @@ package evo_sim.core
 
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
-//import cats.effect.IO.{fromFuture, unit}
+import evo_sim.view.swing.View  //import evo_sim.view.cli.View
 import evo_sim.core.Logging._
 import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.model.World
-import evo_sim.view.swing.View
 
-import scala.concurrent.duration._ //import evo_sim.view.cli.View
+import scala.concurrent.duration._
 
 object SimulationEngine {
 
   def started(): IO[Unit] = {
     for {
       //_ <- inputViewBuiltAndShowed()
-      env <- inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+      env <- View.inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
       _ <- simulationLoop().runS(World(env))
     } yield ()
   }
@@ -36,7 +35,7 @@ object SimulationEngine {
       simulationLoop() else
       liftIo( for {
         _ <- IO { log("simulation ended, printing sim statistics") }
-        - <- IO { View.resultViewBuiltAndShowed(worldAfterCollisions) }
+        - <- View.resultViewBuiltAndShowed(worldAfterCollisions)
       } yield ())
   } yield ()
 }
