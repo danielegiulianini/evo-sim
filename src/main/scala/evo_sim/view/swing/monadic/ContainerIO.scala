@@ -5,7 +5,7 @@ import java.awt.{Component, Container, LayoutManager}
 import cats.effect.IO
 import javax.swing.SwingUtilities
 
-class ContainerIO[T<:Container](val container: Container) extends ComponentIO(container) {
+class ContainerIO[T<:Container](val container: T) extends ComponentIO(container) {
   def added(component: ComponentIO[_<:Component]) = IO {container.add(component.component)}
   def added(name: String, component: ComponentIO[ _<:Component]) = IO {    container.add(name, component.component)}
   def added(component: ComponentIO[ _<:Component], constraints : Object) = IO {    container.add(component.component, constraints)}

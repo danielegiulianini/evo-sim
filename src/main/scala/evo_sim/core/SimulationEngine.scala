@@ -2,7 +2,8 @@ package evo_sim.core
 
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
-import evo_sim.view.swing.View  //import evo_sim.view.cli.View
+import evo_sim.view.swing.View
+//import evo_sim.view.cli.View
 import evo_sim.core.Logging._
 import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
