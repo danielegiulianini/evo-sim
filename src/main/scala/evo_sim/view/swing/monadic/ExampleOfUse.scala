@@ -1,9 +1,8 @@
 package evo_sim.view.swing.monadic
 
+import scala.language.postfixOps
 import java.awt.BorderLayout
-
 import javax.swing.WindowConstants
-
 
 object Example1 extends App {
   val guiBuilt = for {
