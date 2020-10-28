@@ -39,8 +39,6 @@ object Simulation {
     //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
       liftIo(View.rendered(worldAfterCollisions))
-
-    def inputReadFromUser(): IO[Environment] = View.inputReadFromUser()
   }
 
 }
