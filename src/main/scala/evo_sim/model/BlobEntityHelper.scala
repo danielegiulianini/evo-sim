@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import scala.language.postfixOps
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
