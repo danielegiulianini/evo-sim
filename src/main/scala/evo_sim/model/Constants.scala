@@ -151,4 +151,6 @@ object Constants {
   /** Range within update a parameter based on an initial value */
   val DEF_MOD_PROP_RANGE = 5
 
+  /** Standard life degradation */
+  val STANDARD_LIFE_DECREASE = 1
 }
