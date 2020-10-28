@@ -12,7 +12,7 @@ import evo_sim.view.swing.chart.JFreeChart.{JFreeChart, XYSeries, XYSeriesCollec
 import evo_sim.view.swing.chart.View.{setContentPane, setDefaultCloseOperation, setSize, setVisible}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects._
-import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JLabelIO, JPanelIO, ShapesPanelIO}
+import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JLabelIO, JPanelIO}
 import javax.swing._
 import org.jfree.chart.ChartFactory
 import org.jfree.ui.tabbedui.VerticalLayout
