@@ -8,7 +8,7 @@ import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects._
-import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JPanelIO}
+import evo_sim.view.swing.monadic.{JButtonIO, JFrameIO, JPanelIO, ShapesPanelIO}
 import javax.swing._
 import org.jfree.ui.tabbedui.VerticalLayout
 
@@ -66,9 +66,7 @@ object View extends View {
     barPanel <- JPanelIO()
     entityPanel <- JPanelIO()
     // TODO statistiche
-    shapes <- IO {
-      new JPanelIO(new ShapesPanel(world))
-    }
+    shapes <- ShapesPanelIO(world)
     _ <- entityPanel.added(shapes)
     cp <- frameEncapsulated.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
