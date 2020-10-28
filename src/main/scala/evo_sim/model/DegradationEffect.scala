@@ -1,20 +1,29 @@
 package evo_sim.model
 
+import evo_sim.model.Entities.PoisonBlob
 import evo_sim.model.EntityStructure.DomainImpl.Life
-import evo_sim.model.EntityStructure.{Blob, Food}
+import evo_sim.model.EntityStructure.Living
 
 
 /**
- * This object contains the degradation effects that will be passed at the Living entities DegradationEffect property
- * Foods will have simplier degradation effect while Blob will have some specific degradations based on their velocity, dimension, resistance ecc...
+ * This object contains the degradation effects that will be passed at the Living entities DegradationEffect property.
+ * Foods will have simpler degradation effect while Blob will have some specific degradations based his status.
  */
 object DegradationEffect{
-  //standard degradation effect
-  def standardDegradation(blob: Blob): Life = blob.life - 1
-  //extends the standard Degradation
-  def foodDegradation(food: Food): Life = food.life - 1
-  //blob specific degradation effect, velocity + standardDegradation
-  def baseBlobDegradation(blob: Blob) : Life = blob. life - (/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
+  val STANDARD_LIFE_DECREASE = 1
+  /**
+   * Standard degradation effect for [[evo_sim.model.EntityStructure.Living]] entities.
+   * A degradation effect reduce the life of an entity during time.
+   * @param entity the degradation effect will be applied to this entity.
+   * @tparam A the entity is a subtype of [[evo_sim.model.EntityStructure.Living]].
+   * @return the life with the new value decreased.
+   */
+  def standardDegradation[A <: Living](entity: A): Life = entity.life - 2 * STANDARD_LIFE_DECREASE
   //poison degradation effect
-  def poisonBlobDegradation(blob: Blob) : Life = blob. life - 2*(/*blob.velocity*/ 1 + standardDegradation(blob)) //calibrate parameter
+  /**
+   * Degradation effect that is applied when a blob is poisoned.
+   * @param blob the degradation effect will be applied to this blob [[evo_sim.model.Entities.PoisonBlob]].
+   * @return the life with the new value decreased.
+   */
+  def poisonBlobDegradation(blob: PoisonBlob) : Life = blob.life - 2 * ( 1 + STANDARD_LIFE_DECREASE)
 }

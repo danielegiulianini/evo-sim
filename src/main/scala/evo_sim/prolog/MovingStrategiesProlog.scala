@@ -1,68 +1,49 @@
 package evo_sim.prolog
 
-import java.io.FileInputStream
-
 import alice.tuprolog._
-import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.Constants.{ITERACTION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
 import evo_sim.model.EntityStructure.Intelligent
 import evo_sim.model.{Direction, Movement, Point2D}
+import evo_sim.prolog.PrologEngine.engine
+
 
 object MovingStrategiesProlog {
 
-  val engine = new Prolog()
-
-  val theory = new Theory(new FileInputStream("file.pl"))
-  engine.setTheory(theory)
-
   implicit def termToInt(t:Term): scala.Int = t.toString.toInt
 
-  def chasedEntity(entity: Intelligent, entitiesSet: Set[SimulableEntity]):Option[Point2D] = {
+  implicit def toStructPoint(point: Point2D): Term = new Struct("point", new Int(point.x), new Int(point.y))
 
-    var entities: Term = new Struct()
+  implicit def toPrologInt(value: scala.Int): Int = new Int(value)
 
-    entitiesSet.foreach(elem => {
-      entities = new Struct(new Struct("point", new Int(elem.boundingBox.point.x), new Int(elem.boundingBox.point.y)), entities)
-    })
-
-    val blob: Term = new Struct("point", new Int(entity.boundingBox.point.x), new Int(entity.boundingBox.point.y))
-    val goal: Term = new Struct("chasedMovement", blob, new Int(entity.fieldOfViewRadius), entities, new Var("X"))
-
-    val sol = engine.solve(goal)
-
-    if(sol.isSuccess){
-      val x: scala.Int = sol.getTerm("X").asInstanceOf[Struct].getArg(0)
-      val y: scala.Int = sol.getTerm("X").asInstanceOf[Struct].getArg(1)
-      Some(Point2D(x, y))
-    } else {
-      None
-    }
-
-    /*while(engine.hasOpenAlternatives){
-      val sol = engine.solveNext()
-      println("\n"+sol)
-      println(sol.getSolution)
-    }*/
-  }
+  implicit def toPrologDouble(value: scala.Double): Double = new Double(value)
 
   def standardMovement(entity: Intelligent): Movement = {
-    val entityPoint: Term = new Struct("point", new Int(entity.boundingBox.point.x), new Int(entity.boundingBox.point.y))
-    val goal: Term = new Struct("standardMov", entityPoint, new Int(entity.velocity),
-                                  new Int(entity.direction.angle), new Int(entity.direction.stepToNextDirection),
-                                  new Double(scala.math.Pi), new Var("Point"), new Var("Direction"))
+    val goal: Term = new Struct("standardMov", entity.boundingBox.point, entity.velocity,
+                                  entity.direction.angle, entity.direction.stepToNextDirection, constantTerm,
+                                  new Var("Point"), new Var("Direction"))
 
-    println(goal)
+    val solution = engine(goal)
+    val nextPosition = solution.iterator.next()
 
-    val sol = engine.solve(goal)
-    val x: scala.Int = sol.getTerm("Point").asInstanceOf[Struct].getArg(0)
-    val y: scala.Int = sol.getTerm("Point").asInstanceOf[Struct].getArg(1)
-    println(x)
-    println(y)
-    val angle: scala.Int = sol.getTerm("Direction").asInstanceOf[Struct].getArg(0)
-    val step: scala.Int = sol.getTerm("Direction").asInstanceOf[Struct].getArg(1)
-    println(angle)
-    println(step)
-
-    Movement(Point2D(x,y), Direction(angle,step))
+    Movement(Point2D(extractVarValue(nextPosition,"Point", 0),extractVarValue(nextPosition,"Point", 1)),
+              Direction(extractVarValue(nextPosition,"Direction", 0),extractVarValue(nextPosition, "Direction", 1)))
 
   }
+
+  def chaseMovement(entity: Intelligent, chasedEntity: Point2D): Movement = {
+    val goal: Term = new Struct("chaseMov", entity.boundingBox.point, chasedEntity, entity.velocity, constantTerm,
+                                 new Var("Point"), new Var("Direction"))
+
+    val solution = engine(goal)
+    val nextPosition = solution.iterator.next()
+
+    Movement(Point2D(extractVarValue(nextPosition,"Point", 0),extractVarValue(nextPosition,"Point", 1)),
+      Direction(extractVarValue(nextPosition,"Direction", 0),extractVarValue(nextPosition, "Direction", 1)))
+  }
+
+  private def extractVarValue(solveInfo: SolveInfo, varName: String, argNumber: scala.Int): Term =
+    solveInfo.getVarValue(varName).asInstanceOf[Struct].getArg(argNumber)
+
+  private def constantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, WORLD_WIDTH, WORLD_HEIGHT, ITERACTION_LAPSE)
+
 }

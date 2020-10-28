@@ -4,16 +4,15 @@ import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
-
+import evo_sim.model.Utils.timeOfTheDay
 
 case class World(temperature: Int,
                  luminosity: Int,
-                 width: Int, //to move in environment?
-                 height: Int, //to move in environment?
+                 width: Int,
+                 height: Int,
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
-                 totalIterations: Int, //to move in environment?
-                )
+                 totalIterations: Int)
 
 //companion object
 object World {
@@ -31,7 +30,7 @@ object World {
       degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(0, Constants.NEXT_DIRECTION))).toSet
+      direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))).toSet
 
     val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber.toDouble./(2).floor.toInt)(i => CannibalBlob(
       name = "cannibalBlob" + i,
@@ -41,7 +40,7 @@ object World {
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, Constants.NEXT_DIRECTION))).toSet
+      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))).toSet
 
     val stones: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).ceil.toInt)((i: Int) => BaseObstacle.apply(
       name = "stone".+(i),
@@ -74,8 +73,18 @@ object World {
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
 
+  /** The EnvironmentParameters class holds the set of parameters of the world that can be updated.
+   *
+   * @param luminosity  a luminosity value
+   * @param temperature a temperature value
+   */
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
+  /** Updates the world parameters according to the time of the dat of the simulation.
+   *
+   * @param world the world with the parameters to update
+   * @return the [[evo_sim.model.World.EnvironmentParameters]] container with updated parameters
+   */
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
 
     //leveraging Flyweight pattern for sin computation (sin is: 1. cyclic, periodic and 2. computationally-expensive
@@ -91,11 +100,10 @@ object World {
         temperature + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.TEMPERATURE_AMPLITUDE)(timeOfTheDay)
     })
 
-    //val timeOfTheDay = world.currentIteration / Constants.ITERATIONS_PER_DAY.toFloat
-    val timeOfTheDay = world.currentIteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
+    val time = timeOfTheDay(world.currentIteration)
     EnvironmentParameters(
-      luminosityUpdated(world.luminosity, timeOfTheDay),
-      temperatureUpdated(world.temperature, timeOfTheDay))
+      luminosityUpdated(world.luminosity, time),
+      temperatureUpdated(world.temperature, time))
   }
 
 

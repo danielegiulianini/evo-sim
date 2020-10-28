@@ -2,18 +2,19 @@ package evo_sim.model
 
 import evo_sim.model.EntityStructure.DomainImpl.Velocity
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
+import evo_sim.model.World.MemoHelper.memoize
+import evo_sim.model.Utils.timeOfTheDay
 
 /** Provides functions to determine a temperature-dependent velocity variation */
 object TemperatureEffect {
 
-  /** Sinusoidal Sin algorithm
+  /** Sinusoidal Sin algorithm, time of the day dependent.
    *
-   * @param temperature the temperature value to use
    * @return the velocity variation
    */
-  def standardTemperatureEffect(temperature: Int): Velocity = {
-    val x = temperature.toFloat / Constants.TEMPERATURE_MAX_DELTA.toFloat
-    zeroPhasedZeroYTranslatedSinusoidalSin(Constants.VELOCITY_AMPLITUDE)(x)
-  }
+  def standardTemperatureEffect: ((Int, Int)) => Velocity = memoize({
+    case (temperature: Int, currentIteration: Int) =>
+        zeroPhasedZeroYTranslatedSinusoidalSin(Constants.VELOCITY_MODIFIER * temperature)(timeOfTheDay(currentIteration))
+  })
 
 }

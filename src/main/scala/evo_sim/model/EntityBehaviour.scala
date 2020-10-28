@@ -1,13 +1,12 @@
 package evo_sim.model
 
-import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.DomainImpl.Effect
-import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus, Entity, Food, Obstacle, Plant}
-import evo_sim.model.Updatable.{NeutralUpdatable}
-import evo_sim.model.World._
+import evo_sim.model.EntityStructure._
+import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.Utils._
+import evo_sim.model.World._
 
 object EntityBehaviour {
 
@@ -71,6 +70,9 @@ object EntityBehaviour {
     }
   }
 
+  /**
+   * [[evo_sim.model.EntityStructure.Food]] behaviour. Makes a food disappear when life reaches 0 or collides with a [[evo_sim.model.EntityStructure.Blob]].
+   */
   trait BaseFoodBehaviour extends Simulable {
     self: Food =>
     override def updated(world: World): Set[SimulableEntity] = {
@@ -87,51 +89,60 @@ object EntityBehaviour {
     }
   }
 
+  /**
+   * [[evo_sim.model.EntityStructure.Plant]] behaviour. Makes it spawn a [[evo_sim.model.EntityStructure.Food]] when lifeCycle reaches 0.
+   */
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
     override def updated(world: World): Set[SimulableEntity] = {
       self.lifeCycle match {
-        case n if n > 1 =>
+        case n if n > 0 =>
           Set(updatedPlant)
         case _ => Set(BaseFood(
           name = "generatedFood" + nextValue,
           boundingBox = BoundingBox.Triangle(point = randomPosition(), height = foodHeight),
-          degradationEffect = DegradationEffect.foodDegradation,
+          degradationEffect = DegradationEffect.standardDegradation,
           life = Constants.DEF_FOOD_LIFE,
           effect = foodEffect), defaultPlant)
       }
     }
 
     def updatedPlant: Plant with PlantBehaviour
-
     def defaultPlant: Plant with PlantBehaviour
-
     def foodEffect: Effect
-
     def foodHeight: Int
   }
 
+  /**
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.standardFoodEffect]].
+   */
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
-    override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-    override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-    override def foodEffect: Effect = Effect.standardFoodEffect
+    override def updatedPlant: StandardPlant = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: StandardPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Blob => Set[SimulableEntity] = Effect.standardFoodEffect
     override def foodHeight: Int = Constants.DEF_FOOD_HEIGHT
   }
 
+  /**
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.reproduceBlobFoodEffect]].
+   */
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
-    override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-    override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-    override def foodEffect: Effect = Effect.reproduceBlobFoodEffect
+    override def updatedPlant: ReproducingPlant = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: ReproducingPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Blob => Set[SimulableEntity] = Effect.reproduceBlobFoodEffect
     override def foodHeight: Int = Constants.DEF_REPRODUCING_FOOD_HEIGHT
   }
 
+  /**
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.poisonousFoodEffect]].
+   */
   trait PoisonousPlantBehaviour extends PlantBehaviour {
     self: PoisonousPlant =>
-    override def updatedPlant: Plant with PlantBehaviour = self.copy(lifeCycle = self.lifeCycle - 1)
-    override def defaultPlant: Plant with PlantBehaviour = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
-    override def foodEffect: Effect = Effect.poisonousFoodEffect
+    override def updatedPlant: PoisonousPlant = self.copy(lifeCycle = self.lifeCycle - 1)
+    override def defaultPlant: PoisonousPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
+    override def foodEffect: Blob => Set[SimulableEntity] = Effect.poisonousFoodEffect
     override def foodHeight: Int = Constants.DEF_POISONOUS_FOOD_HEIGHT
   }
 

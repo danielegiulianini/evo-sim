@@ -15,12 +15,10 @@ class ShapesPanel(world: World) extends JPanel {
   override def paintComponent(g: Graphics): Unit = (for {
     _ <- IO { super.paintComponent(g) }
     // draw temperature filter
-    red <- modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE)
-    maxBlue <- IO pure 255
-    notBlue <- modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255,
-      MAX_TEMPERATURE - MIN_TEMPERATURE)
-    blue <- IO { maxBlue - notBlue }
-    temperatureColor <- IO pure new Color(red, 0, blue, 75)
+    redIntensity <- modelToViewRatio(world.temperature - MIN_TEMPERATURE, 255, MAX_TEMPERATURE - MIN_TEMPERATURE)
+    maxBlueIntensity <- IO pure 255
+    blueIntensity <- IO { maxBlueIntensity - redIntensity }
+    temperatureColor <- IO pure new Color(redIntensity, 0, blueIntensity, 75)
     _ <- IO { g.setColor(temperatureColor) }
     _ <- IO { g.fillRect(0, 0, getWidth, getHeight) }
     // draw rectangles and triangles before transparent filter and circles
