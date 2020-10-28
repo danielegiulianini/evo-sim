@@ -3,9 +3,9 @@ package evo_sim.view.swing.monadic
 import cats.effect.IO
 import javax.swing.JLabel
 
-class JLabelIO(val jLabel: JLabel) extends JComponentIO[JLabel](jLabel) {
-  def textSet(text: String) = IO {jLabel.setText(text)}
-  def textGot() = IO {jLabel.getText}
+class JLabelIO(override val component: JLabel) extends JComponentIO[JLabel](component) {
+  def textSet(text: String) = IO {component.setText(text)}
+  def textGot() = IO {component.getText}
 }
 
 //companion object with utilities
