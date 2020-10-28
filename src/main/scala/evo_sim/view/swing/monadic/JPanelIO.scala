@@ -3,7 +3,7 @@ package evo_sim.view.swing.monadic
 import cats.effect.IO
 import javax.swing.{JPanel}
 
-class JPanelIO (jPanel: JPanel) extends JComponentIO(jPanel) {
+class JPanelIO (val jPanel: JPanel) extends JComponentIO(jPanel) {
 }
 
 //companion object with utilities
