@@ -66,7 +66,7 @@ object View extends View {
     barPanel <- JPanelIO()
     entityPanel <- JPanelIO()
     // TODO statistiche
-    shapes <- ShapesPanelIO(world)
+    shapes <- IO { new JPanelIO(new ShapesPanel(world)) }
     _ <- entityPanel.added(shapes)
     cp <- frameEncapsulated.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
