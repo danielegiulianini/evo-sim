@@ -18,7 +18,7 @@ object MovingStrategies {
     }
 
     chasedEntity match {
-      case Some(chasedEntity) if (distanceBetweenEntities(entity.boundingBox.point, chasedEntity.boundingBox.point) < entity.fieldOfViewRadius) => MovingStrategiesProlog.chaseMovement(entity, chasedEntity.boundingBox.point)
+      case Some(chasedEntity) if distanceBetweenEntities(entity.boundingBox.point, chasedEntity.boundingBox.point) < entity.fieldOfViewRadius => MovingStrategiesProlog.chaseMovement(entity, chasedEntity.boundingBox.point)
       case _ => MovingStrategiesProlog.standardMovement(entity)
     }
   }
