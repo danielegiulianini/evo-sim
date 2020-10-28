@@ -14,8 +14,7 @@ object TemperatureEffect {
    */
   def standardTemperatureEffect: ((Int, Int)) => Velocity = memoize({
     case (temperature: Int, currentIteration: Int) =>
-      (Constants.VELOCITY_MODIFIER * temperature *
-        zeroPhasedZeroYTranslatedSinusoidalSin(Constants.VELOCITY_AMPLITUDE)(timeOfTheDay(currentIteration))).toInt
+        zeroPhasedZeroYTranslatedSinusoidalSin(Constants.VELOCITY_MODIFIER * temperature)(timeOfTheDay(currentIteration))
   })
 
 }

@@ -19,9 +19,6 @@ object Constants {
   /** Growth rate of the luminosity */
   val LUMINOSITY_AMPLITUDE = 1.05f
   /** Growth rate of a blob's field of view radius */
-  val FOW_AMPLITUDE = 1.0125f
-  /** Growth rate of a blob's velocity */
-  val VELOCITY_AMPLITUDE = 1.0125f
 
   /** A blob's default size radius */
   val DEF_BLOB_RADIUS = 5
@@ -126,10 +123,10 @@ object Constants {
   /** Default days a simulation lasts */
   val DEF_DAYS = 30
 
-  /** How much the temperature affect the velocity of a blob */
-  val VELOCITY_MODIFIER = 0.025
-  /** How much the luminosity affect the field of view radius of a blob */
-  val FOW_MODIFIER = 0.025
+  /** How much the temperature affects the velocity of a blob */
+  val VELOCITY_MODIFIER = 0.0253125f
+  /** How much the luminosity affects the field of view radius of a blob */
+  val FOW_MODIFIER = 0.01265625f
 
   /** How much the temperature ranges in a simulation */
   val TEMPERATURE_MAX_DELTA = 25
