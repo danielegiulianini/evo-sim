@@ -3,7 +3,7 @@ package evo_sim.model
 /** General-purpose utils */
 object Utils {
 
-  var index = 0
+  private var index = 0
 
   /** Returns a value with variable range from an initial value.
    *

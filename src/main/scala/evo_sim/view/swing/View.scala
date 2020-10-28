@@ -72,7 +72,7 @@ object View extends View {
     barPanel <- JPanelIO()
     entityPanel <- JPanelIO()
     _ <- indicatorsUpdated(world, barPanel)
-      shapes <- ShapesPanelIO(world)
+    shapes <- IO { new JPanelIO(new ShapesPanel(world)) }
     _ <- entityPanel.added(shapes)
     cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()

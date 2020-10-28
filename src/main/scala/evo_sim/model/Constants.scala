@@ -151,4 +151,9 @@ object Constants {
   /** Range within update a parameter based on an initial value */
   val DEF_MOD_PROP_RANGE = 5
 
+  /** Equilateral triangle angle */
+  val DEF_EQUILATERAL_ANGLE = 60.0
+
+  /** Standard life degradation */
+  val STANDARD_LIFE_DECREASE = 1
 }
