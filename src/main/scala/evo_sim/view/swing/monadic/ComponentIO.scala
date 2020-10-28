@@ -1,6 +1,6 @@
 package evo_sim.view.swing.monadic
 
-import java.awt.Component
+import java.awt.{Component, Dimension}
 import java.awt.event.{ComponentListener, MouseListener}
 
 import cats.effect.IO
@@ -16,6 +16,9 @@ class ComponentIO[T<:Component](val component: T){
     component.removeMouseListener(l)
   }
   def fontGot() = IO {component.getFont}
+  def setPreferredSize(d: Dimension) = IO {
+    component.setPreferredSize(d)
+  }
 }
 
 //companion object with utilities to be added
