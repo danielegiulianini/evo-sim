@@ -17,7 +17,7 @@ import scala.concurrent.{Await, Promise}
 
 object View extends View {
 
-  val frameEncapsulated = new JFrameIO(new JFrame("evo-sim"))
+  val frame = new JFrameIO(new JFrame("evo-sim"))
 
   override def inputReadFromUser(): IO[Environment] = for {
     environmentPromise <- IO pure {
@@ -50,13 +50,13 @@ object View extends View {
         environmentPromise.success(Environment(t, l, b, p, o, d))
       }
     } yield ()).unsafeRunSync)
-    cp <- frameEncapsulated.contentPane()
+    cp <- frame.contentPane()
     _ <- cp.added(inputPanel, BorderLayout.CENTER)
     _ <- cp.added(start, BorderLayout.SOUTH)
-    _ <- frameEncapsulated.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
-    _ <- frameEncapsulated.packedInvokingAndWaiting()
-    _ <- frameEncapsulated.resizableInvokingAndWaiting(false)
-    _ <- frameEncapsulated.visibleInvokingAndWaiting(true)
+    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.resizableInvokingAndWaiting(false)
+    _ <- frame.visibleInvokingAndWaiting(true)
     environment <- IO {
       Await.result(environmentPromise.future, Duration.Inf)
     }
@@ -68,18 +68,23 @@ object View extends View {
     // TODO statistiche
     shapes <- ShapesPanelIO(world)
     _ <- entityPanel.added(shapes)
-    cp <- frameEncapsulated.contentPane()
+    cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
     _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
-    _ <- frameEncapsulated.packedInvokingAndWaiting()
-    _ <- frameEncapsulated.visibleInvokingAndWaiting(true)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.visibleInvokingAndWaiting(true)
     dimension <- IO {
       new Dimension(Toolkit.getDefaultToolkit.getScreenSize.width,
         Toolkit.getDefaultToolkit.getScreenSize.height)
     }
-    _ <- frameEncapsulated.setPreferredSizeInvokingAndWaiting(dimension)
-    _ <- frameEncapsulated.packedInvokingAndWaiting()
+    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
+    _ <- frame.packedInvokingAndWaiting()
+  } yield ()
+
+  //inside rendered?
+  def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = for {
+     cp <- barPanel.allRemoved()
   } yield ()
 
   override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
