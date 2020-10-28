@@ -94,15 +94,16 @@ object Effect {
    * @param blob a [[evo_sim.model.EntityStructure.Blob]]
    * @return a [[evo_sim.model.EntityStructure.Blob]] with properties based off the blob given as input ones.
    */
-  private def createChild[A <: Blob](blob: A): SimulableEntity = blob match{
-    case _: BaseBlob => BaseBlob(blob.name + "-son" + nextValue,
-      Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS)), Constants.DEF_BLOB_LIFE,
-      Constants.DEF_BLOB_VELOCITY, blob.degradationEffect, randomValueChange(Constants.DEF_BLOB_FOW_RADIUS),
-      MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
-    case _: CannibalBlob => CannibalBlob(blob.name + "-son" + nextValue,
-      Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS)), Constants.DEF_BLOB_LIFE,
-      Constants.DEF_BLOB_VELOCITY, blob.degradationEffect, randomValueChange(Constants.DEF_BLOB_FOW_RADIUS),
-      MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
+  private def createChild[A <: Blob](blob: A): SimulableEntity =
+    new java.util.Random().nextInt(2) match {
+      case 0 => BaseBlob(blob.name + "-son" + nextValue,
+        Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS)), Constants.DEF_BLOB_LIFE,
+        Constants.DEF_BLOB_VELOCITY, blob.degradationEffect, randomValueChange(Constants.DEF_BLOB_FOW_RADIUS),
+        MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
+      case 1 => CannibalBlob(blob.name + "-son" + nextValue,
+        Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS)), Constants.DEF_BLOB_LIFE,
+        Constants.DEF_BLOB_VELOCITY, blob.degradationEffect, randomValueChange(Constants.DEF_BLOB_FOW_RADIUS),
+        MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
     }
 
 }
