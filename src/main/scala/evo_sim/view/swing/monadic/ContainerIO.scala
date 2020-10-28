@@ -14,6 +14,8 @@ class ContainerIO[T<:Container](val container: Container) extends ComponentIO(co
   def layoutSet(mgr : LayoutManager): IO[Unit] = IO {    container.setLayout(mgr)  }
 
   //versions with invokeAndWait for finer granularity in thread assignment
+  def addedInvokingAndWaiting(component: ComponentIO[_<:Component]) = IO {  SwingUtilities.invokeAndWait( () =>container.add(component.component))}
+  def addedInvokingAndWaiting(name: String, component: ComponentIO[ _<:Component]) = IO {    SwingUtilities.invokeAndWait( () =>  container.add(name, component.component))}
   def addedInvokingAndWaiting(component: ComponentIO[ _<:Component], constraints : Object) = IO {    SwingUtilities.invokeAndWait( () => container.add(component.component, constraints))}
   def removedInvokingAndWaiting(component: ComponentIO[ _<:Component]) = IO {   SwingUtilities.invokeAndWait( () =>  container.remove(component.component) ) }
   def allRemovedInvokingAndWaiting() = IO {   SwingUtilities.invokeAndWait( () =>  container.removeAll() ) }
