@@ -10,6 +10,9 @@ object Constants {
 
   /** How many simulation loops in a day */
   val ITERATIONS_PER_DAY = 500
+  /** Time lapse between one interaction and the next */
+  //val ITERACTION_LAPSE: Double = 0.017
+  val ITERACTION_LAPSE: Double = 0.05
 
   /** Growth rate of the temperature */
   val TEMPERATURE_AMPLITUDE = 1.0125f
@@ -32,6 +35,8 @@ object Constants {
   val DEF_BLOB_FOW_RADIUS = 50
   /** A blob's default movement direction */
   val DEF_NEXT_DIRECTION = 0
+  /** Maximum number of steps a blob can take in one direction */
+  val MAX_STEP_FOR_ONE_DIRECTION = 50
   /** A blob's life at death */
   val DEF_BLOB_DEAD = 0
 
