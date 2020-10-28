@@ -21,6 +21,7 @@ object Effect {
   def standardFoodEffect[A <: Blob](blob: A): Set[SimulableEntity] = blob match {
     case b: BaseBlob => Set(b.copy(life = blob.life + Constants.DEF_FOOD_ENERGY))
     case b: CannibalBlob => Set(b.copy(life = blob.life + Constants.DEF_FOOD_ENERGY))
+    case _ => Set()
   }
 
   /**
@@ -34,6 +35,7 @@ object Effect {
     case cannibal: CannibalBlob => Set(cannibal.copy(life = cannibal.life + Constants.DEF_FOOD_ENERGY), createChild(cannibal))
     case poison: PoisonBlob => Set(poison.copy())
     case slow: SlowBlob => Set(slow.copy())
+    case _ => Set()
   }
 
   /**
