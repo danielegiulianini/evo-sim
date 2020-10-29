@@ -21,7 +21,7 @@ case class World(temperature: Int,
 //companion object
 object World {
 
-  type WorldHistory = scala.collection.immutable.Stream[World]
+  type WorldHistory = Stream[World]
 
   def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
