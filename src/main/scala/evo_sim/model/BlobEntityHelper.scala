@@ -7,7 +7,14 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 
 object BlobEntityHelper {
-
+  /**
+   * Takes a [[evo_sim.model.EntityStructure.Blob]] and transform it in a [[evo_sim.model.Entities.BaseBlob]] type, using the input blob's parameters.
+   * @param self the initial blob.
+   * @param world used to update some parameters.
+   * @param movement used to update the move direction of the entity.
+   * @tparam A accept [[evo_sim.model.EntityStructure.Blob]] subtype.
+   * @return The new [[evo_sim.model.Entities.BaseBlob]] updated.
+   */
   protected[model] def fromTemporaryBlobToBaseBlob[A <: Blob](self: A, world: World, movement: Movement): SimulableEntity = {
     var velocity = self.velocity
     self match {
@@ -18,13 +25,34 @@ object BlobEntityHelper {
       self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration), self movementStrategy, movement direction)
   }
 
+  /**
+   * Takes a [[evo_sim.model.EntityStructure.Blob]] and transform it in a [[evo_sim.model.EntityStructure.BlobWithTemporaryStatus]] type
+   * using the input blob's parameters.
+   * @param blob the initial blob.
+   * @param blobType specify the blob type to return.
+   * @tparam A accept Blob subtype.
+   * @return The new [[evo_sim.model.EntityStructure.BlobWithTemporaryStatus]] updated.
+   */
   protected[model] def fromBlobToTemporaryBlob[A <: Blob](blob: A, blobType: String): SimulableEntity = blobType match {
     case Constants.POISONBLOB_TYPE => PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
       blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN)
-    case Constants.SLOWBLOB_TYPE => SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
+    case _ /*Constants.SLOWBLOB_TYPE*/ => SlowBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
       blob fieldOfViewRadius, blob movementStrategy, blob direction, Constants DEF_COOLDOWN, blob velocity)
   }
 
+  /**
+   * This method is used to update a [[evo_sim.model.EntityStructure.Blob]].
+   * This method can be used by the [[evo_sim.model.EntityStructure.Blob]] subtypes:
+   * [[evo_sim.model.Entities.BaseBlob]]
+   * [[evo_sim.model.Entities.PoisonBlob]]
+   * [[evo_sim.model.Entities.CannibalBlob]]
+   * [[evo_sim.model.Entities.SlowBlob]]
+   * @param self the blob to be updated.
+   * @param movement the movement direction updated.
+   * @param world used to update some parameters.
+   * @tparam A accept Blob subtype.
+   * @return The new [[evo_sim.model.EntityBehaviour.SimulableEntity]] updated.
+   */
   protected[model] def updateTemporaryBlob[A <: Blob](self: A, movement: Movement, world: World): SimulableEntity = self match {
     case base: BaseBlob => base.copy(
       boundingBox = base.boundingBox.copy(point = movement.point),
@@ -56,6 +84,7 @@ object BlobEntityHelper {
       fieldOfViewRadius = poison.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration),
       cooldown = poison.cooldown - 1
     )
+    case _ => throw new Exception("Sub type not supported.")
   }
 
 }
