@@ -6,6 +6,7 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.Utils.timeOfTheDay
+import evo_sim.model.World.WorldHistory
 
 case class World(temperature: Int,
                  luminosity: Int,
@@ -13,10 +14,14 @@ case class World(temperature: Int,
                  height: Int,
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
-                 totalIterations: Int)
+                 totalIterations: Int,
+                 worldHistory: WorldHistory = Stream.empty)
+
 
 //companion object
 object World {
+
+  type WorldHistory = scala.collection.immutable.Stream[World]
 
   def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
@@ -28,7 +33,7 @@ object World {
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
-      degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
+      degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet

@@ -8,6 +8,9 @@ import evo_sim.model.Intersection.intersected
 import evo_sim.model.World
 import evo_sim.model.World.worldEnvironmentUpdated
 
+import scala.#::
+
+
 //maybe this object could go inside SimulationEngine
 object SimulationLogic {
   def worldUpdated(world: World): World = {
@@ -17,7 +20,8 @@ object SimulationLogic {
       temperature = updatedEnvironmentParameters.temperature,
       luminosity = updatedEnvironmentParameters.luminosity,
       currentIteration = world.currentIteration + 1,
-      entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
+      entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
+      worldHistory = world #:: world.worldHistory
     )
   }
 

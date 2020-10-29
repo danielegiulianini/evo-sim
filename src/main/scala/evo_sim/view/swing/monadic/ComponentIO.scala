@@ -1,7 +1,7 @@
 package evo_sim.view.swing.monadic
 
 import java.awt.{Component, Dimension}
-import java.awt.event.{ComponentListener, MouseListener}
+import java.awt.event.{ComponentAdapter, ComponentEvent, ComponentListener, MouseListener}
 
 import cats.effect.IO
 
@@ -22,6 +22,13 @@ class ComponentIO[T<:Component](val component: T){
 
   def setPreferredSizeInvokingAndWaiting(d: Dimension) = IO {
     component.setPreferredSize(d)
+  }
+
+  def addComponentAdapterInvokingAndWaiting() = IO {
+    component.addComponentListener(new ComponentAdapter {
+      override def componentResized(e: ComponentEvent): Unit =
+        component.setPreferredSize(component.getSize)
+    })
   }
 }
 

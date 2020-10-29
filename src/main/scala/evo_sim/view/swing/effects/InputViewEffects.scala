@@ -5,14 +5,13 @@ import java.awt.BorderLayout
 import cats.effect.IO
 import evo_sim.model.{Constants, Environment}
 import evo_sim.view.swing.monadic._
-import javax.swing.WindowConstants._
 import org.jfree.ui.tabbedui.VerticalLayout
 
 import scala.concurrent.Promise
 
 object InputViewEffects {
 
-  def inputViewCreated(frame: JFrameIO, environmentPromise: Promise[Environment]): IO[Unit] = for {
+  def inputViewCreated(environmentPromise: Promise[Environment]): IO[JPanelIO] = for {
     inputPanel <- JPanelIO()
     _ <- inputPanel.layoutSet(new VerticalLayout())
     blobSlider <- inputRowCreated(inputPanel, "#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS,
@@ -38,14 +37,8 @@ object InputViewEffects {
       start.enabledSet(false)
       environmentPromise.success(Environment(t, l, b, p, o, d))
     })
-    cp <- frame.contentPane()
-    _ <- cp.added(inputPanel, BorderLayout.CENTER)
-    _ <- cp.added(start, BorderLayout.SOUTH)
-    _ <- frame.defaultCloseOperationSet(EXIT_ON_CLOSE)
-    _ <- frame.packedInvokingAndWaiting()
-    _ <- frame.resizableInvokingAndWaiting(false)
-    _ <- frame.visibleInvokingAndWaiting(true)
-  } yield ()
+    _ <- inputPanel.added(start)
+  } yield inputPanel
 
   private def inputRowCreated(inputPanel: JPanelIO, text: String, minValue: Int, maxValue: Int,
                               defaultValue: Int): IO[JSliderIO] = for {

@@ -1,14 +1,16 @@
 package evo_sim.view.swing
 
-import java.awt.{BorderLayout, Dimension, Toolkit}
+import java.awt.Toolkit.getDefaultToolkit
+import java.awt.{BorderLayout, Dimension}
 
 import cats.effect.IO
 import evo_sim.model.World.fromIterationsToDays
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
-import evo_sim.view.swing.effects.InputViewEffects.inputViewCreated
 import evo_sim.view.swing.custom.components.ShapesPanel
+import evo_sim.view.swing.effects.InputViewEffects.inputViewCreated
 import evo_sim.view.swing.monadic.{JFrameIO, JLabelIO, JPanelIO}
+import javax.swing.WindowConstants.EXIT_ON_CLOSE
 import javax.swing._
 
 import scala.concurrent.duration.Duration
@@ -20,8 +22,17 @@ object View extends View {
 
   override def inputReadFromUser(): IO[Environment] = for {
     environmentPromise <- IO pure { Promise[Environment]() }
-    _ <- inputViewCreated(frame, environmentPromise)
+    inputPanel <- inputViewCreated(environmentPromise)
+    cp <- frame.contentPane()
+    _ <- cp.added(inputPanel, BorderLayout.CENTER)
+    _ <- frame.defaultCloseOperationSet(EXIT_ON_CLOSE)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.visibleInvokingAndWaiting(true)
     environment <- IO { Await.result(environmentPromise.future, Duration.Inf) }
+    _ <- frame.addComponentAdapterInvokingAndWaiting()
+    dimension <- IO { new Dimension(getDefaultToolkit.getScreenSize.width, getDefaultToolkit.getScreenSize.height) }
+    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
+    _ <- frame.resizableInvokingAndWaiting(true)
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
@@ -34,13 +45,6 @@ object View extends View {
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
     _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
-    _ <- frame.packedInvokingAndWaiting()
-    _ <- frame.visibleInvokingAndWaiting(true)
-    dimension <- IO {
-      new Dimension(Toolkit.getDefaultToolkit.getScreenSize.width,
-        Toolkit.getDefaultToolkit.getScreenSize.height)
-    }
-    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
