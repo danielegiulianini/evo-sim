@@ -133,14 +133,20 @@ object Intersection {
    * Intersection between two circles.
    *
    * @param circle    circle shape.
-   * @param rectangle triangle shape.
+   * @param rectangle rectangle shape.
    * @return true if the bodies intersect, false otherwise.
    */
-  private def circleIntersectsRectangle(circle: Circle, rectangle: Rectangle) =
-    rectangle.point.x + rectangle.width > circle.point.x &&
+  private def circleIntersectsRectangle(circle: Circle, rectangle: Rectangle) = {
+
+    /*rectangle.point.x + rectangle.width > circle.point.x &&
       rectangle.point.y + rectangle.height > circle.point.y &&
       circle.point.x + circle.radius > rectangle.point.x &&
-      circle.point.y + circle.radius > rectangle.point.y
+      circle.point.y + circle.radius > rectangle.point.y*/
+
+    circleIntersectsCircle(circle, Circle(rectangle.point, (rectangle.width+rectangle.height)/2))
+  }
+
+
 
   // Collision between two rectangles (https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#:~:text=One%20of%20the%20simpler%20forms,a%20collision%20does%20not%20exist.)
 
