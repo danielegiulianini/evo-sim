@@ -37,7 +37,7 @@ object SimulationEngine {
       simulationLoop() else
       liftIo( for {
         _ <- IO { log("simulation ended, printing sim statistics") }
-        _ <- IO {println("worldHistory: " + worldAfterCollisions.worldHistory)}
+        _ <- IO { log("worldHistory size: " + worldAfterCollisions.worldHistory.size) }
         - <- View.resultViewBuiltAndShowed(worldAfterCollisions)
       } yield ())
   } yield ()
