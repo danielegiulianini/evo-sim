@@ -17,7 +17,8 @@ object SimulationLogic {
       temperature = updatedEnvironmentParameters.temperature,
       luminosity = updatedEnvironmentParameters.luminosity,
       currentIteration = world.currentIteration + 1,
-      entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world))
+      entities = world.entities.foldLeft(Set[SimulableEntity]())((updatedEntities, entity) => updatedEntities ++ entity.updated(world)),
+      worldHistory = world.worldHistory + world
     )
   }
 
