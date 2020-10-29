@@ -16,10 +16,10 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
   def paintTicksSet(b: Boolean): IO[Unit] = IO { component.setPaintTicks(b) }
   def paintLabelsSet(b: Boolean): IO[Unit] = IO { component.setPaintLabels(b) }
 
-  def actionListenerAdded(l:ChangeEvent => IO[Unit]) =
+  def changeListenerAdded(l:ChangeEvent => IO[Unit]) =
     IO {component.addChangeListener( e => l(e).unsafeRunSync() )}
   //event listener that doesn't leverage action event parameter
-  def actionListenerAdded(l: => IO[Unit]) =
+  def changeListenerAdded(l: => IO[Unit]) =
     IO {component.addChangeListener( _ => l.unsafeRunSync() )}
 }
 
