@@ -36,13 +36,19 @@ object Example2 extends App {
     _ <- panel.layoutSet(new BorderLayout())
     nb <- JButtonIO("North")
     _ <- panel.added(nb, BorderLayout.NORTH)
-    sb <- JButtonIO("South")
+    sb <- JButtonIO("South (close program)")
+    _ <- sb.actionListenerAddedFromUnit(System.exit(0))  //listener by procedural specification by name (no param)
     _ <- panel.added(sb, BorderLayout.SOUTH)
-    eb <- JButtonIO("East")
+    eb <- JButtonIO("East (close program)")
     _ <- panel.added(eb, BorderLayout.EAST)
+    s <- JSliderIO()
+    _ <- panel.added(s, BorderLayout.CENTER)
     wb <- JButtonIO("West (close program)")
-    _ <- wb.actionListenerAddedFromUnit(System.exit(0))  //listener by procedural specification
-    _ <- wb.actionListenerAdded(IO {System.exit(0)})  //listener by io monad specification
+    _ <- wb.actionListenerAdded(for {
+      currentValue <- s.valueGot
+      _ <- IO { println(currentValue) }
+      _ <- if (currentValue <= 0) IO.unit else IO { println("ok") }
+    } yield ())  //listener by io monad and by name specification
     _ <- panel.added(wb, BorderLayout.WEST)
   } yield panel
 
