@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.EntityStructure.DomainImpl.Velocity
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.MemoHelper.memoize
-import evo_sim.model.Utils.timeOfTheDay
+import evo_sim.model.World.timeOfTheDay
 
 /** Provides functions to determine a temperature-dependent velocity variation */
 object TemperatureEffect {

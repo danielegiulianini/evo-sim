@@ -5,7 +5,6 @@ import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
-import evo_sim.model.Utils.timeOfTheDay
 import evo_sim.model.World.WorldHistory
 
 case class World(temperature: Int,
@@ -156,6 +155,15 @@ object World {
   def fromIterationsToDays(iteration : Int) = iteration / ITERATIONS_PER_DAY
   def fromDaysToIterations(days : Int) = days * ITERATIONS_PER_DAY
 
+
+  /** Returns the time of the day as a float ranging from 0 to 1 excluded given the iteration number.
+   * 0 is midnight, 0.5 is noon and so on.
+   *
+   * @param iteration iteration number
+   * @return time of the day
+   */
+  def timeOfTheDay(iteration: Int): Float =
+    iteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
 }
 
 
