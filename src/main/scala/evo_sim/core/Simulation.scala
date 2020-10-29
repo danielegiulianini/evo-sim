@@ -53,6 +53,11 @@ object TupleUtils {
       (acc, t) =>
         if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
+
+  trait Containable[F[_]]{
+    def contained[A, U](t: F[A], elem: U) : Boolean
+  }
+  
   def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
   implicit class Tuple2CanContain[T](t: (T, T)) { //pimping DOT NOTATION
     def contained(elem: T): Boolean = TupleUtils.contained(t, elem)
