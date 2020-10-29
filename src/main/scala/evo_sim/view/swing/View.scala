@@ -66,13 +66,13 @@ object View extends View {
     environment <- IO {
       Await.result(environmentPromise.future, Duration.Inf)
     }
-    _ <- frame.resizableInvokingAndWaiting(true)
     _ <- frame.addComponentAdapterInvokingAndWaiting()
     dimension <- IO {
       new Dimension(Toolkit.getDefaultToolkit.getScreenSize.width,
         Toolkit.getDefaultToolkit.getScreenSize.height)
     }
     _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
+    _ <- frame.resizableInvokingAndWaiting(true)
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {

@@ -7,8 +7,7 @@ import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.Utils._
 
 /**
- * Singleton object that provides different effect implementations to be used by object that extend [[evo_sim.model.EntityStructure.Effectful]] .
- *
+ * Singleton object that provides different effect implementations to be used by object that extend [[evo_sim.model.EntityStructure.Effectful]].
  */
 object Effect {
 
