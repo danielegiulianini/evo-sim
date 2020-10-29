@@ -13,9 +13,13 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
   def enabledSet(b: Boolean): IO[Unit] = IO { component.setEnabled(b) }
 
   //enabling event listener description by monad
-  def actionListenerAdded(l:ActionEvent => IO[Unit]) = IO {
-    component.addActionListener( e => l(e).unsafeRunSync() )
-  }
+  def actionListenerAdded(l:ActionEvent => IO[Unit]) =
+    IO {component.addActionListener( e => l(e).unsafeRunSync() )}
+  //event listener that doesn't leverage action event param
+  def actionListenerAdded(l: => IO[Unit]) =
+    IO {component.addActionListener( _ => l.unsafeRunSync() )}
+
+
 }
 
 //companion object with utilities
