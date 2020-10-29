@@ -7,6 +7,17 @@ import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.WorldHistory
 
+/**
+ * Represents the state of the simulation and acts as a container for all of its properties.
+ * @param temperature the actual temperature at the current iteration.
+ * @param luminosity the actual luminosity at the current iteration.
+ * @param width the width of simulation area.
+ * @param height the height of simulation area.
+ * @param currentIteration the point in time to which this World refers to.
+ * @param entities the set of entities actually present inside the simulation area.
+ * @param totalIterations the total iterations count before the end of the simulation.
+ * @param worldHistory the collection of World instances (each corresponding to every single iteration) gathered since the beginning of the simulation.
+ */
 case class World(temperature: Int,
                  luminosity: Int,
                  width: Int,
