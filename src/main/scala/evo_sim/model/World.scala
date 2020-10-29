@@ -6,6 +6,7 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.Utils.timeOfTheDay
+import evo_sim.model.World.WorldHistory
 
 case class World(temperature: Int,
                  luminosity: Int,
@@ -13,10 +14,14 @@ case class World(temperature: Int,
                  height: Int,
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
-                 totalIterations: Int)
+                 totalIterations: Int,
+                 worldHistory: WorldHistory = Set())
+
 
 //companion object
 object World {
+
+  type WorldHistory = Set[World]
 
   def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
