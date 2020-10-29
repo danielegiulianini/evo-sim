@@ -2,6 +2,7 @@ package evo_sim.view.swing.monadic
 
 import java.awt.BorderLayout
 
+import cats.effect.IO
 import javax.swing.WindowConstants
 
 
@@ -40,7 +41,8 @@ object Example2 extends App {
     eb <- JButtonIO("East")
     _ <- panel.added(eb, BorderLayout.EAST)
     wb <- JButtonIO("West (close program)")
-    _ <- wb.actionListenerAdded(_ => System.exit(0))
+    //_ <- wb.actionListenerAdded(_ => System.exit(0))
+    _ <- wb.actionListenerAdded(e => IO {System.exit(0)})
     _ <- panel.added(wb, BorderLayout.WEST)
   } yield panel
 
