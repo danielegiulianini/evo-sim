@@ -7,6 +7,9 @@ import javax.swing.JButton
 
 class JButtonIO(override val component: JButton) extends ComponentIO(component){
   def actionListenerAdded(l:ActionListener) = IO {component.addActionListener(l)}
+  //event listener that doesn't leverage action event parameter
+  def actionListenerAddedFromUnit(l: => Unit) = IO {component.addActionListener(_ => l)}
+
   def actionListenerRemoved(l:ActionListener) = IO {component.removeActionListener(l)}
   def textSet(text: String) = IO {component.setText(text)}
   def textGot() = IO {component.getText}
@@ -15,11 +18,8 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
   //enabling event listener description by monad
   def actionListenerAdded(l:ActionEvent => IO[Unit]) =
     IO {component.addActionListener( e => l(e).unsafeRunSync() )}
-  //event listener that doesn't leverage action event param
   def actionListenerAdded(l: => IO[Unit]) =
     IO {component.addActionListener( _ => l.unsafeRunSync() )}
-
-
 }
 
 //companion object with utilities

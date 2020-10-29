@@ -41,7 +41,7 @@ object Example2 extends App {
     eb <- JButtonIO("East")
     _ <- panel.added(eb, BorderLayout.EAST)
     wb <- JButtonIO("West (close program)")
-    //_ <- wb.actionListenerAdded(_ => System.exit(0))  //listener by procedural specification
+    _ <- wb.actionListenerAddedFromUnit(System.exit(0))  //listener by procedural specification
     _ <- wb.actionListenerAdded(IO {System.exit(0)})  //listener by io monad specification
     _ <- panel.added(wb, BorderLayout.WEST)
   } yield panel
