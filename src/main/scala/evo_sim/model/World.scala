@@ -28,7 +28,7 @@ object World {
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
-      degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
+      degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
       direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
