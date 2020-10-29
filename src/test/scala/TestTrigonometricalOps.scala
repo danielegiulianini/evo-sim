@@ -28,6 +28,20 @@ class SinusoidalSpecifications extends PropSpec with Checkers { //extends Proper
     }
   }
 
+  //2. check periodic cycle
+  property("periodic cycle respected") {
+    check {
+      forAll {
+        (yDilatation: Float, x: Float, phase: Int, yTranslation: Int) => {
+          val value = sinusoidal(yDilatation)(x)(phase)(yTranslation: Int)
+          forAll {
+            (periodMultiplier: Int) =>
+              value == sinusoidal(yDilatation)(x * periodMultiplier)(phase)(yTranslation: Int)
+          }
+        }
+      }
+    }
+  }
 
   //binary:
   //3. check reversing phase sign results in reversed wave
