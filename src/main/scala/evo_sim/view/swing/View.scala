@@ -66,6 +66,13 @@ object View extends View {
     environment <- IO {
       Await.result(environmentPromise.future, Duration.Inf)
     }
+    _ <- frame.resizableInvokingAndWaiting(true)
+    _ <- frame.addComponentAdapterInvokingAndWaiting()
+    dimension <- IO {
+      new Dimension(Toolkit.getDefaultToolkit.getScreenSize.width,
+        Toolkit.getDefaultToolkit.getScreenSize.height)
+    }
+    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
@@ -78,13 +85,6 @@ object View extends View {
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
     _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
-    _ <- frame.packedInvokingAndWaiting()
-    _ <- frame.visibleInvokingAndWaiting(true)
-    dimension <- IO {
-      new Dimension(Toolkit.getDefaultToolkit.getScreenSize.width,
-        Toolkit.getDefaultToolkit.getScreenSize.height)
-    }
-    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
