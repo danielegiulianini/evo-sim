@@ -76,7 +76,10 @@ object Example3 extends App {
     _ <- panel.layoutSet(new BorderLayout())
     l <- JLabelIO()
     sl <- JSliderIO()
-    _ <- sl.changeListenerAdded(e => l.textSet(""+sl.valueGot.unsafeRunSync()).unsafeRunSync())
+   /* _ <- sl.changeListenerAdded(for {
+      currentValue <- sl.valueGot
+      _ <- l.textSet(""+currentValue)
+    } yield())*/
     _ <- panel.added(l, BorderLayout.EAST)
     _ <- panel.added(sl, BorderLayout.CENTER)
   } yield panel
