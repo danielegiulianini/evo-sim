@@ -22,6 +22,8 @@ object Constants {
 
   /** A blob's default size radius */
   val DEF_BLOB_RADIUS = 5
+  /** Minimum value of blobs radius */
+  val MIN_BLOB_RADIUS = 5
   /** A blob's default life */
   val DEF_BLOB_LIFE = 1000
   /** A blob's default velocity */
@@ -30,6 +32,8 @@ object Constants {
   val DEF_BLOB_SLOW_VELOCITY: Int = DEF_BLOB_VELOCITY / 2
   /** A blob's default field of view radius */
   val DEF_BLOB_FOW_RADIUS = 50
+  /** Minimum value of  field of view radius */
+  val MIN_BLOB_FOW_RADIUS = 5
   /** A blob's default movement direction */
   val DEF_NEXT_DIRECTION = 0
   /** Maximum number of steps a blob can take in one direction */
