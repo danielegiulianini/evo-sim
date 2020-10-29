@@ -12,12 +12,12 @@ import org.scalatest.prop.Checkers
 //or: sbt test     from cmd from the the folder cotaining build.sbt file
 
 class SinusoidalSpecifications extends PropSpec with Checkers { //extends Properties("Sinusoidal") {
-  //signature: sinusoidalSin(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int)
+  //signature: sinusoidal(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int)
 
   //1. check codomain is respected (max = amplitude * 1 + ytranslation, min = amplitude * -1 + ytraslation)
   /*property("max and min value respected") = forAll {
     (yDilatation: Float, x: Float, phase: Int, yTranslation: Int) => {
-      val value = sinusoidalSin(yDilatation)(x)(phase)(yTranslation: Int)
+      val value = sinusoidal(yDilatation)(x)(phase)(yTranslation: Int)
       value <= yDilatation /* *1 */ + yTranslation || value >= -yDilatation /* *1 */ + yTranslation
     }
   }*/

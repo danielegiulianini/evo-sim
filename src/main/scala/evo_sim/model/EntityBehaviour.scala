@@ -22,6 +22,14 @@ object EntityBehaviour {
   }
 
   //Base blob behaviour implementation
+  /**
+   * This Behaviour represent the base behaviour mainly for a Base [[evo_sim.model.EntityStructure.Blob]]. It contains two methods:
+   * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
+   * collided: when the blob collide with an entity this method is called. It can collide with different entitis:
+   * -[[evo_sim.model.EntityStructure.Food]]: apply the effect of the food at the blob.
+   * -[[evo_sim.model.EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
+   * -[[evo_sim.model.Entities.CannibalBlob]]: if this blob is smaller than the cannibal, this blob is eaten.
+   */
   trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
     override def updated(world: World): Set[SimulableEntity] = {
@@ -40,6 +48,16 @@ object EntityBehaviour {
       }
   }
 
+  /**
+   * This Behaviour represent the base behaviour mainly for a Cannibal [[evo_sim.model.EntityStructure.Blob]].
+   * Differently from a [[evo_sim.model.Entities.BaseBlob]] this blob moves towards a food or a base blob.
+   * It contains two methods:
+   * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
+   * collided: when the blob collide with an entity this method is called. It can collide with different entitis:
+   * -[[evo_sim.model.EntityStructure.Food]]: apply the effect of the food at the blob.
+   * -[[evo_sim.model.EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
+   * -[[evo_sim.model.Entities.BaseBlob]]: if this blob is bigger than the base blob, the base blob is eaten.
+   */
   trait CannibalBlobBehaviour extends Simulable {
     self: CannibalBlob =>
     override def updated(world: World): Set[SimulableEntity] = {
@@ -59,6 +77,14 @@ object EntityBehaviour {
     }
   }
 
+  /**
+   * This Behaviour represent the base behaviour mainly for Temporary [[evo_sim.model.EntityStructure.Blob]].
+   * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
+   * This blob can't eat during the time the temporary effect is active. The effect remains until the cooldown is bigger than zero.
+   * There are two effect applied:
+   * [[evo_sim.model.Entities.PoisonBlob]]: this blob has a worst degradation effect, this mean that it takes more damage every time the degradation effect is applied.
+   * [[evo_sim.model.Entities.SlowBlob]]: this blob moves significantly slowly.
+   */
   trait TempBlobBehaviour extends Simulable with NeutralCollidable {
     self: BlobWithTemporaryStatus =>
     override def updated(world: World): Set[SimulableEntity] = self match {
@@ -149,7 +175,6 @@ object EntityBehaviour {
       case _ => BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement)
     }
   }
-
   private def slowBehaviour(self: SlowBlob, world: World) = {
     val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
     self.cooldown match {
