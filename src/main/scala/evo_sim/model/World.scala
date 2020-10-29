@@ -15,13 +15,13 @@ case class World(temperature: Int,
                  currentIteration: Int,
                  entities: Set[SimulableEntity],
                  totalIterations: Int,
-                 worldHistory: WorldHistory = Set())
+                 worldHistory: WorldHistory = Stream.empty)
 
 
 //companion object
 object World {
 
-  type WorldHistory = Set[World]
+  type WorldHistory = scala.collection.immutable.Stream[World]
 
   def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
