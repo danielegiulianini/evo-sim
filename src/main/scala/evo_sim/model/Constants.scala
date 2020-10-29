@@ -25,7 +25,7 @@ object Constants {
   /** Minimum value of blobs radius */
   val MIN_BLOB_RADIUS = 5
   /** A blob's default life */
-  val DEF_BLOB_LIFE = 1000
+  val DEF_BLOB_LIFE = 1250
   /** A blob's default velocity */
   val DEF_BLOB_VELOCITY = 50
   /** A blob's default velocity when in slow status */
@@ -76,9 +76,9 @@ object Constants {
   /** An effect's default cooldown counter */
   val DEF_COOLDOWN = 50
   /** Damage effect's life subtraction */
-  val DEF_DAMAGE = 25
+  val DEF_DAMAGE = 250
   /** A food's life addition */
-  val DEF_FOOD_ENERGY = 30
+  val DEF_FOOD_ENERGY = 500
 
   /** Minimum amount of blobs allowed in a simulation */
   val MIN_BLOBS = 0
@@ -90,9 +90,9 @@ object Constants {
   /** Minimum amount of plants allowed in a simulation */
   val MIN_PLANTS = 0
   /** Maximum amount of plants allowed in a simulation */
-  val MAX_PLANTS = 10
+  val MAX_PLANTS = 50
   /** Default amount of plants in a simulation */
-  val DEF_PLANTS = 5
+  val DEF_PLANTS = 25
 
   /** Minimum amount of obstacles allowed in a simulation */
   val MIN_OBSTACLES = 0
