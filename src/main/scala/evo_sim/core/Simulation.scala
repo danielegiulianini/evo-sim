@@ -54,13 +54,17 @@ object TupleUtils {
         if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
   def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
-
-  implicit class TupleCanContain[T](t: (T, T)) { //pimping DOT NOTATION
+  implicit class Tuple2CanContain[T](t: (T, T)) { //pimping DOT NOTATION
     def contained(elem: T): Boolean = TupleUtils.contained(t, elem)
   }
 
-  def contained[T1](mySet: Set[(T1, T1)], elem: T1): Boolean = mySet.exists(_.contained(elem))
+  def contained[T](mySet: Set[(T, T)], elem: T): Boolean = mySet.exists(_.contained(elem))
+  implicit class SetCanContain[T](mySet:Set[(T, T)]) { //pimping DOT NOTATION
+    def contained(elem: T): Boolean = TupleUtils.contained(mySet, elem)
+  }
 
-  def containedAnyOf[T1](mySet: Set[(T1, T1)], elem: (T1, T1)): Boolean = contained(mySet, elem._1) || contained(mySet, elem._2)
-
+  def containedAnyOf[T](mySet: Set[(T, T)], elem: (T, T)): Boolean = contained(mySet, elem._1) || contained(mySet, elem._2)
+  implicit class SetCanContain2[T](t:Set[(T, T)]) { //pimping DOT NOTATION
+    def containedAnyOf(elem: (T, T)): Boolean = TupleUtils.containedAnyOf(t, elem)
+  }
 }
