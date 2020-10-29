@@ -88,7 +88,7 @@ object View extends View {
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
-  //inside rendered?
+  //inside rendered
   def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
     for {
       //barPanel has default FlowLayout
@@ -102,6 +102,7 @@ object View extends View {
       population <- JLabelIO("luminosity: " + world.luminosity)
       _ <- barPanel.added(population)
     } yield ()
+    //refactor repeated code for jlabels
   }
 
   override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {

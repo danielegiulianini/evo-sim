@@ -121,7 +121,7 @@ class ShapesPanel(world: World) extends JPanel {
       Point2D(tri.point.x + radius, tri.point.y - radius))
   }
 
-  private def modelToViewRatio(modelProperty: Int, viewDimension: Int, modelDimension: Int): Int =
-    modelProperty * viewDimension / modelDimension
+  private def modelToViewRatio(modelProperty: Double, viewDimension: Double, modelDimension: Double): Int =
+    (modelProperty * viewDimension / modelDimension).round.toInt
 
 }
