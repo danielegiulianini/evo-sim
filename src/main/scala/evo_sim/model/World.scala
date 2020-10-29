@@ -8,7 +8,8 @@ import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroY
 import evo_sim.model.World.WorldHistory
 
 /**
- * Represents the state of the simulation and acts as a container for all of its properties.
+ * Represents the state of the simulation and acts as a container for all of its properties that are carried along
+ * each iteration.
  * @param temperature the actual temperature at the current iteration.
  * @param luminosity the actual luminosity at the current iteration.
  * @param width the width of simulation area.
@@ -35,6 +36,7 @@ object World {
 
   def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
+
 
   def apply(env: Environment): World = {
 
@@ -96,7 +98,7 @@ object World {
    */
   case class EnvironmentParameters(luminosity: Int, temperature: Int)
 
-  /** Updates the world parameters according to the time of the dat of the simulation.
+  /** Updates the world parameters according to the time of the day of the simulation.
    *
    * @param world the world with the parameters to update
    * @return the [[evo_sim.model.World.EnvironmentParameters]] container with updated parameters
