@@ -4,7 +4,7 @@ import java.awt.Toolkit.getDefaultToolkit
 import java.awt.{BorderLayout, Dimension}
 
 import cats.effect.IO
-import evo_sim.model.World.fromIterationsToDays
+import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.custom.components.ShapesPanel
@@ -65,7 +65,7 @@ object View extends View {
     //refactor repeated code for jlabels
   }
 
-  override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
+  override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     _ <- IO {}
     // TODO grafici
   } yield ()

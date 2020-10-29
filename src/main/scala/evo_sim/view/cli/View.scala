@@ -1,6 +1,7 @@
 package evo_sim.view.cli
 
 import cats.effect.IO
+import evo_sim.model.World.WorldHistory
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 
@@ -35,7 +36,7 @@ object View extends View {
     // TODO print real-time indicators
   } yield ()
 
-  override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
+  override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     _ <- IO apply {}
     // TODO: print final indicators
   } yield ()
