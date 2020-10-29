@@ -55,13 +55,25 @@ object TupleUtils {
 
 
   trait Containable[F[_]]{
-    def contained[A, T](t: F[A], elem: T) : Boolean
+    def contained[T](t: F[T], elem: T) : Boolean
   }
   object Containable {
-    implicit class ContainablePimped[F[_]: Containable, A] (ca: F[A]) {
+    implicit class ContainablePimped[F[_]: Containable, T] (ca: F[T]) {
       //enabling DOT notation
       def contained[T](elem: T): Boolean = implicitly[Containable[F]].contained(ca, elem)
     }
+  }
+
+  object ContainableImplicits {
+    implicit object SetCanContain extends Containable[Set]{
+      override def contained[T](t: Set[T], elem: T): Boolean = ???
+    }
+
+    implicit object Tuple2Containable extends Containable[({type λ[α] = Tuple2[α, α]})#λ]{
+      override def contained[T](t: (T, T), elem: T): Boolean = ???
+    }
+
+    //type Tuple2S[T] = Tuple2[T, T]
   }
 
   def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
