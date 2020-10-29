@@ -1,20 +1,10 @@
-import evo_sim.model.Entities.{BaseBlob, BaseFood, BaseObstacle, CannibalBlob}
-import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.Utils.chain
 import evo_sim.model._
 import org.scalatest.FunSuite
 
 class IntersectionTests extends FunSuite {
-
-  private val INIT_BLOB_LIFE = 100
-  private val INIT_BLOB_VEL = 50
-
   private val circle1 = BoundingBox.Circle(point = Point2D(100, 100), radius = 10)
-
   private val circle2 = BoundingBox.Circle(point = Point2D(90, 90), radius = 10)
-
   private val rect = BoundingBox.Rectangle(point = Point2D(100, 100), width = 50, height = 40)
-
   private val tri = BoundingBox.Triangle(point = Point2D(110, 110), height = 40)
 
   test("Circle-Rectangle detection") {
@@ -40,5 +30,4 @@ class IntersectionTests extends FunSuite {
   test("Rectangle-Triangle detection") {
     assert(!Intersection.intersected(rect, tri))
   }
-
 }

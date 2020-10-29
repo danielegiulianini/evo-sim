@@ -1,5 +1,7 @@
 package evo_sim.view.swing.monadic
 
+import java.awt.event.ActionEvent
+
 import cats.effect.IO
 import javax.swing.event.{ChangeEvent, ChangeListener}
 import javax.swing.{JComponent, JSlider}
@@ -16,11 +18,13 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
   def paintTicksSet(b: Boolean): IO[Unit] = IO { component.setPaintTicks(b) }
   def paintLabelsSet(b: Boolean): IO[Unit] = IO { component.setPaintLabels(b) }
 
-  def changeListenerAdded(l:ChangeEvent => IO[Unit]) =
-    IO {component.addChangeListener( e => l(e).unsafeRunSync() )}
+
+  //enabling event listener description by monad
+  def changeListenerAdded(l: ChangeEvent => IO[Unit]): IO[Unit] =
+    IO { component.addChangeListener(e => l(e).unsafeRunSync()) }
   //event listener that doesn't leverage action event parameter
-  def changeListenerAdded(l: => IO[Unit]) =
-    IO {component.addChangeListener( _ => l.unsafeRunSync() )}
+  def changeListenerAdded(l: => IO[Unit]): IO[Unit] =
+    IO { component.addChangeListener(_ => l.unsafeRunSync()) }
 }
 
 

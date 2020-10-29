@@ -7,7 +7,7 @@ class DegradationTests extends FunSuite {
   private val LIFE_AFTER_STANDARD_EFFECT = 998
   private val LIFE_AFTER_POISON_EFFECT = 994
 
-  val blob = PoisonBlob(
+  private val blob: PoisonBlob = PoisonBlob(
     name = "blob",
     boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
     life = Constants.DEF_BLOB_LIFE,
@@ -20,11 +20,11 @@ class DegradationTests extends FunSuite {
 
   test("Standard Degradation effect") {
     val newBlob = blob.copy(life = DegradationEffect.standardDegradation(blob))
-    assert(newBlob.life==LIFE_AFTER_STANDARD_EFFECT)
+    assert(newBlob.life == LIFE_AFTER_STANDARD_EFFECT)
   }
 
   test("Poison Degradation effect") {
     val newBlob = blob.copy(life = DegradationEffect.poisonBlobDegradation(blob))
-    assert(newBlob.life==LIFE_AFTER_POISON_EFFECT)
+    assert(newBlob.life == LIFE_AFTER_POISON_EFFECT)
   }
 }
