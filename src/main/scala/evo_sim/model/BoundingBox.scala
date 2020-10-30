@@ -10,6 +10,11 @@ import BoundingBox._
  */
 case class Point2D(x: Int, y: Int)
 
+object Point2D{
+  def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
+    new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
+}
+
 /**
  * Bounding Box trait, [[evo_sim.model.Point2D]] represent the center of the Bounding Box.
  */

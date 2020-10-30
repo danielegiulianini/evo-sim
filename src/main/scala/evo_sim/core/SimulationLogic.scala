@@ -1,6 +1,6 @@
 package evo_sim.core
 
-import evo_sim.core.TupleUtils.{everyElementPairedWithOnlyOneOtherElement => multipleCollisionsRemoved}
+import evo_sim.utils.TupleUtils.{everyElementPairedWithOnlyOneOtherElement => multipleCollisionsRemoved}
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}

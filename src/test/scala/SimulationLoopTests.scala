@@ -3,7 +3,7 @@ import evo_sim.model.{Environment, World}
 import evo_sim.core.Simulation._
 
 
-class TestSimulationLoop {
+class SimulationLoopTests {
 
   val initialEnvironment : Environment = Environment(
     temperature = 2,

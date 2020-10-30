@@ -8,6 +8,9 @@ object Constants {
   /** The simulation world width in coordinates (y axis) */
   val WORLD_HEIGHT = 720
 
+  /** The simulation loop period in milliseconds */
+  //val SIMULATION_LOOP_PERIOD = 10 TODO
+
   /** How many simulation loops in a day */
   val ITERATIONS_PER_DAY = 500
   /** Time lapse between one interaction and the next */

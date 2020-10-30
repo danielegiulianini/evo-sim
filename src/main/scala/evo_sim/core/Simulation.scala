@@ -2,14 +2,17 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.IO
-import evo_sim.core.TupleUtils.toTuple2
+import evo_sim.utils.TupleUtils.toTuple2
 import evo_sim.model.World
-//import evo_sim.view.swing.{SwingView => View}
-import evo_sim.view.cli.{CLIView => View}
+import evo_sim.model.World.WorldHistory
+import evo_sim.view.swing.{SwingView => View}
+//import evo_sim.view.cli.{CLIView => View}
 
 
 object Simulation {
+
   type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
+
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
   //helper to create StateT monad from a IO monad
@@ -23,51 +26,31 @@ object Simulation {
 
   //prettier method name than "unsafeRunAsync for starting simulation"
   implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
-    def run(): A = simulation.unsafeRunSync()
+    def run(): A = simulation unsafeRunSync
   }
 
 
-  //maybe move these conversions from here to 2. SimulationEngine...
   object toStateTConversions {
-    def worldUpdated(): Simulation[World] = toStateTWorld {
-      SimulationLogic.worldUpdated
-    }
+    def worldUpdated(): Simulation[World] =
+      toStateTWorld { SimulationLogic.worldUpdated }
 
-    def collisionsHandled(): Simulation[World] = toStateTWorld {
-      SimulationLogic.collisionsHandled
-    }
+    def collisionsHandled(): Simulation[World] =
+      toStateTWorld {SimulationLogic.collisionsHandled}
 
-    //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
       liftIo(View.rendered(worldAfterCollisions))
-  }
 
-}
-
-object TupleUtils extends App{
-  def toTuple2[A](a: A): (A, A) = (a, a)
-
-  //givenElementIntoOnlyOneTupleOrReversed
-  //givenElementPairedWithOnlyOneOtherElement
-  def everyElementPairedWithOnlyOneOtherElement[T1](mySet: Set[(T1, T1)]): Set[(T1, T1)] =
-    mySet.foldLeft(Set[(T1, T1)]())(
-      (acc, t) =>
-        if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
-
-
-
-  def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
-  implicit class Tuple2CanContain[T](t: (T, T)) { //pimping DOT NOTATION
-    def contained(elem: T): Boolean = TupleUtils.contained(t, elem)
-  }
-
-  def contained[T](mySet: Set[(T, T)], elem: T): Boolean = mySet.exists(_.contained(elem))
-  implicit class SetCanContain[T](mySet:Set[(T, T)]) { //pimping DOT NOTATION
-    def contained(elem: T): Boolean = TupleUtils.contained(mySet, elem)
-  }
-
-  def containedAnyOf[T](mySet: Set[(T, T)], elem: (T, T)): Boolean = contained(mySet, elem._1) || contained(mySet, elem._2)
-  implicit class SetCanContain2[T](t:Set[(T, T)]) { //pimping DOT NOTATION
-    def containedAnyOf(elem: (T, T)): Boolean = TupleUtils.containedAnyOf(t, elem)
+    def resultShowed(worldHistory: WorldHistory) =
+      liftIo(View.resultViewBuiltAndShowed(worldHistory))
   }
 }
+
+
+
+
+
+
+
+
+
+

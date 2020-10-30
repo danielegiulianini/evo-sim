@@ -3,8 +3,7 @@ package evo_sim.view.cli
 import cats.effect.IO
 import cats.implicits._
 import evo_sim.model.Constants._
-import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
+import evo_sim.model.World.WorldHistory
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 
@@ -29,11 +28,11 @@ object CLIView extends View {
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
-    _ <- IO apply println("Day " + fromIterationsToDays(world.currentIteration) + " of " +
-      fromIterationsToDays(world.totalIterations))
-    _ <- IO apply println("Population " + world.entities.collect { case e: Blob => e }.size)
-    _ <- IO apply println("Temperature: " + world.temperature)
-    _ <- IO apply println("Luminosity: " + world.luminosity)
+    //_ <- IO apply println("Day " + fromIterationsToDays(world.currentIteration) + " of " + fromIterationsToDays(world.totalIterations))
+    //_ <- IO apply println("Population " + world.entities.collect { case e: Blob => e }.size)
+    //_ <- IO apply println("Temperature: " + world.temperature)
+    //_ <- IO apply println("Luminosity: " + world.luminosity)
+    _ <- indicatorsUpdated(world)
   } yield ()
 
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
@@ -70,6 +69,14 @@ object CLIView extends View {
     def checkIfInRange(min: Int, max: Int): Either[NumberOutsideOfRangeException, Boolean] =
       if (min to max contains i) Either.right(true)
       else Either.left(NumberOutsideOfRangeException(i + " is outside of the legal range"))
+  }
+
+  private def indicatorsUpdated(world:World): IO[Unit] = {
+    def printlnIO(text:String) = IO { println(text) }
+    for {
+      _ <- printlnIO("Temperature: " + world.temperature)
+      _ <- printlnIO("Luminosity: " + world.luminosity)
+    } yield ()
   }
 
 }

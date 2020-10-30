@@ -4,6 +4,7 @@ import evo_sim.model.Collidable.NeutralCollidable
 import evo_sim.model.Entities._
 import evo_sim.model.EntityStructure.DomainImpl.Effect
 import evo_sim.model.EntityStructure._
+import evo_sim.model.Point2D.randomPosition
 import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.Utils._
 import evo_sim.model.World._
@@ -35,7 +36,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.life match {
-        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
       }
     }
@@ -63,18 +64,16 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food] || e.isInstanceOf[BaseBlob])
       self.life match {
-        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
       }
     }
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = {
-      other match {
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
         case _ => Set(self)
       }
-    }
   }
 
   /**
@@ -90,7 +89,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.cooldown match {
-        case n if n > 1 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 1 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
       }
     }

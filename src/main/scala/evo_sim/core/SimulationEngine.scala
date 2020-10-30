@@ -3,9 +3,8 @@ package evo_sim.core
 import scala.language.postfixOps
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
-//import evo_sim.view.swing.{SwingView => View}
-import evo_sim.view.cli.{CLIView => View}
-import evo_sim.core.Logging._
+import evo_sim.view.swing.{SwingView => View}
+//import evo_sim.view.cli.{CLIView => View}
 import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.model.World
@@ -23,29 +22,16 @@ object SimulationEngine {
   }
 
   def simulationLoop() : Simulation[Unit] = for {
-    _ <- toStateTWorld { (w: World) => {
-      log("it " + w.currentIteration + " / " + w.totalIterations)
-      w
-    }}
     startTime <- getTime
     _ <- worldUpdated
     worldAfterCollisions <- collisionsHandled
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
-    _ <- waitUntil(currentTime - startTime, 10 millis)
+    _ <- waitUntil(currentTime - startTime, 10 millis)  //TODO use constants
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else
-      liftIo( for {
-        _ <- IO { log("simulation ended, printing sim statistics") }
-        _ <- IO { log("worldHistory size: " + worldAfterCollisions.worldHistory.size) }
-        - <- View.resultViewBuiltAndShowed(worldAfterCollisions.worldHistory)
-      } yield ())
+      resultShowed(worldAfterCollisions.worldHistory)
   } yield ()
-}
-
-//to remove after debugging complete
-object Logging {
-  def log(message: String) = println(Thread.currentThread.getName+": " + message)
 }
 
 

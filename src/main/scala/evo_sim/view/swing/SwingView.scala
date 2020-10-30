@@ -4,14 +4,17 @@ import java.awt.Toolkit.getDefaultToolkit
 import java.awt.{BorderLayout, Dimension}
 
 import cats.effect.IO
+import evo_sim.model.FinalStats.{food, population}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
+import evo_sim.view.swing.chart.ChartsFactory
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects.inputViewCreated
-import evo_sim.view.swing.monadic.{JFrameIO, JLabelIO, JPanelIO}
+import evo_sim.view.swing.monadic.{JComponentIO, JFrameIO, JLabelIO, JPanelIO}
 import javax.swing.WindowConstants.EXIT_ON_CLOSE
 import javax.swing._
+import org.knowm.xchart.XChartPanel
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
@@ -49,7 +52,6 @@ object SwingView extends View {
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
-  //inside rendered
   private def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
     for {
       //barPanel has default FlowLayout
@@ -67,7 +69,16 @@ object SwingView extends View {
   }
 
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
-    _ <- IO {}
-    // TODO grafici
+    history <- IO { world.reverse}
+
+    //chart <- IO { ChartsFactory.xyChart(200, 200, population(history))}
+    chart <- IO { ChartsFactory.histogramChart(200, 200, population(history), food(history))}
+    chartPanel <- IO { new JComponentIO(new XChartPanel(chart)) }
+
+    cp <- frame.contentPane()
+    _ <- cp.allRemovedInvokingAndWaiting()
+    _ <- cp.addedInvokingAndWaiting(chartPanel, BorderLayout.CENTER)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
 }
