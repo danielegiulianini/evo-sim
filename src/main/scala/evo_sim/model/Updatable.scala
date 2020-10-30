@@ -10,7 +10,7 @@ import evo_sim.model.EntityStructure.Entity
  */
 trait Updatable {
   /**
-   * Specifies how an [[Entity]] behaves when it is notified an update event. It's invoked once per iteration.
+   * Specifies how an [[Entity]] behaves in response to an update notification, which happens once per iteration.
    * It represents its evolution during the simulation depending on current World state.
    * @param world the World at the current iteration
    * @return a Set of [[SimulableEntity]]s that replaces this [[Entity]] at the next iteration. A set gives the
