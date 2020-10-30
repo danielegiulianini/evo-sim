@@ -80,18 +80,16 @@ object TupleUtils extends App {
       override def contained[T](t: Set[T], elem: T): Boolean = {
         println("of set")
         t.contains(elem)
-        /*
-        false*/
       }
     }
     implicit object ContainsForHomogeneousTuple extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
       override def contained[T](t: (T, T), elem: T): Boolean = {
         println("of tuple2")
-        false
+        t._1 == elem || t._2 == elem
       }
     }
 
-    implicit object ContainsForHomogeneusTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
+    implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
       override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
         println("of set of tuple2")
         false
