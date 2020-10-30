@@ -3,8 +3,8 @@ package evo_sim.core
 import scala.language.postfixOps
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
-import evo_sim.view.swing.View
-//import evo_sim.view.cli.View
+import evo_sim.view.swing.{SwingView => View}
+//import evo_sim.view.cli.{CLIView => View}
 import evo_sim.core.Logging._
 import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
@@ -17,7 +17,7 @@ object SimulationEngine {
   def started(): IO[Unit] = {
     for {
       //_ <- inputViewBuiltAndShowed()
-      env <- View.inputReadFromUser()        //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+      env <- View.inputReadFromUser() //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
       _ <- simulationLoop().runS(World(env))
     } yield ()
   }

@@ -3,8 +3,9 @@ package evo_sim.core
 import cats.data.StateT
 import cats.effect.IO
 import evo_sim.core.TupleUtils.toTuple2
-import evo_sim.model.{Environment, World}
-import evo_sim.view.swing.View
+import evo_sim.model.World
+import evo_sim.view.swing.{SwingView => View}
+//import evo_sim.view.cli.{CLIView => View}
 
 
 object Simulation {

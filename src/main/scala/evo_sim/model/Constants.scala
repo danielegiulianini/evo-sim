@@ -109,7 +109,7 @@ object Constants {
   /** Maximum luminosity allowed in a simulation */
   val MAX_LUMINOSITY = 200
   /** Default luminosity in a simulation */
-  val DEFAULT_LUMINOSITY = 100
+  val DEF_LUMINOSITY = 100
 
   /** Minimum temperature allowed in a simulation */
   val MIN_TEMPERATURE: Int = -20

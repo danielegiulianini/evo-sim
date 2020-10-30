@@ -13,7 +13,7 @@ class PlantTests extends FunSuite {
     name = "standardPlant2",
     boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = DEF_STANDARD_PLANT_WIDTH, height = DEF_STANDARD_PLANT_HEIGHT),
     lifeCycle = 0)
-  private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEFAULT_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
+  private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
     currentIteration = 0, entities = Set(plant, plant2), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 
   test("updatedPlant") {

@@ -16,7 +16,8 @@ import javax.swing._
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
 
-object View extends View {
+/** Provides a view implementation based on Swing */
+object SwingView extends View {
 
   val frame = new JFrameIO(new JFrame("evo-sim"))
 
