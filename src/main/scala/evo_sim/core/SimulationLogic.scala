@@ -8,7 +8,6 @@ import evo_sim.model.Intersection.intersected
 import evo_sim.model.{BoundingBox, World}
 import evo_sim.model.World.worldEnvironmentUpdated
 
-import scala.#::
 
 
 //maybe this object could go inside SimulationEngine
