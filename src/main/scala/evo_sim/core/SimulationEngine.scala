@@ -32,7 +32,7 @@ object SimulationEngine {
     worldAfterCollisions <- collisionsHandled
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
-    _ <- waitUntil(currentTime - startTime, 10 millis)
+    _ <- waitUntil(currentTime - startTime, 10 millis)  //TODO use constants
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else
       liftIo( for {
