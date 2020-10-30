@@ -67,14 +67,12 @@ object EntityBehaviour {
         case _ => Set()
       }
     }
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = {
-      other match {
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
         case _ => Set(self)
       }
-    }
   }
 
   /**
