@@ -52,7 +52,6 @@ object SwingView extends View {
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
-  //inside rendered
   private def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
     for {
       //barPanel has default FlowLayout
