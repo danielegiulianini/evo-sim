@@ -1,6 +1,6 @@
 package evo_sim.model
 
-import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
+import evo_sim.model.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.timeOfTheDay
 
