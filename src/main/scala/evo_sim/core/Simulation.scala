@@ -2,6 +2,8 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.IO
+//import evo_sim.core.TupleUtils.ContainableImplicits.SetCan2Contain.contained
+//import evo_sim.core.TupleUtils.ContainableImplicits.Tuple2Containable.contained
 import evo_sim.core.TupleUtils.toTuple2
 import evo_sim.model.{Environment, World}
 import evo_sim.view.swing.View
@@ -43,7 +45,7 @@ object Simulation {
 
 }
 
-object TupleUtils extends App{
+object TupleUtils extends App {
   def toTuple2[A](a: A): (A, A) = (a, a)
 
   //givenElementIntoOnlyOneTupleOrReversed
@@ -53,6 +55,56 @@ object TupleUtils extends App{
       (acc, t) =>
         if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
+
+
+
+
+
+
+
+
+
+  trait Queriable[F[_]]{
+    def contained[T](t: F[T], elem: T) : Boolean
+  }
+  object Queriable {
+    implicit class ContainablePimped[F[_]: Queriable, T](ca: F[T]) {
+      //enabling DOT notation
+      def contained[T](elem: T): Boolean =
+        implicitly[Queriable[F]].contained(ca, elem)
+    }
+  }
+
+  object ContainableImplicits {
+    implicit object SetCan2Contain extends Queriable[Set]{
+      override def contained[T](t: Set[T], elem: T): Boolean = {
+        println("of set")
+        false
+      }
+    }
+    implicit object Tuple2Containable extends Queriable[({type λ[α] = (α, α)})#λ]{
+      override def contained[T](t: (T, T), elem: T): Boolean = {
+        println("of tuple2")
+        false
+      }
+    }
+
+    implicit object SetCanContain extends Queriable[({type u[α] = Set[(α, α)]})#u]{
+      override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
+        println("of set of tuple2")
+        false
+      }
+    }
+    //type Tuple2Set[T] = Set[(T, T)]
+
+
+
+    //type Tuple2S[T] = Tuple2[T, T] //alternative to type lambda
+  }
+
+  contained((1, 2), 2)
+  //contained(Set((1, 2),(1, 3)), 1)
+  //contained(Set(1, 2), 1)
 
 
   def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
