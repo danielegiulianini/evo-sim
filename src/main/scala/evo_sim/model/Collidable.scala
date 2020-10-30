@@ -26,6 +26,13 @@ trait Collidable {
  */
 object Collidable {
 
+  /**
+   * Defines a [[Collidable]] implementation that does nothing on collision notification. It returns the
+   * [[SimulableEntity]] as it would have been if the collision would not have taken place, without any
+   * modification.
+   * Given an [[Entity]] and a [[Updatable]] implementation, it's ready to be used for fulfilling the requirements
+   * needed to take part  in the simulation.
+   */
   trait NeutralCollidable extends Simulable {
     self: Entity with Updatable =>
     override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
