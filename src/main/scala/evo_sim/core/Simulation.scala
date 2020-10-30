@@ -89,7 +89,7 @@ object TupleUtils extends App {
       }
     }
 
-    implicit object SetCanContain extends Queriable[({type u[α] = Set[(α, α)]})#u]{
+    implicit object SetCanContain extends Queriable[({type Tuples2Set[α] = Set[(α, α)]})#Tuples2Set]{
       override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
         println("of set of tuple2")
         false
