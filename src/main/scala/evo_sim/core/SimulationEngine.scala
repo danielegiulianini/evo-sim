@@ -5,7 +5,6 @@ import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
 import evo_sim.view.swing.{SwingView => View}
 //import evo_sim.view.cli.{CLIView => View}
-import evo_sim.core.Logging._
 import evo_sim.core.Simulation._
 import evo_sim.core.TimingOps.{getTime, waitUntil}
 import evo_sim.model.World
@@ -33,11 +32,6 @@ object SimulationEngine {
       simulationLoop() else
       resultShowed(worldAfterCollisions.worldHistory)
   } yield ()
-}
-
-//to remove after debugging complete
-object Logging {
-  def log(message: String) = println(Thread.currentThread.getName+": " + message)
 }
 
 
