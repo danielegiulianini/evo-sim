@@ -1,5 +1,5 @@
 import evo_sim.model.Entities.{BaseBlob, PoisonBlob}
-import evo_sim.model.World.randomPosition
+import evo_sim.model.Point2D.randomPosition
 import evo_sim.model._
 import org.scalatest.FunSuite
 
