@@ -5,8 +5,8 @@ import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
-import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.WorldHistory
+import evo_sim.utils.MemoHelper.memoize
 
 /** Represents the state of the simulation and acts as a container for all of its properties that are carried along
  * each iteration.
@@ -125,11 +125,7 @@ object World {
   }
 
 
-  object MemoHelper {
-    def memoize[I, O](f: I => O): I => O = new collection.mutable.HashMap[I, O]() {
-      override def apply(key: I): O = getOrElseUpdate(key, f(key))
-    }
-  }
+
 
   def fromIterationsToDays(iteration : Int) = iteration / ITERATIONS_PER_DAY
   def fromDaysToIterations(days : Int) = days * ITERATIONS_PER_DAY
@@ -144,6 +140,9 @@ object World {
   def timeOfTheDay(iteration: Int): Float =
     iteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
 }
+
+
+
 
 /*
 def apply(env: Environment): World = {
