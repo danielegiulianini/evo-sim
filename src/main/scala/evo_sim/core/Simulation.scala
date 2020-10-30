@@ -2,13 +2,8 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.IO
-import evo_sim.core.TupleUtils.Queriable.containedAnyOf
-//import evo_sim.core.TupleUtils.ContainableImplicits.ContainsForSet.contained
-import evo_sim.core.TupleUtils.ContainableImplicits.ContainsForHomogeneousTuple2Set.contained
-
-import evo_sim.core.TupleUtils.Queriable.ContainablePimped
-import evo_sim.core.TupleUtils.toTuple2
-import evo_sim.model.{Environment, World}
+import evo_sim.utils.TupleUtils.toTuple2
+import evo_sim.model.{World}
 import evo_sim.view.swing.View
 
 
@@ -45,18 +40,8 @@ object Simulation {
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
       liftIo(View.rendered(worldAfterCollisions))
   }
-
 }
 
-object TupleUtils extends App {
-  def toTuple2[A](a: A): (A, A) = (a, a)
-
-  //givenElementIntoOnlyOneTupleOrReversed
-  //givenElementPairedWithOnlyOneOtherElement
-  def everyElementPairedWithOnlyOneOtherElement[T1](mySet: Set[(T1, T1)]): Set[(T1, T1)] =
-    mySet.foldLeft(Set[(T1, T1)]())(
-      (acc, t) =>
-        if (acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
 
 
@@ -65,51 +50,6 @@ object TupleUtils extends App {
 
 
 
-
-
-  trait Queriable[F[_]]{
-    def contained[T](t: F[T], elem: T) : Boolean
-  }
-  object Queriable {
-    def containedAnyOf[T](t: Set[(T, T)], elem: (T, T)): Boolean =
-      contained(t, elem._1) || contained(t, elem._2)
-
-    implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
-      /*//enabling DOT notation
-      def contained[T](elem: T): Boolean =
-        implicitly[Queriable[F]].contained(qa, elem)
-       */
-    }
-  }
-
-  object ContainableImplicits {
-    /*implicit object ContainsForSet extends Queriable[Set]{
-      override def contained[T](t: Set[T], elem: T): Boolean = {
-        println("of set")
-        t.contains(elem)
-      }
-    }*/
-    implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
-      override def contained[T](t: (T, T), elem: T): Boolean = {
-        println("of tuple2")
-        t._1 == elem || t._2 == elem
-      }
-    }
-
-    implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
-      override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
-        println("of set of tuple2")
-        t.exists(evo_sim.core.TupleUtils.ContainableImplicits.ContainsForHomogeneousTuple2.contained(_, elem)) //t.exists(_.contained(elem))
-      }
-    }
-  }
-
-  //contained((1, 2), 2)
-  contained(Set((5, 2),(2, 3)), 1)
-  //Set((1, 2),(1, 3)).contained((1, 2))
-  //contained(Set(1, 2), 1)
-  //contained(Set(1, 2) , 2)
-}
 
 
 /*def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
