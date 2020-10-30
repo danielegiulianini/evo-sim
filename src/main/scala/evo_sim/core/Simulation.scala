@@ -10,7 +10,9 @@ import evo_sim.view.swing.{SwingView => View}
 
 
 object Simulation {
+
   type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
+
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
   //helper to create StateT monad from a IO monad

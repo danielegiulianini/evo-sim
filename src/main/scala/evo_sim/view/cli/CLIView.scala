@@ -29,8 +29,7 @@ object CLIView extends View {
   override def rendered(world: World): IO[Unit] = for {
     _ <- IO apply println("Day " + fromIterationsToDays(world.currentIteration) + " of " +
       fromIterationsToDays(world.totalIterations))
-    _ <- IO apply println("Temperature: " + world.temperature)
-    _ <- IO apply println("Luminosity: " + world.luminosity)
+    //_ <- indicatorsUpdated(world)
   } yield ()
 
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
@@ -38,7 +37,15 @@ object CLIView extends View {
     // TODO: print final indicators
   } yield ()
 
-  private def read(what: String): IO[Int] = for (_ <- IO { print("Enter " + what + ": ") }) yield scala.io.StdIn.readInt()
+  private def indicatorsUpdated(world:World): IO[Unit] = {
+    def printlnIO(text:String) = IO { println(text) }
+    for {
+      _ <- printlnIO("Temperature: " + world.temperature)
+      _ <- printlnIO("Luminosity: " + world.luminosity)
+    } yield ()
+  }
+
+    private def read(what: String): IO[Int] = for (_ <- IO { print("Enter " + what + ": ") }) yield scala.io.StdIn.readInt()
 
   private implicit class Ranges(in: IO[Int]) {
     def min(m: Int): IO[Int] = for (i <- in) yield i.max(m)
