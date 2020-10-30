@@ -53,7 +53,7 @@ object BlobEntityHelper {
    * @tparam A accept Blob subtype.
    * @return The new [[evo_sim.model.EntityBehaviour.SimulableEntity]] updated.
    */
-  protected[model] def updateTemporaryBlob[A <: Blob](self: A, movement: Movement, world: World): SimulableEntity = self match {
+  protected[model] def updateBlob[A <: Blob](self: A, movement: Movement, world: World): SimulableEntity = self match {
     case base: BaseBlob => base.copy(
       boundingBox = base.boundingBox.copy(point = movement.point),
       direction = movement.direction,

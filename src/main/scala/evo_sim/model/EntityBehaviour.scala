@@ -35,7 +35,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.life match {
-        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
       }
     }
@@ -63,7 +63,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food] || e.isInstanceOf[BaseBlob])
       self.life match {
-        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
       }
     }
@@ -88,7 +88,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.cooldown match {
-        case n if n > 1 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 1 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
       }
     }
