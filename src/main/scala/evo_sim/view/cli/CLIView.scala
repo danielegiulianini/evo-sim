@@ -1,7 +1,7 @@
 package evo_sim.view.cli
 
 import cats.effect.IO
-import evo_sim.model.World.fromIterationsToDays
+import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
 import evo_sim.model.Constants._
 import evo_sim.view.View
@@ -33,7 +33,7 @@ object CLIView extends View {
     _ <- IO apply println("Luminosity: " + world.luminosity)
   } yield ()
 
-  override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
+  override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     _ <- IO apply {}
     // TODO: print final indicators
   } yield ()

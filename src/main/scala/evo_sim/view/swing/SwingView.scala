@@ -4,7 +4,7 @@ import java.awt.Toolkit.getDefaultToolkit
 import java.awt.{BorderLayout, Dimension}
 
 import cats.effect.IO
-import evo_sim.model.World.fromIterationsToDays
+import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.custom.components.ShapesPanel
@@ -50,7 +50,7 @@ object SwingView extends View {
   } yield ()
 
   //inside rendered
-  def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
+  private def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
     for {
       //barPanel has default FlowLayout
       _ <- barPanel.allRemoved()
@@ -66,7 +66,7 @@ object SwingView extends View {
     //refactor repeated code for jlabels
   }
 
-  override def resultViewBuiltAndShowed(world: World): IO[Unit] = for {
+  override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     _ <- IO {}
     // TODO grafici
   } yield ()

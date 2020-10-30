@@ -42,13 +42,5 @@ object Utils {
     f(times, initial)
   }
 
-  /** Returns the time of the day as a float ranging from 0 to 1 excluded given the iteration number.
-   * 0 is midnight, 0.5 is noon and so on.
-   *
-   * @param iteration iteration number
-   * @return time of the day
-   */
-  def timeOfTheDay(iteration: Int): Float =
-    iteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
 
 }

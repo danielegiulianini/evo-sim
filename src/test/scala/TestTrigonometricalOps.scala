@@ -1,6 +1,5 @@
 import evo_sim.model.Constants
-import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried._
-import evo_sim.model.World.TrigonometricalOps.Sinusoidal.sinusoidal
+import evo_sim.model.TrigonometricalOps.Sinusoidal.sinusoidal
 import org.scalacheck.{Arbitrary, Prop, Properties}
 import org.scalacheck.Prop.{exists, forAll}
 import org.scalactic.TolerantNumerics
@@ -9,7 +8,7 @@ import org.scalatest.prop.Checkers
 
 
 //run with: test;  from Intellij sbt shell
-//or: sbt test     from cmd from the the folder cotaining build.sbt file
+//or: sbt test     from cmd from the the folder containing build.sbt file
 
 class SinusoidalSpecifications extends PropSpec with Checkers { //extends Properties("Sinusoidal") {
   //signature: sinusoidal(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int)
@@ -36,7 +35,8 @@ class SinusoidalSpecifications extends PropSpec with Checkers { //extends Proper
           val value = sinusoidal(yDilatation)(x)(phase)(yTranslation: Int)
           forAll {
             (periodMultiplier: Int) =>
-              value == sinusoidal(yDilatation)(x * periodMultiplier)(phase)(yTranslation: Int)
+              val period = 2 * Math.PI.toFloat
+              value == sinusoidal(yDilatation)(x + periodMultiplier * period)(phase)(yTranslation: Int)
           }
         }
       }

@@ -1,6 +1,7 @@
 package evo_sim.view
 
 import cats.effect.IO
+import evo_sim.model.World.WorldHistory
 import evo_sim.model.{Environment, World}
 
 /** Provides the methods that a View necessitates to be used by the simulation */
@@ -25,5 +26,5 @@ trait View {
    * @param world the world to report
    * @return a [[cats.effect.IO]] describing this operation
    */
-  def resultViewBuiltAndShowed(world: World): IO[Unit]
+  def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit]
 }
