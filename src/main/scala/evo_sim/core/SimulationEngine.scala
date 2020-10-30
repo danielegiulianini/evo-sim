@@ -35,10 +35,7 @@ object SimulationEngine {
     _ <- waitUntil(currentTime - startTime, 10 millis)  //TODO use constants
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else
-      liftIo( for {
-        _ <- IO { log("simulation ended, printing sim statistics") }
-        - <- View.resultViewBuiltAndShowed(worldAfterCollisions.worldHistory)
-      } yield ())
+      resultShowed(worldAfterCollisions.worldHistory)
   } yield ()
 }
 
