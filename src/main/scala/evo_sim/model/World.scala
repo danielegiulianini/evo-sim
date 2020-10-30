@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import evo_sim.dsl.EntitiesCreation.FromIntToList
 import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
@@ -7,8 +8,7 @@ import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.WorldHistory
 
-/**
- * Represents the state of the simulation and acts as a container for all of its properties that are carried along
+/** Represents the state of the simulation and acts as a container for all of its properties that are carried along
  * each iteration.
  * @param temperature the actual temperature at the current iteration.
  * @param luminosity the actual luminosity at the current iteration.
@@ -37,59 +37,59 @@ object World {
   def randomPosition(): Point2D = Point2D.apply(new scala.util.Random().nextInt(Constants.WORLD_WIDTH.+(1)),
     new scala.util.Random().nextInt(Constants.WORLD_HEIGHT.+(1)))
 
-
   def apply(env: Environment): World = {
 
-    val baseBlobs: Set[BaseBlob] = Iterator.tabulate((env.initialBlobNumber.toDouble / 2).ceil.toInt)(i => BaseBlob(
-      name = "blob" + i,
+    val baseBlobs: Set[BaseBlob] = (env.initialBlobNumber.toDouble / 2).ceil.toInt of BaseBlob(
+      name = "blob" + Utils.nextValue(),
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
-      degradationEffect = DegradationEffect.standardDegradation,
+      degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
+      direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))
 
-    val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber.toDouble./(2).floor.toInt)(i => CannibalBlob(
-      name = "cannibalBlob" + i,
+    val cannibalBlobs: Set[CannibalBlob] = env.initialBlobNumber.toDouble./(2).floor.toInt of CannibalBlob(
+      name = "cannibalBlob" + Utils.nextValue(),
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2 * Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
+      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))
 
-    val stones: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).ceil.toInt)((i: Int) => BaseObstacle.apply(
-      name = "stone".+(i),
+    val stones: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).ceil.toInt of BaseObstacle(
+      name = "stone"+Utils.nextValue(),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
-      effect = Effect.damageEffect)).toSet
+      effect = Effect.damageEffect)
 
-    val puddles: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).floor.toInt)((i: Int) => BaseObstacle.apply(
-      name = "puddle".+(i),
+    val puddles: Set[BaseObstacle] =(env.initialObstacleNumber.toDouble./(2).floor.toInt) of BaseObstacle(
+      name = "puddle"+Utils.nextValue(),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
-      effect = Effect.slowEffect)).toSet
+      effect = Effect.slowEffect)
 
-    val standardPlants: Set[StandardPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 2).floor.toInt)((i: Int) => StandardPlant(
-      name = "standardPlant".+(i),
+    val standardPlants: Set[StandardPlant] = (env.initialPlantNumber.toDouble / 2).floor.toInt of StandardPlant(
+      name = "standardPlant"+Utils.nextValue(),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STANDARD_PLANT_WIDTH, height = Constants.DEF_STANDARD_PLANT_HEIGHT),
-      lifeCycle = 0)).toSet
+      lifeCycle = 0)
 
-    val reproducingPlants: Set[ReproducingPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 4).ceil.toInt)((i: Int) => ReproducingPlant(
-      name = "reproducingPlant".+(i),
+    val reproducingPlants: Set[ReproducingPlant] = (env.initialPlantNumber.toDouble / 4).ceil.toInt of ReproducingPlant(
+      name = "reproducingPlant"+Utils.nextValue(),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_REPRODUCING_PLANT_WIDTH * 3 / 2, height = Constants.DEF_REPRODUCING_PLANT_WIDTH),
-      lifeCycle = 0)).toSet
+      lifeCycle = 0)
 
-    val poisonousPlants: Set[PoisonousPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 4).ceil.toInt)((i: Int) => PoisonousPlant(
-      name = "poisonousPlant".+(i),
+    val poisonousPlants: Set[PoisonousPlant] = (env.initialPlantNumber.toDouble / 4).ceil.toInt of PoisonousPlant(
+      name = "poisonousPlant"+Utils.nextValue(),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_POISONOUS_PLANT_WIDTH * 3 / 2, height = Constants.DEF_POISONOUS_PLANT_WIDTH),
-      lifeCycle = 0)).toSet
+      lifeCycle = 0)
 
     val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ stones ++ puddles ++ standardPlants ++ reproducingPlants ++ poisonousPlants
 
     World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
+
 
   /** The EnvironmentParameters class holds the set of parameters of the world that can be updated.
    *
@@ -179,58 +179,58 @@ object World {
     iteration % Constants.ITERATIONS_PER_DAY / Constants.ITERATIONS_PER_DAY.toFloat
 }
 
-
 /*
-  def apply(env: Environment): World = {
+def apply(env: Environment): World = {
 
-val baseBlobs: Set[BaseBlob] = (env.initialBlobNumber.toDouble / 2).ceil.toInt of BaseBlob(
-      name = "blob" + Utils.nextValue(),
+    val baseBlobs: Set[BaseBlob] = Iterator.tabulate((env.initialBlobNumber.toDouble / 2).ceil.toInt)(i => BaseBlob(
+      name = "blob" + i,
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
-      degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
+      degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))
+      direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
 
-    val cannibalBlobs: Set[CannibalBlob] = env.initialBlobNumber.toDouble./(2).floor.toInt of CannibalBlob(
-      name = "cannibalBlob" + Utils.nextValue(),
+    val cannibalBlobs: Set[CannibalBlob] = Iterator.tabulate(env.initialBlobNumber.toDouble./(2).floor.toInt)(i => CannibalBlob(
+      name = "cannibalBlob" + i,
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2 * Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
       degradationEffect = DegradationEffect.standardDegradation,
       fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))
+      direction = Direction(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))).toSet
 
-    val stones: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).ceil.toInt of BaseObstacle(
-      name = "stone"+Utils.nextValue(),
+    val stones: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).ceil.toInt)((i: Int) => BaseObstacle.apply(
+      name = "stone".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
-      effect = Effect.damageEffect)
+      effect = Effect.damageEffect)).toSet
 
-    val puddles: Set[BaseObstacle] =(env.initialObstacleNumber.toDouble./(2).floor.toInt) of BaseObstacle(
-      name = "puddle"+Utils.nextValue(),
+    val puddles: Set[BaseObstacle] = Iterator.tabulate(env.initialObstacleNumber.toDouble./(2).floor.toInt)((i: Int) => BaseObstacle.apply(
+      name = "puddle".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
-      effect = Effect.slowEffect)
+      effect = Effect.slowEffect)).toSet
 
-    val standardPlants: Set[StandardPlant] = (env.initialPlantNumber.toDouble / 2).floor.toInt of StandardPlant(
-      name = "standardPlant"+Utils.nextValue(),
+    val standardPlants: Set[StandardPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 2).floor.toInt)((i: Int) => StandardPlant(
+      name = "standardPlant".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_STANDARD_PLANT_WIDTH, height = Constants.DEF_STANDARD_PLANT_HEIGHT),
-      lifeCycle = 0)
+      lifeCycle = 0)).toSet
 
-    val reproducingPlants: Set[ReproducingPlant] = (env.initialPlantNumber.toDouble / 4).ceil.toInt of ReproducingPlant(
-      name = "reproducingPlant"+Utils.nextValue(),
+    val reproducingPlants: Set[ReproducingPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 4).ceil.toInt)((i: Int) => ReproducingPlant(
+      name = "reproducingPlant".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_REPRODUCING_PLANT_WIDTH * 3 / 2, height = Constants.DEF_REPRODUCING_PLANT_WIDTH),
-      lifeCycle = 0)
+      lifeCycle = 0)).toSet
 
-    val poisonousPlants: Set[PoisonousPlant] = (env.initialPlantNumber.toDouble / 4).ceil.toInt of PoisonousPlant(
-      name = "poisonousPlant"+Utils.nextValue(),
+    val poisonousPlants: Set[PoisonousPlant] = Iterator.tabulate((env.initialPlantNumber.toDouble / 4).ceil.toInt)((i: Int) => PoisonousPlant(
+      name = "poisonousPlant".+(i),
       boundingBox = BoundingBox.Rectangle(point = World.randomPosition(), width = Constants.DEF_POISONOUS_PLANT_WIDTH * 3 / 2, height = Constants.DEF_POISONOUS_PLANT_WIDTH),
-      lifeCycle = 0)
+      lifeCycle = 0)).toSet
 
     val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ stones ++ puddles ++ standardPlants ++ reproducingPlants ++ poisonousPlants
 
     World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
-}
+  }
+
  */
