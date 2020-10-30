@@ -1,5 +1,5 @@
 import evo_sim.model.Constants
-import evo_sim.model.TrigonometricalOps.Sinusoidal.sinusoidal
+import evo_sim.utils.TrigonometricalOps.Sinusoidal.sinusoidal
 import org.scalacheck.{Arbitrary, Prop, Properties}
 import org.scalacheck.Prop.{exists, forAll}
 import org.scalactic.TolerantNumerics

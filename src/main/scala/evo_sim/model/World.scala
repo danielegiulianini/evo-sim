@@ -4,7 +4,7 @@ import evo_sim.dsl.EntitiesCreation.FromIntToList
 import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
+import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.MemoHelper.memoize
 import evo_sim.model.World.WorldHistory
 

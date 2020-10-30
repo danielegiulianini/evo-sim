@@ -1,5 +1,4 @@
-package evo_sim.model
-
+package evo_sim.utils
 
 object TrigonometricalOps {
 
@@ -34,4 +33,3 @@ object TrigonometricalOps {
   zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
   */
 }
-
