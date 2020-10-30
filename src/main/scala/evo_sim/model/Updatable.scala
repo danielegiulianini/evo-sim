@@ -5,14 +5,15 @@ import evo_sim.model.EntityStructure.Entity
 
 /** Defines the ability of being updatable, i.e. how a type extending this trait reacts when [[SimulationLogic]]
  * calls updated on it, once per iteration.
- * Together with [[Entity]] and [[Collidable]] represents the only requirement for a type to be
- * part of the simulation.
+ * Together with [[Collidable]] (they forms [[Simulable]]) and [[Entity]], it represents the only requirement for a
+ * type to be part of the simulation.
  */
 trait Updatable {
   /**
-   * Specifies how an [[Entity]] behaves in response to an update notification, which happens once per iteration.
+   * Specifies how an [[Entity]] behaves in response to an update notification, which happens once
+   * per iteration.
    * It represents its evolution during the simulation depending on current World state.
-   * @param world the World at the current iteration
+   * @param world the World at the current iteration of the simulation
    * @return a Set of [[SimulableEntity]]s that replaces this [[Entity]] at the next iteration. A set gives the
    *         chance to remove the entity from the simulation or generating an updated version of it or spawning new
    *         [[SimulableEntity]]s (like children)
@@ -20,9 +21,16 @@ trait Updatable {
   def updated(world: World) : Set[SimulableEntity]
 }
 
-//companion object with some updatable implementations ready to be (re)used (in the future)
+/** This companion object of [[Updatable]] provides some [[Updatable]] ready-to-be-(re)used
+ * implementations that can be mounted on an given [[Collidable]] implementation.
+ * By leveraging them, implementing [[Collidable]] suffices for a [[Entity]] to be part of the simulation.
+ * To be noted that [[Collidable]] c.o. provides some ready implementations of [[Collidable]] too.
+ */
 object Updatable {
 
+  /**
+   *
+   */
   trait NeutralUpdatable extends Simulable {
     self : Entity with Collidable =>
     override def updated(world:World): Set[SimulableEntity] = Set(self)
