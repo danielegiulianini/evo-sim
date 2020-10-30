@@ -29,10 +29,20 @@ trait Updatable {
 object Updatable {
 
   /**
-   *
+   * Defines an [[Updatable]] implementation that does nothing on update notification. It returns the
+   * [[SimulableEntity]] as it was at the previous iteration, without any modification. Given an Entity
+   * and a Collidable implementation, it's ready to be used for fulfilling the requirements needed to take part
+   * in the simulation.
    */
   trait NeutralUpdatable extends Simulable {
     self : Entity with Collidable =>
+    /**
+     * returns the [[Entity]] with [[Collidable]] without any changes wrt the previous iteration.
+     * @param world the World at the current iteration of the simulation
+     *  @return a Set of [[SimulableEntity]]s that replaces this [[Entity]] at the next iteration. A set gives the
+     *         chance to remove the entity from the simulation or generating an updated version of it or spawning new
+     *         [[SimulableEntity]]s (like children)
+     */
     override def updated(world:World): Set[SimulableEntity] = Set(self)
   }
 }
