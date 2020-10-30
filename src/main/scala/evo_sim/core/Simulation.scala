@@ -68,38 +68,33 @@ object TupleUtils extends App {
     def contained[T](t: F[T], elem: T) : Boolean
   }
   object Queriable {
-    implicit class ContainablePimped[F[_]: Queriable, T](ca: F[T]) {
+    implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
       //enabling DOT notation
       def contained[T](elem: T): Boolean =
-        implicitly[Queriable[F]].contained(ca, elem)
+        implicitly[Queriable[F]].contained(qa, elem)
     }
   }
 
   object ContainableImplicits {
-    implicit object SetCan2Contain extends Queriable[Set]{
+    implicit object ContainsForSet extends Queriable[Set]{
       override def contained[T](t: Set[T], elem: T): Boolean = {
         println("of set")
         false
       }
     }
-    implicit object Tuple2Containable extends Queriable[({type λ[α] = (α, α)})#λ]{
+    implicit object ContainsForHomogeneousTuple extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
       override def contained[T](t: (T, T), elem: T): Boolean = {
         println("of tuple2")
         false
       }
     }
 
-    implicit object SetCanContain extends Queriable[({type Tuples2Set[α] = Set[(α, α)]})#Tuples2Set]{
+    implicit object ContainsForHomogeneusTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
       override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
         println("of set of tuple2")
         false
       }
     }
-    //type Tuple2Set[T] = Set[(T, T)]
-
-
-
-    //type Tuple2S[T] = Tuple2[T, T] //alternative to type lambda
   }
 
   contained((1, 2), 2)
