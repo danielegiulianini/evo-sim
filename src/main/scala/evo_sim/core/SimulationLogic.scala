@@ -5,7 +5,7 @@ import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
 import evo_sim.model.Intersection.intersected
-import evo_sim.model.World
+import evo_sim.model.{BoundingBox, World}
 import evo_sim.model.World.worldEnvironmentUpdated
 
 import scala.#::
@@ -25,6 +25,12 @@ object SimulationLogic {
     )
   }
 
+  /**
+   * Collision detection between 2 entities is carried out by noticing intersection between their [[BoundingBox]]es.
+   *
+   * @param world
+   * @return
+   */
   def collisionsHandled(world: World): World = {
 
     val collisions = multipleCollisionsRemoved(for {
