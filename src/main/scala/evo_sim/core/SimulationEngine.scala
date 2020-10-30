@@ -23,10 +23,6 @@ object SimulationEngine {
   }
 
   def simulationLoop() : Simulation[Unit] = for {
-    _ <- toStateTWorld { (w: World) => {
-      log("it " + w.currentIteration + " / " + w.totalIterations)
-      w
-    }}
     startTime <- getTime
     _ <- worldUpdated
     worldAfterCollisions <- collisionsHandled
