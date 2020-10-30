@@ -3,7 +3,7 @@ package evo_sim.view.swing.chart
 object JFreeChart extends App with scalax.chart.module.Charting {
 
   /*val data = for (i <- 1 to 5) yield (i,i)
-  val chart = XYLineChart(data)
+  val chart2 = XYLineChart(data)
   chart.show()*/
 
   /*val born = List.iterate(0, 5)(_ + 3)

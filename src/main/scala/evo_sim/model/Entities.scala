@@ -140,7 +140,7 @@ object Entities {
                         override val fieldOfViewRadius: Int,
                         override val movementStrategy: MovementStrategy,
                         override val direction: Direction,
-                        override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TempBlobBehaviour
+                        override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TemporaryStatusBlobBehaviour
 
   /**
    * Represent a slowed blob. This blob moves slowly than standard blobs.
@@ -165,7 +165,7 @@ object Entities {
                       override val movementStrategy: MovementStrategy,
                       override val direction: Direction,
                       override val cooldown: Cooldown,
-                      initialVelocity: Velocity) extends BlobWithTemporaryStatus with TempBlobBehaviour
+                      initialVelocity: Velocity) extends BlobWithTemporaryStatus with TemporaryStatusBlobBehaviour
 
 }
 

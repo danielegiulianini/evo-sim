@@ -24,7 +24,7 @@ class ObstacleTests extends FunSpec {
     effect = Effect.damageEffect)
   private val world: World = new World(
     temperature = Constants.DEF_TEMPERATURE,
-    luminosity = Constants.DEFAULT_LUMINOSITY,
+    luminosity = Constants.DEF_LUMINOSITY,
     width = Constants.WORLD_WIDTH,
     height = Constants.WORLD_HEIGHT,
     currentIteration = 0,

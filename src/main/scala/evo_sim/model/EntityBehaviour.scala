@@ -35,7 +35,7 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.life match {
-        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
       }
     }
@@ -63,18 +63,16 @@ object EntityBehaviour {
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food] || e.isInstanceOf[BaseBlob])
       self.life match {
-        case n if n > 0 => Set(BlobEntityHelper.updateTemporaryBlob(self, movement, world))
+        case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
       }
     }
-    override def collided(other: SimulableEntity): Set[SimulableEntity] = {
-      other match {
+    override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
         case food: Food => food.effect(self)
         case obstacle: Obstacle => obstacle.effect(self)
         case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
         case _ => Set(self)
       }
-    }
   }
 
   /**
@@ -85,12 +83,14 @@ object EntityBehaviour {
    * [[evo_sim.model.Entities.PoisonBlob]]: this blob has a worst degradation effect, this mean that it takes more damage every time the degradation effect is applied.
    * [[evo_sim.model.Entities.SlowBlob]]: this blob moves significantly slowly.
    */
-  trait TempBlobBehaviour extends Simulable with NeutralCollidable {
+  trait TemporaryStatusBlobBehaviour extends Simulable with NeutralCollidable {
     self: BlobWithTemporaryStatus =>
-    override def updated(world: World): Set[SimulableEntity] = self match {
-        case blob: PoisonBlob => Set(poisonBehaviour(blob, world))
-        case blob: SlowBlob => Set(slowBehaviour(blob, world))
-        case _ => Set()
+    override def updated(world: World): Set[SimulableEntity] = {
+      val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
+      self.cooldown match {
+        case n if n > 1 => Set(BlobEntityHelper.updateBlob(self, movement, world))
+        case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
+      }
     }
   }
 
@@ -166,20 +166,5 @@ object EntityBehaviour {
     override def defaultPlant: PoisonousPlant = self.copy(lifeCycle = Constants.DEF_LIFECYCLE)
     override def foodEffect: Blob => Set[SimulableEntity] = Effect.poisonousFoodEffect
     override def foodHeight: Int = Constants.DEF_POISONOUS_FOOD_HEIGHT
-  }
-
-  private def poisonBehaviour(self: PoisonBlob, world: World) = {
-    val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
-    self.cooldown match {
-      case n if n > 1 => BlobEntityHelper.updateTemporaryBlob(self, movement, world)
-      case _ => BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement)
-    }
-  }
-  private def slowBehaviour(self: SlowBlob, world: World) = {
-    val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
-    self.cooldown match {
-      case n if n > 1 => BlobEntityHelper.updateTemporaryBlob(self, movement, world)
-      case _ => BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement)
-    }
   }
 }
