@@ -23,11 +23,10 @@ object Simulation {
 
   //prettier method name than "unsafeRunAsync for starting simulation"
   implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
-    def run(): A = simulation.unsafeRunSync()
+    def run(): A = simulation unsafeRunSync
   }
 
 
-  //maybe move these conversions from here to 2. SimulationEngine...
   object toStateTConversions {
     def worldUpdated(): Simulation[World] = toStateTWorld {
       SimulationLogic.worldUpdated
@@ -37,7 +36,6 @@ object Simulation {
       SimulationLogic.collisionsHandled
     }
 
-    //missing guiBuilt, resultGuiBuiltAndShowed as IO-monads
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
       liftIo(View.rendered(worldAfterCollisions))
   }
