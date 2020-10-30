@@ -1,4 +1,4 @@
-class TestWorld {
+class WorldTests {
 
   //test 1: check correct initialization of World upon Environment container chosen by user
 
