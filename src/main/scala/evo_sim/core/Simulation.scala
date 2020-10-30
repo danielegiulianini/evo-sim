@@ -2,8 +2,10 @@ package evo_sim.core
 
 import cats.data.StateT
 import cats.effect.IO
-//import evo_sim.core.TupleUtils.ContainableImplicits.SetCan2Contain.contained
-//import evo_sim.core.TupleUtils.ContainableImplicits.Tuple2Containable.contained
+//import evo_sim.core.TupleUtils.ContainableImplicits.ContainsForSet.contained
+import evo_sim.core.TupleUtils.ContainableImplicits.ContainsForHomogeneousTuple2Set.contained
+
+import evo_sim.core.TupleUtils.Queriable.ContainablePimped
 import evo_sim.core.TupleUtils.toTuple2
 import evo_sim.model.{Environment, World}
 import evo_sim.view.swing.View
@@ -68,20 +70,24 @@ object TupleUtils extends App {
     def contained[T](t: F[T], elem: T) : Boolean
   }
   object Queriable {
+    def containedAnyOf[T](t: Set[(T, T)], elem: (T, T)): Boolean =
+      contained(t, elem._1) || contained(t, elem._2)
+
     implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
-      //enabling DOT notation
+      /*//enabling DOT notation
       def contained[T](elem: T): Boolean =
         implicitly[Queriable[F]].contained(qa, elem)
+       */
     }
   }
 
   object ContainableImplicits {
-    implicit object ContainsForSet extends Queriable[Set]{
+    /*implicit object ContainsForSet extends Queriable[Set]{
       override def contained[T](t: Set[T], elem: T): Boolean = {
         println("of set")
         t.contains(elem)
       }
-    }
+    }*/
     implicit object ContainsForHomogeneousTuple extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
       override def contained[T](t: (T, T), elem: T): Boolean = {
         println("of tuple2")
@@ -92,17 +98,18 @@ object TupleUtils extends App {
     implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
       override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
         println("of set of tuple2")
-        false
+        false//t.exists(_.contained(elem))
       }
     }
   }
 
-  contained((1, 2), 2)
-  //contained(Set((1, 2),(1, 3)), 1)
+  //contained((1, 2), 2)
+  contained(Set((1, 2),(1, 3)), 1)
+  //Set((1, 2),(1, 3)).contained((1, 2))
   //contained(Set(1, 2), 1)
+  //contained(Set(1, 2) , 2)
 
-
-  def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
+  /*def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
   implicit class Tuple2CanContain[T](t: (T, T)) { //pimping DOT NOTATION
     def contained(elem: T): Boolean = TupleUtils.contained(t, elem)
   }
@@ -111,9 +118,10 @@ object TupleUtils extends App {
   implicit class SetCanContain[T](mySet:Set[(T, T)]) { //pimping DOT NOTATION
     def contained(elem: T): Boolean = TupleUtils.contained(mySet, elem)
   }
-
+*/
   def containedAnyOf[T](mySet: Set[(T, T)], elem: (T, T)): Boolean = contained(mySet, elem._1) || contained(mySet, elem._2)
   implicit class SetCanContain2[T](t:Set[(T, T)]) { //pimping DOT NOTATION
     def containedAnyOf(elem: (T, T)): Boolean = TupleUtils.containedAnyOf(t, elem)
   }
+
 }
