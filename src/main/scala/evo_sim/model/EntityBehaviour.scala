@@ -87,9 +87,12 @@ object EntityBehaviour {
     self: BlobWithTemporaryStatus =>
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
-      self.cooldown match {
-        case n if n > 1 => Set(BlobEntityHelper.updateBlob(self, movement, world))
-        case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
+      self.life match {
+        case n if n > 0 => self.cooldown match {
+          case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
+          case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
+        }
+        case _ => Set()
       }
     }
   }
