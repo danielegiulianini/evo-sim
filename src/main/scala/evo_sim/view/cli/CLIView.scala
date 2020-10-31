@@ -46,17 +46,16 @@ object CLIView extends View {
         extends Exception(message, cause)
       def read(text: String, min: Int, max: Int): IO[Int] = {
         print("Enter " + text + " (between " + min + " and " + max + "): ")
-        val asInt: Int = scala.io.StdIn.readLine().checkIfInteger match {
+        scala.io.StdIn.readLine().checkIfInteger match {
           case Left(_: NumberFormatException) =>
             println("Error: input contains invalid characters.")
             sys.exit(1)
-          case Right(result) => result
-        }
-        asInt.checkIfInRange(min, max) match {
-          case Left(_: NumberOutsideOfRangeException) =>
-            println("Error: value outside of legal range")
-            sys.exit(2)
-          case Right(_) => IO pure asInt
+          case Right(result) => result.checkIfInRange(min, max) match {
+            case Left(_: NumberOutsideOfRangeException) =>
+              println("Error: value outside of legal range")
+              sys.exit(2)
+            case Right(_) => IO pure result
+          }
         }
       }
       implicit class StringInteger(s: String) {
