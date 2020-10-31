@@ -8,6 +8,7 @@ import evo_sim.model.FinalStats.{food, population}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
 import evo_sim.view.View
+import evo_sim.view.swing.SwingView.ViewUtils.SimulationViewUtils.indicatorsUpdated
 import evo_sim.view.swing.chart.ChartsFactory
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.effects.InputViewEffects.inputViewCreated
@@ -52,25 +53,6 @@ object SwingView extends View {
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
-  private def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
-    def jLabelWithItemsAddedToJPanel[T](jPanel: JPanelIO)(text: String) =
-      for {
-      jl <- JLabelIO()
-      _ <- jl.textSet("" + text)
-      _ <- jPanel.added(jl)
-    } yield ()
-
-    def jLabelWithItemsAddedToBarPanel =
-      jLabelWithItemsAddedToJPanel(barPanel)(_)
-
-    for {
-      _ <- barPanel.allRemoved()      //barPanel has default FlowLayout
-      _ <- jLabelWithItemsAddedToBarPanel("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
-      _ <- jLabelWithItemsAddedToBarPanel("population: " + world.entities.size)
-      _ <- jLabelWithItemsAddedToBarPanel("luminosity: " + world.luminosity)
-    } yield ()
-  }
-
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     history <- IO { world.reverse}
 
@@ -84,4 +66,34 @@ object SwingView extends View {
     _ <- frame.packedInvokingAndWaiting()
     _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
+
+  /** Contains some utilities for creating [[SwingView]].*/
+  object ViewUtils {
+    object InputViewUtils {
+
+    }
+    object SimulationViewUtils {
+      def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
+        def jLabelWithItemsAddedToJPanel[T](jPanel: JPanelIO)(text: String) =
+          for {
+            jl <- JLabelIO()
+            _ <- jl.textSet("" + text)
+            _ <- jPanel.added(jl)
+          } yield ()
+
+        def jLabelWithItemsAddedToBarPanel =
+          jLabelWithItemsAddedToJPanel(barPanel)(_)
+
+        for {
+          _ <- barPanel.allRemoved()      //barPanel has default FlowLayout
+          _ <- jLabelWithItemsAddedToBarPanel("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
+          _ <- jLabelWithItemsAddedToBarPanel("population: " + world.entities.size)
+          _ <- jLabelWithItemsAddedToBarPanel("luminosity: " + world.luminosity)
+        } yield ()
+      }
+    }
+    object ResultViewUtils {
+
+    }
+  }
 }
