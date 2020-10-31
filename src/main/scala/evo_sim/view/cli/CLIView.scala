@@ -38,6 +38,11 @@ object CLIView extends View {
   } yield ()
 
   private def indicatorsUpdated(world:World): IO[Unit] = {
+    /**
+     * Utility function to [[println]] text as IO monad.
+     * @param text text to print
+     * @return the IO monad that describes the action of println to default output.
+     */
     def printlnIO(text:String) = IO { println(text) }
     for {
       _ <- printlnIO("Temperature: " + world.temperature)
