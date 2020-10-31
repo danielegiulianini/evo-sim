@@ -27,7 +27,7 @@ object ConsoleIO {
 
   /**
    *
-   * @return
+   * @return the [[IO]] monad that describes the action of performing a [[readLine]] from default input.
    */
   def readIO() = IO {
     scala.io.StdIn.readLine()
