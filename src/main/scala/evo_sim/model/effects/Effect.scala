@@ -4,7 +4,7 @@ import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.Utils.randomValueChange
+import evo_sim.utils.Counter._
 import evo_sim.model.{BlobEntityHelper, Constants, Direction, MovingStrategies}
 
 /**
@@ -107,5 +107,16 @@ object Effect {
         Constants.DEF_BLOB_VELOCITY, blob.degradationEffect, randomValueChange(Constants.DEF_BLOB_FOW_RADIUS).max(Constants.MIN_BLOB_FOW_RADIUS),
         MovingStrategies.baseMovement, Direction(blob.direction.angle, Constants.DEF_NEXT_DIRECTION))
     }
+
+  /** Returns a value with variable range from an initial value.
+   *
+   * @param value value that determines the range
+   * @return a value between value - range and value + range
+   */
+  private def randomValueChange(value: Int): Int = {
+    val max: Int = (value * 1.5).toInt
+    val min: Int = (value * 0.8).toInt
+    new java.util.Random().nextInt(max + 1 - min) - min
+  }
 
 }

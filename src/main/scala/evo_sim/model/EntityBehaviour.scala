@@ -6,7 +6,7 @@ import evo_sim.model.EntityStructure.DomainImpl.Effect
 import evo_sim.model.EntityStructure._
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.model.Updatable.NeutralUpdatable
-import evo_sim.model.Utils._
+import evo_sim.utils.Counter._
 import evo_sim.model.effects.{DegradationEffect, Effect}
 
 object EntityBehaviour {
