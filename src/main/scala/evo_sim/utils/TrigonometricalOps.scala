@@ -1,5 +1,4 @@
-package evo_sim.model
-
+package evo_sim.utils
 
 object TrigonometricalOps {
 
@@ -12,8 +11,6 @@ object TrigonometricalOps {
 
     def zeroYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(0)
 
-    def oneYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(1)
-
     def zeroPhasedZeroYTranslatedSinusoidal: (Float, Float) => Int = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
 
     //object with curried versions to leverage, among the others, IDE automatic named parameters
@@ -21,8 +18,6 @@ object TrigonometricalOps {
       def zeroPhasedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried
 
       def zeroYTranslatedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroYTranslatedSinusoidal.curried
-
-      def oneYTranslatedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.oneYTranslatedSinusoidal.curried
 
       def zeroPhasedZeroYTranslatedSinusoidalSin: Float => Float => Int = Sinusoidal.zeroPhasedZeroYTranslatedSinusoidal.curried
     }
@@ -34,4 +29,3 @@ object TrigonometricalOps {
   zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
   */
 }
-
