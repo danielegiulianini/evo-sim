@@ -1,5 +1,6 @@
 package evo_sim.core
 
+import scala.language.postfixOps
 import cats.data.StateT
 import cats.effect.IO
 import evo_sim.utils.TupleUtils.toTuple2

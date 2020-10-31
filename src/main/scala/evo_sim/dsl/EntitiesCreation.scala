@@ -1,5 +1,8 @@
 package evo_sim.dsl
 
+import scala.language.postfixOps
+import scala.language.higherKinds
+import scala.language.reflectiveCalls
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityStructure.{Entity, Intelligent}
