@@ -1,3 +1,4 @@
+import evo_sim.core.SimulationLogic.worldUpdated
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Obstacle, Plant}
 import evo_sim.model.{Environment, World}
@@ -61,9 +62,26 @@ class WorldTests extends FunSpec {
     }
   }
 
+  val worldAfterOneIteration = worldUpdated(initialWorld)
+
+  describe("A World") {
+    describe("when updated"){
+      it("should increase its current iteration") {
+        assert(initialWorld.currentIteration == worldAfterOneIteration.currentIteration + 1)
+      }
+
+      it("should increase its current iteration") {
+        assert(initialWorld.currentIteration == worldAfterOneIteration.currentIteration + 1)
+      }
+
+
+
+    }
+  }
+
 
   //dynamic behaviours (variants or invariants):
-  //test 2: check for correct luminosity day cycle (reset on every start of the day)
+  //test 2: check for correct luminosity day cycle (reset on every start of the day) and same value after one day
 
   //test 3: check for correct temperature day cycle (reset on every start of the day)
 

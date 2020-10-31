@@ -161,7 +161,7 @@ object SwingView extends View {
         def jLabelWithItemsAddedToJPanel[T](jPanel: JPanelIO)(text: String) =
           for {
             jl <- JLabelIO()
-            _ <- jl.textSet("" + text)
+            _ <- jl.textSet(text)
             _ <- jPanel.added(jl)
           } yield ()
 
