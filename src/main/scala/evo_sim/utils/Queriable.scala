@@ -1,7 +1,18 @@
 package evo_sim.utils
 
-
+/** A type class that represents the ability for a type functor to be queried, i.e. asked whether it contains
+ * a given element.
+ *
+ * @tparam F the type functor to be enriched with the [[Queriable]]#contained function
+ */
 trait Queriable[F[_]]{
+  /**
+   *
+   * @param t the type functor instance to be pimped with the contained functionality
+   * @param elem the element to be searched inside the t instance
+   * @tparam T the generic type of the element to be searched
+   * @return whether the type functor instance contains the element provided
+   */
   def contained[T](t: F[T], elem: T) : Boolean
 }
 
@@ -17,18 +28,20 @@ object Queriable {
   }*/
 }
 
-object ContainableImplicits {
+
+object QueriableImplicits {
   implicit object ContainsForSet extends Queriable[Set]{
     override def contained[T](t: Set[T], elem: T): Boolean = t.contains(elem)
   }
+
    implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
      override def contained[T](t: (T, T), elem: T): Boolean =
        t._1 == elem || t._2 == elem
    }
+
    implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
      override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
-       //t.exists(evo_sim.utils.ContainableImplicits.ContainsForHomogeneousTuple2.contained(_, elem)) //t.exists(_.contained(elem))
-       t.exists(ContainableImplicits.ContainsForHomogeneousTuple2.contained(_, elem)) //t.exists(_.contained(elem))
+       t.exists(QueriableImplicits.ContainsForHomogeneousTuple2.contained(_, elem))
      }
    }
  }
