@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import scala.language.higherKinds
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
