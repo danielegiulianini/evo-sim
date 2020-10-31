@@ -27,7 +27,7 @@ object EntityStructure {
     override type LifeCycle = Int
   }
 
-  sealed trait Entity {
+  trait Entity {
     def name : String
     def boundingBox: BoundingBox
     /*override def equals(obj: Any): Boolean = obj match {
