@@ -3,8 +3,9 @@ package evo_sim.view.cli
 import cats.effect.IO
 import cats.implicits._
 import evo_sim.model.Constants._
-import evo_sim.model.World.WorldHistory
+import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
+import evo_sim.utils.ConsoleIO.printlnIO
 import evo_sim.view.View
 
 /** Provides a view implementation that uses the default CLI */
@@ -72,13 +73,10 @@ object CLIView extends View {
   }
 
   private def indicatorsUpdated(world:World): IO[Unit] = {
-    /**
-     * Utility function to [[println]] text as IO monad.
-     * @param text text to print
-     * @return the IO monad that describes the action of println to default output.
-     */
-    def printlnIO(text:String) = IO { println(text) }
     for {
+      _ <- printlnIO("Days: " +
+        fromIterationsToDays(world.currentIteration) + "/" +
+        fromIterationsToDays(world.totalIterations))
       _ <- printlnIO("Temperature: " + world.temperature)
       _ <- printlnIO("Luminosity: " + world.luminosity)
     } yield ()
