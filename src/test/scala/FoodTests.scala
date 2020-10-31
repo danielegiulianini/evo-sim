@@ -1,11 +1,12 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood, PoisonBlob}
-import evo_sim.model.EntityStructure.Blob
+import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import evo_sim.model._
 import evo_sim.model.Constants._
+import evo_sim.model.effects.{DegradationEffect, Effect}
 import org.scalatest.FunSpec
 
 class FoodTests extends FunSpec {
-  val blob: BaseBlob = BaseBlob(
+  private val blob: BaseBlob = BaseBlob(
     name = "blob1",
     boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
     life = 100,
@@ -14,7 +15,7 @@ class FoodTests extends FunSpec {
     fieldOfViewRadius = 10,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15))
-  val poisonBlob: PoisonBlob = PoisonBlob(
+  private val poisonBlob: PoisonBlob = PoisonBlob(
     name = "blob2",
     boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
     life = 100,
@@ -24,35 +25,53 @@ class FoodTests extends FunSpec {
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction(0, 15),
     cooldown = Constants.DEF_COOLDOWN)
-  val standardFood: BaseFood = BaseFood(
-    name = "food1",
+  private val standardFood: BaseFood = BaseFood(
+    name = "food3",
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.standardDegradation,
     life = 100,
     effect = Effect.standardFoodEffect)
-  val reproducingFood: BaseFood = standardFood.copy(name = "food2", effect = Effect.reproduceBlobFoodEffect)
-  val poisonFood: BaseFood = standardFood.copy(name = "food3", effect = Effect.poisonousFoodEffect)
+  private val reproducingFood: BaseFood = standardFood.copy(name = "food4", effect = Effect.reproduceBlobFoodEffect)
+  private val poisonFood: BaseFood = standardFood.copy(name = "food5", effect = Effect.poisonousFoodEffect)
+  private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
+    currentIteration = 0, entities = Set(blob, poisonBlob, standardFood, reproducingFood, poisonFood), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 
-  describe("A BaseBlob") {
-    describe("when colliding with a food with standardFoodEffect") {
+  describe("A BaseBlob with BaseBlobBehaviour") {
+    describe("when updating with life greater than 0") {
+      it("should apply its degradationEffect to its life") {
+        val updatedBlob = blob.updated(world)
+        assert(updatedBlob.exists {
+          case b: Blob => b.life == blob.degradationEffect(blob)
+          case _ => false
+        })
+      }
+    }
+    describe("when updating with life equals or less than 0") {
+      val blobWithZeroLife = blob.copy(life = 0)
+      it("should decrease its energy") {
+        val updatedBlob = blobWithZeroLife.updated(world)
+        assert(updatedBlob.isEmpty)
+      }
+    }
+    describe("when colliding with a Food with standardFoodEffect") {
       it("should increase its energy") {
         assert(blob.collided(standardFood).exists {
           case b: Blob => b.life == blob.life + DEF_FOOD_ENERGY
           case _ => false
         })
       }
-      it("should return a set with one blob") {
+      it("should return a set with one Blob") {
         assert(blob.collided(standardFood).size == 1)
       }
     }
-    describe("when colliding with a food with reproducingFoodEffect") {
-      it("should create a blob with full life") {
+    describe("when colliding with a Food with reproducingFoodEffect") {
+      it("should create a Blob with full life") {
         assert(blob.collided(reproducingFood).exists {
           case b: Blob => b.life == DEF_BLOB_LIFE
           case _ => false
         })
       }
-      it("should return a set with two blobs") {
+      it("should return a set with two Blobs") {
         assert(blob.collided(reproducingFood).size == 2)
       }
     }
@@ -63,20 +82,49 @@ class FoodTests extends FunSpec {
           case _ => false
         })
       }
-      it("should return a set with one blob") {
+      it("should return a set with one Blob") {
         assert(blob.collided(poisonFood).size == 1)
       }
     }
   }
 
-  describe("A PoisonBlob") {
-    describe("when colliding with a food with standardFoodEffect") {
-      it("should return a set with one blob") {
+  describe("A PoisonBlob with PoisonBlobBehaviour") {
+    describe("when updating with life greater than 0") {
+      val updatedBlob = poisonBlob.updated(world)
+      it("should apply its degradationEffect to its life") {
+        assert(updatedBlob.exists {
+          case b: Blob => b.life == DegradationEffect.poisonBlobDegradation(poisonBlob)
+          case _ => false
+        })
+      }
+      it("should decrease its cooldown") {
+        assert(updatedBlob.exists {
+          case b: BlobWithTemporaryStatus => b.cooldown == poisonBlob.cooldown - 1
+          case _ => false
+        })
+      }
+      it("should return a BaseBlob if cooldown reaches 0") {
+        val updatedBlobWithZeroCooldown = poisonBlob.copy(cooldown = 0).updated(world)
+        assert(updatedBlobWithZeroCooldown.exists {
+          case _: BaseBlob => true
+          case _ => false
+        })
+      }
+    }
+    describe("when updating with life equals or less than 0") {
+      val blobWithZeroLife = poisonBlob.copy(life = 0)
+      it("should decrease its energy") {
+        val updatedBlob = blobWithZeroLife.updated(world)
+        assert(updatedBlob.isEmpty)
+      }
+    }
+    describe("when colliding with a Food with standardFoodEffect") {
+      it("should return a set with one Blob") {
         assert(poisonBlob.collided(standardFood).size == 1)
       }
     }
-    describe("when colliding with a food with reproducingFoodEffect") {
-      it("should return a set with one blob") {
+    describe("when colliding with a Food with reproducingFoodEffect") {
+      it("should return a set with one Blob") {
         assert(poisonBlob.collided(reproducingFood).size == 1)
       }
     }

@@ -6,7 +6,8 @@ import evo_sim.model.EntityStructure.DomainImpl.Effect
 import evo_sim.model.EntityStructure._
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.model.Updatable.NeutralUpdatable
-import evo_sim.model.Utils._
+import evo_sim.utils.Counter._
+import evo_sim.model.effects.{DegradationEffect, Effect}
 
 object EntityBehaviour {
 
@@ -87,9 +88,12 @@ object EntityBehaviour {
     self: BlobWithTemporaryStatus =>
     override def updated(world: World): Set[SimulableEntity] = {
       val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
-      self.cooldown match {
-        case n if n > 1 => Set(BlobEntityHelper.updateBlob(self, movement, world))
-        case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
+      self.life match {
+        case n if n > 0 => self.cooldown match {
+          case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
+          case _ => Set(BlobEntityHelper.fromTemporaryBlobToBaseBlob(self, world, movement))
+        }
+        case _ => Set()
       }
     }
   }
@@ -136,7 +140,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.standardFoodEffect]].
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[Effect.standardFoodEffect]].
    */
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
@@ -147,7 +151,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.reproduceBlobFoodEffect]].
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[Effect.reproduceBlobFoodEffect]].
    */
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
@@ -158,7 +162,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.poisonousFoodEffect]].
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[Effect.poisonousFoodEffect]].
    */
   trait PoisonousPlantBehaviour extends PlantBehaviour {
     self: PoisonousPlant =>

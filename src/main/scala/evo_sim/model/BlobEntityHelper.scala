@@ -6,6 +6,7 @@ import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.EntityStructure.DomainImpl.Velocity
+import evo_sim.model.effects.{DegradationEffect, LuminosityEffect, TemperatureEffect}
 
 object BlobEntityHelper {
   /**

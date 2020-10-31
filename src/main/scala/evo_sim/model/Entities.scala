@@ -5,6 +5,7 @@ import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
 import evo_sim.model.EntityStructure._
+import evo_sim.model.effects.Effect
 
 object Entities {
 
@@ -78,7 +79,7 @@ object Entities {
                           override val effect: Effect) extends Obstacle with NeutralBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.standardFoodEffect]].
+   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[Effect.standardFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -89,7 +90,7 @@ object Entities {
                            override val lifeCycle: LifeCycle) extends Plant with StandardPlantBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.reproduceBlobFoodEffect]].
+   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[Effect.reproduceBlobFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -100,7 +101,7 @@ object Entities {
                               override val lifeCycle: LifeCycle) extends Plant with ReproducingPlantBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.poisonousFoodEffect]].
+   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[Effect.poisonousFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox

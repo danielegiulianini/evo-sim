@@ -7,7 +7,9 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.WorldHistory
+import evo_sim.model.effects.{DegradationEffect, Effect}
 import evo_sim.utils.MemoHelper.memoize
+import evo_sim.utils.Counter._
 
 /** Represents the state of the simulation and acts as a container for all of its properties that are carried along
  * each iteration.
@@ -42,7 +44,7 @@ object World {
   def apply(env: Environment): World = {
 
     val baseBlobs: Set[BaseBlob] = (env.initialBlobNumber.toDouble / 2).ceil.toInt of BaseBlob(
-      name = "blob" + Utils.nextValue(),
+      name = "blob" + nextValue(),
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
@@ -52,7 +54,7 @@ object World {
       direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))
 
     val cannibalBlobs: Set[CannibalBlob] = env.initialBlobNumber.toDouble./(2).floor.toInt of CannibalBlob(
-      name = "cannibalBlob" + Utils.nextValue(),
+      name = "cannibalBlob" + nextValue(),
       boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2 * Constants.DEF_BLOB_RADIUS),
       life = Constants.DEF_BLOB_LIFE,
       velocity = Constants.DEF_BLOB_VELOCITY,
@@ -62,27 +64,27 @@ object World {
       direction = Direction(0, Constants.DEF_NEXT_DIRECTION))
 
     val stones: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).ceil.toInt of BaseObstacle(
-      name = "stone"+Utils.nextValue(),
+      name = "stone" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
       effect = Effect.damageEffect)
 
     val puddles: Set[BaseObstacle] =(env.initialObstacleNumber.toDouble./(2).floor.toInt) of BaseObstacle(
-      name = "puddle"+Utils.nextValue(),
+      name = "puddle" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.slowEffect)
 
     val standardPlants: Set[StandardPlant] = (env.initialPlantNumber.toDouble / 2).floor.toInt of StandardPlant(
-      name = "standardPlant"+Utils.nextValue(),
+      name = "standardPlant" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STANDARD_PLANT_WIDTH, height = Constants.DEF_STANDARD_PLANT_HEIGHT),
       lifeCycle = 0)
 
     val reproducingPlants: Set[ReproducingPlant] = (env.initialPlantNumber.toDouble / 4).ceil.toInt of ReproducingPlant(
-      name = "reproducingPlant"+Utils.nextValue(),
+      name = "reproducingPlant" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_REPRODUCING_PLANT_WIDTH * 3 / 2, height = Constants.DEF_REPRODUCING_PLANT_WIDTH),
       lifeCycle = 0)
 
     val poisonousPlants: Set[PoisonousPlant] = (env.initialPlantNumber.toDouble / 4).ceil.toInt of PoisonousPlant(
-      name = "poisonousPlant"+Utils.nextValue(),
+      name = "poisonousPlant" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_POISONOUS_PLANT_WIDTH * 3 / 2, height = Constants.DEF_POISONOUS_PLANT_WIDTH),
       lifeCycle = 0)
 
