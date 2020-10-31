@@ -1,11 +1,13 @@
 package evo_sim.utils
 
-import evo_sim.utils.ContainableImplicits.ContainsForHomogeneousTuple2Set
-import evo_sim.utils.ContainableImplicits.ContainsForSet.contained
+import evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2Set
+import evo_sim.utils.QueriableImplicits.ContainsForSet.contained
 import evo_sim.utils.Queriable.containedAnyOf
 import evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2Set
 
-object TupleUtils extends App {
+
+
+object TupleUtils {
 
   object Tuple2Types {
     type HomogeneousTuple2[A] = (A, A)
@@ -37,7 +39,7 @@ object TupleUtils {
   def everyElementPairedWithOnlyOneOtherElement[T1](mySet: Set[(T1, T1)]): Set[(T1, T1)] =
     mySet.foldLeft(Set[(T1, T1)]())(
       (acc, t) =>
-        if (contained(acc, t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
+        if acc.contains(t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
   def contained[T1](t: (T1, T1), element: T1): Boolean = t._1 == element || t._2 == element
   implicit class TupleCanContain[T](t: (T, T)) { //pimping DOT NOTATION
