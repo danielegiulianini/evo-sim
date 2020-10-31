@@ -1,7 +1,8 @@
 import evo_sim.core.SimulationLogic.worldUpdated
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Obstacle, Plant}
-import evo_sim.model.{Environment, World}
+import evo_sim.model.Utils.chain
+import evo_sim.model.{Constants, Environment, World}
 import org.scalatest.FunSpec
 
 class WorldTests extends FunSpec {
@@ -19,14 +20,12 @@ class WorldTests extends FunSpec {
 
   //utility method
   def assertWorldEntitiesOfTypeTAreN[A](entitiesFilter: PartialFunction[SimulableEntity, A], size: Int) = {
-    /*def worldEntitiesFiltered[A](entitiesFilter: PartialFunction[SimulableEntity, A]) =
-      initialWorld.entities.collect(entitiesFilter)*/
     assert(
       initialWorld.entities.collect(entitiesFilter).size == size
     )
   }
 
-  //test 1: check correct initialization of World upon Environment container chosen by user (so testing World's apply)
+  //test 1: check correct initialization of World upon Environment container chosen by user (ie testing World's apply)
   describe("A World") {
     describe("when initialized") {
       it("should have empty history") {
@@ -47,7 +46,7 @@ class WorldTests extends FunSpec {
         }
 
         it("should match the amount of Blob specified"){
-          assertWorldEntitiesOfTypeTAreN({ case e: Plant => e }, initialEnvironment.initialBlobNumber)
+          assertWorldEntitiesOfTypeTAreN({ case e: Blob => e }, initialEnvironment.initialBlobNumber)
         }
 
         it("should match the amount of Plants specified"){
@@ -55,7 +54,7 @@ class WorldTests extends FunSpec {
         }
 
         it("should match the amount of Obstacles specified"){
-          assertWorldEntitiesOfTypeTAreN({ case e: Plant => e }, initialEnvironment.initialObstacleNumber)
+          assertWorldEntitiesOfTypeTAreN({ case e: Obstacle => e }, initialEnvironment.initialObstacleNumber)
         }
 
       }
@@ -65,9 +64,11 @@ class WorldTests extends FunSpec {
 
   //2. testing worldUpdated
   val worldAfterOneIteration = worldUpdated(initialWorld)
-  val worldAfterOneDay = worldUpdated(initialWorld)
+  val worldAfterOneDay = chain(Constants.ITERATIONS_PER_DAY)(initialWorld)(worldUpdated(_))
 
   describe("A World") {
+
+    //test 2: check for correct luminosity day cycle (reset on every start of the day) and same value after one day
     describe("when updated"){
       it("should increase its current iteration") {
         assert(worldAfterOneIteration.currentIteration == initialWorld.currentIteration + 1)
@@ -78,6 +79,7 @@ class WorldTests extends FunSpec {
       }
     }
 
+    //test 3: check for correct temperature day cycle (reset on every start of the day)
     describe("after one day"){
       it("should return to initial temperature") {
         assert(worldAfterOneDay.temperature == initialWorld.temperature)
@@ -88,14 +90,4 @@ class WorldTests extends FunSpec {
       }
     }
   }
-
-
-
-
-  //dynamic behaviours (variants or invariants):
-  //test 2: check for correct luminosity day cycle (reset on every start of the day) and same value after one day
-
-  //test 3: check for correct temperature day cycle (reset on every start of the day)
-
-  //(at the endo of simulation, after given number of iteration
 }
