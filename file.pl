@@ -1,6 +1,5 @@
 %chasedMovement(point(0,0), 5, [point(7,2), point(5,3), point(4,0)], X). --> X / point(4,0)
-chasedMovement(EntityPoint, EntityFOV, ListEntities, X) :- closestPoint(EntityPoint, ListEntities, ClosestEntity), distance(EntityPoint, ClosestEntity, Dist), 
-																																			Dist =< EntityFOV, X=ClosestEntity.
+chasedMovement(EntityPoint, EntityFOV, ListEntities, X) :- closestPoint(EntityPoint, ListEntities, ClosestEntity), distance(EntityPoint, ClosestEntity, Dist), Dist =< EntityFOV, X=ClosestEntity.
 
 %closestPoint(point(0,0), [point(7,2), point(5,3), point(2,2)], X). --> X/point(2,2)
 closestPoint(Point, [H|T], Min):- closestPoint(Point, T, H, Min).
@@ -38,4 +37,3 @@ atan2(Y, X, PI, Radians):- X < 0, Y < 0, Radians is atan(Y/X)-PI, !.
 atan2(Y, X, PI, Radians):- X =:= 0, Y > 0, Radians is PI/2, !.
 atan2(Y, X, PI, Radians):- X =:= 0, Y < 0, Radians is -PI/2, !.
 atan2(0, 0, PI, 0).
-

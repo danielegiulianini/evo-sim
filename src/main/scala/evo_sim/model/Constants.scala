@@ -30,6 +30,8 @@ object Constants {
   val DEF_BLOB_VELOCITY = 50
   /** A blob's default velocity when in slow status */
   val DEF_BLOB_SLOW_VELOCITY: Int = DEF_BLOB_VELOCITY / 2
+  /** A blob's minimum velocity */
+  val MIN_BLOB_VELOCITY = DEF_BLOB_SLOW_VELOCITY
   /** A blob's default field of view radius */
   val DEF_BLOB_FOW_RADIUS = 50
   /** Minimum value of  field of view radius */
