@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import scala.language.higherKinds
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
@@ -30,30 +31,25 @@ object EntityStructure {
   trait Entity {
     def name : String
     def boundingBox: BoundingBox
-    /*override def equals(obj: Any): Boolean = obj match {
-      case _ : Entity => name.equals(obj.asInstanceOf[Entity].name)
-      case _ => false
-    }
-    override def hashCode(): Int = name.hashCode()*/
   }
 
-  trait Living extends Entity {
+  sealed trait Living extends Entity {
     def life: Life
   }
 
-  trait Moving extends Entity {
+  sealed trait Moving extends Entity {
     def velocity: Velocity
   }
 
-  trait Effectful extends Entity {
+  sealed trait Effectful extends Entity {
     def effect: Effect
   }
 
-  trait Perceptive extends Entity {
+  sealed trait Perceptive extends Entity {
     def fieldOfViewRadius : Int
   }
 
-  trait Intelligent extends Perceptive with Moving {
+  sealed trait Intelligent extends Perceptive with Moving {
     def movementStrategy: MovementStrategy
     def direction: Direction
   }
@@ -73,6 +69,7 @@ object EntityStructure {
   }
 
   trait Plant extends Entity {
+    override def boundingBox: Rectangle
     def lifeCycle: LifeCycle
   }
 

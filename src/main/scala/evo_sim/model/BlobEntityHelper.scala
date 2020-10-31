@@ -5,6 +5,7 @@ import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
+import evo_sim.model.EntityStructure.DomainImpl.Velocity
 
 object BlobEntityHelper {
   /**
@@ -22,7 +23,8 @@ object BlobEntityHelper {
       case _ => velocity = self.velocity
     }
     BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect standardDegradation,
-      self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration), self movementStrategy, movement direction)
+      (self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)).max(Constants.MIN_BLOB_FOW_RADIUS),
+      self movementStrategy, movement direction)
   }
 
   /**
@@ -57,34 +59,38 @@ object BlobEntityHelper {
     case base: BaseBlob => base.copy(
       boundingBox = base.boundingBox.copy(point = movement.point),
       direction = movement.direction,
-      velocity = base.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature, world.currentIteration),
+      velocity = incrementedValue(base.velocity, TemperatureEffect.standardTemperatureEffect, world, Constants.MIN_BLOB_VELOCITY),
       life = base.degradationEffect(base),
-      fieldOfViewRadius = base.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)
+      fieldOfViewRadius = incrementedValue(base.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS)
     )
     case cannibal: CannibalBlob => cannibal.copy(
       boundingBox = cannibal.boundingBox.copy(point = movement.point),
       direction = movement.direction,
-      velocity = cannibal.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature, world.currentIteration),
+      velocity = incrementedValue(cannibal.velocity, TemperatureEffect.standardTemperatureEffect, world, Constants.MIN_BLOB_VELOCITY),
       life = cannibal.degradationEffect(cannibal),
-      fieldOfViewRadius = cannibal.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)
+      fieldOfViewRadius = incrementedValue(cannibal.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS)
     )
     case slow: SlowBlob => slow.copy(
       boundingBox = slow.boundingBox.copy(point = movement.point),
       direction = movement.direction,
       velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
       life = slow.degradationEffect(slow),
-      fieldOfViewRadius = slow.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration),
+      fieldOfViewRadius = incrementedValue(slow.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS),
       cooldown = slow.cooldown - 1
     )
     case poison: PoisonBlob => poison.copy(
       boundingBox = poison.boundingBox.copy(point = movement.point),
       direction = movement.direction,
-      velocity = poison.velocity + TemperatureEffect.standardTemperatureEffect(world.temperature, world.currentIteration),
+      velocity = incrementedValue(poison.velocity, TemperatureEffect.standardTemperatureEffect, world, Constants.MIN_BLOB_VELOCITY),
       life = DegradationEffect.poisonBlobDegradation(poison),
-      fieldOfViewRadius = poison.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration),
+      fieldOfViewRadius = incrementedValue(poison.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS),
       cooldown = poison.cooldown - 1
     )
     case _ => throw new Exception("Sub type not supported.")
+  }
+
+  private def incrementedValue(value: Int, effect: ((Int, Int)) => Int, world: World, min: Int): Int = {
+    (value + effect(world.luminosity, world.currentIteration)).max(min)
   }
 
 }
