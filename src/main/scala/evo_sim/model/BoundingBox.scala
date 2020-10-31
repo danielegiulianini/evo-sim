@@ -24,7 +24,7 @@ object Point2D{
 /**
  * Bounding Box trait, [[evo_sim.model.Point2D]] represent the center of the Bounding Box.
  */
-trait BoundingBox {
+sealed trait BoundingBox {
   /** The center of the Bounding box */
   def point: Point2D
 }
