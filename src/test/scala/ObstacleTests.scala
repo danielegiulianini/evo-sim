@@ -2,6 +2,7 @@ import evo_sim.model.Entities.{BaseBlob, BaseObstacle}
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.Utils.chain
 import evo_sim.model._
+import evo_sim.model.effects.{DegradationEffect, Effect}
 import org.scalatest.FunSpec
 
 class ObstacleTests extends FunSpec {

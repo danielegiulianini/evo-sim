@@ -1,6 +1,7 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model._
+import evo_sim.model.effects.DegradationEffect
 import org.scalatest.FunSuite
 
 class MovementTests extends FunSuite {

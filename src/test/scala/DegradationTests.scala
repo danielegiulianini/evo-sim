@@ -1,6 +1,7 @@
 import evo_sim.model.Entities.{BaseBlob, PoisonBlob}
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.model._
+import evo_sim.model.effects.DegradationEffect
 import org.scalatest.FunSuite
 
 class DegradationTests extends FunSuite {

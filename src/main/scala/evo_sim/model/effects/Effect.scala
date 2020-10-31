@@ -1,10 +1,11 @@
-package evo_sim.model
+package evo_sim.model.effects
 
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.Utils._
+import evo_sim.model.Utils.randomValueChange
+import evo_sim.model.{BlobEntityHelper, Constants, Direction, MovingStrategies}
 
 /**
  * Singleton object that provides different effect implementations to be used by object that extend [[evo_sim.model.EntityStructure.Effectful]].

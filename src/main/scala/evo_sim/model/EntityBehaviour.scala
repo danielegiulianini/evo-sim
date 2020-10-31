@@ -7,6 +7,7 @@ import evo_sim.model.EntityStructure._
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.model.Updatable.NeutralUpdatable
 import evo_sim.model.Utils._
+import evo_sim.model.effects.{DegradationEffect, Effect}
 
 object EntityBehaviour {
 
@@ -139,7 +140,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.standardFoodEffect]].
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[Effect.standardFoodEffect]].
    */
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
@@ -150,7 +151,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.reproduceBlobFoodEffect]].
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[Effect.reproduceBlobFoodEffect]].
    */
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
@@ -161,7 +162,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.poisonousFoodEffect]].
+   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[Effect.poisonousFoodEffect]].
    */
   trait PoisonousPlantBehaviour extends PlantBehaviour {
     self: PoisonousPlant =>

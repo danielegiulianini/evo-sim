@@ -3,6 +3,7 @@ import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import evo_sim.model._
 import evo_sim.model.Constants._
 import evo_sim.model.Utils.chain
+import evo_sim.model.effects.{DegradationEffect, Effect}
 import org.scalatest.FunSpec
 
 class FoodTests extends FunSpec {

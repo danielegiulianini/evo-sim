@@ -7,6 +7,7 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.WorldHistory
+import evo_sim.model.effects.{DegradationEffect, Effect}
 import evo_sim.utils.MemoHelper.memoize
 
 /** Represents the state of the simulation and acts as a container for all of its properties that are carried along
