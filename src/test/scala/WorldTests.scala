@@ -24,6 +24,12 @@ class WorldTests extends FunSpec {
       it("should be at 0 currentIteration") {
         assert(initialWorld.currentIteration == 0)
       }
+
+      describe("with a given Environment") {
+        it("should match the given Environment temperature") {
+          assert(initialWorld.temperature == initialEnvironment.temperature)
+        }
+      }
     }
   }
 
