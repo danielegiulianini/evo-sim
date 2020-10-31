@@ -30,11 +30,6 @@ object EntityStructure {
   trait Entity {
     def name : String
     def boundingBox: BoundingBox
-    /*override def equals(obj: Any): Boolean = obj match {
-      case _ : Entity => name.equals(obj.asInstanceOf[Entity].name)
-      case _ => false
-    }
-    override def hashCode(): Int = name.hashCode()*/
   }
 
   sealed trait Living extends Entity {
@@ -73,6 +68,7 @@ object EntityStructure {
   }
 
   trait Plant extends Entity {
+    override def boundingBox: Rectangle
     def lifeCycle: LifeCycle
   }
 
