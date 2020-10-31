@@ -16,8 +16,20 @@ trait Queriable[F[_]]{
   def contained[T](t: F[T], elem: T) : Boolean
 }
 
+/**
+ * Provides some algorithms built on top of [[Queriable]] ready to be used once a given type functor is given
+ * a conversion to it. See [[QueriableImplicits]] for implicit conversions to [[Queriable]] type class.
+ */
 object Queriable {
 
+  /**
+   *
+   * @param t
+   * @param elem
+   * @tparam F
+   * @tparam A
+   * @return
+   */
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     implicitly[Queriable[F]].contained(t, elem._1) || implicitly[Queriable[F]].contained(t, elem._2)
 
@@ -28,7 +40,8 @@ object Queriable {
   }*/
 }
 
-
+/** Provides some implicit conversions for [[evo_sim.utils.Queriable]] type class.
+ */
 object QueriableImplicits {
   implicit object ContainsForSet extends Queriable[Set]{
     override def contained[T](t: Set[T], elem: T): Boolean = t.contains(elem)
