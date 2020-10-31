@@ -53,19 +53,22 @@ object SwingView extends View {
   } yield ()
 
   private def indicatorsUpdated(world:World, barPanel:JPanelIO): IO[Unit] = {
-    for {
-      //barPanel has default FlowLayout
-      _ <- barPanel.allRemoved()
-      days <- JLabelIO("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
-      _ <- barPanel.added(days)
-      population <- JLabelIO("population: " + world.entities.size)
-      _ <- barPanel.added(population)
-      population <- JLabelIO("temp: " + world.temperature)
-      _ <- barPanel.added(population)
-      population <- JLabelIO("luminosity: " + world.luminosity)
-      _ <- barPanel.added(population)
+    def jLabelWithItemsAddedToJPanel[T](jPanel: JPanelIO)(text: String) =
+      for {
+      jl <- JLabelIO()
+      _ <- jl.textSet("" + text)
+      _ <- jPanel.added(jl)
     } yield ()
-    //refactor repeated code for jlabels
+
+    def jLabelWithItemsAddedToBarPanel =
+      jLabelWithItemsAddedToJPanel(barPanel)(_)
+
+    for {
+      _ <- barPanel.allRemoved()      //barPanel has default FlowLayout
+      _ <- jLabelWithItemsAddedToBarPanel("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
+      _ <- jLabelWithItemsAddedToBarPanel("population: " + world.entities.size)
+      _ <- jLabelWithItemsAddedToBarPanel("luminosity: " + world.luminosity)
+    } yield ()
   }
 
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
