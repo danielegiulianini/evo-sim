@@ -1,6 +1,6 @@
 package evo_sim.utils
 
-/*
+
 trait Queriable[F[_]]{
   def contained[T](t: F[T], elem: T) : Boolean
 }
@@ -18,6 +18,9 @@ object Queriable {
 }
 
 object ContainableImplicits {
+  implicit object ContainsForSet extends Queriable[Set]{
+    override def contained[T](t: Set[T], elem: T): Boolean = t.contains(elem)
+  }
    implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
      override def contained[T](t: (T, T), elem: T): Boolean =
        t._1 == elem || t._2 == elem
@@ -29,4 +32,4 @@ object ContainableImplicits {
      }
    }
  }
-*/
+
