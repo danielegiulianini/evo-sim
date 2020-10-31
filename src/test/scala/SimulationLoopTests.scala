@@ -1,9 +1,10 @@
 import evo_sim.core.SimulationEngine.simulationLoop
 import evo_sim.model.{Environment, World}
 import evo_sim.core.Simulation._
+import org.scalatest.FunSpec
 
 
-class SimulationLoopTests {
+object SimulationLoopTests extends App {
 
   val initialEnvironment : Environment = Environment(
     temperature = 2,
@@ -20,7 +21,5 @@ class SimulationLoopTests {
   w.currentIteration //should be equal to daysNumber * iterationPerDay
 
   //test 2: check for constant frame rate of simulationLoop
-
-
 
 }
