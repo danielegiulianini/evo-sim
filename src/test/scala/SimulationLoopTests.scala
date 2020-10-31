@@ -4,7 +4,7 @@ import evo_sim.core.Simulation._
 import org.scalatest.FunSpec
 
 
-class SimulationLoopTests extends App {
+object SimulationLoopTests extends App {
 
   val initialEnvironment : Environment = Environment(
     temperature = 2,
