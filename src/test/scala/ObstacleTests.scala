@@ -62,19 +62,23 @@ class ObstacleTests extends FunSpec {
   describe("A BaseBlob") {
     describe("when colliding with a puddle") {
       it("should decrease its velocity") {
-        val updatedBlob = blob.collided(puddle).toVector(0).asInstanceOf[Blob]
-        assert(updatedBlob.velocity == 50)
+        assert(blob.collided(puddle).exists {
+          case b: Blob => b.velocity == 50
+          case _ => false
+        })
       }
     }
     describe("when colliding with a stone") {
       it("should decrease its energy") {
-        val updatedBlob = blob.collided(stone).toVector(0).asInstanceOf[Blob]
-        assert(updatedBlob.life == (Constants.DEF_BLOB_LIFE - Constants.DEF_DAMAGE))
+        assert(blob.collided(stone).exists {
+          case b: Blob => b.life == (Constants.DEF_BLOB_LIFE - Constants.DEF_DAMAGE)
+          case _ => false
+        })
       }
       describe("multiple times") {
         it("should die") {
           val updatedBlob = chain(40)(blob)(b =>
-            b.collided(stone).toVector(0).asInstanceOf[BaseBlob])
+            b.collided(stone).collect{ case b: BaseBlob => b}.head)
           assert(updatedBlob.life <= 0)
         }
       }
