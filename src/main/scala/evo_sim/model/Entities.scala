@@ -78,15 +78,6 @@ object Entities {
                           override val effect: Effect) extends Obstacle with NeutralBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation.
-   */
-  trait BasePlant extends Plant {
-    override val name: String
-    override val boundingBox: Rectangle
-    override val lifeCycle: LifeCycle
-  }
-
-  /**
    * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.standardFoodEffect]].
    *
    * @param name plant name
@@ -95,7 +86,7 @@ object Entities {
    */
   case class StandardPlant(override val name: String,
                            override val boundingBox: Rectangle,
-                           override val lifeCycle: LifeCycle) extends BasePlant with StandardPlantBehaviour
+                           override val lifeCycle: LifeCycle) extends Plant with StandardPlantBehaviour
 
   /**
    * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.reproduceBlobFoodEffect]].
@@ -106,7 +97,7 @@ object Entities {
    */
   case class ReproducingPlant(override val name: String,
                               override val boundingBox: Rectangle,
-                              override val lifeCycle: LifeCycle) extends BasePlant with ReproducingPlantBehaviour
+                              override val lifeCycle: LifeCycle) extends Plant with ReproducingPlantBehaviour
 
   /**
    * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[evo_sim.model.Effect.poisonousFoodEffect]].
@@ -117,7 +108,7 @@ object Entities {
    */
   case class PoisonousPlant(override val name: String,
                               override val boundingBox: Rectangle,
-                              override val lifeCycle: LifeCycle) extends BasePlant with PoisonousPlantBehaviour
+                              override val lifeCycle: LifeCycle) extends Plant with PoisonousPlantBehaviour
 
   /**
    * Represent a poisoned blob. This blob takes more damage than standard blobs.
