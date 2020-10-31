@@ -1,3 +1,5 @@
+import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityStructure.{Blob, Obstacle, Plant}
 import evo_sim.model.{Environment, World}
 import org.scalatest.FunSpec
 
@@ -14,7 +16,16 @@ class WorldTests extends FunSpec {
 
   val initialWorld = World(initialEnvironment)
 
-  //test 1: check correct initialization of World upon Environment container chosen by user
+  //utility method
+  def assertWorldEntitiesOfTypeTAreN[A](entitiesFilter: PartialFunction[SimulableEntity, A], size: Int) = {
+    /*def worldEntitiesFiltered[A](entitiesFilter: PartialFunction[SimulableEntity, A]) =
+      initialWorld.entities.collect(entitiesFilter)*/
+    assert(
+      initialWorld.entities.collect(entitiesFilter).size == size
+    )
+  }
+
+  //test 1: check correct initialization of World upon Environment container chosen by user (so testing World's apply)
   describe("A World") {
     describe("when initialized") {
       it("should have empty history") {
@@ -29,9 +40,27 @@ class WorldTests extends FunSpec {
         it("should match the given Environment temperature") {
           assert(initialWorld.temperature == initialEnvironment.temperature)
         }
+
+        it("should match the given Environment luminosity") {
+          assert(initialWorld.luminosity == initialEnvironment.luminosity)
+        }
+
+        it("should match the amount of Blob specified"){
+          assertWorldEntitiesOfTypeTAreN({ case e: Plant => e }, initialEnvironment.initialBlobNumber)
+        }
+
+        it("should match the amount of Plants specified"){
+          assertWorldEntitiesOfTypeTAreN({ case e: Plant => e }, initialEnvironment.initialPlantNumber)
+        }
+
+        it("should match the amount of Obstacles specified"){
+          assertWorldEntitiesOfTypeTAreN({ case e: Plant => e }, initialEnvironment.initialObstacleNumber)
+        }
+
       }
     }
   }
+
 
   //dynamic behaviours (variants or invariants):
   //test 2: check for correct luminosity day cycle (reset on every start of the day)
