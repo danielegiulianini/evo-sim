@@ -26,7 +26,7 @@ object ConsoleIO {
   }
 
   /**
-   *
+   * Utility function to [[scala.io.StdIn.readLine]] from default input as IO monad.
    * @return the [[IO]] monad that describes the action of performing a [[readLine]] from default input.
    */
   def readIO() = IO {
