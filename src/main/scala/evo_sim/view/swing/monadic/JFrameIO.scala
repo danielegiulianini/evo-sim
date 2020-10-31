@@ -1,6 +1,6 @@
 package evo_sim.view.swing.monadic
 
-import java.awt.Component
+import java.awt.{Component, Frame}
 
 import cats.effect.IO
 import javax.swing.{JFrame, SwingUtilities, WindowConstants}
@@ -22,6 +22,7 @@ class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def locationRelativeToSetInvokingAndWaiting(c:Component) = IO {SwingUtilities.invokeAndWait( () => component.setLocationRelativeTo(c))}
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] = IO {SwingUtilities.invokeAndWait( ()=> component.setDefaultCloseOperation(operation))}
   def titleSetInvokingAndWaiting(title: String) = IO{SwingUtilities.invokeAndWait( () => component.setTitle(title))}
+  def setMaximizedExtendedStateInvokeAndWaiting() = IO { component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH) }
 }
 
 //companion object with utilities

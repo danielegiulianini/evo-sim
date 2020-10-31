@@ -18,6 +18,8 @@ object InputViewEffects {
    * @return the panel to be added
    */
   def inputViewCreated(environmentPromise: Promise[Environment]): IO[JPanelIO] = for {
+    mainPanel <- JPanelIO()
+    _ <- mainPanel.layoutSet(new BorderLayout())
     inputPanel <- JPanelIO()
     _ <- inputPanel.layoutSet(new VerticalLayout())
     blobSlider <- inputRowCreated(inputPanel, "#Blob", Constants.MIN_BLOBS, Constants.MAX_BLOBS,
@@ -43,8 +45,9 @@ object InputViewEffects {
       _ <- start.enabledSet(false)
       _ <- IO { environmentPromise.success(Environment(t, l, b, p, o, d)) }
     } yield ())
-    _ <- inputPanel.added(start)
-  } yield inputPanel
+    _ <- mainPanel.added(inputPanel, BorderLayout.CENTER)
+    _ <- mainPanel.added(start, BorderLayout.SOUTH)
+  } yield mainPanel
 
   /* Builds a single row for a property. The row contains the name of the property with
      the current value,a slider to choose the value and buttons to adjust it */

@@ -1,7 +1,6 @@
 package evo_sim.view.swing
 
-import java.awt.Toolkit.getDefaultToolkit
-import java.awt.{BorderLayout, Dimension}
+import java.awt.BorderLayout
 
 import cats.effect.IO
 import evo_sim.model.FinalStats.{food, population}
@@ -25,18 +24,17 @@ object SwingView extends View {
   val frame = new JFrameIO(new JFrame("evo-sim"))
 
   override def inputReadFromUser(): IO[Environment] = for {
-    environmentPromise <- IO pure { Promise[Environment]() }
-    inputPanel <- inputViewCreated(environmentPromise)
+    environmentPromise <- IO pure Promise[Environment]()
+    mainPanel <- inputViewCreated(environmentPromise)
     cp <- frame.contentPane()
-    _ <- cp.added(inputPanel, BorderLayout.CENTER)
+    _ <- cp.layoutSet(new BorderLayout())
+    _ <- cp.added(mainPanel, BorderLayout.CENTER)
     _ <- frame.defaultCloseOperationSet(EXIT_ON_CLOSE)
-    _ <- frame.packedInvokingAndWaiting()
-    _ <- frame.visibleInvokingAndWaiting(true)
-    environment <- IO { Await.result(environmentPromise.future, Duration.Inf) }
     _ <- frame.addComponentAdapterInvokingAndWaiting()
-    dimension <- IO { new Dimension(getDefaultToolkit.getScreenSize.width, getDefaultToolkit.getScreenSize.height) }
-    _ <- frame.setPreferredSizeInvokingAndWaiting(dimension)
-    _ <- frame.resizableInvokingAndWaiting(true)
+    _ <- frame.packedInvokingAndWaiting()
+    _ <- frame.resizableInvokingAndWaiting(false)
+    _ <- frame.visibleInvokingAndWaiting(true)
+    environment <- IO(Await.result(environmentPromise.future, Duration.Inf))
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
@@ -49,6 +47,7 @@ object SwingView extends View {
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
     _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
+    _ <- frame.setMaximizedExtendedStateInvokeAndWaiting()
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
