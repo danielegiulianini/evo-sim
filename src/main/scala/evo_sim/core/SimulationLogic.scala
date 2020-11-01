@@ -9,7 +9,9 @@ import evo_sim.model.{World}
 import evo_sim.model.World.worldEnvironmentUpdated
 
 
-
+/** Contains utilities used for updating the world after each iteration and for detecting and resolving collisions
+ * between entities.
+ * */
 object SimulationLogic {
   /**
    *  Updates the world by creating a new version of it with updated parameters that represent the effect of time
