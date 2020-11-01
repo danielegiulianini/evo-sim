@@ -5,7 +5,7 @@ object Counter {
 
   private var index = 0
 
-  /** A counter starting from [[evo_sim.model.Utils.index]].
+  /** A counter starting from [[evo_sim.utils.Counter.index]].
    *
    * @return updated counter value
    */
