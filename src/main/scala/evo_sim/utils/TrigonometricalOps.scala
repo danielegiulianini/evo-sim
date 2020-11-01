@@ -22,7 +22,6 @@ object TrigonometricalOps {
     def sinusoidal(yDilatation: Float)(x: Float)(phase: Int)(yTranslation: Int): Int =
       (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation //should rename yDilatation to amplitude
 
-    //
     def zeroPhasedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(0)(_: Int)
 
     def zeroYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(0)
@@ -30,7 +29,8 @@ object TrigonometricalOps {
     def zeroPhasedZeroYTranslatedSinusoidal: (Float, Float) => Int = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
 
     /**
-     * Provides curried versions of [[Sinusoidal]] functions to leverage, among the others, IDE automatic named parameters
+     * Provides curried versions of [[Sinusoidal]] functions
+     * With curried versions leverage, among the others, IDE automatic named parameters.
      */
     object Curried {
       def zeroPhasedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried

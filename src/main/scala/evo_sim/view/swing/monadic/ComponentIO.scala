@@ -5,6 +5,11 @@ import java.awt.event.{ComponentAdapter, ComponentEvent, ComponentListener, Mous
 
 import cats.effect.IO
 
+/**
+ *
+ * @param component
+ * @tparam T
+ */
 class ComponentIO[T<:Component](val component: T){
   def componentListenerAdded(l: ComponentListener) = IO {
     component.addComponentListener(l)

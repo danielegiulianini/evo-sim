@@ -19,12 +19,12 @@ object SimulationEngine {
 
   /**
    *  Provides a monadic description of the actions required to start the simulation.
-   *  The simulation does not start until invoking "run" on the [[IO]] returned.
+   *  The simulation does not start until invoking "run" on the [[IO]] returned from this function.
    */
   def started(): IO[Unit] = {
     for {
       //_ <- inputViewBuiltAndShowed()
-      env <- View.inputReadFromUser() //env <- fromFuture(IO(ViewModule.inputReadFromUser())) //if using promise  //implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+      env <- View.inputReadFromUser()
       _ <- simulationLoop().runS(World(env))
     } yield ()
   }
