@@ -12,25 +12,27 @@ import evo_sim.view.swing.{SwingView => View}
 
 object Simulation {
 
+  /** Represents the IO monad for the Simulation*/
   type SimulationIO[A] = IO[A] //could be not generic: type SimulationIO = IO[Unit]
 
+  /** Represents the [[StateT]] monad transformer that allows to stack [[cats.effect.IO]] monad with [[cats.data.State]] monad.
+   * StateT allows to hide state passing by make it implicit inside StateT monad flatmap.*/
   type Simulation[A] = StateT[SimulationIO, World, A] //type Simulation = StateT[SimulationIO, World, Unit]
 
-  //helper to create StateT monad from a IO monad
+  /** Helper to create [[StateT]] monad from a [[SimulationIO]] monad */
   def liftIo[A](v: SimulationIO[A]): Simulation[A] = StateT[SimulationIO, World, A](s => v.map((s, _)))
 
-  //helper to create StateT monad from a World to (World, A) function
+  /** Helper to create StateT monad from a World => (World, A) function */
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
-  //helper to create StateT monad from a World to World function
+  /** Helper to create StateT monad from a World to World function */
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple2(f(w)))
 
-  //prettier method name than "unsafeRunAsync for starting simulation"
-  implicit class SimulationCanStart[A](simulation: SimulationIO[A]) {
-    def run(): A = simulation unsafeRunSync
-  }
 
-
+  /** Provide conversions from [[cats.effect.IO]] instances and [[cats.data.State]] instances to
+   * more general [[StateT]] monad that allows them to compose (and to be used together in the same
+   * for-comprehension).
+   */
   object toStateTConversions {
     def worldUpdated(): Simulation[World] =
       toStateTWorld { SimulationLogic.worldUpdated }
