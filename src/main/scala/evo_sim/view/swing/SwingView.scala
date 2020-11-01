@@ -3,15 +3,17 @@ package evo_sim.view.swing
 import java.awt.BorderLayout
 
 import cats.effect.IO
-import evo_sim.model.FinalStats.{averageDayEnd, averageDuringDay, blobQuantity, days, dimensionAverage, foodQuantity, velocityAverage}
+import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
+import evo_sim.model.FinalStats.{averageDuringDay, averageSimulation, dayValue, days, entityCharacteristicAverage, entityDayQuantity}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.SwingView.ViewUtils.InputViewUtils.inputViewCreated
 import evo_sim.view.swing.SwingView.ViewUtils.SimulationViewUtils.indicatorsUpdated
-import evo_sim.view.swing.chart.{CategorySeries, ChartsFactory, XySeries}
+import evo_sim.view.swing.chart.ChartsFactory
+import evo_sim.view.swing.chart.Series.{CategorySeries, PieValue, XySeries}
 import evo_sim.view.swing.custom.components.ShapesPanel
-import evo_sim.view.swing.monadic.{BorderFactoryIO, JButtonIO, JComponentIO, JFrameIO, JLabelIO, JPanelIO, JSliderIO}
+import evo_sim.view.swing.monadic._
 import javax.swing.WindowConstants.EXIT_ON_CLOSE
 import javax.swing._
 import org.jfree.ui.tabbedui.VerticalLayout
@@ -57,22 +59,59 @@ object SwingView extends View {
 
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     history <- IO { world.reverse}
+    days <- IO { days(world.head.totalIterations)}
 
-    //days <- IO { List.range(0, (world.head.currentIteration+1)/Constants.ITERATIONS_PER_DAY+1).map(_.toDouble) }
-    days <- IO { days(world.head.totalIterations+1)}
+    velocity <- IO {
+      XySeries("Velocity",
+        days,
+        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].velocity)),
+        SeriesMarkers.NONE,
+        XYSeriesRenderStyle.Line)
+    }
 
-    velocity <- IO { XySeries("velocity", days, averageDuringDay(history)(velocityAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
-    dimension <- IO { XySeries("dimension", days,  averageDuringDay(history)(dimensionAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
-    population <- IO { CategorySeries("population", days, averageDayEnd(history)(blobQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Bar)}
-    food <- IO { CategorySeries("food", days, averageDayEnd(history)(foodQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Line)}
+    dimension <- IO {
+      XySeries("Dimension",
+        days,
+        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].boundingBox.radius)),
+        SeriesMarkers.NONE,
+        XYSeriesRenderStyle.Line)
+    }
 
-    populationChart <- IO { ChartsFactory.histogramChart(675, 300, population, food)}
+    fov <- IO {
+      XySeries("Field of View",
+        days,
+        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].fieldOfViewRadius)),
+        SeriesMarkers.NONE,
+        XYSeriesRenderStyle.Line)
+    }
+
+    population <- IO {
+      CategorySeries("Population",
+        days,
+        dayValue(history)(entityDayQuantity(_.isInstanceOf[Blob])),
+        SeriesMarkers.NONE,
+        CategorySeriesRenderStyle.Bar)
+    }
+
+    food <- IO {
+      CategorySeries("Food",
+        days,
+        dayValue(history)(entityDayQuantity(_.isInstanceOf[Food])),
+        SeriesMarkers.NONE,
+        CategorySeriesRenderStyle.Line)
+    }
+
+    simulationBlobPercentage <- IO { PieValue("Base", population.yData.sum/population.yData.length) }
+    simulationFoodPercentage <- IO { PieValue("Food", food.yData.sum/population.yData.length) }
+    simulationObstaclePercentage <- IO { PieValue("Obstacle", averageSimulation(history)(entityDayQuantity(_.isInstanceOf[Obstacle]))) }
+
+    populationChart <- IO { ChartsFactory.histogramChart("Population", 675, 300, population, food)}
     populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
 
-    velocityChart <- IO { ChartsFactory.xyChart(675, 300, velocity, dimension) }
+    velocityChart <- IO { ChartsFactory.xyChart("Entities characteristic average",675, 300, velocity, dimension, fov) }
     velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
 
-    typologyChart <- IO { ChartsFactory.pieChart(400, 200)}
+    typologyChart <- IO { ChartsFactory.pieChart("Simulation entities percentage", 400, 200, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
     typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
 
     panel <- JPanelIO()
