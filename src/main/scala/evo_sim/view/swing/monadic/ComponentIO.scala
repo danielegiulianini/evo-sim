@@ -6,30 +6,31 @@ import java.awt.event.{ComponentAdapter, ComponentEvent, ComponentListener, Mous
 import cats.effect.IO
 
 /**
- *
- * @param component
- * @tparam T
+ * A class that provides a monadic description of the operations supplied by Swing's [[Component]] in the form
+ * of IO monad in a purely functional fashion.
+ * Every Swing's Component could be wrapped by this class, but note that this package provided some factory
+ * ad-hoc utilities for the most popular Swing's components (see [[JPanelIO]], [[JFrameIO]], [[JButtonIO]]).
+ * @param component the component that this class wraps.
+ * @tparam T the type of the component to be wrapped. and whose methods are to be enhanced with IO description.
  */
 class ComponentIO[T<:Component](val component: T){
-  def componentListenerAdded(l: ComponentListener) = IO {
-    component.addComponentListener(l)
-  }
-  def mouseListenerAdded(l:MouseListener) = IO {
-    component.addMouseListener(l)
-  }
-  def mouseListenerRemoved(l:MouseListener): Unit = IO {
-    component.removeMouseListener(l)
-  }
+
+  def componentListenerAdded(l: ComponentListener) =
+    IO { component.addComponentListener(l) }
+  def mouseListenerAdded(l:MouseListener) =
+    IO {component.addMouseListener(l) }
+
+  def mouseListenerRemoved(l:MouseListener): Unit =
+    IO { component.removeMouseListener(l) }
   def fontGot() = IO {component.getFont}
-  def setPreferredSize(d: Dimension) = IO {
-    component.setPreferredSize(d)
-  }
+  def setPreferredSize(d: Dimension) =
+    IO {component.setPreferredSize(d) }
 
-  def setPreferredSizeInvokingAndWaiting(d: Dimension) = IO {
-    component.setPreferredSize(d)
-  }
+  def setPreferredSizeInvokingAndWaiting(d: Dimension) =
+    IO {component.setPreferredSize(d)  }
 
-  def addComponentAdapterInvokingAndWaiting() = IO {
+  def addComponentAdapterInvokingAndWaiting() =
+    IO {
     component.addComponentListener(new ComponentAdapter {
       override def componentResized(e: ComponentEvent): Unit =
         component.setPreferredSize(component.getSize)
