@@ -1,10 +1,11 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Food
-import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
+import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
 import evo_sim.model._
 import org.scalatest.FunSpec
-import scala.math.{pow, sqrt}
+
+import scala.math.hypot
 
 class MovementTests extends FunSpec {
 
@@ -92,9 +93,8 @@ class MovementTests extends FunSpec {
     }
   }
 
-  //TODO da mettere in utils
   private def distanceBetweenEntities(a: Point2D, b: Point2D): Double = {
-    sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
+    hypot(b.x - a.x, b.y - a.y)
   }
 
 }
