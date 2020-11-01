@@ -29,10 +29,23 @@ object TrigonometricalOps {
     def zeroPhasedZeroYTranslatedSinusoidal: (Float, Float) => Int = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
 
     /**
-     * Provides curried versions of [[Sinusoidal]] functions
-     * With curried versions leverage, among the others, IDE automatic named parameters.
+     * Provides curried versions of [[Sinusoidal]] functions.
+     * By supplyng curried versions, function invocations can leverage, among the others, IDE automatic named
+     * parameters.
      */
     object Curried {
+      /**
+       * Curried version of [[zeroPhasedSinusoidal]] that can be invoked with a syntax like that:
+       * {{{
+       *   zeroPhasedSinusoidalSin(1)(2)(3)
+       * }}}
+       * instead of non curried version:
+       * {{{
+       *    zeroPhasedSinusoidalSin(1, 2, 3)
+       * }}}
+       *
+       * @return the sine wave value corrisponding to the provided input.
+       */
       def zeroPhasedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried
 
       def zeroYTranslatedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroYTranslatedSinusoidal.curried
