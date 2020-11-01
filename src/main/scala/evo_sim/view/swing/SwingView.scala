@@ -3,19 +3,22 @@ package evo_sim.view.swing
 import java.awt.BorderLayout
 
 import cats.effect.IO
-import evo_sim.model.FinalStats.{food, population}
+import evo_sim.model.FinalStats.{averageDayEnd, averageDuringDay, blobQuantity, dimensionAverage, foodQuantity, velocityAverage}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.SwingView.ViewUtils.InputViewUtils.inputViewCreated
 import evo_sim.view.swing.SwingView.ViewUtils.SimulationViewUtils.indicatorsUpdated
-import evo_sim.view.swing.chart.ChartsFactory
+import evo_sim.view.swing.chart.{CategorySeries, ChartsFactory, XySeries}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.monadic.{BorderFactoryIO, JButtonIO, JComponentIO, JFrameIO, JLabelIO, JPanelIO, JSliderIO}
 import javax.swing.WindowConstants.EXIT_ON_CLOSE
 import javax.swing._
 import org.jfree.ui.tabbedui.VerticalLayout
+import org.knowm.xchart.CategorySeries.CategorySeriesRenderStyle
 import org.knowm.xchart.XChartPanel
+import org.knowm.xchart.XYSeries.XYSeriesRenderStyle
+import org.knowm.xchart.style.markers.SeriesMarkers
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Promise}
@@ -55,13 +58,38 @@ object SwingView extends View {
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     history <- IO { world.reverse}
 
-    //chart <- IO { ChartsFactory.xyChart(200, 200, population(history))}
-    chart <- IO { ChartsFactory.histogramChart(200, 200, population(history), food(history))}
-    chartPanel <- IO { new JComponentIO(new XChartPanel(chart)) }
+    /* dimensioni <- IO { frame.component.getSize }
+    _ <- IO { println(dimensioni) } */
+
+    xIterationData <- IO { List.range(0, (world.head.currentIteration+1)/Constants.ITERATIONS_PER_DAY+1).map(_.toDouble) }
+
+    velocity <- IO { XySeries("velocity", xIterationData, averageDuringDay(history)(velocityAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
+    dimension <- IO { XySeries("dimension", xIterationData,  averageDuringDay(history)(dimensionAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
+    population <- IO { CategorySeries("population", xIterationData, averageDayEnd(history)(blobQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Bar)}
+    food <- IO { CategorySeries("food", xIterationData, averageDayEnd(history)(foodQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Line)}
+
+
+    _ <- IO { println(xIterationData) }
+    _ <- IO { println(population.yData.size) }
+    _ <- IO { println(velocity) }
+
+    populationChart <- IO { ChartsFactory.histogramChart(675, 300, population, food)}
+    populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
+
+    velocityChart <- IO { ChartsFactory.xyChart(675, 300, velocity, dimension) }
+    velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
+
+    typologyChart <- IO { ChartsFactory.pieChart(400, 200)}
+    typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
+
+    panel <- JPanelIO()
+    _ <- panel.added(populationChartPanel)
+    - <- panel.added(velocityChartPanel)
+    _ <- panel.added(typologyChartPanel)
 
     cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
-    _ <- cp.addedInvokingAndWaiting(chartPanel, BorderLayout.CENTER)
+    _ <- cp.addedInvokingAndWaiting(panel)
     _ <- frame.packedInvokingAndWaiting()
     _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
