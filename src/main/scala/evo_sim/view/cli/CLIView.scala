@@ -1,14 +1,16 @@
 package evo_sim.view.cli
 
 import cats.effect.IO
+import cats.implicits._
 import evo_sim.model.Constants._
+import evo_sim.model.FinalStats.{averageDayEnd, averageDuringDay, blobQuantity, dimensionAverage, foodQuantity, velocityAverage}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
-import evo_sim.utils.ConsoleIO.printlnIO
+import evo_sim.utils.ConsoleIO._
 import evo_sim.view.View
-import cats.implicits._
 import evo_sim.view.cli.CLIView.ViewUtils.InputViewUtils.read
-import evo_sim.view.cli.CLIView.ViewUtils.SimulationViewUtils.IndicatorsUpdated
+import evo_sim.view.cli.CLIView.ViewUtils.SimulationViewUtils.indicatorsUpdated
+import evo_sim.view.cli.CLIView.ViewUtils.ResultViewUtils.resultsShow
 
 /** Provides a view implementation that uses the default CLI */
 object CLIView extends View {
@@ -31,12 +33,11 @@ object CLIView extends View {
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
-    _ <- IndicatorsUpdated(world)
+    _ <- indicatorsUpdated(world)
   } yield ()
 
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
-    _ <- IO apply {}
-    // TODO: print final indicators
+    _ <- resultsShow(world.reverse)
   } yield ()
 
   /** Contains some utilities for creating [[CLIView]].*/
@@ -70,7 +71,7 @@ object CLIView extends View {
       }
     }
     object SimulationViewUtils {
-      def IndicatorsUpdated(world: World): IO[Unit] = for {
+      def indicatorsUpdated(world: World): IO[Unit] = for {
         _ <- printlnIO("Days: " +
           fromIterationsToDays(world.currentIteration) + "/" +
           fromIterationsToDays(world.totalIterations))
@@ -79,7 +80,12 @@ object CLIView extends View {
       } yield ()
     }
     object ResultViewUtils {
-
+      def resultsShow(history: WorldHistory): IO[Unit] = for {
+        _ <- printlnIO("Average velocity per day: " + averageDuringDay(history)(velocityAverage))
+        _ <- printlnIO("Average dimension per day: " + averageDuringDay(history)(dimensionAverage))
+        _ <- printlnIO("Survived blobs: " + averageDayEnd(history)(blobQuantity))
+        _ <- printlnIO("Food left: " + averageDayEnd(history)(foodQuantity))
+      } yield ()
     }
   }
 
