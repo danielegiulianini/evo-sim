@@ -31,7 +31,7 @@ object Queriable {
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     implicitly[Queriable[F]].contained(t, elem._1) || implicitly[Queriable[F]].contained(t, elem._2)
 
-  //enabling DOT notation
+  //enabling DOT notation TODO
   /*implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
     def contained[T](elem: T): Boolean =
       implicitly[Queriable[F]].contained(qa, elem)
