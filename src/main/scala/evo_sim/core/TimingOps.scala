@@ -17,7 +17,13 @@ object TimingOps {
   def getTime() =
     IO { System.currentTimeMillis().millis }
 
-
+  /** Returns a [[IO]] description that when evaluated will create an asynchronous task that will sleep
+   * for the the interval between specified durations.
+   *
+   * @param from the lower bound for of the time interval to be slept
+   * @param to the upper bound of the time interval until when sleep.
+   * @return the IO monad describing the sleeping operation.
+   */
   def waitUntil(from: FiniteDuration, to: FiniteDuration) =
     if (from < to) {
       IO.sleep(to - from)
