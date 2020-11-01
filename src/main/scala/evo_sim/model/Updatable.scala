@@ -21,8 +21,9 @@ trait Updatable {
   def updated(world: World) : Set[SimulableEntity]
 }
 
-/** This companion object of [[Updatable]] provides some Updatable ready-to-be-(re)used
- * implementations that can be mounted on an given [[Collidable]] implementation.
+/** This companion object of [[Updatable]] provides some interchangeable Updatable ready-to-be-(re)used
+ * implementations that can be mounted on a given [[Collidable]] instance independently of its actual
+ * implementation.
  * By leveraging them, implementing Collidable suffices for a [[Entity]] to be part of the simulation.
  * To be noted that Collidable c.o. provides some ready implementations of Collidable too.
  */

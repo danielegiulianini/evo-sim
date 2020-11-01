@@ -11,12 +11,31 @@ import evo_sim.model.effects.{DegradationEffect, Effect}
 
 object EntityBehaviour {
 
+  /**
+   * Defines the behavioural nature of a type implementing it, in contrast to the structural
+   * nature of [[Entity]]ies.
+   */
   trait Simulable extends Updatable with Collidable //-able suffix refers to behaviour only
+
+  /** Defines the type of the entities contained in [[World]] and, by doing so, it specifies the requirement
+   * for a type to be part of the simulation, i.e. the need to be an [[Entity]] (structural component) and
+   * to provide an [[Updatable]] and [[Collidable]] implementations (behavioural component)
+   */
   type SimulableEntity = Entity with Simulable
 
-  //companion object with some simulable implementations ready to be (re)used (in the future)
+  /** This companion object of [[Simulable]] provides some Simulable ready-to-be-(re)used self-type
+   * implementations that can be stacked on an given [[Entity]] implementation, independently of the actual
+   * Entity implementation using them.
+   * By leveraging them, an [[Entity]] is ready to be part of the simulation.
+   */
   object Simulable {
-
+    /**
+     * Defines a [[SimulableEntity]] implementation that does nothing on update and collide notifications,
+     * returning on update and collision events the [[SimulableEntity]] as it was before,
+     * without any modification, independently for the Entity on which that self-type is applied to.
+     * Given an Entity, it's ready to be used for fulfilling the requirements needed to take part
+     * in the simulation.
+     */
     trait NeutralBehaviour extends NeutralCollidable with NeutralUpdatable {
       self: Entity =>
     }
@@ -41,12 +60,12 @@ object EntityBehaviour {
       }
     }
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-        case food: Food => food.effect(self)
-        case obstacle: Obstacle => obstacle.effect(self)
-        case blob: CannibalBlob => if (blob.boundingBox.radius > self.boundingBox.radius)
-          Set(self.copy(life = Constants.DEF_BLOB_DEAD)) else Set(self.copy())
-        case _ => Set(self)
-      }
+      case food: Food => food.effect(self)
+      case obstacle: Obstacle => obstacle.effect(self)
+      case blob: CannibalBlob => if (blob.boundingBox.radius > self.boundingBox.radius)
+        Set(self.copy(life = Constants.DEF_BLOB_DEAD)) else Set(self.copy())
+      case _ => Set(self)
+    }
   }
 
   /**
@@ -69,11 +88,11 @@ object EntityBehaviour {
       }
     }
     override def collided(other: SimulableEntity): Set[SimulableEntity] = other match {
-        case food: Food => food.effect(self)
-        case obstacle: Obstacle => obstacle.effect(self)
-        case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
-        case _ => Set(self)
-      }
+      case food: Food => food.effect(self)
+      case obstacle: Obstacle => obstacle.effect(self)
+      case base: BaseBlob => if (self.boundingBox.radius > base.boundingBox.radius) Set(self.copy(life = self.life + base.life)) else Set(self.copy())
+      case _ => Set(self)
+    }
   }
 
   /**
@@ -123,15 +142,15 @@ object EntityBehaviour {
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
     override def updated(world: World): Set[SimulableEntity] = self.lifeCycle match {
-        case n if n > 0 =>
-          Set(updatedPlant)
-        case _ => Set(BaseFood(
-          name = "generatedFood" + nextValue,
-          boundingBox = BoundingBox.Triangle(point = randomPosition(), height = foodHeight),
-          degradationEffect = DegradationEffect.standardDegradation,
-          life = Constants.DEF_FOOD_LIFE,
-          effect = foodEffect), defaultPlant)
-      }
+      case n if n > 0 =>
+        Set(updatedPlant)
+      case _ => Set(BaseFood(
+        name = "generatedFood" + nextValue,
+        boundingBox = BoundingBox.Triangle(point = randomPosition(), height = foodHeight),
+        degradationEffect = DegradationEffect.standardDegradation,
+        life = Constants.DEF_FOOD_LIFE,
+        effect = foodEffect), defaultPlant)
+    }
 
     def updatedPlant: Plant with PlantBehaviour
     def defaultPlant: Plant with PlantBehaviour

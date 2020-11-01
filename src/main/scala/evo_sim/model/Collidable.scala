@@ -20,7 +20,8 @@ trait Collidable {
 }
 
 /** This companion object of [[Collidable]] provides some Collidable ready-to-be-(re)used
- * implementations that can be stacked on an given [[Updatable]] implementation.
+ * implementations that can be stacked on a given [[Updatable]] instance independently of its actual
+ * implementation.
  * By leveraging them, implementing Updatable suffices for a [[Entity]] to be part of the simulation.
  * To be noted that Updatable c.o. provides some ready implementations of Collidable too.
  */
