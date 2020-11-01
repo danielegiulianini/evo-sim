@@ -1,6 +1,7 @@
+package evo_sim.model
+
 import evo_sim.model.Entities.{BaseBlob, BaseObstacle}
 import evo_sim.model.EntityStructure.Blob
-import evo_sim.model._
 import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
 import evo_sim.utils.TestUtils._
 import org.scalatest.FunSpec
@@ -78,7 +79,7 @@ class ObstacleTests extends FunSpec {
       }
       describe("multiple times") {
         it("should die") {
-          val updatedBlob = chain(40)(blob)(b =>
+          val updatedBlob = chain(Constants.DEF_BLOB_LIFE * Constants.DEF_DAMAGE)(blob)(b =>
             b.collided(stone).collect{ case b: BaseBlob => b}.head)
           assert(updatedBlob.life <= 0)
         }
