@@ -6,15 +6,15 @@ class TestTupleUtils extends FunSpec {
   //1. everyElementPairedWithOnlyOneOtherElement
 
   //2. implicit conversions:
-    //1. contained for tuples
-    //2. contained for set
-    //3. contained for tupleset
+  //1. contained for tuple2
+  //2. contained for set
+  //3. contained for tuple2set
 
   //3.containsAnyOf
 
-  //test
-  val testSet: Set[(Int,Int)] = Set((1, 2), (1, 3))
-  val tupleSet = (0, 2)
+  //test sets
+  val tuple2TestSet = (0, 2)
+  val setOfTuple2TestSet: Set[(Int,Int)] = Set((1, 2), (0, 3))
 
 
   /*println("starting set:" + testSet)
@@ -24,7 +24,20 @@ class TestTupleUtils extends FunSpec {
   val testSet2 = Set((1, 2), (1, 3), (3, 1))
   println("il set filtrato e': " + TupleUtils.everyElementPairedWithOnlyOneOtherElement(testSet2))*/
 
-  describe("A ") {
+  describe("A tuple2") {
+    describe("initialized with 2 values and not updated"){
+      it("should contain these values") {
+        assert(
+          evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2.contained(tuple2TestSet, 0)
+            &&
+            evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2.contained(tuple2TestSet, 2))
 
+      }
+      it("should not contain values different to those values") {
+        assert(!evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2.contained(tuple2TestSet, 1))
+      }
+    }
   }
+
+
 }
