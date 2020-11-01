@@ -5,7 +5,7 @@ import evo_sim.model.Constants.ITERATIONS_PER_DAY
 import evo_sim.model.Entities._
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Point2D.randomPosition
-import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
+import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidal
 import evo_sim.model.World.WorldHistory
 import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
 import evo_sim.utils.MemoHelper.memoize
@@ -114,12 +114,12 @@ object World {
     // every time, unnecessarily)
     val luminosityUpdated: ((Int, Float)) => Int = memoize({
       case (luminosity, timeOfTheDay) =>
-        luminosity + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.LUMINOSITY_AMPLITUDE)(timeOfTheDay)
+        luminosity + zeroPhasedZeroYTranslatedSinusoidal(Constants.LUMINOSITY_AMPLITUDE)(timeOfTheDay)
     })
 
     val temperatureUpdated: ((Int, Float)) => Int = memoize({
       case (temperature, timeOfTheDay) =>
-        temperature + zeroPhasedZeroYTranslatedSinusoidalSin(Constants.TEMPERATURE_AMPLITUDE)(timeOfTheDay)
+        temperature + zeroPhasedZeroYTranslatedSinusoidal(Constants.TEMPERATURE_AMPLITUDE)(timeOfTheDay)
     })
 
     val time = timeOfTheDay(world.currentIteration)
