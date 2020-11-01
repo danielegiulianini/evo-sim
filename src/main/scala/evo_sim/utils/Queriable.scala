@@ -7,17 +7,16 @@ package evo_sim.utils
  */
 trait Queriable[F[_]]{
   /**
-   *
+   * Returns whether the type functor instance specified contains the element provided.
    * @param t the type functor instance to be pimped with the contained functionality
    * @param elem the element to be searched inside the t instance
    * @tparam T the generic type of the element to be searched
-   * @return whether the type functor instance contains the element provided
+   * @return true if the type functor instance contains the element provided, false otherwise (as determined by ==)
    */
   def contained[T](t: F[T], elem: T) : Boolean
 }
 
-/**
- * Provides some algorithms built on top of [[Queriable]] ready to be used once a given type functor is given
+/** Provides some algorithms built on top of [[Queriable]] ready to be used once a given type functor is given
  * a conversion to it. See [[QueriableImplicits]] for implicit conversions to [[Queriable]] type class.
  */
 object Queriable {
@@ -48,7 +47,6 @@ object QueriableImplicits {
   implicit object ContainsForSet extends Queriable[Set]{
     override def contained[T](t: Set[T], elem: T): Boolean = t.contains(elem)
   }
-
 
   /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[HomogeneousTuple2]], ie: how it can be
    * considered a [[Queriable]].
