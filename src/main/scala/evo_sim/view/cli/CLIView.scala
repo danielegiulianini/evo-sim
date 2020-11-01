@@ -3,7 +3,8 @@ package evo_sim.view.cli
 import cats.effect.IO
 import cats.implicits._
 import evo_sim.model.Constants._
-import evo_sim.model.FinalStats.{averageDayEnd, averageDuringDay, blobQuantity, dimensionAverage, foodQuantity, velocityAverage}
+import evo_sim.model.EntityStructure.{Blob, Food}
+import evo_sim.model.FinalStats.{averageDuringDay, dayValue, entityCharacteristicAverage, entityDayQuantity}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Environment, World}
 import evo_sim.utils.ConsoleIO._
@@ -87,11 +88,13 @@ object CLIView extends View {
     }
     object ResultViewUtils {
       def resultsShow(history: WorldHistory): IO[Unit] = for {
-        _ <- printlnIO("Average velocity per day: " + averageDuringDay(history)(velocityAverage))
-        _ <- printlnIO("Average dimension per day: " + averageDuringDay(history)(dimensionAverage))
-        _ <- printlnIO("Survived blobs: " + averageDayEnd(history)(blobQuantity))
-        _ <- printlnIO("Food left: " + averageDayEnd(history)(foodQuantity))
+        _ <- printlnIO("Average velocity: " + totalAverage(averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].velocity))))
+        _ <- printlnIO("Average dimension: " + totalAverage(averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].boundingBox.radius))))
+        _ <- printlnIO("Average field of view range: " + totalAverage(averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].fieldOfViewRadius))))
+        _ <- printlnIO("Survived blobs: " + dayValue(history)(entityDayQuantity(_.isInstanceOf[Blob])).last.toInt)
+        _ <- printlnIO("Food left: " + dayValue(history)(entityDayQuantity(_.isInstanceOf[Food])).last.toInt)
       } yield ()
+      private def totalAverage(list: List[Double]): Double = list.sum / list.size
     }
   }
 
