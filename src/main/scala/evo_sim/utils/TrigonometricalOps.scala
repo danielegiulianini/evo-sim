@@ -1,12 +1,19 @@
 package evo_sim.utils
 
+/**
+ * Contains functions for performing trigonometrical operations, like sine wave computation.
+ */
 object TrigonometricalOps {
 
+  /**
+   * Provides sine wave computation implementations.
+   */
   object Sinusoidal {
     def sinusoidal(yDilatation: Float)(x: Float)(phase: Int)(yTranslation: Int): Int =
       (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation //should rename yDilatation to amplitude
 
-    //most used, common and popular sinusoidalSin invocations (for this purpose translated in partially-applied functions)
+    //most used, common and popular sinusoidalSin invocations.
+    // (for this purpose translated in partially-applied functions)
     def zeroPhasedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(0)(_: Int)
 
     def zeroYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(0)
