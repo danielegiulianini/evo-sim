@@ -39,5 +39,18 @@ class TestTupleUtils extends FunSpec {
     }
   }
 
+  describe("A tuple2Set") {
+    describe("initialized with some values and not updated"){
+      it("should contain these values") {
+        assert(
+          evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2Set.contained(setOfTuple2TestSet, 0)
+            &&
+            evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2Set.contained(setOfTuple2TestSet, 2))
 
+      }
+      it("should not contain values different to those values") {
+        assert(!evo_sim.utils.QueriableImplicits.ContainsForHomogeneousTuple2Set.contained(setOfTuple2TestSet, 4))
+      }
+    }
+  }
 }
