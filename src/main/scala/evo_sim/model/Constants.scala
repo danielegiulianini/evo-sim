@@ -14,8 +14,8 @@ object Constants {
   /** How many simulation loops in a day */
   val ITERATIONS_PER_DAY = 500
   /** Time lapse between one interaction and the next */
-  //val ITERACTION_LAPSE: Double = 0.017
-  val ITERACTION_LAPSE: Double = 0.05
+  //val ITERATION_LAPSE: Double = 0.017
+  val ITERATION_LAPSE: Double = 0.05
 
   /** Growth rate of the temperature */
   val TEMPERATURE_AMPLITUDE = 1.0125f
@@ -34,7 +34,7 @@ object Constants {
   /** A blob's default velocity when in slow status */
   val DEF_BLOB_SLOW_VELOCITY: Int = DEF_BLOB_VELOCITY / 2
   /** A blob's minimum velocity */
-  val MIN_BLOB_VELOCITY = DEF_BLOB_SLOW_VELOCITY
+  val MIN_BLOB_VELOCITY: Int = DEF_BLOB_SLOW_VELOCITY
   /** A blob's default field of view radius */
   val DEF_BLOB_FOW_RADIUS = 50
   /** Minimum value of  field of view radius */
@@ -126,9 +126,9 @@ object Constants {
   val TEMPERATURE_OFFSET: Int = -MIN_TEMPERATURE
 
   /** Minimum days a simulation can last */
-  val MIN_DAYS = 0
+  val MIN_DAYS = 1
   /** Maximum days a simulation can last */
-  val MAX_DAYS = 365
+  val MAX_DAYS = 366
   /** Default days a simulation lasts */
   val DEF_DAYS = 30
 

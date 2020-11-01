@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
 import evo_sim.model.EntityStructure.Entity
 
-/** Defines the ability of being updatable, i.e. how a type extending this trait reacts when [[SimulationLogic]]
+/** Defines the ability of being updatable, i.e. how a type extending this trait reacts when [[evo_sim.core.SimulationLogic]]
  * calls updated on it, once per iteration.
  * Together with [[Collidable]] (they forms [[Simulable]]) and [[Entity]], it represents the only requirement for a
  * type to be part of the simulation.

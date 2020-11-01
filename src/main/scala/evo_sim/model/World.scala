@@ -68,7 +68,7 @@ object World {
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
       effect = Effect.damageEffect)
 
-    val puddles: Set[BaseObstacle] =(env.initialObstacleNumber.toDouble./(2).floor.toInt) of BaseObstacle(
+    val puddles: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).floor.toInt of BaseObstacle(
       name = "puddle" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
       effect = Effect.slowEffect)
@@ -131,20 +131,20 @@ object World {
 
   /** Converts from simulation iterations (the atomic temporal unit that regulates the
    * simulation) to days (the temporal interval between which [[EnvironmentParameters]]
-   * return the same), depending on [[ITERATIONS_PER_DAY]].
+   * return the same), depending on [[Constants.ITERATIONS_PER_DAY]].
    * @param iteration iteration
    * @return the days amount corresponding to the iteration
    */
-  def fromIterationsToDays(iteration : Int) = iteration / ITERATIONS_PER_DAY
+  def fromIterationsToDays(iteration : Int): Int = iteration / ITERATIONS_PER_DAY
 
   /** Converts from simulation days (the temporal interval between which [[EnvironmentParameters]]
    * return the same) and iterations (the atomic temporal unit that regulates the
-   * simulation) to iterations, depending on [[ITERATIONS_PER_DAY]].
+   * simulation) to iterations, depending on [[Constants.ITERATIONS_PER_DAY]].
    *
    * @param day day
    * @return the iterations amount corresponding to the days
    */
-  def fromDaysToIterations(day : Int) = day * ITERATIONS_PER_DAY
+  def fromDaysToIterations(day : Int): Int = day * ITERATIONS_PER_DAY
 
 
   /** Returns the time of the day as a float ranging from 0 to 1 excluded given the iteration number.

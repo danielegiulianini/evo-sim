@@ -1,7 +1,7 @@
 package evo_sim.prolog
 
 import alice.tuprolog._
-import evo_sim.model.Constants.{ITERACTION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
+import evo_sim.model.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
 import evo_sim.model.EntityStructure.Intelligent
 import evo_sim.model.{Direction, Movement, Point2D}
 import evo_sim.prolog.PrologEngine.engine
@@ -48,6 +48,6 @@ object MovingStrategiesProlog {
 
   private def extractVarValue(term: Term, argNumber: scala.Int): Term = term.asInstanceOf[Struct].getArg(argNumber)
 
-  private def constantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, WORLD_WIDTH, WORLD_HEIGHT, ITERACTION_LAPSE)
+  private def constantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, WORLD_WIDTH, WORLD_HEIGHT, ITERATION_LAPSE)
 
 }

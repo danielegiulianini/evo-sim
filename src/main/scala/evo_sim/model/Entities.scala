@@ -3,7 +3,7 @@ package evo_sim.model
 import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl._
 import evo_sim.model.EntityStructure._
 import evo_sim.model.effects.Effect
 

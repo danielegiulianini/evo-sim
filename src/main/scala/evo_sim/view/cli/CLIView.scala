@@ -45,9 +45,14 @@ object CLIView extends View {
     object InputViewUtils {
       final case class NumberOutsideOfRangeException(private val message: String, private val cause: Throwable = None.orNull)
         extends Exception(message, cause)
-      def read(text: String, min: Int, max: Int): IO[Int] = {
-        print("Enter " + text + " (between " + min + " and " + max + "): ")
-        scala.io.StdIn.readLine().checkIfInteger match {
+
+      def read(text: String, min: Int, max: Int): IO[Int] = for {
+        _ <- printIO("Enter " + text + " (between " + min + " and " + max + "): ")
+        readText <- readlnIO()
+        value <- handleInputString(readText, min, max)
+      } yield value
+
+      def handleInputString(s: String, min: Int, max: Int): IO[Int] = s.checkIfInteger match {
           case Left(_: NumberFormatException) =>
             println("Error: input contains invalid characters.")
             sys.exit(1)
@@ -58,12 +63,13 @@ object CLIView extends View {
             case Right(_) => IO pure result
           }
         }
-      }
+
       implicit class StringInteger(s: String) {
         def checkIfInteger: Either[NumberFormatException, Int] =
           if (s.matches("-?[0-9]+")) Either.right(s.toInt)
           else Either.left(new NumberFormatException(s + " is not a valid integer."))
       }
+
       implicit class IntegerInRange(i: Int) {
         def checkIfInRange(min: Int, max: Int): Either[NumberOutsideOfRangeException, Boolean] =
           if (min to max contains i) Either.right(true)
