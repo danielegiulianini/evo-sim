@@ -12,6 +12,9 @@ import evo_sim.model.World
 
 import scala.concurrent.duration._
 
+/**
+ *
+ */
 object SimulationEngine {
 
   def started(): IO[Unit] = {

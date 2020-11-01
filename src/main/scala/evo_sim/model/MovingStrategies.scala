@@ -30,23 +30,63 @@ object MovingStrategies {
 
 }
 
-/*
-chart <- IO { new XYChart(200,200)}
-    _ <- IO { chart.addSeries("prova", List.range(0,10).map(_.toDouble).toArray) }
+/* history <- IO { world.reverse}
 
-    chartPanel <- IO { new JComponentIO(new XChartPanel[XYChart](chart)) }
-    chartPanel2 <- IO { new JComponentIO(new XChartPanel[XYChart](chart)) }
-    _ <- IO { println(chartPanel.component.getWidth) }
+    /* dimensioni <- IO { frame.component.getSize }
+    _ <- IO { println(dimensioni) } */
 
-    /* panel <- JPanelIO()
-    _ <- IO { panel.layoutSet(new VerticalLayout()) }
-    _ <- IO { panel.added(chartPanel) }
-    _ <- IO { panel.added(chartPanel2) } */
+    xIterationData <- IO { List.range(0, (world.head.currentIteration+1)/Constants.ITERATIONS_PER_DAY+1).map(_.toDouble) }
+
+    velocity <- IO { XySeries("velocity", xIterationData, averageDuringDay(history)(velocityAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
+    dimension <- IO { XySeries("dimension", xIterationData,  averageDuringDay(history)(dimensionAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
+    population <- IO { CategorySeries("population", xIterationData, averageDayEnd(history)(blobQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Bar)}
+    food <- IO { CategorySeries("food", xIterationData, averageDayEnd(history)(foodQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Line)}
+
+
+    _ <- IO { println(xIterationData) }
+    _ <- IO { println(population.yData.size) }
+    _ <- IO { println(velocity) }
+
+    populationChart <- IO { ChartsFactory.histogramChart(675, 300, population, food)}
+    populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
+
+    velocityChart <- IO { ChartsFactory.xyChart(675, 300, velocity, dimension) }
+    velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
+
+    typologyChart <- IO { ChartsFactory.pieChart(400, 200)}
+    typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
+
+    panel <- JPanelIO()
+    _ <- panel.added(populationChartPanel)
+    - <- panel.added(velocityChartPanel)
+    _ <- panel.added(typologyChartPanel)
 
     cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
-    _ <- cp.addedInvokingAndWaiting(chartPanel2, BorderLayout.NORTH)
-    _ <- cp.addedInvokingAndWaiting(chartPanel, BorderLayout.CENTER)
+    _ <- cp.addedInvokingAndWaiting(panel)
     _ <- frame.packedInvokingAndWaiting()
     _ <- frame.visibleInvokingAndWaiting(true)
- */
+  } yield () */
+
+/*def velocityAverage(history: WorldHistory): List[Double] = {
+    val origin = iterationVelocityAverage(history.head.entities)
+    val speedAverageDays = history.grouped(Constants.ITERATIONS_PER_DAY).map(_.map(singleIteration => iterationVelocityAverage(singleIteration.entities)).sum / Constants.ITERATIONS_PER_DAY).toList
+    origin :: speedAverageDays
+  }
+
+  def dimensionAverage(history: WorldHistory): List[Double] = {
+    val origin = iterationDimensionAverage(history.head.entities)
+    val dimensionAverageDays = history.grouped(Constants.ITERATIONS_PER_DAY).map(_.map(singleIteration => iterationDimensionAverage(singleIteration.entities)).sum / Constants.ITERATIONS_PER_DAY).toList
+    origin :: dimensionAverageDays
+  }
+
+  def iterationVelocityAverage(entities: Set[SimulableEntity]): Double = {
+    val blobVelocity = entities.filter(_.isInstanceOf[Blob]).toList.map(_.asInstanceOf[Blob].velocity)
+    blobVelocity.sum / blobVelocity.length
+  }
+
+  def iterationDimensionAverage(entities: Set[SimulableEntity]): Double = {
+    val blobVelocity = entities.filter(_.isInstanceOf[Blob]).toList.map(_.asInstanceOf[Blob].boundingBox.radius)
+    blobVelocity.sum / blobVelocity.length
+  }
+  */
