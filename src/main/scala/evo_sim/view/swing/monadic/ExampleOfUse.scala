@@ -6,6 +6,10 @@ import java.awt.BorderLayout
 import cats.effect.IO
 import javax.swing.WindowConstants
 
+/**
+ * This objects provides a simple example of use for the classes contained in this package that helps to build
+ * GUI in a purely functional fashion.
+ */
 object Example1 extends App {
   val guiBuilt = for {
     jf <- JFrameIO()

@@ -8,8 +8,8 @@ import cats.effect.IO
 /**
  * A class that provides a monadic description of the operations supplied by Swing's [[Component]] in the form
  * of IO monad in a purely functional fashion.
- * Every Swing's Component could be wrapped by this class, but note that this package provided some factory
- * ad-hoc utilities for the most popular Swing's components (see [[JPanelIO]], [[JFrameIO]], [[JButtonIO]]).
+ * Every Swing's Component could be wrapped by this class, but note that this package provided some ad-hoc factory
+ * utilities for the most popular Swing's components (see [[JPanelIO]], [[JFrameIO]], [[JButtonIO]]).
  * @param component the component that this class wraps.
  * @tparam T the type of the component to be wrapped. and whose methods are to be enhanced with IO description.
  */
