@@ -3,6 +3,7 @@ package evo_sim.core
 import scala.language.postfixOps
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
+import evo_sim.model.Constants.SIMULATION_LOOP_PERIOD
 import evo_sim.view.swing.{SwingView => View}
 //import evo_sim.view.cli.{CLIView => View}
 import evo_sim.core.Simulation._
@@ -42,7 +43,7 @@ object SimulationEngine {
     worldAfterCollisions <- collisionsHandled
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
-    _ <- waitUntil(currentTime - startTime, 10 millis)  //TODO use constants
+    _ <- waitUntil(currentTime - startTime, SIMULATION_LOOP_PERIOD millis)
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else resultShowed(worldAfterCollisions.worldHistory)
   } yield ()
