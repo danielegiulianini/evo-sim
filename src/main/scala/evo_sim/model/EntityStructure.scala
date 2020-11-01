@@ -3,14 +3,14 @@ package evo_sim.model
 import scala.language.higherKinds
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, Effect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, CollisionEffect, Life, LifeCycle, MovementStrategy, Velocity}
 
 object EntityStructure {
   trait Domain {
     type Life
     type Velocity
     type DegradationEffect[A] >: A => Life
-    type Effect //name to be changed
+    type CollisionEffect
     type Position
     type MovementStrategy
     type Cooldown
@@ -21,7 +21,7 @@ object EntityStructure {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
-    override type Effect = Blob => Set[SimulableEntity]  //name to be changed
+    override type CollisionEffect = Blob => Set[SimulableEntity]  //name to be changed
     override type Position = Movement
     override type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
     override type Cooldown = Int
@@ -57,7 +57,7 @@ object EntityStructure {
    * [[evo_sim.model.EntityStructure.Food]] and [[evo_sim.model.EntityStructure.Obstacle]] eventually extends this trait.
    */
   sealed trait Effectful extends Entity {
-    def effect: Effect
+    def collisionEffect: CollisionEffect
   }
 
   /**

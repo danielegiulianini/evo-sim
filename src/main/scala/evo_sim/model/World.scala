@@ -7,7 +7,7 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidalSin
 import evo_sim.model.World.WorldHistory
-import evo_sim.model.effects.{DegradationEffect, Effect}
+import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
 import evo_sim.utils.MemoHelper.memoize
 import evo_sim.utils.Counter._
 
@@ -66,12 +66,12 @@ object World {
     val stones: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).ceil.toInt of BaseObstacle(
       name = "stone" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_STONE_WIDTH, height = Constants.DEF_STONE_HEIGHT),
-      effect = Effect.damageEffect)
+      collisionEffect = CollisionEffect.damageEffect)
 
     val puddles: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).floor.toInt of BaseObstacle(
       name = "puddle" + nextValue(),
       boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = Constants.DEF_PUDDLE_WIDTH, height = Constants.DEF_PUDDLE_HEIGHT),
-      effect = Effect.slowEffect)
+      collisionEffect = CollisionEffect.slowEffect)
 
     val standardPlants: Set[StandardPlant] = (env.initialPlantNumber.toDouble / 2).floor.toInt of StandardPlant(
       name = "standardPlant" + nextValue(),

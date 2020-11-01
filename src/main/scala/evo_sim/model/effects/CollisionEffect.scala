@@ -8,9 +8,9 @@ import evo_sim.utils.Counter._
 import evo_sim.model.{BlobEntityHelper, Constants, Direction, MovingStrategies}
 
 /**
- * Singleton object that provides different effect implementations to be used by object that extend [[evo_sim.model.EntityStructure.Effectful]].
+ * Singleton object that provides different collision effect implementations to be used by object that extend [[evo_sim.model.EntityStructure.Effectful]].
  */
-object Effect {
+object CollisionEffect {
 
   /**
    * Returns a set with a copy of the [[evo_sim.model.EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]].
