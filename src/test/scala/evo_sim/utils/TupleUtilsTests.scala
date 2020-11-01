@@ -1,5 +1,6 @@
 import evo_sim.utils.Queriable.containedAnyOf
 import evo_sim.utils.QueriableImplicits.ContainsForSet
+import evo_sim.utils.TupleUtils.everyElementPairedWithOnlyOneOtherElement
 import org.scalatest.FunSpec
 
 class TestTupleUtils extends FunSpec {
@@ -19,14 +20,6 @@ class TestTupleUtils extends FunSpec {
   val tuple2TestSet = (0, 2)
   val setOfTuple2TestSet: Set[(Int,Int)] = Set((1, 2), (0, 3))
 
-
-  /*println("starting set:" + testSet)
-  println("the set " + testSet +" contains any of: " + tupleSet + "?:" + containedAnyOf(testSet, tupleSet))
-  println("resulting is :" + everyElementPairedWithOnlyOneOtherElement(testSet))
-
-  val testSet2 = Set((1, 2), (1, 3), (3, 1))
-  println("il set filtrato e': " + TupleUtils.everyElementPairedWithOnlyOneOtherElement(testSet2))*/
-
   describe("A tuple2") {
     describe("initialized with 2 values and not updated"){
       it("should contain these values") {
@@ -43,19 +36,6 @@ class TestTupleUtils extends FunSpec {
   }
 
   describe("A Set") {
-    describe("initialized with some values and not updated"){
-        it("should contain any of these values") {
-          val valuesOfTestSetAsTuple = (1, 3)
-          assert(containedAnyOf(setTestSet, valuesOfTestSetAsTuple))
-        }
-    }
-    describe("initialized with some values and not updated"){
-      it("should not contain any of different values") {
-        val valuesNotContainedInTestSet = (1, 3)
-        assert(containedAnyOf(setTestSet, valuesNotContainedInTestSet))
-      }
-    }
-
     describe("initialized with some values and not updated"){
       describe("when compared to a pair of values") {
         describe("when it contains one of them") {
@@ -80,7 +60,39 @@ class TestTupleUtils extends FunSpec {
     }
   }
 
+  //missing tests for containedAnyOf for tuple ... but it is the same implementation
+
+  val everyElementNOTPairedWithOnlyOneOtherElement = Set((1, 2), (1, 3), (3, 1))
+
+  val setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement1 = Set(1, 2)
+  val setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement2 = Set(1, 3)
+  val setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement3 = Set(3, 1)
+
+  describe("A Set of Tuples") {
+    describe("where a tuple element is paired with more than one other element"){
+      describe("when every tuple element must be paired with only one other element") {
+        it("should remove as to become a set where a tuple element is paired with more than one other element") {
+
+          assert(
+            everyElementPairedWithOnlyOneOtherElement(everyElementNOTPairedWithOnlyOneOtherElement) ==
+              setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement1 ||
+              everyElementPairedWithOnlyOneOtherElement(everyElementNOTPairedWithOnlyOneOtherElement) ==
+                setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement2 ||
+              everyElementPairedWithOnlyOneOtherElement(everyElementNOTPairedWithOnlyOneOtherElement) ==
+                setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement3
+          )
+        }
+      }
 
 
-
+    }
+  }
+  describe("where a tuple element is paired with just one other element") {
+    describe("when every tuple element must be paired with only one other element") {
+      it("should remain as it is") {
+        assert(everyElementPairedWithOnlyOneOtherElement(setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement1)
+          == setOfTuple2WithEveryElementPairedWithOnlyOneOtherElement1)
+      }
+    }
+  }
 }
