@@ -53,7 +53,7 @@ object EntityBehaviour {
   trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
     override def updated(world: World): Set[SimulableEntity] = {
-      val movement = self.movementStrategy(self, world, _ => _.isInstanceOf[Food])
+      val movement = self.movementStrategy(self, world, e => e.isInstanceOf[Food])
       self.life match {
         case n if n > 0 => Set(BlobEntityHelper.updateBlob(self, movement, world))
         case _ => Set()
