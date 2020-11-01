@@ -2,7 +2,7 @@ import evo_sim.model.Entities.{BaseBlob, BaseFood, PoisonBlob}
 import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import evo_sim.model._
 import evo_sim.model.Constants._
-import evo_sim.model.effects.{DegradationEffect, Effect}
+import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
 import org.scalatest.FunSpec
 
 class FoodTests extends FunSpec {
@@ -30,9 +30,9 @@ class FoodTests extends FunSpec {
     boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.standardDegradation,
     life = 100,
-    effect = Effect.standardFoodEffect)
-  private val reproducingFood: BaseFood = standardFood.copy(name = "food4", effect = Effect.reproduceBlobFoodEffect)
-  private val poisonFood: BaseFood = standardFood.copy(name = "food5", effect = Effect.poisonousFoodEffect)
+    collisionEffect = CollisionEffect.standardFoodEffect)
+  private val reproducingFood: BaseFood = standardFood.copy(name = "food4", collisionEffect = CollisionEffect.reproduceBlobFoodEffect)
+  private val poisonFood: BaseFood = standardFood.copy(name = "food5", collisionEffect = CollisionEffect.poisonousFoodEffect)
   private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
     currentIteration = 0, entities = Set(blob, poisonBlob, standardFood, reproducingFood, poisonFood), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 

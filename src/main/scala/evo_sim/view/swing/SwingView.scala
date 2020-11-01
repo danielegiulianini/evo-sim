@@ -116,7 +116,7 @@ object SwingView extends View {
 
     panel <- JPanelIO()
     _ <- panel.added(populationChartPanel)
-    - <- panel.added(velocityChartPanel)
+    _ <- panel.added(velocityChartPanel)
     _ <- panel.added(typologyChartPanel)
 
     cp <- frame.contentPane()

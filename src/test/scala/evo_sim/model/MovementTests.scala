@@ -1,7 +1,7 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Food
-import evo_sim.model.effects.{DegradationEffect, Effect}
+import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
 import evo_sim.model._
 import org.scalatest.FunSpec
 import scala.math.{pow, sqrt}
@@ -33,7 +33,7 @@ class MovementTests extends FunSpec {
     boundingBox = BoundingBox.Triangle(point = Point2D(80, 100), height = 10),
     degradationEffect = DegradationEffect.standardDegradation,
     life = 100,
-    effect = Effect.standardFoodEffect)
+    collisionEffect = CollisionEffect.standardFoodEffect)
 
   private val foodClosest = food.copy(
     name = "food2",

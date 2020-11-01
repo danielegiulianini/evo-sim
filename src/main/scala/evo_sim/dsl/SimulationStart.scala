@@ -1,5 +1,6 @@
 package evo_sim.dsl
 
+import scala.language.postfixOps
 import evo_sim.core.Simulation.SimulationIO
 
 object SimulationStart {

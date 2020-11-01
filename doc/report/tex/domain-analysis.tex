@@ -1,0 +1,51 @@
+\section{Analisi del Dominio}
+
+Il progetto ha lo scopo di simulare il ciclo di vita di creature virtuali denominate \textit{blob} e immerse in un ambiente virtuale 2D dotato di fonti di cibo ed ostacoli.
+Prima di ogni simulazione sarà possibile tramite un'apposita UI permettere la parametrizzazione di diverse caratteristiche del mondo simulato da parte dell'utente.
+Le caratteristiche ambientali che possono essere parametrizzate sono:
+\begin{itemize}
+    \item Numero di entità Blob presenti nella simulazione. I blob generati all'inizio della simulazione si dividono in:
+    \begin{enumerate}
+        \item Base Blob.
+        \item Cannibal Blob.
+    \end{enumerate}
+    \item Numero di entità Plant presenti all'interno della simulazione. I tipi di piante si suddividono in:
+    \begin{enumerate}
+        \item Standard Plant.
+        \item Reproducing Plant.
+        \item Poisonous Plant.
+    \end{enumerate}
+    \item Numero di entità Obstacle presenti all'interno della simulazione.
+    \item La luminosità all'interno del mondo simulato.
+    \item La temperatura all'interno del mondo simulato.
+    \item La durata in giorni della simulazione.
+\end{itemize}
+
+Una volta avviata la simulazione verranno disposte le entità all'interno del mondo, e i blob inizieranno quindi a muoversi in cerca di cibo, cercando di non morire in quanto la loro vita si riduce nel tempo. 
+
+Vi sono presenti diverse tipologie di blob:
+\begin{itemize}
+    \item Base Blob: blob basico il quale obiettivo è quello di sopravvivere il più a lungo possibile, consumando il cibo che trova all'interno del mondo.
+    \item Cannibal Blob: diversamente dal Base Blob questo tipo di blob può nutrirsi di cibo e degli altri Base Blob, se questi ultimi hanno una dimensione minore.
+    \item Poison Blob: il Poison Blob è una tipologia di blob con un effetto temporaneo applicato da un cibo velenoso; la sua vita si riduce in maniera più rapida per un certo periodo di tempo.
+    \item Slow Blob: lo Slow Blob è una tipologia di blob con un effetto temporaneo applicato da un ostacolo; la sua velocità è ridotta per un certo periodo di tempo.
+\end{itemize}
+
+Il cibo viene prodotto ciclicamente da un pianta, ogni pianta produce una certa tipologia di cibo, ed ogni cibo può avere diversi \textit{effetti} sui blob:
+\begin{itemize}
+    \item Standard Effect: il cibo incrementa la vita del blob che lo ha mangiato.
+    \item Poisonous Effect: il cibo avvelena il blob facendolo diventare un PoisonBlob.
+    \item Reproduce Effect: il cibo permette al blob di riprodursi creando un Blob figlio differente dal padre.
+\end{itemize}
+
+Il blob prima di muoversi verso un cibo deve prima poterlo vedere nel suo campo visivo. Il campo visivo di un blob dipende dal valore inizale e dalla luminosità che varia durante le fasi di un giorno. Intuitivamente quando è più luminoso i blob potranno vedere ad una distanza maggiore rispetto a quando la luminosità si abbassa.
+
+Così come la luminosità anche la temperatura ha un'effetto attivo sui blob, che anch'essa varia durante l'arco della giornata influenzando la velocità di un blob.
+
+Un blob muovendosi può incorrere in un ostacolo, e ogni ostacolo ha un effetto diverso:
+\begin{enumerate}
+    \item Slow Effect: l'ostacolo rallenta il blob facendolo diventare Slow Blob.
+    \item Damage Effect: l'ostacolo danneggia il blob causandogli danno.
+\end{enumerate}
+
+Al termine dell'esecuzione verrà visualizzata un'interfaccia con le informazioni riassunte della simulazione.

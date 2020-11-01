@@ -1,7 +1,7 @@
 import evo_sim.model.Entities.{BaseBlob, BaseObstacle}
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model._
-import evo_sim.model.effects.{DegradationEffect, Effect}
+import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
 import evo_sim.utils.TestUtils._
 import org.scalatest.FunSpec
 
@@ -18,11 +18,11 @@ class ObstacleTests extends FunSpec {
   private val puddle: BaseObstacle = BaseObstacle(
     name = "mud",
     boundingBox = BoundingBox.Rectangle(point = Point2D(100, 100), width = 50, height = 40),
-    effect = Effect.slowEffect)
+    collisionEffect = CollisionEffect.slowEffect)
   private val stone: BaseObstacle = BaseObstacle(
     name = "stone",
     boundingBox = BoundingBox.Rectangle(point = Point2D(100, 100), width = 50, height = 40),
-    effect = Effect.damageEffect)
+    collisionEffect = CollisionEffect.damageEffect)
   private val world: World = new World(
     temperature = Constants.DEF_TEMPERATURE,
     luminosity = Constants.DEF_LUMINOSITY,

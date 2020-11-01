@@ -7,10 +7,8 @@ import evo_sim.utils.TupleUtils.toTuple2
 import evo_sim.model.World
 import evo_sim.model.World.WorldHistory
 import evo_sim.view.swing.{SwingView => View}
-
-import scala.concurrent.duration.FiniteDuration
 //import evo_sim.view.cli.{CLIView => View}
-
+import scala.concurrent.duration.FiniteDuration
 
 object Simulation {
 

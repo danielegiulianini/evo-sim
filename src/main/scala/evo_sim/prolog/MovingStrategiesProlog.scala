@@ -1,5 +1,7 @@
 package evo_sim.prolog
 
+import scala.language.implicitConversions
+import scala.language.higherKinds
 import alice.tuprolog._
 import evo_sim.model.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
 import evo_sim.model.EntityStructure.Intelligent

@@ -5,7 +5,7 @@ import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl._
 import evo_sim.model.EntityStructure._
-import evo_sim.model.effects.Effect
+import evo_sim.model.effects.CollisionEffect
 
 object Entities {
 
@@ -59,27 +59,27 @@ object Entities {
    * @param boundingBox food boundingBox
    * @param degradationEffect food degradationEffect
    * @param life food life
-   * @param effect food effect
+   * @param collisionEffect food effect
    */
   case class BaseFood(override val name: String,
                       override val boundingBox: Triangle,
                       override val degradationEffect: DegradationEffect[Food],
                       override val life: Life,
-                      override val effect: Effect) extends Food with BaseFoodBehaviour
+                      override val collisionEffect: CollisionEffect) extends Food with BaseFoodBehaviour
 
   /**
    * Represents a basic [[evo_sim.model.EntityStructure.Obstacle]] implementation.
    *
    * @param name obstacle name
    * @param boundingBox obstacle boundingBox
-   * @param effect obstacle effect
+   * @param collisionEffect obstacle effect
    */
   case class BaseObstacle(override val name: String,
                           override val boundingBox: Rectangle,
-                          override val effect: Effect) extends Obstacle with NeutralBehaviour
+                          override val collisionEffect: CollisionEffect) extends Obstacle with NeutralBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[Effect.standardFoodEffect]].
+   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[CollisionEffect.standardFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -90,7 +90,7 @@ object Entities {
                            override val lifeCycle: LifeCycle) extends Plant with StandardPlantBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[Effect.reproduceBlobFoodEffect]].
+   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[CollisionEffect.reproduceBlobFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -101,7 +101,7 @@ object Entities {
                               override val lifeCycle: LifeCycle) extends Plant with ReproducingPlantBehaviour
 
   /**
-   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[Effect.poisonousFoodEffect]].
+   * Represents a [[evo_sim.model.EntityStructure.Plant]] implementation that produces [[evo_sim.model.EntityStructure.Food]]s with [[CollisionEffect.poisonousFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox

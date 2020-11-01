@@ -1,5 +1,6 @@
 package evo_sim.model
 
+import scala.language.implicitConversions
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.World.WorldHistory
