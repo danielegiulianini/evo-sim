@@ -7,25 +7,20 @@ import evo_sim.core.Simulation.liftIo
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 
+/** Contains some utilities for performing time operations in a purely functional fashion.
+ */
 object TimingOps {
   implicit val timer = IO.timer(ExecutionContext.global)
 
-  //as IO:
-  /*def getTime() = IO { System.currentTimeMillis().millis }
-
-  def waitUntil(from: FiniteDuration, period: FiniteDuration) =
-    if (from < period) {
-      IO.sleep(period - from)
-    } else unit*/
-
-
-  //as StateT:
+  /** Returns a [[IO]] description that when evaluated retrieves the current system time in milliseconds.
+   */
   def getTime() =
-    liftIo(IO { System.currentTimeMillis().millis })   //def getTime() = liftIo(IO( (w: World) => (w, System.currentTimeMillis().millis)) ) //as a statet monad returns a identical new world but x seconds older
+    IO { System.currentTimeMillis().millis }
 
-  def waitUntil(from: FiniteDuration, period: FiniteDuration) =
-    liftIo(if (from < period) {
-      IO.sleep(period - from)
-    } else unit)
+
+  def waitUntil(from: FiniteDuration, to: FiniteDuration) =
+    if (from < to) {
+      IO.sleep(to - from)
+    } else unit
 
 }

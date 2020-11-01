@@ -7,6 +7,8 @@ import evo_sim.utils.TupleUtils.toTuple2
 import evo_sim.model.World
 import evo_sim.model.World.WorldHistory
 import evo_sim.view.swing.{SwingView => View}
+
+import scala.concurrent.duration.FiniteDuration
 //import evo_sim.view.cli.{CLIView => View}
 
 
@@ -25,26 +27,32 @@ object Simulation {
   /** Helper to create StateT monad from a World => (World, A) function */
   def toStateT[A](f: World => (World, A)): Simulation[A] = StateT[IO, World, A](s => IO(f(s)))
 
-  /** Helper to create StateT monad from a World to World function */
+  /** Helper to create StateT monad from a World => World function */
   def toStateTWorld(f: World => World): Simulation[World] = toStateT[World](w => toTuple2(f(w)))
 
 
   /** Provide conversions from [[cats.effect.IO]] instances and [[cats.data.State]] instances to
-   * more general [[StateT]] monad that allows them to compose (and to be used together in the same
+   * more general [[StateT]] monad so to allow them to compose (and to be used together in the same
    * for-comprehension).
    */
   object toStateTConversions {
     def worldUpdated(): Simulation[World] =
-      toStateTWorld { SimulationLogic.worldUpdated }
+      toStateTWorld(SimulationLogic.worldUpdated)
 
     def collisionsHandled(): Simulation[World] =
-      toStateTWorld {SimulationLogic.collisionsHandled}
+      toStateTWorld(SimulationLogic.collisionsHandled)
 
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
       liftIo(View.rendered(worldAfterCollisions))
 
     def resultShowed(worldHistory: WorldHistory) =
       liftIo(View.resultViewBuiltAndShowed(worldHistory))
+
+    def getTime() =
+      liftIo(TimingOps.getTime())
+
+    def waitUntil(from: FiniteDuration, to: FiniteDuration)  =
+      liftIo(TimingOps.waitUntil(from, to))
   }
 }
 
