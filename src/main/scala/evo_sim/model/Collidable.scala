@@ -1,7 +1,7 @@
 package evo_sim.model
 
 import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
-import evo_sim.model.EntityStructure.{Entity, Moving}
+import evo_sim.model.EntityStructure.Entity
 
 /** Defines how a type extending this trait reacts when it collides with another [[SimulableEntity]], i.e. how
  * it state changes.

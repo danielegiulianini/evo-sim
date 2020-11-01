@@ -19,7 +19,7 @@ object DegradationEffect{
    * @return the life with the new value decreased.
    */
   def standardDegradation[A <: Living](entity: A): Life = entity.life - DOUBLE * Constants.STANDARD_LIFE_DECREASE
-  //poison degradation effect
+
   /**
    * Degradation effect that is applied when a blob is poisoned.
    * @param blob the degradation effect will be applied to this blob [[evo_sim.model.Entities.PoisonBlob]].

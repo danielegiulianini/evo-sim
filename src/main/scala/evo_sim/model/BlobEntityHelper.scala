@@ -1,12 +1,12 @@
 package evo_sim.model
 
-import scala.language.postfixOps
 import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.EntityStructure.DomainImpl.Velocity
 import evo_sim.model.effects.{DegradationEffect, LuminosityEffect, TemperatureEffect}
+
+import scala.language.postfixOps
 
 object BlobEntityHelper {
   /**
