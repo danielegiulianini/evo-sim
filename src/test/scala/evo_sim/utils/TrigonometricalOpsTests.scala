@@ -1,6 +1,4 @@
-import evo_sim.model.Constants
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.sinusoidal
-import org.scalacheck.{Arbitrary, Prop, Properties}
 import org.scalacheck.Prop.{exists, forAll}
 import org.scalactic.TolerantNumerics
 import org.scalatest.PropSpec
@@ -10,10 +8,11 @@ import org.scalatest.prop.Checkers
 //run with: test;  from Intellij sbt shell
 //or: sbt test     from cmd from the the folder containing build.sbt file
 
-class SinusoidalSpecifications extends PropSpec with Checkers { //extends Properties("Sinusoidal") {
+class SinusoidalSpecifications extends PropSpec with Checkers {
+
   //signature: sinusoidal(yDilatation: Float)(x:Float)(phase: Int)(yTranslation: Int)
 
-  //1. check codomain is respected (max = |amplitude| * 1 + ytranslation, min = |amplitude| * -1 + ytraslation)
+  //1. check max min respected (max = |amplitude| * 1 + ytranslation, min = |amplitude| * -1 + ytraslation)
   property("max and min value respected") {
     check {
       forAll {
@@ -47,6 +46,9 @@ class SinusoidalSpecifications extends PropSpec with Checkers { //extends Proper
   //3. check reversing phase sign results in reversed wave
 
   //4. check amplitude change results in proportional result change
+
+
+
 
   /* object DoubleEqualityImplicits {
      val epsilon = 1e-4f

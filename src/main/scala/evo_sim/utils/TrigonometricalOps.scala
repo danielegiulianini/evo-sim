@@ -7,20 +7,31 @@ object TrigonometricalOps {
 
   /**
    * Provides sine wave computation implementations.
+   * The most used and common sinusoidal invocations are translated in partially-applied functions to encourage
+   * code reuse.
    */
   object Sinusoidal {
+    /**
+     *
+     * @param yDilatation the wave amplitude
+     * @param x
+     * @param phase the wave phase, i.e.
+     * @param yTranslation the translation applie
+     * @return
+     */
     def sinusoidal(yDilatation: Float)(x: Float)(phase: Int)(yTranslation: Int): Int =
       (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation //should rename yDilatation to amplitude
 
-    //most used, common and popular sinusoidalSin invocations.
-    // (for this purpose translated in partially-applied functions)
+    //
     def zeroPhasedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(0)(_: Int)
 
     def zeroYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(0)
 
     def zeroPhasedZeroYTranslatedSinusoidal: (Float, Float) => Int = Curried.zeroPhasedSinusoidalSin(_: Float)(_: Float)(0)
 
-    //object with curried versions to leverage, among the others, IDE automatic named parameters
+    /**
+     * Provides curried versions of [[Sinusoidal]] functions to leverage, among the others, IDE automatic named parameters
+     */
     object Curried {
       def zeroPhasedSinusoidalSin: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried
 

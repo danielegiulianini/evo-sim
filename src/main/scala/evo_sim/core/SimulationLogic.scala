@@ -5,12 +5,11 @@ import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
 import evo_sim.model.Intersection.intersected
-import evo_sim.model.{BoundingBox, World}
+import evo_sim.model.{World}
 import evo_sim.model.World.worldEnvironmentUpdated
 
 
 
-//maybe this object could go inside SimulationEngine
 object SimulationLogic {
   def worldUpdated(world: World): World = {
     val updatedEnvironmentParameters = worldEnvironmentUpdated(world)
@@ -25,9 +24,10 @@ object SimulationLogic {
   }
 
   /**
-   * Collision detection between 2 entities is carried out by noticing intersection between their [[BoundingBox]]es.
+   * Collision detection between 2 entities is carried out by noticing intersection between their
+   * [[evo_sim.model.BoundingBox]]es.
    *
-   * @param world
+   * @param world the world
    * @return
    */
   def collisionsHandled(world: World): World = {
