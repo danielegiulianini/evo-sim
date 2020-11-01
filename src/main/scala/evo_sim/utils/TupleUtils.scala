@@ -39,13 +39,14 @@ object TupleUtils {
    */
   def toTuple2[A](a: A): (A, A) = (a, a)
 
-  /**
-   * @param mySet
-   * @tparam T
-   * @return
+  /** Returns a [[HomogeneousTuple2Set]] where every element is paired with only one other element.
+   * @param hSet the initial set of tuples.
+   * @tparam T the generic type of the Tuples which the provided set is made of.
+   * @return a [[HomogeneousTuple2Set]] made by the original [[Tuple2]] instances where each of them is paired
+   *         with only one other element.
    */
-  def everyElementPairedWithOnlyOneOtherElement[T](mySet: HomogeneousTuple2Set[T]): HomogeneousTuple2Set[T] =
-    mySet.foldLeft(HomogeneousTuple2Set[T]())(
+  def everyElementPairedWithOnlyOneOtherElement[T](hSet: HomogeneousTuple2Set[T]): HomogeneousTuple2Set[T] =
+    hSet.foldLeft(HomogeneousTuple2Set[T]())(
       (acc, t) =>
         if (contained(acc, t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
 
