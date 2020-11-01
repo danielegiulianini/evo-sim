@@ -119,7 +119,7 @@ class FoodTests extends FunSpec {
   }
 
   describe("A Blob with TemporaryStatusBlobBehaviour") {
-    describe("when co lliding with a Food with standardFoodEffect") {
+    describe("when colliding with a Food with standardFoodEffect") {
       it("should return a set with itself") {
         assert(poisonBlob.collided(standardFood).equals(Set(poisonBlob)))
       }
