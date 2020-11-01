@@ -1,22 +1,16 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityBehaviour.SimulableEntity
+import evo_sim.model.EntityStructure.Food
+import evo_sim.model.effects.{DegradationEffect, Effect}
 import evo_sim.model._
-import evo_sim.model.effects.DegradationEffect
-import org.scalatest.FunSuite
+import org.scalatest.FunSpec
+import scala.math.{pow, sqrt}
 
-class MovementTests extends FunSuite {
+class MovementTests extends FunSpec {
 
-  /*val blob: BaseBlob = BaseBlob(
-    name = "blob1",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
-    life = 100,
-    velocity = 3,
-    degradationEffect = DegradationEffect.standardDegradation,
-    fieldOfViewRadius = 10,
-    movementStrategy = MovingStrategies.baseMovement,
-    direction = Direction(0, 15))*/
+  private val MOVE_TO_RIGHT_ANGLE = 0
 
-  val blob = BaseBlob(
+  private val blob = BaseBlob(
     name = "blob1",
     boundingBox = BoundingBox.Circle(Point2D(100, 100), radius = Constants.DEF_BLOB_RADIUS),
     life = Constants.DEF_BLOB_LIFE,
@@ -24,23 +18,83 @@ class MovementTests extends FunSuite {
     degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
     fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
     movementStrategy = MovingStrategies.baseMovement,
-    direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION))
+    direction = Direction.apply(MOVE_TO_RIGHT_ANGLE, 10))
 
-  val entities = Set[SimulableEntity](blob)
+  private val blobChangeDirection = blob.copy(
+    name = "blob2",
+    direction = Direction.apply(MOVE_TO_RIGHT_ANGLE, Constants.DEF_NEXT_DIRECTION))
 
-  val world: World = World(
+  private val blobNearBorder = blob.copy(
+    name = "blob3",
+    boundingBox = BoundingBox.Circle(Point2D(Constants.WORLD_WIDTH, 100), radius = Constants.DEF_BLOB_RADIUS))
+
+  private val food = BaseFood(
+    name = "food",
+    boundingBox = BoundingBox.Triangle(point = Point2D(80, 100), height = 10),
+    degradationEffect = DegradationEffect.standardDegradation,
+    life = 100,
+    effect = Effect.standardFoodEffect)
+
+  private val foodClosest = food.copy(
+    name = "food2",
+    boundingBox = BoundingBox.Triangle(point = Point2D(110, 100), height = 10)) //TODO
+
+  private val entitiesWithoutFood = Set[SimulableEntity](blob, blobChangeDirection, blobNearBorder)
+
+  private val entitiesWithFood = entitiesWithoutFood + food + foodClosest
+
+  private val worldWithoutFood: World = World(
     temperature = Constants.DEF_TEMPERATURE,
     luminosity = Constants.DEF_LUMINOSITY,
     width = Constants.WORLD_WIDTH,
     height = Constants.WORLD_HEIGHT,
     currentIteration = 0,
-    entities = entities,
+    entities = entitiesWithoutFood,
     totalIterations = Constants.DEF_DAYS * Constants.ITERATIONS_PER_DAY)
 
-  test("RandomMovement"){
-    val initialPosition = blob.boundingBox.point
-    val newPosition = MovingStrategies.baseMovement(blob, world, _.isInstanceOf[BaseFood]).point
-    assert(!initialPosition.equals(newPosition))
+  private val worldWithFood = worldWithoutFood.copy(entities = entitiesWithFood)
+
+  describe("An Intelligent entity when it updates its position") {
+    describe("with no eatable entities within the FOV") {
+      it("has to move in a random direction"){
+        val initialPosition = blob.boundingBox.point
+        val newPosition = MovingStrategies.baseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).point
+        assert(!initialPosition.equals(newPosition))
+      }
+      it("must assign a new value to stepToNextDirection if stepToNextDirection is 0") {
+        val newStepToNextDirection = MovingStrategies.baseMovement(blobChangeDirection, worldWithoutFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        assert(newStepToNextDirection > 0)
+      }
+      it("keeps the current direction and decreases the stepToNextDirection if stepToNextDirection is greater than 0"){
+        val newDirection = MovingStrategies.baseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).direction
+        assert(newDirection.stepToNextDirection > 0)
+        assert(newDirection.angle equals blob.direction.angle)
+      }
+    }
+    describe("with eatable entities within the FOV"){
+      it("must go towards the closest entity"){
+        val distanceBeforeClosestFood = distanceBetweenEntities(blob.boundingBox.point, foodClosest.boundingBox.point)
+        val newPosition = MovingStrategies.baseMovement(blob, worldWithFood, _.isInstanceOf[Food]).point
+        val distanceAfterClosestFood = distanceBetweenEntities(newPosition, foodClosest.boundingBox.point)
+        val distanceAfterOtherFood = distanceBetweenEntities(newPosition, food.boundingBox.point)
+        assert(distanceAfterClosestFood < distanceBeforeClosestFood)
+        assert(distanceAfterClosestFood < distanceAfterOtherFood)
+      }
+      it("must return stepToNextDirection equals to 0"){
+        val newStepToNextDirection = MovingStrategies.baseMovement(blob, worldWithFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        assertResult(0)(newStepToNextDirection)
+      }
+    }
+    it("must calculate the new position after changing direction if with the current direction the new position would have been out of bounds") {
+      val newPosition = MovingStrategies.baseMovement(blobNearBorder, worldWithoutFood, _.isInstanceOf[Food])
+      assert(!newPosition.direction.angle.equals(blobNearBorder.direction.angle))
+      assert((0 to worldWithoutFood.width contains newPosition.point.x) && (0 to worldWithoutFood.height contains newPosition.point.y))
+    }
+  }
+
+  //TODO da mettere in utils
+  private def distanceBetweenEntities(a: Point2D, b: Point2D): Double = {
+    sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
   }
 
 }

@@ -3,7 +3,7 @@ package evo_sim.view.swing
 import java.awt.BorderLayout
 
 import cats.effect.IO
-import evo_sim.model.FinalStats.{averageDayEnd, averageDuringDay, blobQuantity, dimensionAverage, foodQuantity, velocityAverage}
+import evo_sim.model.FinalStats.{averageDayEnd, averageDuringDay, blobQuantity, days, dimensionAverage, foodQuantity, velocityAverage}
 import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
@@ -58,20 +58,13 @@ object SwingView extends View {
   override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
     history <- IO { world.reverse}
 
-    /* dimensioni <- IO { frame.component.getSize }
-    _ <- IO { println(dimensioni) } */
+    //days <- IO { List.range(0, (world.head.currentIteration+1)/Constants.ITERATIONS_PER_DAY+1).map(_.toDouble) }
+    days <- IO { days(world.head.totalIterations+1)}
 
-    xIterationData <- IO { List.range(0, (world.head.currentIteration+1)/Constants.ITERATIONS_PER_DAY+1).map(_.toDouble) }
-
-    velocity <- IO { XySeries("velocity", xIterationData, averageDuringDay(history)(velocityAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
-    dimension <- IO { XySeries("dimension", xIterationData,  averageDuringDay(history)(dimensionAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
-    population <- IO { CategorySeries("population", xIterationData, averageDayEnd(history)(blobQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Bar)}
-    food <- IO { CategorySeries("food", xIterationData, averageDayEnd(history)(foodQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Line)}
-
-
-    _ <- IO { println(xIterationData) }
-    _ <- IO { println(population.yData.size) }
-    _ <- IO { println(velocity) }
+    velocity <- IO { XySeries("velocity", days, averageDuringDay(history)(velocityAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
+    dimension <- IO { XySeries("dimension", days,  averageDuringDay(history)(dimensionAverage), SeriesMarkers.NONE, XYSeriesRenderStyle.Line)}
+    population <- IO { CategorySeries("population", days, averageDayEnd(history)(blobQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Bar)}
+    food <- IO { CategorySeries("food", days, averageDayEnd(history)(foodQuantity), SeriesMarkers.NONE, CategorySeriesRenderStyle.Line)}
 
     populationChart <- IO { ChartsFactory.histogramChart(675, 300, population, food)}
     populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
