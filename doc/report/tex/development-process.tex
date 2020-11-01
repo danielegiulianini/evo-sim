@@ -1,24 +1,30 @@
 \section{Processo di sviluppo}
-È stata adottata una metodologia di sviluppo agile basata su \textbf{Scrum}, scegliendo tra i membri del team un \textbf{product owner} e uno \textbf{scrum master} e effettuando sprint settimanali per determinare i compiti da svolgere per ciascun membro del team.
+È stata adottata una metodologia di sviluppo agile che introduce un metodo di Project Management che permette di realizzare un progetto per fasi, denominate “sprint”, ognuna delle quali focalizzata su nuove funzioni. Al cliente, simulato dai membri del team, viene mostrato il lavoro svolto con continuità, per verificarne il gradimento, ed è quindi possibile apportare modifiche con estrema velocità. In questo modo si incrementa l’efficienza del gruppo di lavoro e dunque la produttività.
+
+È quindi adottata una metodologia di sviluppo agile basata su \textbf{Scrum}, scegliendo tra i membri del team un \textbf{product owner} e uno \textbf{scrum master} e effettuando sprint generalmente settimanali per determinare i compiti da svolgere per ciascun membro del team.
 
 Il primo periodo del processo di sviluppo è stato caratterizzato dalla modellazione dell'architettura generale del progetto, attraverso la definizione dei requisiti e lo sviluppo di grafici UML, seguito dalla creazione del \textbf{product backlog} e da un primo \textbf{sprint planning}.
 
-\subsection{Divisione dei task}
-All'avvio di ciascun sprint settimanale, è stato fatto utilizzo del product backlog per assegnare a ciascun componente del team una serie di task da svolgere durante la settimana.
-
 \subsection{Meeting}
-I meeting tra i componenti del team sono avvenuti con frequenza regolare mediante la piattaforma Microsoft Teams. La durata media di un incontro è stata di 2 ore.
+I meeting tra i componenti del team sono avvenuti con frequenza regolare mediante la piattaforma Microsoft Teams. 
+I membri del team hanno partecipato attivamente agli incontri svolgendo il ruolo di sviluppatori e dove necessario quelli di Scrum Master e Product Owner. La durata media di un incontro è stata di 2 ore circa.
+
+\subsection{Divisione dei task}
+All'avvio di ciascun sprint settimanale, è stato fatto utilizzo del product backlog per assegnare a ciascun componente del team una serie di task da svolgere durante la settimana, in modo da definire obiettivi che ogni membro del team è tenuto a soddisfare. Solitamente un task rappresenta uno o più requisiti da compiere.
 
 \subsection{Revisione dei task}
-Alla fine di ciascuno sprint è stata tenuta la \textbf{sprint review}, attraverso la quale ciascun componente del team ha informato gli altri dei progressi nello svolgimento dei task a lui assegnati.
+Alla fine di ciascuno sprint è stata tenuta la \textbf{sprint review}, attraverso la quale ciascun componente del team ha informato gli altri dei progressi nello svolgimento dei task a lui assegnati, notificando le varie difficoltà avute per lo svolgimento dei task.
+Viene inoltre adattato il Product Backlog, soggetto a più revisioni, e vengono valutati eventuali ritardi sulla tabella di marcia.
 
-Il product backlog è stato soggetto a più revisioni.
+Generalmente al compimento di un task, prima della sua effettiva terminazione viene fatta un'azione di code review dove il codice prodotto dal responsabile del task viene mostrato a tutti i membri del team con l'obiettivo di individuare possibili refactor atti a migliorare la qualità del codice prodotto, diminuendo così potenziale debito tecnico.
+
 
 \subsection{Scelta degli strumenti}
-Sono stati utilizzati i seguenti tool:
+Sono stati utilizzati differenti tool a supporto del processo di sviluppo. L'obiettivo dell'utilizzo di tali tool è quello di servire gli sviluppatori durante tutto il processo di sviluppo automatizzandolo, con lo scopo di migliorarne l'efficienza e di consentire al gruppo di concentrarsi maggiormente sulla risoluzione dei requisiti del progetto stesso.
 
 \begin{itemize}
-    \item \textbf{SBT} come strumento di build automation;
+    \item \textbf{SBT} come strumento di build automation, automatizzando una varietà di compiti software quotidiani durante lo sviluppo del progetto come la compilazione del codice sorgente.
     \item \textbf{Scalatest} per la scrittura ed esecuzione dei test automatizzati utilizzando diversi stili di testing;
-    \item \textbf{Travis CI} come strumento per la \textbf{continuous integration}.
+    \item \textbf{Travis CI} come strumento per la \textbf{continuous integration}, in modo da testare progetti software ospitati sulla repository GitHub.
+    \item \textbf{GitHub} come servizio di hosting del codice sorgente e file utilizzati durente il processo di sviluppo quali ad esempio il product backlog. 
 \end{itemize}
