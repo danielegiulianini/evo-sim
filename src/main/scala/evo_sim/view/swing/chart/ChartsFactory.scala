@@ -1,5 +1,6 @@
 package evo_sim.view.swing.chart
 
+import scala.language.implicitConversions
 import evo_sim.view.swing.chart.Series.{CategorySeries, PieValue, XySeries}
 import org.knowm.xchart._
 import org.knowm.xchart.style.Styler.LegendPosition
