@@ -10,8 +10,9 @@ import evo_sim.model.World
 
 import scala.concurrent.duration._
 
-/** The engine of the simulation, responsible for setting up the simulation, updating at a constant rate the [[World]],
- * detecting and handle collisions, displaying the World updated and showing historical data gathered by the simulation.
+/** The engine of the simulation, responsible for setting up the simulation, updating at a constant rate
+ * the [[World]], detecting and handle collisions, displaying the World updated and showing historical
+ * data gathered by the simulation.
  */
 object SimulationEngine {
 

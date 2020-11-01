@@ -11,6 +11,14 @@ import evo_sim.model.World.worldEnvironmentUpdated
 
 
 object SimulationLogic {
+  /**
+   *  Updates the world by creating a new version of it with updated parameters that represent the effect of time
+   *  elapsed from the previous iteration. It takes care of updating the [[SimulableEntities]] that populate it
+   *  at the moment and the [[evo_sim.model.World.EnvironmentParameters]] like temperature and luminosity as well as
+   *  saving the old World state for final historical data analysis.
+   * @param world
+   * @return a new version of the world resulting from
+   */
   def worldUpdated(world: World): World = {
     val updatedEnvironmentParameters = worldEnvironmentUpdated(world)
 
@@ -24,6 +32,7 @@ object SimulationLogic {
   }
 
   /**
+   *  
    * Collision detection between 2 entities is carried out by noticing intersection between their
    * [[evo_sim.model.BoundingBox]]es.
    *
