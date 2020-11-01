@@ -12,9 +12,6 @@ import evo_sim.model.World
 
 import scala.concurrent.duration._
 
-/**
- *
- */
 object SimulationEngine {
 
   def started(): IO[Unit] = {
@@ -34,10 +31,7 @@ object SimulationEngine {
     currentTime <- getTime
     _ <- waitUntil(currentTime - startTime, 10 millis)  //TODO use constants
     - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
-      simulationLoop() else for {
-      _ <- resultShowed(worldAfterCollisions.worldHistory)
-      _ <- liftIo(printlnIO("sim concluded"))
-    } yield ()
+      simulationLoop() else resultShowed(worldAfterCollisions.worldHistory)
   } yield ()
 }
 
