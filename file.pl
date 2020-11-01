@@ -17,7 +17,7 @@ pow(X, Temp, Esp, Y):- Esp=:=1, !, Y is Temp.
 pow(X, Temp, Esp, Y):- pow(X,Temp*X,Esp-1,Y).
 
 %Boundary collision fatto nella newPosition.
-standardMov(Point, Velocity, Angle, Step, simulationConstants(PI, MaxDirectionStep, WorldWidth, WorldHeight, IterationPeriod), NewPoint, direction(FinalAngle, NewStep)):- Step =:= 0, rand_int(360, NewAngle), rand_int(MaxDirectionStep, NewStep), newPosition(Point, Velocity, NewAngle, PI, WorldWidth, WorldHeight, IterationPeriod, FinalAngle, NewPoint), !.
+standardMov(Point, Velocity, Angle, Step, simulationConstants(PI, MaxDirectionStep, WorldWidth, WorldHeight, IterationPeriod), NewPoint, direction(FinalAngle, NewStep)):- Step =:= 0, rand_int(360, NewAngle), rand_int(MaxDirectionStep, NewStepValue), NewStep is NewStepValue+1, newPosition(Point, Velocity, NewAngle, PI, WorldWidth, WorldHeight, IterationPeriod, FinalAngle, NewPoint), !.
 standardMov(Point, Velocity, Angle, Step, simulationConstants(PI, MaxDirectionStep, WorldWidth, WorldHeight, IterationPeriod), NewPoint, direction(FinalAngle, NewStep)):- NewStep is Step-1, newPosition(Point, Velocity, Angle, PI, WorldWidth, WorldHeight, IterationPeriod, FinalAngle, NewPoint).
 
 chaseMov(point(X, Y), point(ChasedX, ChasedY), Velocity, simulationConstants(PI, MaxDirectionStep, WorldWidth, WorldHeight, IterationPeriod), NewPoint, direction(FinalAngle, 0)):- DiffX is ChasedX - X, DiffY is ChasedY - Y, atan2(DiffY, DiffX, PI, Angle), toDegree(Angle, PI, Degrees), newPosition(point(X, Y), Velocity, Degrees, PI, WorldWidth, WorldHeight, IterationPeriod, NewAngle, NewPoint), FinalAngle is round(NewAngle).
@@ -37,3 +37,5 @@ atan2(Y, X, PI, Radians):- X < 0, Y < 0, Radians is atan(Y/X)-PI, !.
 atan2(Y, X, PI, Radians):- X =:= 0, Y > 0, Radians is PI/2, !.
 atan2(Y, X, PI, Radians):- X =:= 0, Y < 0, Radians is -PI/2, !.
 atan2(0, 0, PI, 0).
+
+prova(X, Y):- Y is rand_int(5, X).

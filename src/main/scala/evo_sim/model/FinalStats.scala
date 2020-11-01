@@ -20,6 +20,14 @@ object FinalStats {
     dayInformation.map(_.entities.count(_.isInstanceOf[Food]))
   }*/
 
+  /*def simulationAverage(world: WorldHistory): Double = {
+    world.head.entities.
+  } */
+
+  def days(totalDays: Int): List[Double] = {
+    List.range(0, totalDays/Constants.ITERATIONS_PER_DAY+1).map(_.toDouble)
+  }
+
   def averageDayEnd(history: WorldHistory)(dayAverageValue: World => Double): List[Double] = {
     val dayHistory = history.filter(elem => (elem.currentIteration % Constants.ITERATIONS_PER_DAY equals 0) || (elem.currentIteration equals(elem.totalIterations - 1)))
     dayHistory.map(dayAverageValue)
