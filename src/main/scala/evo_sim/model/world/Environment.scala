@@ -1,4 +1,4 @@
-package evo_sim.model
+package evo_sim.model.world
 
 /** The Environment class defines a container for the initial properties for the simulations's world.
  *

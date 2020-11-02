@@ -1,10 +1,10 @@
-package evo_sim.model
+package evo_sim.model.entities.entityStructure
 
-import scala.language.higherKinds
-import evo_sim.model.BoundingBox._
-import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{CollisionEffect, Cooldown, DegradationEffect, Life, LifeCycle, MovementStrategy, Velocity}
-import evo_sim.model.movement.{Direction, Movement}
+import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
+import evo_sim.model.entities.entityStructure.BoundingBox.{Circle, Rectangle, Triangle}
+import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl.{CollisionEffect, Cooldown, DegradationEffect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.entities.entityStructure.movement.{Direction, Movement}
+import evo_sim.model.world.World
 
 object EntityStructure {
   trait Domain {
@@ -39,7 +39,7 @@ object EntityStructure {
 
   /**
    * This trait represent an entity in the simulation that can live or die.
-   * [[evo_sim.model.EntityStructure.Food]] and [[evo_sim.model.EntityStructure.Blob]] eventually extends this trait.
+   * [[evo_sim.model.entities.entityStructure.EntityStructure.Food]] and [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] eventually extends this trait.
    */
   sealed trait Living extends Entity {
     def life: Life
@@ -47,15 +47,15 @@ object EntityStructure {
 
   /**
    * This trait represent an entity in the simulation that can move in the world boundaries.
-   * [[evo_sim.model.EntityStructure.Blob]] eventually extends this trait.
+   * [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] eventually extends this trait.
    */
   sealed trait Moving extends Entity {
     def velocity: Velocity
   }
 
   /**
-   * This trait represent an entity in the simulation that has some effects applied to a [[evo_sim.model.EntityStructure.Blob]].
-   * [[evo_sim.model.EntityStructure.Food]] and [[evo_sim.model.EntityStructure.Obstacle]] eventually extends this trait.
+   * This trait represent an entity in the simulation that has some effects applied to a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]].
+   * [[evo_sim.model.entities.entityStructure.EntityStructure.Food]] and [[evo_sim.model.entities.entityStructure.EntityStructure.Obstacle]] eventually extends this trait.
    */
   sealed trait Effectful extends Entity {
     def collisionEffect: CollisionEffect
@@ -63,7 +63,7 @@ object EntityStructure {
 
   /**
    * This trait represent an entity in the simulation that has the ability to see within a certain range.
-   * [[evo_sim.model.EntityStructure.Blob]] eventually extends this trait.
+   * [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] eventually extends this trait.
    */
   sealed trait Perceptive extends Entity {
     def fieldOfViewRadius : Int
@@ -71,7 +71,7 @@ object EntityStructure {
 
   /**
    * This trait represent an entity in the simulation that has the ability move in different directions following move strategies.
-   * [[evo_sim.model.EntityStructure.Blob]] eventually extends this trait.
+   * [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] eventually extends this trait.
    */
   sealed trait Intelligent extends Perceptive with Moving {
     def movementStrategy: MovementStrategy

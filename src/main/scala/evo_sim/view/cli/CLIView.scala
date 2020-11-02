@@ -2,11 +2,11 @@ package evo_sim.view.cli
 
 import cats.effect.IO
 import cats.implicits._
-import evo_sim.model.Constants._
-import evo_sim.model.EntityStructure.{Blob, Food}
-import evo_sim.model.FinalStats.{averageDuringDay, dayValue, entityCharacteristicAverage, entityDayQuantity}
-import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
-import evo_sim.model.{Environment, World}
+import evo_sim.model.world.Constants._
+import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Food}
+import evo_sim.model.world.dataProcessing.FinalStats.{averageDuringDay, dayValue, entityCharacteristicAverage, entityDayQuantity}
+import evo_sim.model.world.World.{WorldHistory, fromIterationsToDays}
+import evo_sim.model.world.{Environment, World}
 import evo_sim.utils.ConsoleIO._
 import evo_sim.view.View
 import evo_sim.view.cli.CLIView.ViewUtils.InputViewUtils.read

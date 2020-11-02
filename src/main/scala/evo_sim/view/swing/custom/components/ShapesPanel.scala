@@ -2,11 +2,12 @@ package evo_sim.view.swing.custom.components
 
 import java.awt.{Color, Dimension, Graphics}
 
-import evo_sim.model.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.Constants._
-import evo_sim.model.Entities._
-import evo_sim.model.EntityStructure.{Blob, Entity, Obstacle}
-import evo_sim.model.{Intersection, Point2D, World}
+import evo_sim.model.entities.entityStructure.BoundingBox.{Circle, Rectangle, Triangle}
+import evo_sim.model.world.Constants._
+import evo_sim.model.entities.Entities._
+import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Entity, Obstacle}
+import evo_sim.model.entities.entityStructure.{Intersection, Point2D}
+import evo_sim.model.world.World
 import javax.swing.JPanel
 
 /**

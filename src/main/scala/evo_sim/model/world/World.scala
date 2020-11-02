@@ -1,16 +1,18 @@
-package evo_sim.model
+package evo_sim.model.world
 
 import evo_sim.dsl.EntitiesCreation.FromIntToList
-import evo_sim.model.Constants.ITERATIONS_PER_DAY
-import evo_sim.model.Entities._
-import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.Point2D.randomPosition
-import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidal
-import evo_sim.model.World.WorldHistory
-import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.model.movement.{Direction, MovingStrategies}
-import evo_sim.utils.MemoHelper.memoize
+import Constants.ITERATIONS_PER_DAY
+import evo_sim.model.entities.Entities._
+import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
+import evo_sim.model.entities.entityStructure.Point2D.randomPosition
+import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure}
+import evo_sim.model.world.World.WorldHistory
+import evo_sim.model.world
 import evo_sim.utils.Counter._
+import evo_sim.utils.MemoHelper.memoize
+import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidal
 
 /** Represents the state of the simulation and acts as a container for all of its properties that are carried along
  * each iteration.
@@ -91,7 +93,7 @@ object World {
 
     val entities: Set[SimulableEntity] = baseBlobs ++ cannibalBlobs ++ stones ++ puddles ++ standardPlants ++ reproducingPlants ++ poisonousPlants
 
-    World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
+    world.World(temperature = env.temperature, luminosity = env.luminosity, width = Constants.WORLD_WIDTH, height = Constants.WORLD_HEIGHT,
       currentIteration = 0, entities = entities, totalIterations = env.daysNumber * Constants.ITERATIONS_PER_DAY)
   }
 
@@ -106,7 +108,7 @@ object World {
   /** Updates the world parameters according to the time of the day of the simulation.
    *
    * @param world the world with the parameters to update
-   * @return the [[evo_sim.model.World.EnvironmentParameters]] container with updated parameters
+   * @return the [[world.World.EnvironmentParameters]] container with updated parameters
    */
   def worldEnvironmentUpdated(world: World): EnvironmentParameters = {
 

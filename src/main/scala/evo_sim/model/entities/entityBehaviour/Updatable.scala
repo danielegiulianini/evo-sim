@@ -1,7 +1,8 @@
-package evo_sim.model
+package evo_sim.model.entities.entityBehaviour
 
-import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
-import evo_sim.model.EntityStructure.Entity
+import EntityBehaviour.{Simulable, SimulableEntity}
+import evo_sim.model.entities.entityStructure.EntityStructure.Entity
+import evo_sim.model.world.World
 
 /** Defines the ability of being updatable, i.e. how a type extending this trait reacts when [[evo_sim.core.SimulationLogic]]
  * calls updated on it, once per iteration.

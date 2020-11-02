@@ -1,13 +1,16 @@
-package evo_sim.model
+package evo_sim.model.entities.entityBehaviour
 
-import evo_sim.model.Collidable.NeutralCollidable
-import evo_sim.model.Entities._
-import evo_sim.model.EntityStructure.DomainImpl.CollisionEffect
-import evo_sim.model.EntityStructure._
-import evo_sim.model.Point2D.randomPosition
-import evo_sim.model.Updatable.NeutralUpdatable
-import evo_sim.utils.Counter._
-import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
+import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl.CollisionEffect
+import evo_sim.model.entities.entityStructure.EntityStructure._
+import evo_sim.model.entities.entityStructure.Point2D.randomPosition
+import evo_sim.model.entities.Entities
+import evo_sim.model.entities.Entities._
+import evo_sim.model.entities.entityBehaviour.Collidable.NeutralCollidable
+import evo_sim.model.entities.entityBehaviour.Updatable.NeutralUpdatable
+import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure}
+import evo_sim.model.world.{Constants, World}
+import evo_sim.utils.Counter
 
 object EntityBehaviour {
 
@@ -43,12 +46,12 @@ object EntityBehaviour {
 
   //Base blob behaviour implementation
   /**
-   * This Behaviour represent the base behaviour mainly for a Base [[evo_sim.model.EntityStructure.Blob]]. It contains two methods:
+   * This Behaviour represent the base behaviour mainly for a Base [[EntityStructure.Blob]]. It contains two methods:
    * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
    * collided: when the blob collide with an entity this method is called. It can collide with different entitis:
-   * -[[evo_sim.model.EntityStructure.Food]]: apply the effect of the food at the blob.
-   * -[[evo_sim.model.EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
-   * -[[evo_sim.model.Entities.CannibalBlob]]: if this blob is smaller than the cannibal, this blob is eaten.
+   * -[[EntityStructure.Food]]: apply the effect of the food at the blob.
+   * -[[EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
+   * -[[Entities.CannibalBlob]]: if this blob is smaller than the cannibal, this blob is eaten.
    */
   trait BaseBlobBehaviour extends Simulable {
     self: BaseBlob =>
@@ -69,14 +72,14 @@ object EntityBehaviour {
   }
 
   /**
-   * This Behaviour represent the base behaviour mainly for a Cannibal [[evo_sim.model.EntityStructure.Blob]].
-   * Differently from a [[evo_sim.model.Entities.BaseBlob]] this blob moves towards a food or a base blob.
+   * This Behaviour represent the base behaviour mainly for a Cannibal [[EntityStructure.Blob]].
+   * Differently from a [[Entities.BaseBlob]] this blob moves towards a food or a base blob.
    * It contains two methods:
    * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
    * collided: when the blob collide with an entity this method is called. It can collide with different entitis:
-   * -[[evo_sim.model.EntityStructure.Food]]: apply the effect of the food at the blob.
-   * -[[evo_sim.model.EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
-   * -[[evo_sim.model.Entities.BaseBlob]]: if this blob is bigger than the base blob, the base blob is eaten.
+   * -[[EntityStructure.Food]]: apply the effect of the food at the blob.
+   * -[[EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
+   * -[[Entities.BaseBlob]]: if this blob is bigger than the base blob, the base blob is eaten.
    */
   trait CannibalBlobBehaviour extends Simulable {
     self: CannibalBlob =>
@@ -96,12 +99,12 @@ object EntityBehaviour {
   }
 
   /**
-   * This Behaviour represent the base behaviour mainly for Temporary [[evo_sim.model.EntityStructure.Blob]].
+   * This Behaviour represent the base behaviour mainly for Temporary [[EntityStructure.Blob]].
    * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
    * This blob can't eat during the time the temporary effect is active. The effect remains until the cooldown is bigger than zero.
    * There are two effect applied:
-   * [[evo_sim.model.Entities.PoisonBlob]]: this blob has a worst degradation effect, this mean that it takes more damage every time the degradation effect is applied.
-   * [[evo_sim.model.Entities.SlowBlob]]: this blob moves significantly slowly.
+   * [[Entities.PoisonBlob]]: this blob has a worst degradation effect, this mean that it takes more damage every time the degradation effect is applied.
+   * [[Entities.SlowBlob]]: this blob moves significantly slowly.
    */
   trait TemporaryStatusBlobBehaviour extends Simulable with NeutralCollidable {
     self: BlobWithTemporaryStatus =>
@@ -118,7 +121,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityStructure.Food]] behaviour. Makes a food disappear when life reaches 0 or collides with a [[evo_sim.model.EntityStructure.Blob]].
+   * [[EntityStructure.Food]] behaviour. Makes a food disappear when life reaches 0 or collides with a [[EntityStructure.Blob]].
    */
   trait BaseFoodBehaviour extends Simulable {
     self: Food =>
@@ -137,7 +140,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityStructure.Plant]] behaviour. Makes it spawn a [[evo_sim.model.EntityStructure.Food]] when lifeCycle reaches 0.
+   * [[EntityStructure.Plant]] behaviour. Makes it spawn a [[EntityStructure.Food]] when lifeCycle reaches 0.
    */
   trait PlantBehaviour extends Simulable with NeutralCollidable {
     self: Plant with PlantBehaviour =>
@@ -145,7 +148,7 @@ object EntityBehaviour {
       case n if n > 0 =>
         Set(updatedPlant)
       case _ => Set(BaseFood(
-        name = "generatedFood" + nextValue,
+        name = "generatedFood" + Counter.nextValue,
         boundingBox = BoundingBox.Triangle(point = randomPosition(), height = foodHeight),
         degradationEffect = DegradationEffect.standardDegradation,
         life = Constants.DEF_FOOD_LIFE,
@@ -159,7 +162,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[CollisionEffect.standardFoodEffect]].
+   * [[evo_sim.model.entities.entityBehaviour.EntityBehaviour.PlantBehaviour]] implementation for [[EntityStructure.Food]]s with [[CollisionEffect.standardFoodEffect]].
    */
   trait StandardPlantBehaviour extends PlantBehaviour {
     self: StandardPlant =>
@@ -170,7 +173,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[CollisionEffect.reproduceBlobFoodEffect]].
+   * [[evo_sim.model.entities.entityBehaviour.EntityBehaviour.PlantBehaviour]] implementation for [[EntityStructure.Food]]s with [[CollisionEffect.reproduceBlobFoodEffect]].
    */
   trait ReproducingPlantBehaviour extends PlantBehaviour {
     self: ReproducingPlant =>
@@ -181,7 +184,7 @@ object EntityBehaviour {
   }
 
   /**
-   * [[evo_sim.model.EntityBehaviour.PlantBehaviour]] implementation for [[evo_sim.model.EntityStructure.Food]]s with [[CollisionEffect.poisonousFoodEffect]].
+   * [[evo_sim.model.entities.entityBehaviour.EntityBehaviour.PlantBehaviour]] implementation for [[EntityStructure.Food]]s with [[CollisionEffect.poisonousFoodEffect]].
    */
   trait PoisonousPlantBehaviour extends PlantBehaviour {
     self: PoisonousPlant =>

@@ -1,10 +1,11 @@
-package evo_sim.model.movement
+package evo_sim.model.entities.entityStructure.movement
 
 import scala.language.implicitConversions
 import alice.tuprolog.{Double, Int, Struct, Term, Var}
-import evo_sim.model.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
-import evo_sim.model.EntityStructure.Intelligent
-import evo_sim.model.{Point2D, movement}
+import evo_sim.model.world.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
+import evo_sim.model.entities.entityStructure.EntityStructure.Intelligent
+import evo_sim.model.entities.entityStructure.Point2D
+import evo_sim.model.entities.entityStructure.movement
 import evo_sim.prolog.PrologEngine.engine
 
 object MovingStrategiesProlog {

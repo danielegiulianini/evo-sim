@@ -1,10 +1,12 @@
 package evo_sim.model
 
-import evo_sim.model.Entities.{BaseBlob, BaseFood}
-import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.Food
-import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.model.movement.{Direction, MovingStrategies}
+import evo_sim.model.entities.Entities.{BaseBlob, BaseFood}
+import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
+import evo_sim.model.entities.entityStructure.EntityStructure.Food
+import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure, Point2D}
+import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.{Constants, World}
 import org.scalatest.FunSpec
 
 import scala.math.hypot
@@ -46,7 +48,7 @@ class MovementTests extends FunSpec {
 
   private val entitiesWithFood = entitiesWithoutFood + food + foodClosest
 
-  private val worldWithoutFood: World = World(
+  private val worldWithoutFood: World = world.World(
     temperature = Constants.DEF_TEMPERATURE,
     luminosity = Constants.DEF_LUMINOSITY,
     width = Constants.WORLD_WIDTH,

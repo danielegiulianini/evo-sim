@@ -1,10 +1,12 @@
 package evo_sim.model
 
-import evo_sim.model.Constants._
-import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
-import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.effects.DegradationEffect
-import evo_sim.model.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.Constants._
+import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
+import evo_sim.model.entities.entityStructure.EntityStructure.Blob
+import evo_sim.model.entities.entityStructure.effects.DegradationEffect
+import evo_sim.model.entities.entityStructure.{BoundingBox, Point2D}
+import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.World
 import org.scalatest.FunSpec
 
 class BlobTests extends FunSpec {
