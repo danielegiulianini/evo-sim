@@ -5,7 +5,6 @@ import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl._
 import evo_sim.model.EntityStructure._
-import evo_sim.model.effects.CollisionEffect
 import evo_sim.model.movement.{Direction, MovingStrategies}
 
 object Entities {
