@@ -6,10 +6,10 @@ import org.knowm.xchart.style.Styler.LegendPosition
 
 object ChartsBuilder {
 
-  /** Implicit conversion from [[List]] to [[Array]]
+  /** Implicit conversion from [[scala.collection.immutable.List]] to [[Array]]
    *
    * @param list the list to convert.
-   * @return the [[Array]] equivalent at the [[List]]
+   * @return the [[Array]] equivalent at the [[scala.collection.immutable.List]]
    */
   implicit def listToDoubleArray(list: List[Double]): Array[Double] = list.toArray
 

@@ -24,8 +24,8 @@ trait CartesianAxesSeriesStructure extends SeriesStructure {
  *  In this series it is possible select the marker of the 2-Dimensional points and the visualization points style.
  *
  * @param name the name of the series.
- * @param xData the [[List]] of x coordinates.
- * @param yData the [[List]] of y coordinates.
+ * @param xData the [[scala.collection.immutable.List]] of x coordinates.
+ * @param yData the [[scala.collection.immutable.List]] of y coordinates.
  * @param marker the marker typology.
  * @param seriesStyle the visualization points style.
  */
@@ -39,8 +39,8 @@ case class CategorySeries(override val name: String,
  *  In this series it is possible select the marker of the 2-Dimensional points and the visualization points style.
  *
  * @param name the name of the series.
- * @param xData the [[List]] of x coordinates.
- * @param yData the [[List]] of y coordinates.
+ * @param xData the [[scala.collection.immutable.List]] of x coordinates.
+ * @param yData the [[scala.collection.immutable.List]] of y coordinates.
  * @param marker the marker typology.
  * @param seriesStyle the visualization points style.
  */
