@@ -8,7 +8,7 @@ object PrologEngine {
 
   /** The prolog engine */
   private val engine = new Prolog()
-  engine.setTheory(new Theory(new FileInputStream("file.pl")))
+  engine.setTheory(new Theory(getClass.getResource("/file.pl").openStream()))
 
 
   /** Function that solves a Prolog goal.
