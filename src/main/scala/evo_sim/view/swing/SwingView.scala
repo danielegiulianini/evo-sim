@@ -1,6 +1,6 @@
 package evo_sim.view.swing
 
-import java.awt.BorderLayout
+import java.awt.{BorderLayout, GraphicsEnvironment}
 
 import cats.effect.IO
 import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
@@ -53,7 +53,8 @@ object SwingView extends View {
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
     _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
-    _ <- frame.setMaximizedExtendedStateInvokeAndWaiting()
+    windowsBounds <- IO pure GraphicsEnvironment.getLocalGraphicsEnvironment.getMaximumWindowBounds
+    _ <- frame.sizeSet(windowsBounds.width, windowsBounds.height)
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
