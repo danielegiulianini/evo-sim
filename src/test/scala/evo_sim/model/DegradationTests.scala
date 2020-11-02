@@ -14,7 +14,7 @@ class DegradationTests extends FunSpec {
     life = Constants.DEF_BLOB_LIFE,
     velocity = Constants.DEF_BLOB_VELOCITY,
     degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
-    fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
+    fieldOfViewRadius = Constants.DEF_BLOB_FOV_RADIUS,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction.apply(Constants.DEF_NEXT_DIRECTION, Constants.DEF_NEXT_DIRECTION),
     cooldown = Constants.DEF_COOLDOWN)

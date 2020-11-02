@@ -24,7 +24,7 @@ object BlobEntityHelper {
       case _ => velocity = self.velocity
     }
     BaseBlob(self name, Circle(movement point, self.boundingBox.radius), self degradationEffect self, velocity, DegradationEffect standardDegradation,
-      (self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)).max(Constants.MIN_BLOB_FOW_RADIUS),
+      (self.fieldOfViewRadius + LuminosityEffect.standardLuminosityEffect(world.luminosity, world.currentIteration)).max(Constants.MIN_BLOB_FOV_RADIUS),
       self movementStrategy, movement direction)
   }
 
@@ -62,21 +62,21 @@ object BlobEntityHelper {
       direction = movement.direction,
       velocity = incrementedValue(base.velocity, TemperatureEffect.standardTemperatureEffect, world, Constants.MIN_BLOB_VELOCITY),
       life = base.degradationEffect(base),
-      fieldOfViewRadius = incrementedValue(base.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS)
+      fieldOfViewRadius = incrementedValue(base.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOV_RADIUS)
     )
     case cannibal: CannibalBlob => cannibal.copy(
       boundingBox = cannibal.boundingBox.copy(point = movement.point),
       direction = movement.direction,
       velocity = incrementedValue(cannibal.velocity, TemperatureEffect.standardTemperatureEffect, world, Constants.MIN_BLOB_VELOCITY),
       life = cannibal.degradationEffect(cannibal),
-      fieldOfViewRadius = incrementedValue(cannibal.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS)
+      fieldOfViewRadius = incrementedValue(cannibal.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOV_RADIUS)
     )
     case slow: SlowBlob => slow.copy(
       boundingBox = slow.boundingBox.copy(point = movement.point),
       direction = movement.direction,
       velocity = Constants.DEF_BLOB_SLOW_VELOCITY,
       life = slow.degradationEffect(slow),
-      fieldOfViewRadius = incrementedValue(slow.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS),
+      fieldOfViewRadius = incrementedValue(slow.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOV_RADIUS),
       cooldown = slow.cooldown - 1
     )
     case poison: PoisonBlob => poison.copy(
@@ -84,7 +84,7 @@ object BlobEntityHelper {
       direction = movement.direction,
       velocity = incrementedValue(poison.velocity, TemperatureEffect.standardTemperatureEffect, world, Constants.MIN_BLOB_VELOCITY),
       life = DegradationEffect.poisonBlobDegradation(poison),
-      fieldOfViewRadius = incrementedValue(poison.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOW_RADIUS),
+      fieldOfViewRadius = incrementedValue(poison.fieldOfViewRadius, LuminosityEffect.standardLuminosityEffect, world, Constants.MIN_BLOB_FOV_RADIUS),
       cooldown = poison.cooldown - 1
     )
     case _ => throw new Exception("Sub type not supported.")
