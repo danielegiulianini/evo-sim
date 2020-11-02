@@ -26,15 +26,23 @@ object Queriable {
   def contained[F[_]: Queriable, A](t:F[A], elem:A) : Boolean =
     implicitly[Queriable[F]].contained(t, elem)
 
-  /** Returns if the given element is contained inside the structure provided.
+  /** Returns if any of the given elements is contained inside the structure provided.
    *
    * @param t the type functor instance that wants to be inspected for the presence of elem
-   * @param elem the element to be searched for
+   * @param elem the [[Tuple2]] with the elements to be searched for
    * @return whether the type functor contains the element.
    */
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     contained(t, elem._1) || contained(t, elem._2)
 
+  /**
+   * 
+   * @param t
+   * @param elem
+   * @tparam F
+   * @tparam A
+   * @return
+   */
   def containedAllOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     contained(t, elem._1) && contained(t, elem._2)
 
