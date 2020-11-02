@@ -4,8 +4,8 @@ import scala.language.postfixOps
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
 import evo_sim.model.Constants.SIMULATION_LOOP_PERIOD
-//import evo_sim.view.swing.{SwingView => View}
-import evo_sim.view.cli.{CLIView => View}
+import evo_sim.view.swing.{SwingView => View}
+//import evo_sim.view.cli.{CLIView => View}
 import evo_sim.core.Simulation._
 import evo_sim.model.World
 
