@@ -39,7 +39,7 @@ object SimulationLogic {
   /** Detects collisions between the [[SimulableEntity]] instances populating the [[World]] and gathers the
    * changes induced by the collisions on them to build the updated version of the [[World]].
    * Collision detection between 2 entities is carried out by noticing intersection between their
-   * [[BoundingBox]]es.
+   * [[evo_sim.model.entities.entityStructure.BoundingBox]]es.
    *
    * @param world the world whose entities' collisions are to be detected.
    * @return the world after collisions are resolved by invoking collided on [[Collidable]] component
