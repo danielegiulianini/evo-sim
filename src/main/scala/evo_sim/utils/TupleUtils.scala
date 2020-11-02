@@ -50,6 +50,6 @@ object TupleUtils {
   def everyElementPairedWithOnlyOneOtherElement[T](hSet: HomogeneousTuple2Set[T]): HomogeneousTuple2Set[T] =
     hSet.foldLeft(HomogeneousTuple2Set[T]())(
       (acc, t) =>
-        if (contained(acc, t.swap) || !containedAnyOf(acc, t)) acc + t else acc)
+        if (!containedAnyOf(acc, t) || contained(acc, t.swap)) acc + t else acc)
 
 }
