@@ -225,19 +225,22 @@ object SwingView extends View {
         simulationFoodPercentage <- IO { PieValue("Food", food.yData.sum/population.yData.length) }
         simulationObstaclePercentage <- IO { PieValue("Obstacle", averageSimulation(history)(entityDayQuantity(_.isInstanceOf[Obstacle]))) }
 
-        populationChart <- IO { ChartsBuilder.histogramChart("Population", 675, 300, population, food)}
+        appDimension <- IO { frame.component.getSize }
+
+        populationChart <- IO { ChartsBuilder.histogramChart("Population", appDimension.width, appDimension.height/2, population, food)}
         populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
 
-        velocityChart <- IO { ChartsBuilder.xyChart("Entities characteristic average",675, 300, velocity, dimension, fov) }
+        velocityChart <- IO { ChartsBuilder.xyChart("Entities characteristic average", appDimension.width/2, appDimension.height/2, velocity, dimension, fov) }
         velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
 
-        typologyChart <- IO { ChartsBuilder.pieChart("Simulation entities percentage", 400, 200, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
+        typologyChart <- IO { ChartsBuilder.pieChart("Simulation entities percentage", appDimension.width/2, appDimension.height/2, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
         typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
 
         panel <- JPanelIO()
-        _ <- panel.added(populationChartPanel)
-        _ <- panel.added(velocityChartPanel)
-        _ <- panel.added(typologyChartPanel)
+        _ <- panel.layoutSet(new BorderLayout())
+        _ <- panel.added(populationChartPanel, BorderLayout.NORTH)
+        _ <- panel.added(velocityChartPanel, BorderLayout.CENTER)
+        _ <- panel.added(typologyChartPanel, BorderLayout.WEST)
 
       } yield panel
     }
