@@ -5,6 +5,7 @@ import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
 import evo_sim.model.effects.{DegradationEffect, LuminosityEffect, TemperatureEffect}
+import evo_sim.model.movement.Movement
 
 import scala.language.postfixOps
 

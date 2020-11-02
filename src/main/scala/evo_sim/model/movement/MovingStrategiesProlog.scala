@@ -1,16 +1,15 @@
-package evo_sim.prolog
+package evo_sim.model.movement
 
-import scala.language.implicitConversions
-import scala.language.higherKinds
-import alice.tuprolog._
+import alice.tuprolog.{Double, Int, Struct, Term, Var}
 import evo_sim.model.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
 import evo_sim.model.EntityStructure.Intelligent
-import evo_sim.model.{Direction, Movement, Point2D}
+import evo_sim.model.{Point2D, movement}
+import evo_sim.prolog.PrologEngine
 import evo_sim.prolog.PrologEngine.engine
 
 object MovingStrategiesProlog {
 
-  /** Term containing the constant values needed to calculate the new position*/
+  /** Term containing the constant values needed to calculate the new position */
   private val simulationConstantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, WORLD_WIDTH, WORLD_HEIGHT, ITERATION_LAPSE)
 
   /** Implicit to convert a [[Term]] into a [[scala.Int]].
@@ -18,7 +17,7 @@ object MovingStrategiesProlog {
    * @param t the term to convert.
    * @return the equivalent [[scala.Int]] value of the [[Term]].
    */
-  implicit def termToInt(t:Term): scala.Int = t.toString.toInt
+  implicit def termToInt(t: Term): scala.Int = t.toString.toInt
 
   /** Implicit to convert a [[scala.Int]] into a Prolog [[Int]].
    *
@@ -46,19 +45,19 @@ object MovingStrategiesProlog {
    * @param t the [[Term]] to convert.
    * @return the [[Point2D]] equivalent at the [[Term]].
    */
-  implicit def termToPoint2D(t: Term): Point2D = Point2D(extractVarValue(t,0), extractVarValue(t, 1))
+  implicit def termToPoint2D(t: Term): Point2D = Point2D(extractVarValue(t, 0), extractVarValue(t, 1))
 
   /** Implicit to convert a [[Term]] to a [[Direction]].
    *
    * @param t the [[Term]] to convert.
    * @return the [[Direction]] equivalent at the [[Term]].
    */
-  implicit def termToDirection(t:Term): Direction = Direction(extractVarValue(t, 0), extractVarValue(t, 1))
+  implicit def termToDirection(t: Term): Direction = Direction(extractVarValue(t, 0), extractVarValue(t, 1))
 
   /** Calculates the new position based the previous direction if [[Direction.stepToNextDirection]] is different
-   *  from 0, otherwise a new direction is chosen and the new position will be calculated.
-   *  It is also checked that the new position is inside the edges and if it is not the point is recalculated
-   *  by changing the direction.
+   * from 0, otherwise a new direction is chosen and the new position will be calculated.
+   * It is also checked that the new position is inside the edges and if it is not the point is recalculated
+   * by changing the direction.
    *
    * @param entity to be moved.
    * @return a [[Movement]] that contains the new position and the new direction.
@@ -77,7 +76,7 @@ object MovingStrategiesProlog {
   /** Calculates the new position based on the previous position of the blob approaching the point passed as the second parameter.
    * [[Direction.stepToNextDirection]] is always set to 0, so when the entity stops chasing another entity it will change direction.
    *
-   * @param entity to be moved.
+   * @param entity       to be moved.
    * @param chasedEntity the entity to be chased
    * @return a [[Movement]] that contains the new position and the new direction.
    */
@@ -93,20 +92,20 @@ object MovingStrategiesProlog {
   /** Create a [[Movement]] containing the new position and direction using the values contained in the
    * variables passed as parameters after solving the [[Term]] with the [[PrologEngine]].
    *
-   * @param goal the term to solve.
-   * @param pointVar the [[Var]] containing the information regarding the new [[Point2D]] position.
+   * @param goal         the term to solve.
+   * @param pointVar     the [[Var]] containing the information regarding the new [[Point2D]] position.
    * @param directionVar the [[Var]] containing the information regarding the new [[Direction]].
    * @return a [[Movement]] that contains the new position and the new direction.
    */
   private def newPosition(goal: Term, pointVar: Var, directionVar: Var): Movement = {
     val solution = engine(goal)
     val solveInfo = solution.iterator.next()
-    Movement(solveInfo.getVarValue(pointVar.getName), solveInfo.getVarValue(directionVar.getName))
+    movement.Movement(solveInfo.getVarValue(pointVar.getName), solveInfo.getVarValue(directionVar.getName))
   }
 
   /** Gets the i-th [[Term]] contained in the [[Term]] passed as a parameter.
    *
-   * @param term the term whence extract the information.
+   * @param term      the term whence extract the information.
    * @param argNumber the index of the argument to extract.
    * @return the i-th [[Term]] extracted.
    */

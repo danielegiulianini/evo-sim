@@ -1,16 +1,15 @@
 package evo_sim.view.swing.chart
 
 import scala.language.implicitConversions
-import evo_sim.view.swing.chart.Series.{CategorySeries, PieValue, XySeries}
 import org.knowm.xchart._
 import org.knowm.xchart.style.Styler.LegendPosition
 
-object ChartsFactory {
+object ChartsBuilder {
 
-  /** Implicit conversion from [[List]] to [[Array]]
+  /** Implicit conversion from [[scala.collection.immutable.List]] to [[Array]]
    *
    * @param list the list to convert.
-   * @return the [[Array]] equivalent at the [[List]]
+   * @return the [[Array]] equivalent at the [[scala.collection.immutable.List]]
    */
   implicit def listToDoubleArray(list: List[Double]): Array[Double] = list.toArray
 

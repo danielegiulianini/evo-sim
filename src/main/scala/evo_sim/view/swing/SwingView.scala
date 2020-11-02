@@ -9,9 +9,9 @@ import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.SwingView.ViewUtils.InputViewUtils.inputViewCreated
+import evo_sim.view.swing.SwingView.ViewUtils.ResultViewUtils
 import evo_sim.view.swing.SwingView.ViewUtils.SimulationViewUtils.indicatorsUpdated
-import evo_sim.view.swing.chart.ChartsFactory
-import evo_sim.view.swing.chart.Series.{CategorySeries, PieValue, XySeries}
+import evo_sim.view.swing.chart.{CategorySeries, ChartsBuilder, PieValue, XySeries}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.monadic._
 import javax.swing.WindowConstants.EXIT_ON_CLOSE
@@ -58,70 +58,12 @@ object SwingView extends View {
   } yield ()
 
   override def resultsShowed(world: WorldHistory): IO[Unit] = for {
-    history <- IO { world.reverse}
-    days <- IO { days(world.head.totalIterations)}
 
-    velocity <- IO {
-      XySeries("Velocity",
-        days,
-        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].velocity)),
-        SeriesMarkers.NONE,
-        XYSeriesRenderStyle.Line)
-    }
-
-    dimension <- IO {
-      XySeries("Dimension",
-        days,
-        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].boundingBox.radius)),
-        SeriesMarkers.NONE,
-        XYSeriesRenderStyle.Line)
-    }
-
-    fov <- IO {
-      XySeries("Field of View",
-        days,
-        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].fieldOfViewRadius)),
-        SeriesMarkers.NONE,
-        XYSeriesRenderStyle.Line)
-    }
-
-    population <- IO {
-      CategorySeries("Population",
-        days,
-        dayValue(history)(entityDayQuantity(_.isInstanceOf[Blob])),
-        SeriesMarkers.NONE,
-        CategorySeriesRenderStyle.Bar)
-    }
-
-    food <- IO {
-      CategorySeries("Food",
-        days,
-        dayValue(history)(entityDayQuantity(_.isInstanceOf[Food])),
-        SeriesMarkers.NONE,
-        CategorySeriesRenderStyle.Line)
-    }
-
-    simulationBlobPercentage <- IO { PieValue("Base", population.yData.sum/population.yData.length) }
-    simulationFoodPercentage <- IO { PieValue("Food", food.yData.sum/population.yData.length) }
-    simulationObstaclePercentage <- IO { PieValue("Obstacle", averageSimulation(history)(entityDayQuantity(_.isInstanceOf[Obstacle]))) }
-
-    populationChart <- IO { ChartsFactory.histogramChart("Population", 675, 300, population, food)}
-    populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
-
-    velocityChart <- IO { ChartsFactory.xyChart("Entities characteristic average",675, 300, velocity, dimension, fov) }
-    velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
-
-    typologyChart <- IO { ChartsFactory.pieChart("Simulation entities percentage", 400, 200, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
-    typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
-
-    panel <- JPanelIO()
-    _ <- panel.added(populationChartPanel)
-    _ <- panel.added(velocityChartPanel)
-    _ <- panel.added(typologyChartPanel)
+    panel <- ResultViewUtils.panelWithChart(world.reverse)
 
     cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
-    _ <- cp.addedInvokingAndWaiting(panel)
+    _ <- cp.added(panel)
     _ <- frame.packedInvokingAndWaiting()
     _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
@@ -239,6 +181,64 @@ object SwingView extends View {
 
     object ResultViewUtils {
 
+      def panelWithChart(history: WorldHistory): IO[JPanelIO] = for {
+
+        days <- IO { days(history.head.totalIterations) }
+
+        velocity <- IO {
+        XySeries("Velocity",
+        days,
+        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].velocity)),
+        SeriesMarkers.NONE,
+        XYSeriesRenderStyle.Line)}
+
+        dimension <- IO {
+        XySeries("Dimension",
+        days,
+        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].boundingBox.radius)),
+        SeriesMarkers.NONE,
+        XYSeriesRenderStyle.Line)}
+
+        fov <- IO {
+        XySeries("Field of View",
+        days,
+        averageDuringDay(history)(entityCharacteristicAverage(_.asInstanceOf[Blob].fieldOfViewRadius)),
+        SeriesMarkers.NONE,
+        XYSeriesRenderStyle.Line)}
+
+        population <- IO {
+        CategorySeries("Population",
+        days,
+        dayValue(history)(entityDayQuantity(_.isInstanceOf[Blob])),
+        SeriesMarkers.NONE,
+        CategorySeriesRenderStyle.Bar)}
+
+        food <- IO {
+        CategorySeries("Food",
+        days,
+        dayValue(history)(entityDayQuantity(_.isInstanceOf[Food])),
+        SeriesMarkers.NONE,
+        CategorySeriesRenderStyle.Line)}
+
+        simulationBlobPercentage <- IO { PieValue("Base", population.yData.sum/population.yData.length) }
+        simulationFoodPercentage <- IO { PieValue("Food", food.yData.sum/population.yData.length) }
+        simulationObstaclePercentage <- IO { PieValue("Obstacle", averageSimulation(history)(entityDayQuantity(_.isInstanceOf[Obstacle]))) }
+
+        populationChart <- IO { ChartsBuilder.histogramChart("Population", 675, 300, population, food)}
+        populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
+
+        velocityChart <- IO { ChartsBuilder.xyChart("Entities characteristic average",675, 300, velocity, dimension, fov) }
+        velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
+
+        typologyChart <- IO { ChartsBuilder.pieChart("Simulation entities percentage", 400, 200, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
+        typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
+
+        panel <- JPanelIO()
+        _ <- panel.added(populationChartPanel)
+        _ <- panel.added(velocityChartPanel)
+        _ <- panel.added(typologyChartPanel)
+
+      } yield panel
     }
   }
 }
