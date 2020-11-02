@@ -35,6 +35,16 @@ object Queriable {
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     contained(t, elem._1) || contained(t, elem._2)
 
+  def containedAllOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
+    contained(t, elem._1) && contained(t, elem._2)
+
+  def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: Set[A]): Boolean =
+    elem.exists(contained(t, _))
+
+  def containedAllOf[F[_]: Queriable, A](t: F[A], elem: Set[A]): Boolean =
+    elem.forall(contained(t, _))
+
+
   //enabling DOT notation TODO
   /*implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
     def contained[T](elem: T): Boolean =
@@ -56,18 +66,18 @@ object QueriableImplicits {
   /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[HomogeneousTuple2]], ie: how it can be
    * considered a [[evo_sim.utils.Queriable]].
    */
-   implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
-     override def contained[T](t: (T, T), elem: T): Boolean =
-       t._1 == elem || t._2 == elem
-   }
+  implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
+    override def contained[T](t: (T, T), elem: T): Boolean =
+      t._1 == elem || t._2 == elem
+  }
 
   /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[HomogeneousTuple2Set]], ie: how it can be
    * considered a [[evo_sim.utils.Queriable]].
    */
-   implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
-     override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
-       t.exists(QueriableImplicits.ContainsForHomogeneousTuple2.contained(_, elem))
-     }
-   }
- }
+  implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
+    override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
+      t.exists(QueriableImplicits.ContainsForHomogeneousTuple2.contained(_, elem))
+    }
+  }
+}
 
