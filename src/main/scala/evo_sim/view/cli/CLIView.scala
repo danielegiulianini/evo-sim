@@ -82,6 +82,7 @@ object CLIView extends View {
         _ <- printlnIO("Days: " +
           fromIterationsToDays(world.currentIteration) + "/" +
           fromIterationsToDays(world.totalIterations))
+        _ <- printlnIO("Population: " + world.entities.collect{case b: Blob => b}.size)
         _ <- printlnIO("Temperature: " + world.temperature)
         _ <- printlnIO("Luminosity: " + world.luminosity)
       } yield ()
