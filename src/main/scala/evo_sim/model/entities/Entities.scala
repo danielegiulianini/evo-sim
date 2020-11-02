@@ -15,7 +15,7 @@ object Entities {
   /**
    * Represent a basic [[EntityStructure.Blob]].
    * @param name              blob's name.
-   * @param boundingBox       blob's [[BoundingBox]].
+   * @param boundingBox       blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
    * @param life              blob's [[EntityStructure.Domain.Life]].
    * @param velocity          blob's [[EntityStructure.Domain.Velocity]].
    * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
@@ -36,7 +36,7 @@ object Entities {
    * Represent a cannibal blob [[EntityStructure.Blob]] implementation.
    * This blob can eat other smaller blobs type.
    * @param name blob's name.
-   * @param boundingBox blob's [[BoundingBox]].
+   * @param boundingBox blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
    * @param life blob's [[EntityStructure.Domain.Life]].
    * @param velocity blob's [[EntityStructure.Domain.Velocity]].
    * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
@@ -80,7 +80,7 @@ object Entities {
                           override val collisionEffect: CollisionEffect) extends Obstacle with NeutralBehaviour
 
   /**
-   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[CollisionEffect.standardFoodEffect]].
+   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.standardFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -91,7 +91,7 @@ object Entities {
                            override val lifeCycle: LifeCycle) extends Plant with StandardPlantBehaviour
 
   /**
-   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[CollisionEffect.reproduceBlobFoodEffect]].
+   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.reproduceBlobFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -102,7 +102,7 @@ object Entities {
                               override val lifeCycle: LifeCycle) extends Plant with ReproducingPlantBehaviour
 
   /**
-   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[CollisionEffect.poisonousFoodEffect]].
+   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.poisonousFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -116,7 +116,7 @@ object Entities {
    * Represent a poisoned blob. This blob takes more damage than standard blobs.
    * After a certain cool down the blob became a BaseBlob
    * @param name blob's name.
-   * @param boundingBox blob's [[BoundingBox]].
+   * @param boundingBox blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
    * @param life blob's [[EntityStructure.Domain.Life]].
    * @param velocity blob's [[EntityStructure.Domain.Velocity]].
    * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
@@ -139,7 +139,7 @@ object Entities {
    * Represent a slowed blob. This blob moves slowly than standard blobs.
    * After a certain cool down the blob became a BaseBlob.
    * @param name blob's name.
-   * @param boundingBox blob's [[BoundingBox]].
+   * @param boundingBox blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
    * @param life blob's [[EntityStructure.Domain.Life]].
    * @param velocity blob's [[EntityStructure.Domain.Velocity]].
    * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
