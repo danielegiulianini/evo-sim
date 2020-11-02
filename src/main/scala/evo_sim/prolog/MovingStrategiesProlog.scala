@@ -55,8 +55,10 @@ object MovingStrategiesProlog {
    */
   implicit def termToDirection(t:Term): Direction = Direction(extractVarValue(t, 0), extractVarValue(t, 1))
 
-  /** Calculates the new position following the previous direction if [[Direction.stepToNextDirection]] is different
+  /** Calculates the new position based the previous direction if [[Direction.stepToNextDirection]] is different
    *  from 0, otherwise a new direction is chosen and the new position will be calculated.
+   *  It is also checked that the new position is inside the edges and if it is not the point is recalculated
+   *  by changing the direction.
    *
    * @param entity to be moved.
    * @return a [[Movement]] that contains the new position and the new direction.
@@ -72,8 +74,8 @@ object MovingStrategiesProlog {
 
   }
 
-  /** Calculates the new position by chasing the nearest eatable entity. [[Direction.stepToNextDirection]] is always
-   *  set to 0, so when the entity stops chasing another entity it will change direction.
+  /** Calculates the new position based on the previous position of the blob approaching the point passed as the second parameter.
+   * [[Direction.stepToNextDirection]] is always set to 0, so when the entity stops chasing another entity it will change direction.
    *
    * @param entity to be moved.
    * @param chasedEntity the entity to be chased
