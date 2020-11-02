@@ -10,11 +10,17 @@ I test sviluppati riguardano le classi \code{BlobTest}, \code{DegradationTest}, 
 \subsubsection{Andrea Betti}
 Ho contribuito insieme a Rei Beshiri all'implementazione dei comportamenti delle diverse entità della simulazione in \code{evo\_sim.model.EntityBehaviour} e agli effetti applicabili dalle entità \textit{Effectful} in \code{evo\_sim.model.effects.CollisionEffect}, realizzando le classi e le funzioni relative alle entità \textit{Food} e \textit{Plant} e contribuendo in misura minore ai comportamenti delle entità \textit{Blob} e all'estensione di \code{evo\_sim.model.EntityStructure}.
 
-Ho inoltre implementato la logica di rappresentazione della simulazione utilizzando Java Swing all'interno della classe \code{evo\_sim.view.swing.custom.components.ShapesPanel}, utilizzata nella funzione \code{rendered} di \code{evo\_sim.view.swing.SwingView} realizzata da Alessandro Oliva.
+Ho inoltre implementato la logica di rappresentazione della simulazione utilizzando \texttt{scala-swing} all'interno della classe \code{evo\_sim.view.swing.custom.components.ShapesPanel}, utilizzata nella funzione \code{rendered} di \code{evo\_sim.view.swing.SwingView} realizzata da Alessandro Oliva.
 
 Per quanto riguarda i test, ho realizzato \code{FoodTests} e \code{PlantTests}.
 \subsubsection{Daniele Giulianini}
 
 \subsubsection{Alessandro Oliva}
+Il mio contributo nel model è consistito nello sviluppo delle entità \textit{Obstacle}, le entità con status temporanei (il cui raffinamento è però stato curato da Rei Beshiri), in particolare lo \textit{SlowBlob}.
 
+Mi sono occupato inoltre del ciclo giorno notte della simulazione, con rispettiva influenza sui blob in termini di velocità e campo visivo tramite appositi moduli di funzioni.
+
+Per quanto riguarda la View, ne ho seguito lo sviluppo dalla prima versione in \texttt{ScalaFX} fino all'implementazione puramente funzionale attraverso il framework \texttt{Cats}, del quale con l'importante contributo di Daniele Giulianini è stato sviluppato un intero package che permette di utilizzare componenti Swing in maniera funzionale. Sempre con Daniele Giulianini mi sono occupato dell'integrazione fra View e Core mediante il framework monadico. Parallelamente a questa versione è stata sviluppata un interfaccia a linea di comando per permettere la fruizione dell'applicazione nella sua interezza anche mentre si lavorava alla View.
+
+I test da me sviluppati sono inclusi in \code{ObstacleTests}.
 \subsubsection{Andrea Vaienti}
