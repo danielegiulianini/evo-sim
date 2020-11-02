@@ -1,8 +1,9 @@
+package evo_sim.model
+
 import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Food
 import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.model._
 import org.scalatest.FunSpec
 
 import scala.math.hypot
