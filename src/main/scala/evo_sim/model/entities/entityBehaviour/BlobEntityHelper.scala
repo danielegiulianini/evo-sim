@@ -1,5 +1,6 @@
 package evo_sim.model.entities.entityBehaviour
 
+import scala.language.postfixOps
 import evo_sim.model.entities.entityStructure.BoundingBox.Circle
 import evo_sim.model.entities.entityStructure.EntityStructure.Blob
 import evo_sim.model.world.effects.{LuminosityEffect, TemperatureEffect}

@@ -1,5 +1,6 @@
 package evo_sim.model.world.dataProcessing
 
+import scala.language.implicitConversions
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.EntityStructure.Blob
 import evo_sim.model.world.World.WorldHistory
