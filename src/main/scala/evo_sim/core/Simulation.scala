@@ -44,7 +44,7 @@ object Simulation {
       liftIo(View.rendered(worldAfterCollisions))
 
     def resultShowed(worldHistory: WorldHistory) =
-      liftIo(View.resultViewBuiltAndShowed(worldHistory))
+      liftIo(View.resultsShowed(worldHistory))
 
     def getTime() =
       liftIo(TimingOps.getTime())
