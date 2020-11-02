@@ -5,7 +5,11 @@ L’approccio progettuale utilizzato combina aspetti Object-oriented, come l’u
 
 
 \subsection{Core}
-ciao
+Il motore della simulazione (simulationEngine) consiste in una descrizione monadica delle fasi della simulazione, che prevede l’aggiornamento dei parametri del mondo, il rilevamento e risoluzione delle collisioni fra le entità che lo popolano, la visualizzazione a video del suo stato aggiornato e l’attesa dell’intervallo di tempo prima della successiva iterazione. In questo modo il codice non contiene i side effects invece presenti in un’equivalente versione procedurale, e la parte non funzionalmente pura, ovvero quella non che rispetta le proprietà di trasparenza referenziale) è situata all’avvio della simulazione. 
+Questo andamento sequenziale e periodico è stato modellato attraverso una composizione di State monad  (State[World, A]) (per quanto riguarda l’aggiornamento della struttura del mondo) e di IO monad (per le operazioni di I/O come il display a video delle entità e delle statistiche storiche alla chiusura dell’applicazione). Per tale motivo (e a fini di leggibilità sono stati definiti i seguenti type alias):
+
+
+\subsection{Model}
 
 
 \begin{figure}[h!]
