@@ -49,7 +49,7 @@ object QueriableImplicits {
   }
 
   /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[HomogeneousTuple2]], ie: how it can be
-   * considered a [[Queriable]].
+   * considered a [[evo_sim.utils.Queriable]].
    */
    implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
      override def contained[T](t: (T, T), elem: T): Boolean =
@@ -57,7 +57,7 @@ object QueriableImplicits {
    }
 
   /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[HomogeneousTuple2Set]], ie: how it can be
-   * considered a [[Queriable]].
+   * considered a [[evo_sim.utils.Queriable]].
    */
    implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
      override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
