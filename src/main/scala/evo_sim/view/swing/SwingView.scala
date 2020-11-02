@@ -10,7 +10,7 @@ import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.SwingView.ViewUtils.InputViewUtils.inputViewCreated
 import evo_sim.view.swing.SwingView.ViewUtils.SimulationViewUtils.indicatorsUpdated
-import evo_sim.view.swing.chart.{CategorySeries, ChartsFactory, PieValue, XySeries}
+import evo_sim.view.swing.chart.{CategorySeries, ChartsBuilder, PieValue, XySeries}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.monadic._
 import javax.swing.WindowConstants.EXIT_ON_CLOSE
@@ -104,13 +104,13 @@ object SwingView extends View {
     simulationFoodPercentage <- IO { PieValue("Food", food.yData.sum/population.yData.length) }
     simulationObstaclePercentage <- IO { PieValue("Obstacle", averageSimulation(history)(entityDayQuantity(_.isInstanceOf[Obstacle]))) }
 
-    populationChart <- IO { ChartsFactory.histogramChart("Population", 675, 300, population, food)}
+    populationChart <- IO { ChartsBuilder.histogramChart("Population", 675, 300, population, food)}
     populationChartPanel <- IO { new JComponentIO(new XChartPanel(populationChart)) }
 
-    velocityChart <- IO { ChartsFactory.xyChart("Entities characteristic average",675, 300, velocity, dimension, fov) }
+    velocityChart <- IO { ChartsBuilder.xyChart("Entities characteristic average",675, 300, velocity, dimension, fov) }
     velocityChartPanel <- IO { new JComponentIO(new XChartPanel(velocityChart)) }
 
-    typologyChart <- IO { ChartsFactory.pieChart("Simulation entities percentage", 400, 200, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
+    typologyChart <- IO { ChartsBuilder.pieChart("Simulation entities percentage", 400, 200, simulationBlobPercentage, simulationFoodPercentage, simulationObstaclePercentage)}
     typologyChartPanel <- IO { new JComponentIO(new XChartPanel(typologyChart)) }
 
     panel <- JPanelIO()

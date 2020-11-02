@@ -4,8 +4,6 @@ import org.knowm.xchart.CategorySeries.CategorySeriesRenderStyle
 import org.knowm.xchart.XYSeries
 import org.knowm.xchart.style.markers.Marker
 
-
-
 /**
  * This trait represent a standard series for the charts.
  */
