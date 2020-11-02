@@ -3,55 +3,73 @@
 \subsection{Requisiti di business}
 
 L'applicazione dovrà disporre delle seguenti caratteristiche:
-\begin{enumerate}
+\begin{myEnumerate}
     \item[1] Business.
-    \begin{enumerate}[label*=\arabic*.]
+    \begin{myEnumerate}[label*=\arabic*.]
         \item[1.1] Visualizzazione di una simulazione di evoluzione naturale di entità \textit{blob} che hanno come obiettivo la sopravvivenza in un ambiente ostile;
         \item[1.2] I \textit{blob} si differenziano gli uni dagli altri in base a caratteristiche genetiche che ne influenzano il comportamento;
         \item[1.3] L'ambiente del simulatore sarà configurabile così da avere diversi scenari che influenzeranno l'andamento della simulazione.
-    \end{enumerate}
-\end{enumerate}
+    \end{myEnumerate}
+\end{myEnumerate}
 
 In particolare il simulatore funzionerà come segue:
 \begin{itemize}
-    \item Una simulazione è composta da diverse giornate in ognuna delle quali i \textit{blob} hanno l'obiettivo di procacciarsi del cibo che gli consenta di ottenere le energie necessarie a sopravviere fino alla giornata successiva;
-    \item I \textit{blob} per sopravvivere e riprodursi necessitano di energie ricavate dal cibo presente all'interno dell'ecosistema;
+    \item Una simulazione è composta da diverse giornate in ognuna delle quali i \textit{blob} hanno l'obiettivo di procacciarsi del cibo che gli consenta di ottenere le energie necessarie a sopravvivere;
+    \item I \textit{blob} per sopravvivere e riprodursi necessitano del cibo presente all'interno dell'ecosistema;
 \end{itemize}
 
 \subsection{Requisiti utente}
 In particolare l'utente può usufruire dei seguenti aspetti:
 
-\begin{enumerate}
+\begin{myEnumerate}
     \item[2] Utente.
-    \begin{enumerate}[label*=\arabic*.]
+    \begin{myEnumerate}[label*=\arabic*.]
         \item[2.1] Parametrizzazione delle caratteristiche della simulazione tramite UI;
-        \begin{enumerate}[label*=\arabic*.]
+        \begin{myEnumerate}[label*=\arabic*.]
             \item[2.1.1] Cardinalità dei \textit{blob};
-            \item[2.1.2] Cardinalità dei cibi;
+            \item[2.1.2] Cardinalità delle piante che producono il cibo;
             \item[2.1.3] Cardinalità massima delle giornate;
             \item[2.1.4] Cardinalità degli ostacoli presenti all'interno dell'ambiente;
             \item[2.1.5] Temperatura dell'ambiente;
             \item[2.1.6] Luminosità dell'ambiente;
-        \end{enumerate}
+        \end{myEnumerate}
         \item[2.2] Rappresentazione grafica dell'andamento della simulazione in 2D;
-        \begin{enumerate}[label*=\arabic*.]
+        \begin{myEnumerate}[label*=\arabic*.]
             \item[2.2.1] Rappresentazione delle entità all'interno dell'ambiente;
-            \begin{enumerate}[label*=\arabic*.]
+            \begin{myEnumerate}[label*=\arabic*.]
                 \item[2.2.1.1] Rappresentazione dei \textit{blob};
+		        \begin{myEnumerate}[label*=\arabic*.]
+			        \item[2.2.1.1.2] Rappresentazione del campo visivo come circonferenza attorno al \textit{blob};
+		        \end{myEnumerate}
                 \item[2.2.1.2] Rappresentazione degli ostacoli;
                 \item[2.2.1.3] Rappresentazione del cibo;
-            \end{enumerate}
+		\item[2.2.1.4] Rappresentazione delle piante;
+            \end{myEnumerate}
             \item[2.2.2] Rappresentazione degli indicatori di evoluzione in real-time;
-            \begin{enumerate}[label*=\arabic*.]
-                \item[2.2.2.1] Rappresentazione della cardinalità della popolazione;
-                \item[2.2.2.2] Rappresentazione del numero di nascite;
-                \item[2.2.2.3] Rappresentazione del numero di morti;
-                \item[2.2.2.4] Rappresentazione della media dei valori delle caratteristiche; genetiche dei \textit{blob} (velocità, percezione dell'ambiente, dimensione, energia);
-            \end{enumerate}
-            \item[2.2.3] Rappresentazione dell'indicatore della giornata corrente.
-        \end{enumerate}
-    \end{enumerate}
-\end{enumerate}
+            \begin{myEnumerate}[label*=\arabic*.]
+                \item[2.2.2.1] Rappresentazione della cardinalità della popolazione di \textit{blob} attuale;
+		        \item[2.2.2.2] Rappresentazione della luminosità;
+	    	    \item[2.2.2.3] Rappresentazione della temperatura;
+                \item[2.2.2.4] Rappresentazione del giorno corrente;
+            \end{myEnumerate}
+	    \item[2.2.3] Rappresentazione dell'andamento della luminosità come indicatore cromatico sull'area della simulazione;
+	    \item[2.2.4] Rappresentazione dell'andamento della temperatura come indicatore cromatico sull'area della simulazione;
+        \end{myEnumerate}
+	\item[2.3] Rappresentazione delle statistiche riguardanti l'andamento della simulazione;
+	\begin{myEnumerate}[label*=\arabic*.]
+		    \item[2.3.1] Rappresentazione della media dei valori delle caratteristiche genetiche dei \textit{blob} (velocità, percezione dell'ambiente, dimensione);
+		    \item[2.3.2] Rappresentazione della cardinalità della popolazione di \textit{blob} e del cibo per ogni giornata;
+		    \item[2.3.3] Rappresentazione della tipologia di entità che hanno composto la simulazione in percentuale rispetto al totale;
+	    \end{myEnumerate}
+	    \item[2.4] Rappresentazione della simulazione e delle statistiche finali visualizzata a schermo intero;
+	    \item[2.5] Implementazione di una interfaccia testuale alternativa all'interfaccia grafica, equivalente in termini di espressività:
+	    \begin{myEnumerate}
+		\item[2.5.1] Lettura da console dei parametri definiti in 2.1;
+		\item[2.5.2] Scrittura su console degli indicatori real-time definiti in 2.2.2;
+		\item[2.5.3] Scrittura su console dei risultati della simulazione (velocità media dei \textit{blob}, dimensione media dei \textit{blob}, campo visivo medio dei \textit{blob}, numero di \textit{blob} sopravvissuti fino alla fine, quantità di cibo rimanente alla fine).
+	    \end{myEnumerate}
+	\end{myEnumerate}
+\end{myEnumerate}
 
 \subsection{Requisiti funzionali}
 Il simulatore prodotto dovrà:
@@ -59,66 +77,59 @@ Il simulatore prodotto dovrà:
 \begin{myEnumerate}
     \item[3] Funzionali.
     \begin{myEnumerate}[label*=\arabic*.]
-        \item[3.1] Supportare diverse tipologie di entità;
+	\item[3.1] Essere composto da giornate che si compongono di un numero fisso di iterazioni le quali sono l'unità temporale di aggiornamento della simulazione;
+        \item[3.2] Supportare diverse tipologie di entità;
 	\begin{myEnumerate}[label*=\arabic*.]
-        	\item[3.1.1] \textit{blob};
+        	\item[3.2.1] \textit{blob};
 		\begin{myEnumerate}[label*=\arabic*.]
-        		\item[3.1.1.1] I \textit{blob} hanno delle caratteristiche genetiche;
+        		\item[3.2.1.1] I \textit{blob} hanno delle caratteristiche genetiche di base;
 			\begin{myEnumerate}[label*=\arabic*.]
-        			\item[3.1.1.1.1] Velocità;
-				\item[3.1.1.1.2] Percezione dell'ambiente;
-				\item[3.1.1.1.3] Dimensione;
-				\item[3.1.1.1.4] Energia;
+        			\item[3.2.1.1.1] Velocità;
+				\item[3.2.1.1.2] Campo visivo circolare;
+				\item[3.2.1.1.3] Dimensione;
+				\item[3.2.1.1.4] Vita;
     			\end{myEnumerate}
-			\item[3.1.1.2] Possibilità per i \textit{blob} di ottenere delle abilità durante il loro ciclo evolutivo
+			\item[3.2.1.2] Possibilità per i \textit{blob} di disporre di abilità aggiuntive;
 			\begin{myEnumerate}[label*=\arabic*.]
-        			\item[3.1.1.2.1] Resistenza al freddo;
-				\item[3.1.1.2.2] Resistenza al caldo;
-				\item[3.1.1.2.3] Resistenza all'avvelenamento (cibo avvelenato);
-				\item[3.1.1.2.4] Cannibalismo;
-				\item[3.1.1.2.5] Untore;
-				\item[3.1.1.2.6] ...;
+        			\item[3.2.1.2.1] Cannibalismo che implica la possibilità di nutrirsi di altri blob di dimensione inferiore alla propria per incrementare la vita;
+				\item[3.2.1.2.2] Avvelenamento che implica una perdita maggiore di vita con l'avanzamento del tempo;
+				\item[3.2.1.2.3] Rallentamento che implica una diminuzione della velocità di movimento;
     			\end{myEnumerate}
     		\end{myEnumerate}
-		\item[3.1.2] Cibi il cui ingerimento provoca diversi effetti sui \textit{blob}
+		\item[3.2.2] Cibi il cui consumo provoca diversi effetti sui \textit{blob}
 		\begin{myEnumerate}[label*=\arabic*.]
-        		\item[3.1.2.1] Nutrienti che aumentano l'energia attuale del \textit{blob};
-			\item[3.1.2.2] Avvelenato che fa consumare più energia al \textit{blob} per diverse giornate;
-			\item[3.1.2.3] ...;
+        		\item[3.2.2.1] Nutriente che implica l'aumento di vita attuale del \textit{blob};
+			\item[3.2.2.2] Avvelenato che implica l'applicazione dello stato di rallentamento sul blob che vi collide;
+			\item[3.2.2.3] Riproduttivo che implica la nascita di un nuovo blob, e un aumento della vita attuale del padre;
+			\begin{myEnumerate}[label*=\arabic*.]
+        			\item[3.2.2.3.1] Possibilità che un blob sia cannibale alla nascita;
+    			\end{myEnumerate}
     		\end{myEnumerate}
-		\item[3.1.3] Ostacoli la cui collisione impedisce il naturale movimento del \textit{blob};
+		\item[3.2.3] Ostacoli la cui collisione impedisce il naturale movimento del \textit{blob};
 		\begin{myEnumerate}[label*=\arabic*.]
-        		\item[3.1.3.1] Preclusori di passaggio;
-			\item[3.1.3.2] Rallentatori di movimento;
-    		\end{myEnumerate}
-    	\end{myEnumerate}
-	\item[3.2] Parametrizzazione delle diverse caratteristiche ambientali che influenzano tutti i \textit{blob};
-	\begin{myEnumerate}[label*=\arabic*.]
-        	\item[3.2.1] Temperatura che influenza la velocità di movimento;
-		\item[3.2.2] Luminosità che influenza la percezione dell'ambiente;
-    	\end{myEnumerate}
-	\item[3.3] Movimento dei \textit{blob} all'interno dell'ambiente dettato da un AI;
-	\begin{myEnumerate}[label*=\arabic*.]
-        	\item[3.3.1] Movimento alla ricerca di cibo finché quest'ultimo non è presente all'interno del campo visivo;
-		\item[3.3.2] Movimento secondo determinati pattern con entità presenti nel campo visivo;
-		\begin{myEnumerate}[label*=\arabic*.]
-        		\item[3.3.2.1] ...;
+        		\item[3.2.3.1] Dannoso che implica il decremento della vita del blob che vi collide;
+			\item[3.2.3.2] Rallentatore di movimento che implica l'applicazione dello stato di rallentamento sul blob che vi collide;
     		\end{myEnumerate}
     	\end{myEnumerate}
-	\item[3.4] Riproduzione dei \textit{blob} basata sulle caratteristiche genetiche dei genitori;
-	\item[3.5] Possibilità di effettuare simulazioni parametrizzate arbitrariamente dall'utente;
+	\item[3.3] Parametrizzazione delle diverse caratteristiche ambientali che influenzano tutti i \textit{blob};
 	\begin{myEnumerate}[label*=\arabic*.]
-		\item[3.5.1] Parametrizzazione \textit{blob};
-		\item[3.5.2] Parametrizzazione cibi;
-		\item[3.5.3] Parametrizzazione ostacoli;
+        	\item[3.3.1] Temperatura che influenza la velocità di movimento;
+		\item[3.3.2] Luminosità che influenza la percezione dell'ambiente;
+    	\end{myEnumerate}
+	\item[3.4] Movimento dei \textit{blob} all'interno dell'ambiente dettato da un AI;
+	\begin{myEnumerate}[label*=\arabic*.]
+        	\item[3.4.1] Movimento casuale finché non compare un entità commestibile all'interno del campo visivo;
+		\item[3.4.2] Inseguimento dell'entità commestibile presente all'interno del campo visivo;
+    	\end{myEnumerate}
+	\item[3.5] Riproduzione dei \textit{blob} basata sulle caratteristiche genetiche del padre con una variazione randomica;
+	\item[3.6] Possibilità di effettuare simulazioni con la possibilità per l'utente di specificare le caratteristiche della simulazione come descritto in 2.1;
+	\item[3.7] Possibilità di visualizzare l'andamento della simulazione;	
+	\begin{myEnumerate}[label*=\arabic*.]
+		\item[3.7.1] Visualizzazione delle entità all'interno dell'ambiente come descritto in 2.2.1;
+		\item[3.7.2] Visualizzazione degli indicatori di evoluzione in real-time come descritto in 2.2.2;
 	\end{myEnumerate}
-	\item[3.6] Possibilità di visualizzare l'andamento della simulazione;	
-	\begin{myEnumerate}[label*=\arabic*.]
-		\item[3.6.1] Visualizzazione delle entità all'interno dell'ambiente;
-		\item[3.6.2] Visualizzazione degli indicatori di evoluzione in real-time;
-		\item[3.6.3] Visualizzazione dell'indicatore della giornata corrente.
+	\item[3.8] Possibilità di visualizzare i risultati finali della simulazione attraverso grafici;
 	\end{myEnumerate}
-    \end{myEnumerate}
 \end{myEnumerate}
 
 \subsection{Requisiti non funzionali}
@@ -126,8 +137,8 @@ Il simulatore prodotto dovrà:
 \begin{myEnumerate}[label*=\arabic*.]
 	\item[4] Non funzionali
 	\begin{myEnumerate}[label*=\arabic*.]
-		\item[4.1] Mantenimento di un framerate stabile e costante che si aggiri sui 30 FPS con un numero di \textit{blob} che si aggira su [...].
-		\item[4.2] Latenza dell'interfaccia utente inferiore ai [...] ms.
+		\item[4.1] Mantenimento di un framerate stabile e costante che si aggiri sui 60 FPS su una macchina con hardware xyz
+		\item[4.2] Interfaccia utente responsive;
 	\end{myEnumerate}
 \end{myEnumerate}
 
@@ -137,6 +148,6 @@ Il simulatore prodotto dovrà:
 \begin{myEnumerate}[label*=\arabic*.]
 	\item[5] Implementazione
 	\begin{myEnumerate}[label*=\arabic*.]
-		\item[5.1] L'applicazione verrà sviluppata in Scala, mentre per verificare la presenza di errori verranno implementati test in Scalatest.
+		\item[5.1] L'applicazione verrà sviluppata in Scala e Prolog, mentre per verificare la presenza di errori verranno implementati test in Scalatest.
 	\end{myEnumerate}
 \end{myEnumerate}
