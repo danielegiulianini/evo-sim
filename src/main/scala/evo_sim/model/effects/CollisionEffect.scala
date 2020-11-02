@@ -4,8 +4,9 @@ import evo_sim.model.BoundingBox.Circle
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Blob
+import evo_sim.model.movement.{Direction, MovingStrategies}
 import evo_sim.utils.Counter._
-import evo_sim.model.{BlobEntityHelper, Constants, Direction, MovingStrategies}
+import evo_sim.model.{BlobEntityHelper, Constants}
 
 /**
  * Singleton object that provides different collision effect implementations to be used by object that extend [[evo_sim.model.EntityStructure.Effectful]].

@@ -3,6 +3,7 @@ package evo_sim.model
 import evo_sim.model.Constants._
 import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.effects.DegradationEffect
+import evo_sim.model.movement.{Direction, MovingStrategies}
 import org.scalatest.FunSpec
 
 class BlobTests extends FunSpec {

@@ -3,6 +3,7 @@ import evo_sim.model.EntityStructure.Blob
 import evo_sim.model._
 import evo_sim.model.Constants._
 import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.movement.{Direction, MovingStrategies}
 import org.scalatest.FunSpec
 
 class FoodTests extends FunSpec {

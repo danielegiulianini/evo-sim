@@ -7,7 +7,8 @@ import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidal
 import evo_sim.model.World.WorldHistory
-import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
+import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.movement.{Direction, MovingStrategies}
 import evo_sim.utils.MemoHelper.memoize
 import evo_sim.utils.Counter._
 

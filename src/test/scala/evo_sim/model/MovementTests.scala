@@ -4,6 +4,7 @@ import evo_sim.model.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.Food
 import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.movement.{Direction, MovingStrategies}
 import org.scalatest.FunSpec
 
 import scala.math.hypot
