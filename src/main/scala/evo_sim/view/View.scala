@@ -26,5 +26,5 @@ trait View {
    * @param world the world to report
    * @return a [[cats.effect.IO]] describing this operation
    */
-  def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit]
+  def resultsShowed(world: WorldHistory): IO[Unit]
 }

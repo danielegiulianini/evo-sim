@@ -37,7 +37,7 @@ object CLIView extends View {
     _ <- indicatorsUpdated(world)
   } yield ()
 
-  override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
+  override def resultsShowed(world: WorldHistory): IO[Unit] = for {
     _ <- resultsShow(world.reverse)
   } yield ()
 

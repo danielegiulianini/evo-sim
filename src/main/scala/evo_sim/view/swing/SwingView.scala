@@ -57,7 +57,7 @@ object SwingView extends View {
     _ <- frame.packedInvokingAndWaiting()
   } yield ()
 
-  override def resultViewBuiltAndShowed(world: WorldHistory): IO[Unit] = for {
+  override def resultsShowed(world: WorldHistory): IO[Unit] = for {
     history <- IO { world.reverse}
     days <- IO { days(world.head.totalIterations)}
 
