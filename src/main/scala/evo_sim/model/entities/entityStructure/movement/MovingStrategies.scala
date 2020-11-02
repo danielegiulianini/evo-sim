@@ -1,8 +1,9 @@
-package evo_sim.model.movement
+package evo_sim.model.entities.entityStructure.movement
 
-import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.{Entity, Intelligent}
-import evo_sim.model.{Point2D, World}
+import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
+import evo_sim.model.entities.entityStructure.EntityStructure.{Entity, Intelligent}
+import evo_sim.model.entities.entityStructure.Point2D
+import evo_sim.model.world.World
 
 import scala.math._
 

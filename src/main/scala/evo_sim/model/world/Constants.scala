@@ -1,4 +1,4 @@
-package evo_sim.model
+package evo_sim.model.world
 
 /** Constants representing the simulation parameters. */
 object Constants {

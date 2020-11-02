@@ -3,10 +3,10 @@ package evo_sim.view.swing
 import java.awt.{BorderLayout, GraphicsEnvironment}
 
 import cats.effect.IO
-import evo_sim.model.EntityStructure.{Blob, Food, Obstacle}
-import evo_sim.model.FinalStats.{averageDuringDay, averageSimulation, dayValue, days, entityCharacteristicAverage, entityDayQuantity}
-import evo_sim.model.World.{WorldHistory, fromIterationsToDays}
-import evo_sim.model.{Constants, Environment, World}
+import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Food, Obstacle}
+import evo_sim.model.world.dataProcessing.FinalStats.{averageDuringDay, averageSimulation, dayValue, days, entityCharacteristicAverage, entityDayQuantity}
+import evo_sim.model.world.World.{WorldHistory, fromIterationsToDays}
+import evo_sim.model.world.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.SwingView.ViewUtils.InputViewUtils.inputViewCreated
 import evo_sim.view.swing.SwingView.ViewUtils.ResultViewUtils

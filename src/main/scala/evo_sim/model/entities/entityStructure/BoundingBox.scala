@@ -1,6 +1,7 @@
-package evo_sim.model
+package evo_sim.model.entities.entityStructure
 
-import BoundingBox._
+import evo_sim.model.entities.entityStructure.BoundingBox._
+import evo_sim.model.world.Constants
 
 /**
  * The Point2D class defines a point representing a location in (x,y) coordinate space.
@@ -22,7 +23,7 @@ object Point2D{
 }
 
 /**
- * Bounding Box trait, [[evo_sim.model.Point2D]] represent the center of the Bounding Box.
+ * Bounding Box trait, [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Bounding Box.
  */
  sealed trait BoundingBox {
   /** The center of the Bounding box */
@@ -37,18 +38,18 @@ object BoundingBox {
   //case classes for the different types of Bounding Boxes
   //Circle: Point & Radius
   /**
-   * Circle Shape, used by [[evo_sim.model.EntityStructure.Blob]].
+   * Circle Shape, used by [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]].
    *
-   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Circle.
+   * @param point  a [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Circle.
    * @param radius represent the radius of the Circle.
    */
   case class Circle(point: Point2D, radius: Int) extends BoundingBox
 
   //Rectangle: Point & w + h
   /**
-   * Rectangle Shape, used by [[evo_sim.model.EntityStructure.Obstacle]].
+   * Rectangle Shape, used by [[evo_sim.model.entities.entityStructure.EntityStructure.Obstacle]].
    *
-   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Rectangle.
+   * @param point  a [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Rectangle.
    * @param width  represent the width of the Rectangle.
    * @param height represent the height of the Rectangle.
    */
@@ -56,9 +57,9 @@ object BoundingBox {
 
   //Triangle: Point & h + angle (angle is defaulted as 60 -> equilateral), apothem = h/3*2 -> circe radius circumscribed in the triangle
   /**
-   * Triangle Shape, used by [[evo_sim.model.EntityStructure.Food]].
+   * Triangle Shape, used by [[evo_sim.model.entities.entityStructure.EntityStructure.Food]].
    *
-   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Triangle.
+   * @param point  a [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Triangle.
    * @param height represent the height of the Triangle.
    * @param angle  represent the angle of the Triangle.
    */
@@ -68,7 +69,7 @@ object BoundingBox {
   /**
    * Apply Circle constructor.
    *
-   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Circle.
+   * @param point  a [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Circle.
    * @param radius represent the radius of the Circle.
    * @return the Circle object.
    */
@@ -77,7 +78,7 @@ object BoundingBox {
   /**
    * Apply Rectangle constructor.
    *
-   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Rectangle.
+   * @param point  a [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Rectangle.
    * @param width  represent the width of the Rectangle.
    * @param height represent the height of the Rectangle.
    * @return the Rectangle object.
@@ -87,7 +88,7 @@ object BoundingBox {
   /**
    * Apply Triangle constructor.
    *
-   * @param point  a [[evo_sim.model.Point2D]] represent the center of the Triangle.
+   * @param point  a [[evo_sim.model.entities.entityStructure.Point2D]] represent the center of the Triangle.
    * @param height represent the height of the Triangle.
    * @param angle  represent the angle of the Triangle.
    * @return the Triangle object.

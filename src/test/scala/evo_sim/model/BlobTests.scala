@@ -1,9 +1,12 @@
 package evo_sim.model
 
-import evo_sim.model.Constants._
-import evo_sim.model.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
-import evo_sim.model.effects.DegradationEffect
-import evo_sim.model.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.Constants._
+import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
+import evo_sim.model.entities.entityStructure.EntityStructure.Blob
+import evo_sim.model.entities.entityStructure.effects.DegradationEffect
+import evo_sim.model.entities.entityStructure.{BoundingBox, Point2D}
+import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.World
 import org.scalatest.FunSpec
 
 class BlobTests extends FunSpec {
@@ -49,14 +52,25 @@ class BlobTests extends FunSpec {
   private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
     currentIteration = 0, entities = Set(base, poisonBlob, cannibal, slowBlob), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 
-  describe("A BaseBlob with BaseBlobBehaviour") {
+  describe("Blob with BaseBlobBehaviour") {
     describe("when updating a blob") {
       it("the new blob should have less life") {
         val updatedBlob: BaseBlob = base.updated(world).head.asInstanceOf[BaseBlob]
         assert(base.life > updatedBlob.life)
       }
     }
+    describe("when updating a blob with life greater than 0") {
+      it("should apply its degradationEffect to its life") {
+        val updatedBlob = slowBlob.updated(world)
+        assert(updatedBlob.exists {
+          case b: Blob => b.life == slowBlob.degradationEffect(slowBlob)
+          case _ => false
+        })
+      }
+    }
+
   }
+
    describe("when a cannibal blob collide with a base blob") {
      it("the cannibal blob should eat the base blob"){
        val blobShouldBeEaten = base.collided(cannibal).head.asInstanceOf[BaseBlob]

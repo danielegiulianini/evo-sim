@@ -1,9 +1,11 @@
-import evo_sim.model.Entities.{BaseBlob, BaseFood, CannibalBlob, PoisonBlob}
-import evo_sim.model.EntityStructure.Blob
+import evo_sim.model.entities.Entities.{BaseBlob, BaseFood, CannibalBlob, PoisonBlob}
+import evo_sim.model.entities.entityStructure.EntityStructure.Blob
 import evo_sim.model._
-import evo_sim.model.Constants._
-import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.model.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.Constants._
+import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.entities.entityStructure.{BoundingBox, Point2D}
+import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.{Constants, World}
 import org.scalatest.FunSpec
 
 class FoodTests extends FunSpec {

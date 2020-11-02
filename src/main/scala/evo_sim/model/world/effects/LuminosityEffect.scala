@@ -1,7 +1,7 @@
-package evo_sim.model.effects
+package evo_sim.model.world.effects
 
-import evo_sim.model.Constants
-import evo_sim.model.World.timeOfTheDay
+import evo_sim.model.world.Constants
+import evo_sim.model.world.World.timeOfTheDay
 import evo_sim.utils.MemoHelper.memoize
 import evo_sim.utils.TrigonometricalOps.Sinusoidal.Curried.zeroPhasedZeroYTranslatedSinusoidal
 

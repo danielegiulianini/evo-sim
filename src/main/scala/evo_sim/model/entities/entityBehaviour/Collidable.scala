@@ -1,7 +1,7 @@
-package evo_sim.model
+package evo_sim.model.entities.entityBehaviour
 
-import evo_sim.model.EntityBehaviour.{Simulable, SimulableEntity}
-import evo_sim.model.EntityStructure.Entity
+import EntityBehaviour.{Simulable, SimulableEntity}
+import evo_sim.model.entities.entityStructure.EntityStructure.Entity
 
 /** Defines how a type extending this trait reacts when it collides with another [[SimulableEntity]], i.e. how
  * it state changes.
@@ -38,30 +38,4 @@ object Collidable {
     self: Entity with Updatable =>
     override def collided(other: SimulableEntity): Set[SimulableEntity] = Set(self)
   }
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-/**
- * collided(blob, blob)
- * collided(blob, food)
- * collided(blob, obstacle)
- * -> note, every collided with the specific type of entity, this permits to define the effect occurred to the blob
- *
-def collided(other: Blob) : Set[Simulable] = {
-    val set = Set(other)
-    set -> this cant be done since Blob does not extend Simulable (so does not extends Collidable and Updatable either)
-  }
- */

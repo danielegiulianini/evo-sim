@@ -4,8 +4,8 @@ import scala.language.postfixOps
 import cats.data.StateT
 import cats.effect.IO
 import evo_sim.utils.TupleUtils.toTuple2
-import evo_sim.model.World
-import evo_sim.model.World.WorldHistory
+import evo_sim.model.world.World.WorldHistory
+import evo_sim.model.world.World
 import evo_sim.view.swing.{SwingView => View}
 //import evo_sim.view.cli.{CLIView => View}
 import scala.concurrent.duration.FiniteDuration

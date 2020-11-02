@@ -1,10 +1,11 @@
-import evo_sim.model.Entities.{BaseBlob, StandardPlant}
-import evo_sim.model.EntityStructure.{Food, Plant}
-import evo_sim.model.{BoundingBox, Point2D, World}
-import evo_sim.model.Constants._
-import evo_sim.model.Point2D.randomPosition
-import evo_sim.model.effects.DegradationEffect
-import evo_sim.model.movement.{Direction, MovingStrategies}
+import evo_sim.model.entities.Entities.{BaseBlob, StandardPlant}
+import evo_sim.model.entities.entityStructure.EntityStructure.{Food, Plant}
+import evo_sim.model.world.Constants._
+import evo_sim.model.entities.entityStructure.Point2D.randomPosition
+import evo_sim.model.entities.entityStructure.effects.DegradationEffect
+import evo_sim.model.entities.entityStructure.{BoundingBox, Point2D}
+import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.World
 import org.scalatest.FunSpec
 
 class PlantTests extends FunSpec {
