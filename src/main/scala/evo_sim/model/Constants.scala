@@ -36,9 +36,9 @@ object Constants {
   /** A blob's minimum velocity */
   val MIN_BLOB_VELOCITY: Int = DEF_BLOB_SLOW_VELOCITY
   /** A blob's default field of view radius */
-  val DEF_BLOB_FOW_RADIUS = 50
+  val DEF_BLOB_FOV_RADIUS = 50
   /** Minimum value of  field of view radius */
-  val MIN_BLOB_FOW_RADIUS = 15
+  val MIN_BLOB_FOV_RADIUS = 15
   /** A blob's default movement direction */
   val DEF_NEXT_DIRECTION = 0
   /** Maximum number of steps a blob can take in one direction */
@@ -135,7 +135,7 @@ object Constants {
   /** How much the temperature affects the velocity of a blob */
   val VELOCITY_MODIFIER = 0.0253125f
   /** How much the luminosity affects the field of view radius of a blob */
-  val FOW_MODIFIER = 0.01265625f
+  val FOV_MODIFIER = 0.01265625f
 
   /** How much the temperature ranges in a simulation */
   val TEMPERATURE_MAX_DELTA = 25

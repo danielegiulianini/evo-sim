@@ -1,9 +1,8 @@
 import evo_sim.model.Entities.{BaseBlob, BaseFood, CannibalBlob, PoisonBlob}
-import evo_sim.model.EntityStructure.{Blob, BlobWithTemporaryStatus}
+import evo_sim.model.EntityStructure.Blob
 import evo_sim.model._
 import evo_sim.model.Constants._
 import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.utils.TestUtils._
 import org.scalatest.FunSpec
 
 class FoodTests extends FunSpec {
@@ -119,19 +118,9 @@ class FoodTests extends FunSpec {
   }
 
   describe("A Blob with TemporaryStatusBlobBehaviour") {
-    describe("when colliding with a Food with standardFoodEffect") {
+    describe("when colliding with a Food") {
       it("should return a set with itself") {
         assert(poisonBlob.collided(standardFood).equals(Set(poisonBlob)))
-      }
-    }
-    describe("when colliding with a Food with reproducingFoodEffect") {
-      it("should return a set with itself") {
-        assert(poisonBlob.collided(reproducingFood).equals(Set(poisonBlob)))
-      }
-    }
-    describe("when colliding with a Food with poisonousFoodEffect") {
-      it("should return a set with itself") {
-        assert(poisonBlob.collided(poisonFood).equals(Set(poisonBlob)))
       }
     }
   }

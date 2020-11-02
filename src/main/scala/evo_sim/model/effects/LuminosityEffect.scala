@@ -15,7 +15,7 @@ object LuminosityEffect {
    */
   def standardLuminosityEffect: ((Int, Int)) => Int = memoize({
     case (luminosity, currentIteration) =>
-        zeroPhasedZeroYTranslatedSinusoidal(Constants.FOW_MODIFIER * luminosity)(timeOfTheDay(currentIteration))
+        zeroPhasedZeroYTranslatedSinusoidal(Constants.FOV_MODIFIER * luminosity)(timeOfTheDay(currentIteration))
   })
 
 }

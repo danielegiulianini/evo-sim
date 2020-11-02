@@ -17,7 +17,7 @@ class MovementTests extends FunSpec {
     life = Constants.DEF_BLOB_LIFE,
     velocity = Constants.DEF_BLOB_VELOCITY,
     degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
-    fieldOfViewRadius = Constants.DEF_BLOB_FOW_RADIUS,
+    fieldOfViewRadius = Constants.DEF_BLOB_FOV_RADIUS,
     movementStrategy = MovingStrategies.baseMovement,
     direction = Direction.apply(MOVE_TO_RIGHT_ANGLE, 10))
 
