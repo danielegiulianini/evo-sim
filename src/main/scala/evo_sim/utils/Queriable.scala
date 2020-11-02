@@ -32,25 +32,37 @@ object Queriable {
    *
    * @param t the type functor instance that wants to be inspected for the presence of elem
    * @param elem the [[Tuple2]] with the elements to be searched for
-   * @return whether the type functor contains the element.
+   * @return whether the type functor contains at least one of the elements inside the [[Tuple2]] provided.
    */
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     contained(t, elem._1) || contained(t, elem._2)
 
-  /**
+  /** Returns if all the elements inside the [[Tuple2]] passed are contained inside the structure provided.
    * 
-   * @param t
-   * @param elem
-   * @tparam F
-   * @tparam A
-   * @return
+   * @param t the type functor instance that wants to be inspected for the presence of elem
+   * @param elem the [[Tuple2]] with the elements to be searched for
+   * @return whether the type functor contains all the elements inside the [[Tuple2]] provided.
    */
   def containedAllOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
     contained(t, elem._1) && contained(t, elem._2)
 
+  /** Returns if any of the elements inside the [[Set]] passed as second argument are contained inside the
+   * structure provided.
+   *
+   * @param t the type functor instance that wants to be inspected for the presence of elem
+   * @param elem the [[Set]] with the elements to be searched for
+   * @return whether the type functor contains all the elements inside the [[Set]] provided.
+   */
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: Set[A]): Boolean =
     elem.exists(contained(t, _))
 
+  /** Returns if all the elements inside the [[Set]] passed as second argument are contained inside the
+   * structure provided.
+   *
+   * @param t the type functor instance that wants to be inspected for the presence of elem
+   * @param elem the [[Set]] with the elements to be searched for
+   * @return whether the type functor contains all the elements inside the [[Set]] provided.
+   */
   def containedAllOf[F[_]: Queriable, A](t: F[A], elem: Set[A]): Boolean =
     elem.forall(contained(t, _))
 
