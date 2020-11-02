@@ -1,5 +1,7 @@
 package evo_sim.utils
 
+import scala.language.higherKinds
+
 /** A type class that represents the ability for a type functor to be queried, i.e. asked whether it contains
  * a given element.
  *

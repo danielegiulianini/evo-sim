@@ -2,7 +2,8 @@ import evo_sim.model.Entities.{BaseBlob, PoisonBlob}
 import evo_sim.model.Point2D.randomPosition
 import evo_sim.model._
 import evo_sim.model.effects.DegradationEffect
-import org.scalatest.{FunSpec}
+import evo_sim.model.movement.{Direction, MovingStrategies}
+import org.scalatest.FunSpec
 
 class DegradationTests extends FunSpec {
   private val LIFE_AFTER_STANDARD_EFFECT = 1248

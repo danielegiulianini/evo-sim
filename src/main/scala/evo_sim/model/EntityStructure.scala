@@ -3,7 +3,8 @@ package evo_sim.model
 import scala.language.higherKinds
 import evo_sim.model.BoundingBox._
 import evo_sim.model.EntityBehaviour.SimulableEntity
-import evo_sim.model.EntityStructure.DomainImpl.{Cooldown, DegradationEffect, CollisionEffect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.EntityStructure.DomainImpl.{CollisionEffect, Cooldown, DegradationEffect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.movement.{Direction, Movement}
 
 object EntityStructure {
   trait Domain {

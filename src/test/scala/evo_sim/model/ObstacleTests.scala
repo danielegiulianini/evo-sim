@@ -2,7 +2,8 @@ package evo_sim.model
 
 import evo_sim.model.Entities.{BaseBlob, BaseObstacle}
 import evo_sim.model.EntityStructure.Blob
-import evo_sim.model.effects.{DegradationEffect, CollisionEffect}
+import evo_sim.model.effects.{CollisionEffect, DegradationEffect}
+import evo_sim.model.movement.{Direction, MovingStrategies}
 import evo_sim.utils.TestUtils._
 import org.scalatest.FunSpec
 
@@ -30,7 +31,7 @@ class ObstacleTests extends FunSpec {
     width = Constants.WORLD_WIDTH,
     height = Constants.WORLD_HEIGHT,
     currentIteration = 0,
-    entities = Set(blob) ++ Set(puddle) ++ Set(stone),
+    entities = Set(blob, puddle, stone),
     totalIterations = 10
   )
 

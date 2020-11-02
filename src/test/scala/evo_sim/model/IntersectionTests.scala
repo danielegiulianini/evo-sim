@@ -1,5 +1,5 @@
-import evo_sim.model._
-import org.scalatest.{FunSpec, FunSuite}
+package evo_sim.model
+import org.scalatest.FunSpec
 
 class IntersectionTests extends FunSpec {
   private val circle1 = BoundingBox.Circle(point = Point2D(100, 100), radius = 10)

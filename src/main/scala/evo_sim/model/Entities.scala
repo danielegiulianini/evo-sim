@@ -5,7 +5,7 @@ import evo_sim.model.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.EntityBehaviour._
 import evo_sim.model.EntityStructure.DomainImpl._
 import evo_sim.model.EntityStructure._
-import evo_sim.model.effects.CollisionEffect
+import evo_sim.model.movement.{Direction, MovingStrategies}
 
 object Entities {
 
@@ -13,14 +13,14 @@ object Entities {
 
   /**
    * Represent a basic [[evo_sim.model.EntityStructure.Blob]].
-   * @param name blob's name.
-   * @param boundingBox blob's [[evo_sim.model.BoundingBox]].
-   * @param life blob's [[evo_sim.model.EntityStructure.Domain.Life]].
-   * @param velocity blob's [[evo_sim.model.EntityStructure.Domain.Velocity]].
+   * @param name              blob's name.
+   * @param boundingBox       blob's [[evo_sim.model.BoundingBox]].
+   * @param life              blob's [[evo_sim.model.EntityStructure.Domain.Life]].
+   * @param velocity          blob's [[evo_sim.model.EntityStructure.Domain.Velocity]].
    * @param degradationEffect blob's [[evo_sim.model.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
-   * @param movementStrategy blob's [[evo_sim.model.EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[evo_sim.model.MovingStrategies]].
+   * @param movementStrategy  blob's [[evo_sim.model.EntityStructure.Domain.MovementStrategy]].
+   * @param direction         blob's [[MovingStrategies]].
    */
   case class BaseBlob(override val name: String,
                       override val boundingBox: Circle,
@@ -41,7 +41,7 @@ object Entities {
    * @param degradationEffect blob's [[evo_sim.model.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
    * @param movementStrategy blob's [[evo_sim.model.EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[evo_sim.model.MovingStrategies]].
+   * @param direction blob's [[MovingStrategies]].
    */
   case class CannibalBlob(override val name: String,
                           override val boundingBox: Circle,
@@ -121,7 +121,7 @@ object Entities {
    * @param degradationEffect blob's [[evo_sim.model.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
    * @param movementStrategy blob's [[evo_sim.model.EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[evo_sim.model.MovingStrategies]].
+   * @param direction blob's [[MovingStrategies]].
    * @param cooldown blob's [[evo_sim.model.EntityStructure.Domain.Cooldown]]
    */
   case class PoisonBlob(override val name: String,
@@ -144,7 +144,7 @@ object Entities {
    * @param degradationEffect blob's [[evo_sim.model.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
    * @param movementStrategy blob's [[evo_sim.model.EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[evo_sim.model.MovingStrategies]].
+   * @param direction blob's [[MovingStrategies]].
    * @param cooldown blob's [[evo_sim.model.EntityStructure.Domain.Cooldown]]
    * @param initialVelocity blob's initial [[evo_sim.model.EntityStructure.Domain.Velocity]]. When the slow effect ends
    */

@@ -1,8 +1,8 @@
-package evo_sim.model
+package evo_sim.model.movement
 
 import evo_sim.model.EntityBehaviour.SimulableEntity
 import evo_sim.model.EntityStructure.{Entity, Intelligent}
-import evo_sim.prolog.MovingStrategiesProlog
+import evo_sim.model.{Point2D, World}
 
 import scala.math._
 

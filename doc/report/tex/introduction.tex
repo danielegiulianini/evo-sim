@@ -1,12 +1,17 @@
+Il progetto \textbf{Evolution Simulator} consiste nella realizzazione di un simulatore di evoluzione naturale di entità chiamate \textit{blob}, in grado di muoversi e interagire con altre entità all'interno di un mondo.
 
-Evolution Simulator consiste nella realizzazione di un simulatorire di evoluzione natuale. Durante la simulazione vi sono presenti entità chiamate \textit{blob}, che si differenziano gli uni dagli altri in base alle loro caratteristiche come dimensione, velocità ecc... 
+Il comportamento di un \textit{blob} è definito dalla sua tipologia, che determina l'aggiornamento del suo stato all'iterazione successiva della simulazione e il risultato prodotto da una collisione con un'altra entità della simulazione, dipendente dalla tipologia di quest'ultima.
 
-Inoltre vi sono diverse tipologie di \textit{blob}, che si differenziano in base ai loro comportamenti. 
+Per sopravvivere i blob devono muoversi all'interno del mondo della simulazione alla ricerca di \textit{cibo} nutriente per aumentare la loro vita corrente.
 
-Per soppravvivere i blob devono procurarsi del cibo che permette loro di aumetnare i loro punti vita, cercandolo all'interno del mondo della simulazione.
+La proprietà di effetto del cibo con cui un blob collide determina le variazioni delle sue proprietà, oltre all'eventuale introduzione di ulteriori blob nel mondo della simulazione. 
 
-La quantità di cibo, così come gli ostacoli la temperatura e altre caratteristiche iniziali della simulazione sono parametrizzabili dall'utente attraverso un'apposita interfaccia.
+La simulazione può inoltre presentare \textit{ostacoli} statici che, analogamente ai cibi, comporteranno delle modifiche allo stato del blob a seguito di una collisione.
 
-I \textit{blob} dovranno quindi cercare di soppravvivere il più a lungo possibile a fronte di avversità come ostacoli o come l'avvelenamento dovuto da cibi velenosi.
+I cibi vengono prodotti da entità chiamate \textit{piante}, che a intervalli regolari producono un cibo con un effetto di collisione dipendente dal comportamento della pianta.
 
-Al termine della simulazione verranno rappresentati mediante un'interfaccia le informazioni circa il suo andamento, come ad esempio la popolazione, la velocità ecc...
+La sessione di simulazione è inoltre caratterizzata da un valore di luminosità e un valore di temperatura variabili, che influenzano rispettivamente la dimensione del campo visivo e la velocità di tutti i blob presenti.
+
+La quantità delle diverse entità, la luminosità, la temperatura e la quantità di giornate di cui è composta la simulazione sono parametrizzabili dall'utente attraverso un'apposita interfaccia.
+
+Al termine della simulazione verranno rappresentati mediante grafici informazioni sulle entità osservate nelle diverse giornate in base alla loro categoria e alle loro proprietà.
