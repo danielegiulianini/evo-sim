@@ -21,6 +21,11 @@ trait Queriable[F[_]]{
  */
 object Queriable {
 
+  /** Utility function to refactor implicitly call and provide a more concise syntax.
+   */
+  def contained[F[_]: Queriable, A](t:F[A], elem:A) : Boolean =
+    implicitly[Queriable[F]].contained(t, elem)
+
   /** Returns if the given element is contained inside the structure provided.
    *
    * @param t the type functor instance that wants to be inspected for the presence of elem
@@ -28,7 +33,7 @@ object Queriable {
    * @return whether the type functor contains the element.
    */
   def containedAnyOf[F[_]: Queriable, A](t: F[A], elem: (A, A)): Boolean =
-    implicitly[Queriable[F]].contained(t, elem._1) || implicitly[Queriable[F]].contained(t, elem._2)
+    contained(t, elem._1) || contained(t, elem._2)
 
   //enabling DOT notation TODO
   /*implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
