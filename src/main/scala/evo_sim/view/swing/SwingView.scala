@@ -176,6 +176,7 @@ object SwingView extends View {
           _ <- jLabelWithItemsAddedToBarPanel("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
           _ <- jLabelWithItemsAddedToBarPanel("population: " + world.entities.collect{case b: Blob => b}.size)
           _ <- jLabelWithItemsAddedToBarPanel("luminosity: " + world.luminosity)
+          _ <- jLabelWithItemsAddedToBarPanel("temperature: " + world.temperature)
         } yield ()
       }
     }
