@@ -231,7 +231,7 @@ object SwingView extends View {
         for {
           _ <- barPanel.allRemoved()      //barPanel has default FlowLayout
           _ <- jLabelWithItemsAddedToBarPanel("days: " + fromIterationsToDays(world.currentIteration) + " / " + fromIterationsToDays(world.totalIterations))
-          _ <- jLabelWithItemsAddedToBarPanel("population: " + world.entities.size)
+          _ <- jLabelWithItemsAddedToBarPanel("population: " + world.entities.collect{case b: Blob => b}.size)
           _ <- jLabelWithItemsAddedToBarPanel("luminosity: " + world.luminosity)
         } yield ()
       }
