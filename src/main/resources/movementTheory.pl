@@ -5,13 +5,13 @@
 
 % baseMovement creates a new [[Movement]] object containing the new position and direction based on the previous position and direction. 
 % The new position will approach the closest eatable entity if this is inside the FoV (Field of View), otherwise it will follow the predetermined direction.
-baseMovement(EntityPoint, EntityVelocity, EntityAngle, EntityStep, EntityFOV, Costants, ListEntities, NewPoint, NewDirection):- 
+baseMovement(EntityPoint, movingValue(EntityVelocity, EntityAngle, EntityStep, EntityFOV), Costants, ListEntities, NewPoint, NewDirection):-
 					closestPoint(EntityPoint, ListEntities, ClosestEntity), 
 					distance(EntityPoint, ClosestEntity, Dist), 
 					Dist < EntityFOV, 
 					chaseMov(EntityPoint, ClosestEntity, EntityVelocity, Costants, NewPoint, NewDirection), !. 
 		
-baseMovement(EntityPoint, EntityVelocity, EntityAngle, EntityStep, EntityFOV, Costants, ListEntities, NewPoint, NewDirection):- 
+baseMovement(EntityPoint, movingValue(EntityVelocity, EntityAngle, EntityStep, EntityFOV), Costants, ListEntities, NewPoint, NewDirection):- 
 					standardMov(EntityPoint, EntityVelocity, EntityAngle, EntityStep, Costants, NewPoint, NewDirection).
 
 % closestPoint returns the closest cartesian point contained in the list from the point passed in the first term.

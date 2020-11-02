@@ -4,8 +4,7 @@ import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.EntityStructure.{Entity, Intelligent}
 import evo_sim.model.entities.entityStructure.Point2D
 import evo_sim.model.world.World
-
-import scala.math._
+import scala.math.hypot
 
 case class Movement(point: Point2D, direction: Direction)
 case class Direction(angle: Int, stepToNextDirection: Int)
