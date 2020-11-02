@@ -30,7 +30,7 @@ class ObstacleTests extends FunSpec {
     width = Constants.WORLD_WIDTH,
     height = Constants.WORLD_HEIGHT,
     currentIteration = 0,
-    entities = Set(blob) ++ Set(puddle) ++ Set(stone),
+    entities = Set(blob, puddle, stone),
     totalIterations = 10
   )
 
