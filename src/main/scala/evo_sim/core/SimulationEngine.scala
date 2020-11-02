@@ -23,7 +23,6 @@ object SimulationEngine {
    */
   def started(): IO[Unit] = {
     for {
-      //_ <- inputViewBuiltAndShowed()
       env <- View.inputReadFromUser()
       _ <- simulationLoop().runS(World(env))
     } yield ()
