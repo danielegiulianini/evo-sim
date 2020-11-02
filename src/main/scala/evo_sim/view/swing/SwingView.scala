@@ -10,8 +10,7 @@ import evo_sim.model.{Constants, Environment, World}
 import evo_sim.view.View
 import evo_sim.view.swing.SwingView.ViewUtils.InputViewUtils.inputViewCreated
 import evo_sim.view.swing.SwingView.ViewUtils.SimulationViewUtils.indicatorsUpdated
-import evo_sim.view.swing.chart.ChartsFactory
-import evo_sim.view.swing.chart.Series.{CategorySeries, PieValue, XySeries}
+import evo_sim.view.swing.chart.{CategorySeries, ChartsFactory, PieValue, XySeries}
 import evo_sim.view.swing.custom.components.ShapesPanel
 import evo_sim.view.swing.monadic._
 import javax.swing.WindowConstants.EXIT_ON_CLOSE
