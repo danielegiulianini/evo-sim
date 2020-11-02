@@ -1,7 +1,39 @@
 \section{Implementazione}
-\subsection{Aspetti implementativi}
+Il seguente capitolo motiva e dettaglia le scelte implementative ritenute rilevanti per una corretta comprensione del progetto.
+
+
+\subsection{Utilizzo paradigma funzionale}
+Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizzare il più possibile il paradigma funzionale, cercando di non ricorrere alle usuali abitudini di programmazione object-oriented. Per fare ciò sono state utilizzate diverse metodologie: 
+\begin{itemize}
+    \item inutilizzo dei side effect, creando ad ogni modifica un nuovo ogetto immutabile.
+    \item utilizzo di funzioni ricorsive.
+    \item utilizzo di funzioni higher-order che permettono una facile ed immediata realizzazione del parttern Strategy, consentono una maggiore riutilizzabilità del codice. In questo modo è possibile passare alle funzioni strategie esterne, non necessitando così di modificare il codice.
+\end{itemize}
+
+Il Controller e il Model dell'applicazione sono state realizzate con un approccio puramente funzionale, mentre la View adotta un approccio funzionale attraverso la libreria cats.effect.IO ove possibile.
+
+
+Prof: "Ricordatevi che la lettura della relazione fino a: (i) i requirement, deve essere sufficiente per uno sviluppatore per giungere ad un sistema che fa quello che fa il vostro; (ii) al design, deve essere sufficiente per uno sviluppatore per giungere ad un sistema che in più è organizzato come il vostro; (iii) alla implementazione, è essenzialmente equivalente al vostro."
+\subsubsection{View}
+Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
+
+\subsubsection{Creazione di un nuovo world ad ogni iterazione}
+
+\subsection{Utilizzo della programmazione logica}
+Parlo del movimento
+
+\subsection{Test}
+Prof: "Cercate di dare una idea di quanto pensate che i vostri test automatizzati coprano il codice e dove: è importante per stimare il potenziale impatto di una modifica al software." 
+Io faccio un discorso generale, se c'è un aspetto particolare nei vostri test scrivetelo pure.
+
+
 
 \subsection{Suddivisione del lavoro}
+Mia introduzione iniziale
+
+\subsubsection{Persona qualsiasi}
+Ognugno deve dire cosa ha fatto, la sezione di progetto riconducibile a lui (es: per Vaio l'IA e il disegno delle statistiche finali) e se ha collaborato con qualcuno.
+
 \subsubsection{Rei Beshiri}
 Il mio ruolo nel progetto dal punto di vista implementativo riguarda principalmente lo sviluppo del model e delle sue diverse componenti in collaborazione con i membri del team, in particolare delle entità \textit{blob} del loro comportamento e reazione all'ambiente circostante e alle intersezioni tra le varie entità in gioco e degli effetti delle stesse così come della loro bounding box.
 
