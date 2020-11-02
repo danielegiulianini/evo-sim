@@ -4,8 +4,8 @@ import scala.language.postfixOps
 import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
 import evo_sim.model.Constants.SIMULATION_LOOP_PERIOD
-import evo_sim.view.swing.{SwingView => View}
-//import evo_sim.view.cli.{CLIView => View}
+//import evo_sim.view.swing.{SwingView => View}
+import evo_sim.view.cli.{CLIView => View}
 import evo_sim.core.Simulation._
 import evo_sim.model.World
 
@@ -33,7 +33,7 @@ object SimulationEngine {
    * applications.
    * Every simulation iteration is made up of ad update step, followed by a collisions-detection-and-handling phase
    * and by a display step, that finally renders the resulting World on the view.
-   * World is updated at a constant rate defined by TODO constant.
+   * World is updated at a constant rate defined by [[evo_sim.model.Constants.SIMULATION_LOOP_PERIOD]] constant.
    * At the end of simulation a statistical view of the data gathered by the simulation is displayed.
    * This method doesn't actually run the simulation until performing "run" on the [[IO]] returned.
    */
@@ -44,7 +44,7 @@ object SimulationEngine {
     _ <- worldRendered(worldAfterCollisions)
     currentTime <- getTime
     _ <- waitUntil(currentTime - startTime, SIMULATION_LOOP_PERIOD millis)
-    - <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
+    _ <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else resultShowed(worldAfterCollisions.worldHistory)
   } yield ()
 }
