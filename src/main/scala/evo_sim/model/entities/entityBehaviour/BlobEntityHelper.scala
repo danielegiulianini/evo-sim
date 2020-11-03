@@ -2,7 +2,7 @@ package evo_sim.model.entities.entityBehaviour
 
 import scala.language.postfixOps
 import evo_sim.model.entities.entityStructure.BoundingBox.Circle
-import evo_sim.model.entities.entityStructure.EntityStructure.Blob
+import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import evo_sim.model.world.effects.{LuminosityEffect, TemperatureEffect}
 import evo_sim.model.entities.Entities
 import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
@@ -21,7 +21,7 @@ object BlobEntityHelper {
    * @tparam A accept [[EntityStructure.Blob]] subtype.
    * @return The new [[Entities.BaseBlob]] updated.
    */
-  protected[model] def fromTemporaryBlobToBaseBlob[A <: Blob](self: A, world: World, movement: Movement): SimulableEntity = {
+  protected[model] def fromTemporaryBlobToBaseBlob[A <: BlobWithTemporaryStatus](self: A, world: World, movement: Movement): SimulableEntity = {
     var velocity = self.velocity
     self match {
       case s: SlowBlob => velocity = s initialVelocity
