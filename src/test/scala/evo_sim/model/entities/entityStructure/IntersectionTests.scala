@@ -1,5 +1,5 @@
-package evo_sim.model
-import evo_sim.model.entities.entityStructure.{BoundingBox, Intersection, Point2D}
+package evo_sim.model.entities.entityStructure
+
 import org.scalatest.FunSpec
 
 class IntersectionTests extends FunSpec {

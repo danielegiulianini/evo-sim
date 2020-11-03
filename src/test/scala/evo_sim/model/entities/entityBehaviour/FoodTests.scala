@@ -1,4 +1,4 @@
-package evo_sim.model
+package evo_sim.model.entities.entityBehaviour
 
 import evo_sim.model.entities.Entities.{BaseBlob, BaseFood, CannibalBlob, PoisonBlob}
 import evo_sim.model.entities.entityStructure.EntityStructure.Blob

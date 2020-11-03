@@ -1,4 +1,4 @@
-package evo_sim.model
+package evo_sim.model.entities.entityStructure.movement
 
 import evo_sim.model.entities.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
@@ -7,8 +7,8 @@ import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, Degradat
 import evo_sim.model.entities.entityStructure.movement.DemonstrationCompletelyPrologMovement.completelyPrologBaseMovement
 import evo_sim.model.entities.entityStructure.movement.DemonstrationCompletelyScalaMovement.completelyScalaBaseMovement
 import evo_sim.model.entities.entityStructure.movement.MovingStrategies.baseMovement
-import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
 import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure, Point2D}
+import evo_sim.model.world
 import evo_sim.model.world.{Constants, World}
 import org.scalatest.FunSpec
 
