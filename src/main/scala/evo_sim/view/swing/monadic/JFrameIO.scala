@@ -11,10 +11,6 @@ import javax.swing.JFrame
  * @param component the jFrame that this class wraps.
  */
 class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
-  /**
-   *
-   * @return monadic wrapper for [[contentPane]]
-   */
   def contentPane(): IO[ContainerIO[Container]] = IO { new ContainerIO (component.getContentPane) }
   def sizeSet(width: Int, height: Int): IO[Unit] = IO { component.setSize(width, height)}
   def locationRelativeToSet(c:Component): IO[Unit] = IO {component.setLocationRelativeTo(c)}
