@@ -9,7 +9,7 @@ Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizz
     \item utilizzo di funzioni higher-order che permettono una facile ed immediata realizzazione del parttern Strategy, consentono una maggiore riutilizzabilità del codice. In questo modo è possibile passare alle funzioni strategie esterne, non necessitando così di modificare il codice.
 \end{itemize}
 
-Il Controller e il Model dell'applicazione sono state realizzate con un approccio puramente funzionale, mentre la View adotta un approccio funzionale attraverso la libreria cats.effect.IO ove possibile.
+Rispettando quanto sopra elencato, il Controller e il Model dell'applicazione sono stati realizzati con un approccio puramente funzionale. La View adottare anch'essa il paradigma descritto in questo corso attraverso l'utilizzo della libreria cats.effect.IO.
 
 \subsection{Model}
 
@@ -68,7 +68,7 @@ Dopo un'accurata e dettagliata analisi della logica di movimento delle entità, 
 La teoria Prolog presente nel file \code{src/main/resources/movementTheory.pl} consente di ricercare la presenza di un entità commestibile all'interno del campo visivo tra tutte le entità presenti nella simulazione, ed agire di conseguenza nel caso in cui l'entità sia presente o meno all'interno del campo visivo. Tuttavia per problemi legati alle performance (in quanto non possibile rispettare il requisito 4.1) si è adottato un approccio ibrido, in cui la ricerca di un entità all'interno del campo visivo viene effettuata con il paradigma funzionale, lasciando poi il calcolo della nuova posizione al paradigma logico.
 
 \section{Test}
-La realizzazione di test è stato un aspetto fondamentale per verificare la correttezza e la qualità del codice, garantendo anche un'ulteriore documentazione del software sviluppato. La loro implementazione non è avvenuta con la metodologia stringente del Test Driven Development (TDD), bensì con un approccio più tradizionale, in cui la funzionalità veniva testata una volta pronta. In particolare è stata utilizzata la libreria ScalaTest, mantenendo uno stile omogeneo utilizzando \textbf{FunSpec}.
+La realizzazione di test è stato un aspetto fondamentale per verificare la correttezza e la qualità del codice, garantendo anche un'ulteriore documentazione del software sviluppato. La loro implementazione non è avvenuta con la metodologia stringente del Test Driven Development (TDD), bensì con un approccio più tradizionale, in cui la funzionalità veniva testata una volta pronta. In particolare è stata utilizzata la libreria ScalaTest, mantenendo uno stile omogeneo utilizzando \textbf{FunSpec}. L'impiego di \textbf{Travis CI} ha comunque permesso di verificare che eventuali modifiche al codice non infierissero negativamente sul comportamento atteso delle funzioni senza dover costantemente tenere d'occhio i test manualmente.
 
 \section{Suddivisione del lavoro}
 Inizialmente il team ha effettuato un analisi preliminare, dettagliando quali caratteristiche e requisti il software dovesse esibire. In seguito a ciò, si sono susseguiti una frequente serie di meeting (in cui era presente tutto il team) dove, partendo da piccoli diagrammi UML che descrivevano a grandi linee l'architettura del sistema, si è scesi sempre più in dettaglio fino a creare l'intero design architetturale. È bene precisare che il design architetturale è stato ideato in ciascuna sua parte da tutto il team, in modo coeso e collaborativo. Successivamente, in seguito alla realizzazione di un design architetturale dettagliato per ogni funzionalità del software, a ciascun membro del team è stata assegnata una parte dello sviluppo. Nel dettaglio:
@@ -96,4 +96,19 @@ Per quanto riguarda la View, ne ho seguito lo sviluppo dalla prima versione in \
 
 I test da me sviluppati sono inclusi in \code{ObstacleTests}.
 
-\subsection{Andrea Vaienti}
+\subsubsection{Andrea Vaienti}
+Sono principalmente due le porzioni del progetto di cui mi sono occupato: 
+
+\begin{itemize}
+    \item l'intelligenza artificiale che consente il movimento delle entità all'interno del mondo
+    \item statistiche finali, dal loro calcolo fino alla creazione e renderizzazione dei grafici che le visualizzano.
+\end{itemize}
+
+Per quanto riguarda il movimento, come anticipato precedentemente, la logica era stata inizialmente implementata in Scala (\code{DemonstrationCompletelyScalaMovement}). Successivamente, dopo aver effettuato controlli su una possibile implementazione attraverso il paradigma logico, è stata realizzata in Prolog (\code{DemonstrationCompletelyPrologMovement}). Infine, a causa dei problemi di performance sopraindicati è stata utilizzata una soluzione ibrida (Scala + Prolog), presente nel file \code{MovingStrategies}. Tutte queste tre soluzioni sono state opportunamente testate in \code{MovementTests}. Per la visualizzazione delle statiche finale, prima di tutto è stata effettuata un'esplorazione delle possibili librerie che permettessero la visualizzazione dei grafici all'interno dell'interfaccia grafica, che si è conclusa con la scelta di utilizzare \hyperlink{https://knowm.org/open-source/xchart/}{XChart}. In seguito a ciò è stato realizzato un ChartBuilder, che consente attraverso appositi parametri di creare 3 tipologie di grafici. Così facendo, qualsiasi membro del Team o futuro sviluppatore, potrebbe costruire e successivamente visualizzare un grafico contenente i propri valori. Il calcolo delle statistiche finali è stato implementato nel file \code{FinalStats}, in cui si è fatto ampiamente uso di funzioni higher-order per consentire una maggiore riutilizzabilità del codice. Per precisione, vengono di seguito elencati i package contententi le implementazioni da me svolte:
+
+\begin{itemize}
+    \item \texttt{model.entities.entityStructure.movement}
+    \item \texttt{prolog}
+    \item \texttt{view.swing.chart}
+    \item \texttt{model.world.dataProcessing}
+\end{itemize}
