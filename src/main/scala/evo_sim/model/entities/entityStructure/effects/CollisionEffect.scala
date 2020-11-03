@@ -9,14 +9,14 @@ import evo_sim.model.world.Constants
 import evo_sim.utils.Counter
 
 /**
- * Singleton object that provides different collision effect implementations to be used by object that extend [[EntityStructure.Effectful]].
+ * Singleton object that provides different collision effect implementations to be used by object that extend [[evo_sim.model.entities.entityStructure.EntityStructure.Effectful]].
  */
 object CollisionEffect {
 
   /**
-   * Returns a set with a copy of the [[EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]].
+   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]].
    *
-   * @param blob a [[EntityStructure.Blob]] subjected to the effect
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subjected to the effect
    * @return a set with the blob produced by the effect
    */
   def standardFoodEffect[A <: Blob](blob: A): Set[SimulableEntity] = blob match {
@@ -26,9 +26,9 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a set with a copy of the [[EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]] and a new [[EntityStructure.Blob]] with properties based of the other blob.
+   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]] and a new [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] with properties based of the other blob.
    *
-   * @param blob a [[EntityStructure.Blob]] subjected to the effect
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subjected to the effect
    * @return a set with the blobs produced by the effect
    */
   def reproduceBlobFoodEffect[A <: Blob](blob: A): Set[SimulableEntity] = blob match {
@@ -40,9 +40,9 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a set with a copy of the [[EntityStructure.Blob]] given as input converted to [[Entities.PoisonBlob]].
+   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input converted to [[evo_sim.model.entities.Entities.PoisonBlob]].
    *
-   * @param blob a [[EntityStructure.Blob]] subjected to the effect
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subjected to the effect
    * @return a set with the blob produced by the effect
    */
   def poisonousFoodEffect[A <: Blob](blob: A): Set[SimulableEntity] = blob match {
@@ -52,9 +52,9 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a set with a copy of the [[EntityStructure.Blob]] given as input.
+   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input.
    *
-   * @param blob a [[EntityStructure.Blob]]  subjected to the effect
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]]  subjected to the effect
    * @return a set with the blob produced by the effect
    */
   def neutralEffect[A <: Blob](blob: A): Set[SimulableEntity] = blob match {
@@ -66,9 +66,9 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a set with the [[EntityStructure.Blob]] given as input converted to [[Entities.SlowBlob]].
+   * Returns a set with the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input converted to [[evo_sim.model.entities.Entities.SlowBlob]].
    *
-   * @param blob a [[EntityStructure.Blob]] subjected to the effect
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subjected to the effect
    * @return a set with the blob produced by the effect
    */
   def slowEffect[A <: Blob](blob: A): Set[SimulableEntity] = {
@@ -80,9 +80,9 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a set with a copy of the [[EntityStructure.Blob]] given as input with life decreased by [[Constants.DEF_DAMAGE]].
+   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input with life decreased by [[Constants.DEF_DAMAGE]].
    *
-   * @param blob a [[EntityStructure.Blob]] subjected to the effect
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subjected to the effect
    * @return a set with the blob produced by the effect
    */
   def damageEffect[A <: Blob](blob: A): Set[SimulableEntity] = blob match {
@@ -92,10 +92,10 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a [[EntityStructure.Blob]] with properties based off the blob given as input ones.
+   * Returns a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] with properties based off the blob given as input ones.
    *
-   * @param blob a [[EntityStructure.Blob]]
-   * @return a [[EntityStructure.Blob]] with properties based off the blob given as input ones.
+   * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]]
+   * @return a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] with properties based off the blob given as input ones.
    */
   private def createChild[A <: Blob](blob: A): SimulableEntity =
     new java.util.Random().nextInt(2) match {
