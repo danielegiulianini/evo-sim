@@ -24,7 +24,7 @@ Per la modellazione degli aspetti strutturali delle entità del World si è sfru
 \centering
 \includegraphics[width=\textwidth, scale=0.44]{img/ModelHierarchy.png}
 \caption{Gerarchia Model}
-\label{fig:modelhierarchy}
+\label{fig:modelhierarchy3}
 \end{figure}
 
 Come proprietà della struttura sono utilizzati diversi parametri Higher Order (come Movement strategy, degradationEffect e collisionEffect), che fungono da strategie e definiscono il comportamento dell’entità per aspetti specifici (la degradazione della propria vita o il movimento all’interno dell’area di simulazione, ad esempio). Ciò permette di riutilizzare una stessa struttura per modellare una serie di comportamenti diversi, piuttosto che codificare tale diversità di comportamento nel codice, trasferendola dunque a livello di istanza anziché di classificazione (dall’aspetto intensionale a quello estensionale). Invece di esprimere nel codice di una entità la logica di alcuni aspetti specifici, si incapsula dunque tale gestione in un parametro higher order, permettendo di riutilizzare anche per entità con diverse logiche di degradazione (ad es.) la struttura rimanente. Al contempo, chiunque vorrà estendere il sistema di simulazione in futuro potrà usufruire di tali strategie per l’implementazione delle sue componenti.
@@ -33,7 +33,7 @@ Come proprietà della struttura sono utilizzati diversi parametri Higher Order (
 L’aspetto comportamentale delle entità, che riguarda cioè le operazioni che agiscono sul loro stato in occasione dell’evento di aggiornamento del mondo e di collisione con altre entità, è gestito mediante 2 trait con self types: Updatable e Collidable. Questa modellazione prevede di sfruttare la interfaccia per variare il comportamento sotto la stessa astrazione e fornire estendibilità futura e, al contempo, un approccio funzionale nella gestione dello stato (ogni entità è immutabile e l’aggiornamento coincide con la generazione di una nuova versione con proprietà modificate). Le signature di Updatable e Collidable prevedono di restituire un set di SimulableEntity che rimpiazza l’entità nell’iterazione successiva e permette di esprimerne la rimozione, l’aggiornamento o eventi quali la riproduzione o la clonazione della stessa.
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth, scale=0.44]{img/Model.png}
+\includegraphics[width=\textwidth, scale=0.14]{img/Model.png}
 \caption{Design Model}
 \label{fig:model}
 \end{figure}
