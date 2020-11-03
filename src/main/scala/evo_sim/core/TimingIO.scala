@@ -28,6 +28,4 @@ object TimingIO {
       IO.sleep(to - from)
     } else unit
 
-  def waitFor(duration: FiniteDuration) : IO[Unit] = IO {IO.sleep(duration)}
-
 }
