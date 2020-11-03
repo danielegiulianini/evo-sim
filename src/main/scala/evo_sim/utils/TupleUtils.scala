@@ -20,7 +20,6 @@ object TupleUtils {
     type HomogeneousTuple2[A] = (A, A)
 
     /** A [[Set]] of [[HomogeneousTuple2]]s.
-     * @tparam A
      */
     type HomogeneousTuple2Set[A] = Set[(A, A)]
 
