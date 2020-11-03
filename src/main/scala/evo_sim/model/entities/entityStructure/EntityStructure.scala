@@ -11,23 +11,22 @@ object EntityStructure {
   trait Domain {
     type Life
     type Velocity
-    type DegradationEffect[A] >: A => Life
-    type CollisionEffect
     type Position
-    type MovementStrategy
     type Cooldown
     type LifeCycle
+    type DegradationEffect[A] >: A => Life
+    type CollisionEffect
+    type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
   }
 
   object DomainImpl extends Domain {
     override type Life = Int
     override type Velocity = Int
-    override type DegradationEffect[A] = A => Life
-    override type CollisionEffect = Blob => Set[SimulableEntity]
     override type Position = Movement
-    override type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
     override type Cooldown = Int
     override type LifeCycle = Int
+    override type DegradationEffect[A] = A => Life
+    override type CollisionEffect = Blob => Set[SimulableEntity]
   }
 
   /**
