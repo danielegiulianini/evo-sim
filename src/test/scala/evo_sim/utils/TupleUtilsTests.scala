@@ -1,3 +1,5 @@
+package evo_sim.utils
+
 import evo_sim.utils.Queriable.containedAnyOf
 import evo_sim.utils.QueriableImplicits.ContainsForSet
 import evo_sim.utils.TupleUtils.everyElementPairedWithOnlyOneOtherElement
@@ -5,7 +7,7 @@ import org.scalatest.FunSpec
 
 //run with: test;  from Intellij sbt shell
 //or: sbt test     from cmd from the the folder containing build.sbt file
-class TestTupleUtils extends FunSpec {
+class TupleUtilsTests extends FunSpec {
 
   //to be tested:
   //1. everyElementPairedWithOnlyOneOtherElement
@@ -18,7 +20,7 @@ class TestTupleUtils extends FunSpec {
   //3.containsAnyOf
 
   //test sets for test 1
-  val tuple2 = (1, 2)
+  val tuple2: (Int, Int) = (1, 2)
 
   describe("A tuple2") {
     describe("initialized with 2 values and not updated"){
