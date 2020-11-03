@@ -4,7 +4,6 @@ import evo_sim.utils.TupleUtils.{everyElementPairedWithOnlyOneOtherElement => mu
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.Intersection.intersected
 import evo_sim.model.world.World.worldEnvironmentUpdated
-import evo_sim.model.world
 import evo_sim.model.world.World
 
 
@@ -15,7 +14,7 @@ object SimulationLogic {
   /**
    *  Updates the world by creating a new version of it with updated parameters that represent the effect of time
    *  elapsed from the previous iteration. It takes care of updating the [[evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity]] that populate it
-   *  at the moment and the [[world.World.EnvironmentParameters]] like temperature and luminosity as well as
+   *  at the moment and the [[World.EnvironmentParameters]] like temperature and luminosity as well as
    *  saving the old World state for final historical data analysis.
    * @param world the world resulting by the previous iteration
    * @return a new version of the world

@@ -3,7 +3,6 @@ package evo_sim.view.swing.monadic
 import java.awt.{Component, Container, LayoutManager}
 
 import cats.effect.IO
-import javax.swing.SwingUtilities
 
 /**
  * A class that provides a monadic description of the operations supplied by awt's [[Container]] in the form
@@ -22,9 +21,11 @@ class ContainerIO[T<:Container](override val component: T) extends ComponentIO(c
   def layoutSet(mgr : LayoutManager): IO[Unit] = IO {    component.setLayout(mgr)  }
 
   //versions with invokeAndWait for finer granularity in thread assignment
-  def addedInvokingAndWaiting(componentToBeAdded: ComponentIO[_<:Component]): IO[Unit] = IO {  SwingUtilities.invokeAndWait(() =>component.add(componentToBeAdded.component))}
-  def addedInvokingAndWaiting(name: String, componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = IO {    SwingUtilities.invokeAndWait(() =>  component.add(name, componentToBeAdded.component))}
-  def addedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component], constraints : Object): IO[Unit] = IO {    SwingUtilities.invokeAndWait(() => component.add(componentToBeAdded.component, constraints))}
-  def removedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = IO {   SwingUtilities.invokeAndWait(() =>  component.remove(componentToBeAdded.component) ) }
-  def allRemovedInvokingAndWaiting(): IO[Unit] = IO {   SwingUtilities.invokeAndWait(() =>  component.removeAll() ) }
+  def addedInvokingAndWaiting(componentToBeAdded: ComponentIO[_<:Component]): IO[Unit] = invokeAndWaitIO(component.add(componentToBeAdded.component))
+  def addedInvokingAndWaiting(name: String, componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = invokeAndWaitIO(component.add(name, componentToBeAdded.component))
+  def addedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component], constraints : Object): IO[Unit] = invokeAndWaitIO(component.add(componentToBeAdded.component, constraints))
+  def removedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = invokeAndWaitIO(component.remove(componentToBeAdded.component))
+  def allRemovedInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(component.removeAll())
+  def layoutSetInvokingAndWaiting(mgr : LayoutManager): IO[Unit] =invokeAndWaitIO(component.setLayout(mgr))
+
 }

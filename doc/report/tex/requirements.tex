@@ -25,6 +25,7 @@ In particolare l'utente può usufruire dei seguenti aspetti:
 \begin{myEnumerate}
     \item[2] Utente.
     \begin{myEnumerate}[label*=\arabic*.]
+		\label{sec:2.1}
         \item[2.1] Parametrizzazione delle caratteristiche della simulazione tramite UI;
         \begin{myEnumerate}[label*=\arabic*.]
             \item[2.1.1] Cardinalità dei \textit{blob};
@@ -36,6 +37,7 @@ In particolare l'utente può usufruire dei seguenti aspetti:
         \end{myEnumerate}
         \item[2.2] Rappresentazione grafica dell'andamento della simulazione in 2D;
         \begin{myEnumerate}[label*=\arabic*.]
+		\label{sec:2.2.1}
             \item[2.2.1] Rappresentazione delle entità all'interno dell'ambiente;
             \begin{myEnumerate}[label*=\arabic*.]
                 \item[2.2.1.1] Rappresentazione dei \textit{blob};
@@ -46,6 +48,7 @@ In particolare l'utente può usufruire dei seguenti aspetti:
                 \item[2.2.1.3] Rappresentazione del cibo;
 		\item[2.2.1.4] Rappresentazione delle piante;
             \end{myEnumerate}
+		\label{sec:2.2.2}
             \item[2.2.2] Rappresentazione degli indicatori di evoluzione in real-time;
             \begin{myEnumerate}[label*=\arabic*.]
                 \item[2.2.2.1] Rappresentazione della cardinalità della popolazione di \textit{blob} attuale;
@@ -65,8 +68,8 @@ In particolare l'utente può usufruire dei seguenti aspetti:
 	    \item[2.4] Rappresentazione della simulazione e delle statistiche finali visualizzata a schermo intero;
 	    \item[2.5] Implementazione di una interfaccia testuale alternativa all'interfaccia grafica, equivalente in termini di espressività:
 	    \begin{myEnumerate}
-		\item[2.5.1] Lettura da console dei parametri definiti in 2.1;
-		\item[2.5.2] Scrittura su console degli indicatori real-time definiti in 2.2.2;
+		\item[2.5.1] Lettura da console dei parametri definiti in \hyperref[sec:2.1]{2.1};
+		\item[2.5.2] Scrittura su console degli indicatori real-time definiti in \hyperref[sec:2.2.2]{2.2.2};
 		\item[2.5.3] Scrittura su console dei risultati della simulazione (velocità media dei \textit{blob}, dimensione media dei \textit{blob}, campo visivo medio dei \textit{blob}, numero di \textit{blob} sopravvissuti fino alla fine, quantità di cibo rimanente alla fine).
 	    \end{myEnumerate}
 	\end{myEnumerate}
@@ -126,8 +129,8 @@ Il simulatore prodotto dovrà:
 	\item[3.6] Possibilità di effettuare simulazioni con la possibilità per l'utente di specificare le caratteristiche della simulazione come descritto in 2.1;
 	\item[3.7] Possibilità di visualizzare l'andamento della simulazione;	
 	\begin{myEnumerate}[label*=\arabic*.]
-		\item[3.7.1] Visualizzazione delle entità all'interno dell'ambiente come descritto in 2.2.1;
-		\item[3.7.2] Visualizzazione degli indicatori di evoluzione in real-time come descritto in 2.2.2;
+		\item[3.7.1] Visualizzazione delle entità all'interno dell'ambiente come descritto in \hyperref[sec:2.2.1]{2.2.1};
+		\item[3.7.2] Visualizzazione degli indicatori di evoluzione in real-time come descritto in \hyperref[sec:2.2.2]{2.2.2};
 	\end{myEnumerate}
 	\item[3.8] Possibilità di visualizzare i risultati finali della simulazione attraverso grafici;
 	\end{myEnumerate}
@@ -138,6 +141,7 @@ Il simulatore prodotto dovrà:
 \begin{myEnumerate}[label*=\arabic*.]
 	\item[4] Non funzionali
 	\begin{myEnumerate}[label*=\arabic*.]
+		\label{sec:cpu}
 		\item[4.1] Mantenimento di un framerate stabile e costante che si aggiri sui 60 FPS su una macchina con requisiti minimi di 4GB di RAM, CPU Dual Core da 2.8 GHz.
 		\item[4.2] Interfaccia utente responsive;
 	\end{myEnumerate}

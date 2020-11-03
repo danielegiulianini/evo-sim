@@ -14,14 +14,14 @@ object Entities {
   //leaves of model hierarchy
 
   /**
-   * Represent a basic [[EntityStructure.Blob]].
+   * Represent a basic [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]].
    * @param name              blob's name.
    * @param boundingBox       blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
-   * @param life              blob's [[EntityStructure.Domain.Life]].
-   * @param velocity          blob's [[EntityStructure.Domain.Velocity]].
-   * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
+   * @param life              blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Life]].
+   * @param velocity          blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Velocity]].
+   * @param degradationEffect blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
-   * @param movementStrategy  blob's [[EntityStructure.Domain.MovementStrategy]].
+   * @param movementStrategy  blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.MovementStrategy]].
    * @param direction         blob's [[MovingStrategies]].
    */
   case class BaseBlob(override val name: String,
@@ -34,16 +34,16 @@ object Entities {
                       override val direction: Direction = Direction(Constants.DEF_NEXT_DIRECTION,Constants.DEF_NEXT_DIRECTION)) extends Blob with BaseBlobBehaviour
 
   /**
-   * Represent a cannibal blob [[EntityStructure.Blob]] implementation.
+   * Represent a cannibal blob [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] implementation.
    * This blob can eat other smaller blobs type.
-   * @param name blob's name.
-   * @param boundingBox blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
-   * @param life blob's [[EntityStructure.Domain.Life]].
-   * @param velocity blob's [[EntityStructure.Domain.Velocity]].
-   * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
+   * @param name              blob's name.
+   * @param boundingBox       blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
+   * @param life              blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Life]].
+   * @param velocity          blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Velocity]].
+   * @param degradationEffect blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
-   * @param movementStrategy blob's [[EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[MovingStrategies]].
+   * @param movementStrategy  blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.MovementStrategy]].
+   * @param direction         blob's [[MovingStrategies]].
    */
   case class CannibalBlob(override val name: String,
                           override val boundingBox: Circle,
@@ -55,7 +55,7 @@ object Entities {
                           override val direction: Direction = Direction(Constants.DEF_NEXT_DIRECTION,Constants.DEF_NEXT_DIRECTION)) extends Blob with CannibalBlobBehaviour
 
   /**
-   * Represents a basic [[EntityStructure.Food]] implementation.
+   * Represents a basic [[evo_sim.model.entities.entityStructure.EntityStructure.Food]] implementation.
    *
    * @param name food name
    * @param boundingBox food boundingBox
@@ -70,7 +70,7 @@ object Entities {
                       override val collisionEffect: CollisionEffect) extends Food with BaseFoodBehaviour
 
   /**
-   * Represents a basic [[EntityStructure.Obstacle]] implementation.
+   * Represents a basic [[evo_sim.model.entities.entityStructure.EntityStructure.Obstacle]] implementation.
    *
    * @param name obstacle name
    * @param boundingBox obstacle boundingBox
@@ -81,7 +81,7 @@ object Entities {
                           override val collisionEffect: CollisionEffect) extends Obstacle with NeutralBehaviour
 
   /**
-   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.standardFoodEffect]].
+   * Represents a [[evo_sim.model.entities.entityStructure.EntityStructure.Plant]] implementation that produces [[evo_sim.model.entities.entityStructure.EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.standardFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -92,7 +92,7 @@ object Entities {
                            override val lifeCycle: LifeCycle) extends Plant with StandardPlantBehaviour
 
   /**
-   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.reproduceBlobFoodEffect]].
+   * Represents a [[evo_sim.model.entities.entityStructure.EntityStructure.Plant]] implementation that produces [[evo_sim.model.entities.entityStructure.EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.reproduceBlobFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -103,7 +103,7 @@ object Entities {
                               override val lifeCycle: LifeCycle) extends Plant with ReproducingPlantBehaviour
 
   /**
-   * Represents a [[EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.poisonousFoodEffect]].
+   * Represents a [[evo_sim.model.entities.entityStructure.EntityStructure.Plant]] implementation that produces [[evo_sim.model.entities.entityStructure.EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.poisonousFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
@@ -116,15 +116,15 @@ object Entities {
   /**
    * Represent a poisoned blob. This blob takes more damage than standard blobs.
    * After a certain cool down the blob became a BaseBlob
-   * @param name blob's name.
-   * @param boundingBox blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
-   * @param life blob's [[EntityStructure.Domain.Life]].
-   * @param velocity blob's [[EntityStructure.Domain.Velocity]].
-   * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
+   * @param name              blob's name.
+   * @param boundingBox       blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
+   * @param life              blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Life]].
+   * @param velocity          blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Velocity]].
+   * @param degradationEffect blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
-   * @param movementStrategy blob's [[EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[MovingStrategies]].
-   * @param cooldown blob's [[EntityStructure.Domain.Cooldown]]
+   * @param movementStrategy  blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.MovementStrategy]].
+   * @param direction         blob's [[MovingStrategies]].
+   * @param cooldown          blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Cooldown]]
    */
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
@@ -139,16 +139,16 @@ object Entities {
   /**
    * Represent a slowed blob. This blob moves slowly than standard blobs.
    * After a certain cool down the blob became a BaseBlob.
-   * @param name blob's name.
-   * @param boundingBox blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
-   * @param life blob's [[EntityStructure.Domain.Life]].
-   * @param velocity blob's [[EntityStructure.Domain.Velocity]].
-   * @param degradationEffect blob's [[EntityStructure.Domain.DegradationEffect]].
+   * @param name              blob's name.
+   * @param boundingBox       blob's [[evo_sim.model.entities.entityStructure.BoundingBox]].
+   * @param life              blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Life]].
+   * @param velocity          blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Velocity]].
+   * @param degradationEffect blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.DegradationEffect]].
    * @param fieldOfViewRadius blob's field of view.
-   * @param movementStrategy blob's [[EntityStructure.Domain.MovementStrategy]].
-   * @param direction blob's [[MovingStrategies]].
-   * @param cooldown blob's [[EntityStructure.Domain.Cooldown]]
-   * @param initialVelocity blob's initial [[EntityStructure.Domain.Velocity]]. When the slow effect ends
+   * @param movementStrategy  blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.MovementStrategy]].
+   * @param direction         blob's [[MovingStrategies]].
+   * @param cooldown          blob's [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Cooldown]]
+   * @param initialVelocity   blob's initial [[evo_sim.model.entities.entityStructure.EntityStructure.Domain.Velocity]]. When the slow effect ends
    */
   case class SlowBlob(override val name: String,
                       override val boundingBox: Circle,

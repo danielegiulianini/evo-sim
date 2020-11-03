@@ -7,7 +7,7 @@ import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Food}
 import evo_sim.model.world.dataProcessing.FinalStats.{averageDuringDay, dayValue, entityCharacteristicAverage, entityDayQuantity}
 import evo_sim.model.world.World.{WorldHistory, fromIterationsToDays}
 import evo_sim.model.world.{Environment, World}
-import evo_sim.view.swing.monadic.ConsoleIO._
+import evo_sim.view.cli.monadic.ConsoleIO._
 import evo_sim.view.View
 import evo_sim.view.cli.CLIView.ViewUtils.InputViewUtils.read
 import evo_sim.view.cli.CLIView.ViewUtils.SimulationViewUtils.indicatorsUpdated
@@ -30,7 +30,6 @@ object CLIView extends View {
       initialObstacleNumber = obstacles,
       daysNumber = days
     )
-    _ <- IO apply println(environment)
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
