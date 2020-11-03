@@ -50,8 +50,11 @@ Queste entità interagiscono tra di loro una volta che la loro bounding box coll
 
 
 \subsection{View}
-Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
 
+\subsubsection{Swing}
+
+\subsubsection{CLI}
+È possibile interfacciarsi con l'applicazione attraverso linea di comando. L'input viene controllato e tramite il data type \code{Either} che permette di incapsulare due tipi di ritorno (tipicamente left per gli errori e right per i risultati) è possibile gestire le eccezioni che possono nascere in una composizione tra funzioni, facilitando anche il tracking dei possibili errori, in questo caso per gestire input mal formattati e valori al di fuori del range consentito. Le funzioni di output si limitano a comunicare testualmente aggiornamenti sulla simulazione e relativo risultato.
 
 \subsection{Stream e World}
 Il World è stato modellato come un contenitore immutabile delle proprietà della simulazione e delle entità che vi partecipano. Al fine di memorizzare i dati necessari ai fini di analisi, esso è definito in termini di se stesso: worldHistory è uno stream costituito dalle istanze di World riferite alle iterazioni precedenti. La lazy evaluation degli stream permette di non appesantire la computazione del simulationLoop con un carico di lavoro altrimenti insostenibile: impiegare una collezione non lazy come una lista avrebbe comportato la creazione di una moltitudine di strutture dati intermedie di grandissime dimensioni. 
@@ -124,7 +127,7 @@ Per quanto riguarda la View, ne ho seguito lo sviluppo dalla prima versione in \
 
 I test da me sviluppati sono inclusi in \code{ObstacleTests}.
 
-\subsubsection{Andrea Vaienti}
+\subsection{Andrea Vaienti}
 Sono principalmente due le porzioni del progetto di cui mi sono occupato: 
 
 \begin{itemize}
