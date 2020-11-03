@@ -7,10 +7,10 @@ import javax.swing.event.{ChangeEvent, ChangeListener}
 import javax.swing.{JComponent, JSlider}
 
 class JSliderIO(override val component: JSlider) extends JComponentIO(component){
-  def changeListenerAdded(l: ChangeListener) = IO {component.addChangeListener(l)}
-  def changeListenerRemoved(l: ChangeListener) = IO {component.removeChangeListener(l)}
-  def minimumSet(min: Int) = IO { component.setMinimum(min) }
-  def maximumSet(max: Int) = IO { component.setMaximum(max) }
+  def changeListenerAdded(l: ChangeListener): IO[Unit] = IO {component.addChangeListener(l)}
+  def changeListenerRemoved(l: ChangeListener): IO[Unit] = IO {component.removeChangeListener(l)}
+  def minimumSet(min: Int): IO[Unit] = IO { component.setMinimum(min) }
+  def maximumSet(max: Int): IO[Unit] = IO { component.setMaximum(max) }
   def valueSet(value: Int): IO[Unit] = IO { component.setValue(value) }
   def valueGot: IO[Int] = IO { component.getValue }
   def majorTickSpacingSet(spacing: Int): IO[Unit] = IO { component.setMajorTickSpacing(spacing) }
@@ -30,5 +30,5 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
 
 //companion object with utilities
 object JSliderIO{
-  def apply() = IO { new JSliderIO(new JSlider) }
+  def apply(): IO[JSliderIO] = IO { new JSliderIO(new JSlider) }
 }

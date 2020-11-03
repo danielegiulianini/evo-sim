@@ -34,10 +34,10 @@ object Simulation {
    * for-comprehension).
    */
   object toStateTConversions {
-    def worldUpdated(): Simulation[World] =
+    def worldUpdated: Simulation[World] =
       toStateTWorld(SimulationLogic.worldUpdated)
 
-    def collisionsHandled(): Simulation[World] =
+    def collisionsHandled: Simulation[World] =
       toStateTWorld(SimulationLogic.collisionsHandled)
 
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
@@ -46,7 +46,7 @@ object Simulation {
     def resultShowed(worldHistory: WorldHistory): Simulation[Unit] =
       liftIo(View.resultsShowed(worldHistory))
 
-    def getTime(): Simulation[FiniteDuration] =
+    def getTime: Simulation[FiniteDuration] =
       liftIo(TimingIO.getTime)
 
     def waitUntil(from: FiniteDuration, to: FiniteDuration): Simulation[Unit] =

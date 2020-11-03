@@ -62,3 +62,36 @@ A tale scopo, i companion object di \code{Updatable} e \code{Collidable} fornisc
 
 Le operazioni di input e output della view consistono in descrizioni monadiche lazy della costruzione e comportamento dei componenti, così da aderire al paradigma funzionale nonostante la tipica natura object-oriented dei componenti di View. Sono state individuate un'operazione di input e due di output. La prima consiste nella lettura dei parametri di inizializzazione della simulazione contenuti in un oggetto \code{Environment} che verrà usato per la costruzione del \code{World}. La prima operazione di output viene richiamata ad ogni iterazione e fornisce lo stato attuale del \code{World} e delle entità che lo popolano. L'ultima, dato lo storico di tutte le istanze di \code{World} in modo lazy, provvede all'aggregazione delle informazioni contenute per fornire statistiche sulla simulazione.
 
+
+\section{Pattern di progettazione}
+Il team ha cercato di utilizzare il più possibile i pattern di progettazione, al fine di trovare una soluzione di design generale a problemi ricorrenti. Questo approccio si è rivelato efficace nel contenere o ridurre il debito tecnico.
+\subsection{Strategy}
+È stato ampiamente utilizzato il pattern Strategy all’interno del progetto, in quanto supportato nativamente dal linguaggio scala come passaggio di funzioni higher-order.
+\subsection{Self-Type}
+I \textit{self types} come accennato nella sezione [4.2.3] sono stati utilizzati per l'implementazione dei seguenti behaviour:
+\begin{itemize}
+    \item \code{NeutralBehaviour}
+    \item \code{BaseBlobBehaviour}
+    \item \code{CannibalBlobBehaviour}
+    \item \code{TemporaryStatusBlobBehaviour}
+    \item \code{BaseFoodBehaviour}
+    \item \code{StandardPlantBehaviour}
+    \item \code{ReproducingPlantBehaviour}
+    \item \code{PoisonousPlantBehaviour}
+\end{itemize}
+\subsection{Singleton}
+Abbiamo ampiamente utilizzato il pattern Singleton nel progetto, in quanto Scala rende particolarmente semplice l’implementazione dello stesso.
+\subsection{Factory}
+Nel progetto si è fatto uso del pattern Factory per la creazione di oggeti quali ad esempio le \code{BoundingBox} facendo uso del suo companion object.
+\subsection{Builder}
+Come altri pattern anche il Builder è stato utilizzato nella sua accezione legata a Scala, in quanto ha un supporto nativo per differenti pattern progettuali. Nello specifico per il pattern Builder è stato sfruttato l’utilizzo di immutable case classes con default nei parametri dei costruttori come ad esempio per i \code{Blob} in \code{Entities}.
+
+\section{Organizzazione del codice}
+Il sistema è stato organizzato in package ognuno dei quali raggruppa i sorgenti che implementano una specifica feature. La Figura \ref{fig:pakage} mostra la suddivisione effettuata per il progetto e per chiarezza visiva quelli meno importanti sono stati omessi.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth, scale=0.44]{img/Packages.png}
+\caption{Diagramma strutturale del progetto}
+\label{fig:pakage}
+\end{figure}

@@ -1,6 +1,6 @@
 package evo_sim.view.swing.monadic
 
-import java.awt.{Component, Dimension}
+import java.awt.{Component, Dimension, Font}
 import java.awt.event.{ComponentAdapter, ComponentEvent, ComponentListener, MouseListener}
 
 import cats.effect.IO
@@ -15,26 +15,28 @@ import cats.effect.IO
  */
 class ComponentIO[T<:Component](val component: T){
 
-  def componentListenerAdded(l: ComponentListener) =
+  def componentListenerAdded(l: ComponentListener): IO[Unit] =
     IO { component.addComponentListener(l) }
-  def mouseListenerAdded(l:MouseListener) =
+  def mouseListenerAdded(l:MouseListener): IO[Unit] =
     IO {component.addMouseListener(l) }
 
   def mouseListenerRemoved(l:MouseListener): Unit =
     IO { component.removeMouseListener(l) }
-  def fontGot() = IO {component.getFont}
-  def setPreferredSize(d: Dimension) =
+  def fontGot(): IO[Font] = IO {component.getFont}
+  def setPreferredSize(d: Dimension): IO[Unit] =
     IO {component.setPreferredSize(d) }
 
-  def setPreferredSizeInvokingAndWaiting(d: Dimension) =
+  def setPreferredSizeInvokingAndWaiting(d: Dimension): IO[Unit] =
     IO {component.setPreferredSize(d)  }
-  def addComponentAdapterInvokingAndWaiting() =
+
+
+  def addComponentAdapterInvokingAndWaiting(): IO[Unit] =
     IO {
-    component.addComponentListener(new ComponentAdapter {
-      override def componentResized(e: ComponentEvent): Unit =
-        component.setPreferredSize(component.getSize)
-    })
-  }
+      component.addComponentListener(new ComponentAdapter {
+        override def componentResized(e: ComponentEvent): Unit =
+          component.setPreferredSize(component.getSize)
+      })
+    }
 }
 
 //companion object with utilities to be added

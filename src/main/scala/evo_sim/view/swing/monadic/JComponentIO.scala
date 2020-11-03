@@ -1,6 +1,6 @@
 package evo_sim.view.swing.monadic
 
-import java.awt.{Dimension}
+import java.awt.Dimension
 
 import cats.effect.IO
 import javax.swing.JComponent

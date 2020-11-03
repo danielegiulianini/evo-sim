@@ -1,12 +1,14 @@
 package evo_sim.model.entities
 
-import evo_sim.model.entities.entityStructure.BoundingBox.{Circle, Rectangle, Triangle}
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour._
+import evo_sim.model.entities.entityStructure.BoundingBox.{Circle, Rectangle, Triangle}
+import evo_sim.model.entities.entityStructure.EntityStructure
 import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl._
 import evo_sim.model.entities.entityStructure.EntityStructure._
-import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure}
+import evo_sim.model.entities.entityStructure.effects.DegradationEffect
 import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.world.Constants
 
 object Entities {
 
@@ -25,12 +27,12 @@ object Entities {
    */
   case class BaseBlob(override val name: String,
                       override val boundingBox: Circle,
-                      override val life: Life,
-                      override val velocity: Velocity,
-                      override val degradationEffect: DegradationEffect[Blob],
-                      override val fieldOfViewRadius: Int,
-                      override val movementStrategy: MovementStrategy,
-                      override val direction: Direction) extends Blob with BaseBlobBehaviour
+                      override val life: Life = Constants.DEF_BLOB_LIFE,
+                      override val velocity: Velocity = Constants.DEF_BLOB_VELOCITY,
+                      override val degradationEffect: DegradationEffect[Blob] = DegradationEffect.standardDegradation,
+                      override val fieldOfViewRadius: Int = Constants.DEF_BLOB_FOV_RADIUS,
+                      override val movementStrategy: MovementStrategy = MovingStrategies.baseMovement,
+                      override val direction: Direction = Direction(Constants.DEF_NEXT_DIRECTION,Constants.DEF_NEXT_DIRECTION)) extends Blob with BaseBlobBehaviour
 
   /**
    * Represent a cannibal blob [[EntityStructure.Blob]] implementation.
@@ -46,12 +48,12 @@ object Entities {
    */
   case class CannibalBlob(override val name: String,
                           override val boundingBox: Circle,
-                          override val life: Life,
-                          override val velocity: Velocity,
-                          override val degradationEffect: DegradationEffect[Blob],
-                          override val fieldOfViewRadius: Int,
-                          override val movementStrategy: MovementStrategy,
-                          override val direction: Direction) extends Blob with CannibalBlobBehaviour
+                          override val life: Life = Constants.DEF_BLOB_LIFE,
+                          override val velocity: Velocity = Constants.DEF_BLOB_VELOCITY,
+                          override val degradationEffect: DegradationEffect[Blob] = DegradationEffect.standardDegradation,
+                          override val fieldOfViewRadius: Int = Constants.DEF_BLOB_FOV_RADIUS,
+                          override val movementStrategy: MovementStrategy = MovingStrategies.baseMovement,
+                          override val direction: Direction = Direction(Constants.DEF_NEXT_DIRECTION,Constants.DEF_NEXT_DIRECTION)) extends Blob with CannibalBlobBehaviour
 
   /**
    * Represents a basic [[EntityStructure.Food]] implementation.
@@ -127,13 +129,13 @@ object Entities {
    */
   case class PoisonBlob(override val name: String,
                         override val boundingBox: Circle,
-                        override val life: Life,
-                        override val velocity: Velocity,
-                        override val degradationEffect: DegradationEffect[Blob],
-                        override val fieldOfViewRadius: Int,
-                        override val movementStrategy: MovementStrategy,
-                        override val direction: Direction,
-                        override val cooldown: Cooldown) extends BlobWithTemporaryStatus with TemporaryStatusBlobBehaviour
+                        override val life: Life = Constants.DEF_BLOB_LIFE,
+                        override val velocity: Velocity = Constants.DEF_BLOB_VELOCITY,
+                        override val degradationEffect: DegradationEffect[Blob] = DegradationEffect.standardDegradation,
+                        override val fieldOfViewRadius: Int = Constants.DEF_BLOB_FOV_RADIUS,
+                        override val movementStrategy: MovementStrategy = MovingStrategies.baseMovement,
+                        override val direction: Direction = Direction(Constants.DEF_NEXT_DIRECTION,Constants.DEF_NEXT_DIRECTION),
+                        override val cooldown: Cooldown = Constants.DEF_COOLDOWN) extends BlobWithTemporaryStatus with TemporaryStatusBlobBehaviour
 
   /**
    * Represent a slowed blob. This blob moves slowly than standard blobs.
@@ -151,13 +153,13 @@ object Entities {
    */
   case class SlowBlob(override val name: String,
                       override val boundingBox: Circle,
-                      override val life: Life,
-                      override val velocity: Velocity,
-                      override val degradationEffect: DegradationEffect[Blob],
-                      override val fieldOfViewRadius: Int,
-                      override val movementStrategy: MovementStrategy,
-                      override val direction: Direction,
-                      override val cooldown: Cooldown,
+                      override val life: Life = Constants.DEF_BLOB_LIFE,
+                      override val velocity: Velocity = Constants.DEF_BLOB_VELOCITY,
+                      override val degradationEffect: DegradationEffect[Blob] = DegradationEffect.standardDegradation,
+                      override val fieldOfViewRadius: Int = Constants.DEF_BLOB_FOV_RADIUS,
+                      override val movementStrategy: MovementStrategy = MovingStrategies.baseMovement,
+                      override val direction: Direction = Direction(Constants.DEF_NEXT_DIRECTION,Constants.DEF_NEXT_DIRECTION),
+                      override val cooldown: Cooldown = Constants.DEF_COOLDOWN,
                       initialVelocity: Velocity) extends BlobWithTemporaryStatus with TemporaryStatusBlobBehaviour
 
 }

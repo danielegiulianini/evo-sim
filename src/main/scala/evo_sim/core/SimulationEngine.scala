@@ -36,11 +36,11 @@ object SimulationEngine {
    * This method doesn't actually run the simulation until performing "run" on the [[IO]] returned.
    */
   def simulationLoop() : Simulation[Unit] = for {
-    startTime <- getTime()
-    _ <- worldUpdated()
-    worldAfterCollisions <- collisionsHandled()
+    startTime <- getTime
+    _ <- worldUpdated
+    worldAfterCollisions <- collisionsHandled
     _ <- worldRendered(worldAfterCollisions)
-    currentTime <- getTime()
+    currentTime <- getTime
     _ <- waitUntil(currentTime - startTime, SIMULATION_LOOP_PERIOD millis)
     _ <- if (worldAfterCollisions.currentIteration < worldAfterCollisions.totalIterations)
       simulationLoop() else resultShowed(worldAfterCollisions.worldHistory)
