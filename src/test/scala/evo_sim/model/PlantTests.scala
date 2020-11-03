@@ -1,3 +1,5 @@
+package evo_sim.model
+
 import evo_sim.model.entities.Entities.{BaseBlob, StandardPlant}
 import evo_sim.model.entities.entityStructure.EntityStructure.{Food, Plant}
 import evo_sim.model.world.Constants._

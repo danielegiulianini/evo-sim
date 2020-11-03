@@ -1,3 +1,5 @@
+package evo_sim.model
+
 import evo_sim.core.SimulationLogic.worldUpdated
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Obstacle, Plant}

@@ -3,6 +3,7 @@
 Dopo aver descritto l’architettura del sistema si procede con il design di dettaglio delle sue componenti principali. 
 L’approccio progettuale utilizzato combina aspetti Object-oriented, come l’utilizzo dell’interfaccia come astrazione attraverso la quale caratterizzare i componenti, per scatenare comportamenti diversi su entità soggette ad un comune contratto, con elementi di programmazione funzionale pura, quali la tendenza all’impiego di strutture dati immutabili e la riduzione di side effects, favorendo la descrizione lazy della computazione, la separazione fra componente strutturale e comportamentale delle entità ed altri elencati di seguito.
 
+
 \section{Core}
 Il motore della simulazione \code{SimulationEngine} consiste in una descrizione monadica delle fasi della simulazione, che prevede l’aggiornamento dei parametri del mondo, il rilevamento e risoluzione delle collisioni fra le entità che lo popolano, la visualizzazione a video del suo stato aggiornato e l’attesa dell’intervallo di tempo prima della successiva iterazione. In questo modo il codice non contiene i side-effect invece presenti in un’equivalente versione procedurale, e la parte non funzionalmente pura (ovvero quella non che rispetta le proprietà di trasparenza referenziale) è situata all’avvio della simulazione. 
 Questo andamento sequenziale e periodico è stato modellato attraverso una composizione di state monad \code{State[World, A]} (per quanto riguarda l’aggiornamento della struttura del mondo) e di IO monad (per le operazioni di I/O come il display a video delle entità e delle statistiche storiche alla chiusura dell’applicazione). Per tale motivo (e a fini di leggibilità) sono stati definiti i seguenti type alias:
@@ -32,7 +33,7 @@ Per la modellazione degli aspetti strutturali delle entità del \code{World} si 
 \centering
 \includegraphics[width=\textwidth, scale=0.44]{img/ModelHierarchy.png}
 \caption{Gerarchia Model}
-\label{fig:modelhierarchy}
+\label{fig:modelhierarchy3}
 \end{figure}
 
 Come proprietà della struttura sono utilizzati diversi parametri higher order (come \code{MovementStrategy}, \code{DegradationEffect} e \code{CollisionEffect}), che fungono da strategie e definiscono il comportamento dell’entità per aspetti specifici (la degradazione della propria vita o il movimento all’interno dell’area di simulazione, ad esempio). Ciò permette di riutilizzare una stessa struttura per modellare una serie di comportamenti diversi, piuttosto che codificare tale diversità di comportamento nel codice, trasferendola dunque a livello di istanza anziché di classificazione (dall’aspetto intensionale a quello estensionale). Invece di esprimere nel codice di una entità la logica di alcuni aspetti specifici, si incapsula dunque tale gestione in un parametro higher order, permettendo ad esempio di riutilizzare anche per entità con diverse logiche di degradazione la struttura rimanente. Al contempo, chiunque vorrà estendere il sistema di simulazione in futuro potrà usufruire di tali strategie per l’implementazione delle sue componenti.
@@ -42,7 +43,7 @@ L’aspetto comportamentale delle entità, che riguarda cioè le operazioni che 
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth, scale=0.44]{img/Model.png}
+\includegraphics[width=\textwidth, scale=0.14]{img/Model.png}
 \caption{Design Model}
 \label{fig:model}
 \end{figure}
@@ -56,4 +57,6 @@ MISSING SNIPPET
 A tale scopo, i companion object di \code{Updatable} e \code{Collidable} forniscono delle implementazioni dei rispettivi trait pronte all’uso per comportamenti riusabili e applicabili intercambiabilmente a qualunque Entity. (\code{NeutralUpdatable} e \code{NeutralCollidable} definiscono dei comportamenti che decorano i tipi sottostanti non inducendo nessuna modifica nella entità su cui vengono installati). Per questo motivo, in ottica futura, l’implementazione di Entity è sufficiente a disporre di nuove entità potenzialmente integrabili all’interno della simulazione.
 
 \section{View}
+
 Le operazioni di input e output della view consistono in descrizioni monadiche lazy della costruzione e comportamento dei componenti, così da aderire al paradigma funzionale nonostante la tipica natura object-oriented dei componenti di View. Sono state individuate un'operazione di input e due di output. La prima consiste nella lettura dei parametri di inizializzazione della simulazione contenuti in un oggetto \code{Environment} che verrà usato per la costruzione del \code{World}. La prima operazione di output viene richiamata ad ogni iterazione e fornisce lo stato attuale del \code{World} e delle entità che lo popolano. L'ultima, dato lo storico di tutte le istanze di \code{World} in modo lazy, provvede all'aggregazione delle informazioni contenute per fornire statistiche sulla simulazione.
+
