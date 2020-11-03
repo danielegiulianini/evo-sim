@@ -3,7 +3,7 @@
 Il progetto Evolution Simulator consiste nella realizzazione di un simulatore di evoluzione naturale di entità chiamate blob, in grado di muoversi e interagire
 con altre entità all’interno di un mondo. Il comportamento di un blob è definito dalla sua tipologia, che determina l’aggiornamento delle sue proprietà nel corso della simulazione e il risultato prodotto da una collisione con un’altra entità della simulazione, dipendente dalla tipologia di quest’ultima. Per sopravvivere i blob devono muoversi all’interno del mondo della simulazione alla ricerca di cibo nutriente per aumentare la loro vita corrente. La proprietà di effetto del cibo con cui un blob collide determina le variazioni delle sue proprietà, oltre all’eventuale introduzione di ulteriori blob nel mondo della simulazione. La simulazione può inoltre presentare ostacoli statici che, analogamente ai cibi, comporteranno delle modifiche allo stato del blob a seguito di una collisione. I cibi vengono generati da entità chiamate piante, che a intervalli regolari producono un cibo con un effetto di collisione dipendente dal comportamento della pianta. La sessione di simulazione è inoltre caratterizzata da un valore di luminosità e un valore di temperatura variabili, che influenzano rispettivamente la dimensione del campo visivo e la velocità di tutti i blob presenti. La quantità delle diverse entità, la luminosità, la temperatura e la quantità di giornate di cui è composta la simulazione sono parametrizzabili dall’utente attraverso un’apposita interfaccia. Al termine della simulazione verranno rappresentati mediante grafici informazioni sulle entità osservate nelle diverse giornate in base alla loro categoria e alle loro proprietà
 
-## Guida utente:
+## Guida utente(swing):
 La  schermata  iniziale  dell’applicazione  consiste  in  un’interfaccia  che  consente  all’utente  di  impostare  i  seguenti  parametri  per  l’avvio  di  una  sessione  di simulazione:
 
 * il  numero  di  blob,  distribuiti  in  equa  misura  tra  Base  Blob  e  CannibalBlob
@@ -23,7 +23,7 @@ Cliccando il pulsante Start si procederà all’avvio della simulazione.La scher
   * blu per i Base Blob 
   * rosso per i Cannibal Blob 
   * magenta per i Poisonous Blob 
-  * grigio per gli Slow Blob31
+  * grigio per gli Slow Blob
 * i cibi sono rappresentati da triangoli verdi. I cibi con effettostandardFoodEffectsono più piccoli dei cibi con effettopoisonousFoodEffect, e questi ultimisono più piccoli dei cibi con effettoreproducingFoodEffect;
 * gli ostacoli sono rappresentati da rettangoli rossi.  Gli ostacoli con effettodamageEffectsono più piccoli degli ostacoli con effettoslowEffect;
 * le piante sono rappresentate da rettangoli con colore dipendente dal lorotipo:
