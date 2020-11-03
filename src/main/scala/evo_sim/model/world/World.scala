@@ -5,9 +5,8 @@ import Constants.ITERATIONS_PER_DAY
 import evo_sim.model.entities.Entities._
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.Point2D.randomPosition
-import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
-import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure}
+import evo_sim.model.entities.entityStructure.effects.CollisionEffect
+import evo_sim.model.entities.entityStructure.BoundingBox
 import evo_sim.model.world.World.WorldHistory
 import evo_sim.model.world
 import evo_sim.utils.Counter._
