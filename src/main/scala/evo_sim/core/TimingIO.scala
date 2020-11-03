@@ -8,7 +8,7 @@ import scala.concurrent.duration.{DurationLong, FiniteDuration}
 
 /** Contains some utilities for performing time operations in a purely functional fashion.
  */
-object TimingOps {
+object TimingIO {
   implicit val timer: Timer[IO] = IO.timer(ExecutionContext.global)
 
   /** Returns a [[IO]] description that when evaluated retrieves the current system time in milliseconds.
