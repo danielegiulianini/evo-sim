@@ -4,8 +4,11 @@ import evo_sim.model.entities.Entities.{BaseBlob, BaseFood}
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.EntityStructure.Food
 import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, DegradationEffect}
-import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure, Point2D}
+import evo_sim.model.entities.entityStructure.movement.DemonstrationCompletelyPrologMovement.completelyPrologBaseMovement
+import evo_sim.model.entities.entityStructure.movement.DemonstrationCompletelyScalaMovement.completelyScalaBaseMovement
+import evo_sim.model.entities.entityStructure.movement.MovingStrategies.baseMovement
 import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
+import evo_sim.model.entities.entityStructure.{BoundingBox, EntityStructure, Point2D}
 import evo_sim.model.world.{Constants, World}
 import org.scalatest.FunSpec
 
@@ -42,7 +45,7 @@ class MovementTests extends FunSpec {
 
   private val foodClosest = food.copy(
     name = "food2",
-    boundingBox = BoundingBox.Triangle(point = Point2D(110, 100), height = 10)) //TODO
+    boundingBox = BoundingBox.Triangle(point = Point2D(110, 100), height = 10))
 
   private val entitiesWithoutFood = Set[SimulableEntity](blob, blobChangeDirection, blobNearBorder)
 
@@ -63,37 +66,88 @@ class MovementTests extends FunSpec {
     describe("with no eatable entities within the FOV") {
       it("has to move in a random direction"){
         val initialPosition = blob.boundingBox.point
-        val newPosition = MovingStrategies.baseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).point
-        assert(!initialPosition.equals(newPosition))
+        val newPositionStandardMov = baseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).point
+        val newPositionAllScalaMov = completelyScalaBaseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).point
+        val newPositionAllPrologMov = completelyPrologBaseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).point
+        assert(!initialPosition.equals(newPositionStandardMov))
+        assert(!initialPosition.equals(newPositionAllScalaMov))
+        assert(!initialPosition.equals(newPositionAllPrologMov))
+
       }
       it("must assign a new value to stepToNextDirection if stepToNextDirection is 0") {
-        val newStepToNextDirection = MovingStrategies.baseMovement(blobChangeDirection, worldWithoutFood, _.isInstanceOf[Food]).direction.stepToNextDirection
-        assert(newStepToNextDirection > 0)
+        val newStepToNextDirectionStandardMov = baseMovement(blobChangeDirection, worldWithoutFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        val newStepToNextDirectionScalaMov = completelyScalaBaseMovement(blobChangeDirection, worldWithoutFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        val newStepToNextDirectionPrologMov = completelyPrologBaseMovement(blobChangeDirection, worldWithoutFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        assert(newStepToNextDirectionStandardMov > 0)
+        assert(newStepToNextDirectionScalaMov > 0)
+        assert(newStepToNextDirectionPrologMov > 0)
       }
       it("keeps the current direction and decreases the stepToNextDirection if stepToNextDirection is greater than 0"){
-        val newDirection = MovingStrategies.baseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).direction
-        assert(newDirection.stepToNextDirection > 0)
-        assert(newDirection.angle equals blob.direction.angle)
+        val newDirectionStandardMov = baseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).direction
+        val newDirectionScalaMov = completelyScalaBaseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).direction
+        val newDirectionPrologMov = completelyPrologBaseMovement(blob, worldWithoutFood, _.isInstanceOf[Food]).direction
+        assert(newDirectionStandardMov.stepToNextDirection > 0)
+        assert(newDirectionStandardMov.angle equals blob.direction.angle)
+        assert(newDirectionScalaMov.stepToNextDirection > 0)
+        assert(newDirectionScalaMov.angle equals blob.direction.angle)
+        assert(newDirectionPrologMov.stepToNextDirection > 0)
+        assert(newDirectionPrologMov.angle equals blob.direction.angle)
       }
     }
     describe("with eatable entities within the FOV"){
       it("must go towards the closest entity"){
+
         val distanceBeforeClosestFood = distanceBetweenEntities(blob.boundingBox.point, foodClosest.boundingBox.point)
-        val newPosition = MovingStrategies.baseMovement(blob, worldWithFood, _.isInstanceOf[Food]).point
-        val distanceAfterClosestFood = distanceBetweenEntities(newPosition, foodClosest.boundingBox.point)
-        val distanceAfterOtherFood = distanceBetweenEntities(newPosition, food.boundingBox.point)
-        assert(distanceAfterClosestFood < distanceBeforeClosestFood)
-        assert(distanceAfterClosestFood < distanceAfterOtherFood)
+
+        //StandardMov
+        val newPositionStandardMov = baseMovement(blob, worldWithFood, _.isInstanceOf[Food]).point
+        val distanceAfterClosestFoodStandardMov = distanceBetweenEntities(newPositionStandardMov, foodClosest.boundingBox.point)
+        val distanceAfterOtherFoodStandardMov = distanceBetweenEntities(newPositionStandardMov, food.boundingBox.point)
+        assert(distanceAfterClosestFoodStandardMov < distanceBeforeClosestFood)
+        assert(distanceAfterClosestFoodStandardMov < distanceAfterOtherFoodStandardMov)
+
+        //ScalaMov
+        val newPositionScalaMov = completelyScalaBaseMovement(blob, worldWithFood, _.isInstanceOf[Food]).point
+        val distanceAfterClosestFoodScalaMov = distanceBetweenEntities(newPositionScalaMov, foodClosest.boundingBox.point)
+        val distanceAfterOtherFoodScalaMov = distanceBetweenEntities(newPositionScalaMov, food.boundingBox.point)
+        assert(distanceAfterClosestFoodScalaMov < distanceBeforeClosestFood)
+        assert(distanceAfterClosestFoodScalaMov < distanceAfterOtherFoodScalaMov)
+
+        //PrologMov
+        val newPositionPrologMov = completelyPrologBaseMovement(blob, worldWithFood, _.isInstanceOf[Food]).point
+        val distanceAfterClosestFoodPrologMov = distanceBetweenEntities(newPositionPrologMov, foodClosest.boundingBox.point)
+        val distanceAfterOtherFoodPrologMov = distanceBetweenEntities(newPositionPrologMov, food.boundingBox.point)
+        assert(distanceAfterClosestFoodPrologMov < distanceBeforeClosestFood)
+        assert(distanceAfterClosestFoodPrologMov < distanceAfterOtherFoodPrologMov)
       }
       it("must return stepToNextDirection equals to 0"){
-        val newStepToNextDirection = MovingStrategies.baseMovement(blob, worldWithFood, _.isInstanceOf[Food]).direction.stepToNextDirection
-        assertResult(0)(newStepToNextDirection)
+        val newStepToNextDirectionStandardMov = baseMovement(blob, worldWithFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        val newStepToNextDirectionScalaMov = completelyScalaBaseMovement(blob, worldWithFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        val newStepToNextDirectionPrologMov = completelyPrologBaseMovement(blob, worldWithFood, _.isInstanceOf[Food]).direction.stepToNextDirection
+        assertResult(0)(newStepToNextDirectionStandardMov)
+        assertResult(0)(newStepToNextDirectionScalaMov)
+        assertResult(0)(newStepToNextDirectionPrologMov)
       }
     }
     it("must calculate the new position after changing direction if with the current direction the new position would have been out of bounds") {
-      val newPosition = MovingStrategies.baseMovement(blobNearBorder, worldWithoutFood, _.isInstanceOf[Food])
-      assert(!newPosition.direction.angle.equals(blobNearBorder.direction.angle))
-      assert((0 to worldWithoutFood.width contains newPosition.point.x) && (0 to worldWithoutFood.height contains newPosition.point.y))
+      val newPositionStandardMov = baseMovement(blobNearBorder, worldWithoutFood, _.isInstanceOf[Food])
+      val newPositionScalaMov = completelyScalaBaseMovement(blobNearBorder, worldWithoutFood, _.isInstanceOf[Food])
+      val newPositionPrologMov = completelyPrologBaseMovement(blobNearBorder, worldWithoutFood, _.isInstanceOf[Food])
+
+      //StandardMov
+      assert(!newPositionStandardMov.direction.angle.equals(blobNearBorder.direction.angle))
+      assert(0 to worldWithoutFood.width contains newPositionStandardMov.point.x)
+      assert(0 to worldWithoutFood.height contains newPositionStandardMov.point.y)
+
+      //ScalaMov
+      assert(!newPositionScalaMov.direction.angle.equals(blobNearBorder.direction.angle))
+      assert(0 to worldWithoutFood.width contains newPositionScalaMov.point.x)
+      assert(0 to worldWithoutFood.height contains newPositionScalaMov.point.y)
+
+      //PrologMov
+      assert(!newPositionPrologMov.direction.angle.equals(blobNearBorder.direction.angle))
+      assert(0 to worldWithoutFood.width contains newPositionPrologMov.point.x)
+      assert(0 to worldWithoutFood.height contains newPositionPrologMov.point.y)
     }
   }
 

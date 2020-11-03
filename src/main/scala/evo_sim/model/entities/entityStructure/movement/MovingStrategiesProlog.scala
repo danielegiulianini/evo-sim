@@ -1,17 +1,14 @@
 package evo_sim.model.entities.entityStructure.movement
 
-import scala.language.implicitConversions
 import alice.tuprolog.{Double, Int, Struct, Term, Var}
-import evo_sim.model.world.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
 import evo_sim.model.entities.entityStructure.EntityStructure.Intelligent
-import evo_sim.model.entities.entityStructure.Point2D
-import evo_sim.model.entities.entityStructure.movement
+import evo_sim.model.entities.entityStructure.{Point2D, movement}
+import evo_sim.model.world.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION}
 import evo_sim.prolog.PrologEngine.engine
 
-object MovingStrategiesProlog {
+import scala.language.implicitConversions
 
-  /** Term containing the constant values needed to calculate the new position */
-  private val simulationConstantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, WORLD_WIDTH, WORLD_HEIGHT, ITERATION_LAPSE)
+object MovingStrategiesProlog {
 
   /** Implicit to convert a [[Term]] into a [[scala.Int]].
    *
@@ -61,13 +58,16 @@ object MovingStrategiesProlog {
    * by changing the direction.
    *
    * @param entity to be moved.
+   * @param worldDimension the dimension (Width, Height) of the world.
    * @return a [[Movement]] that contains the new position and the new direction.
    */
-  def standardMovement(entity: Intelligent): Movement = {
+  def standardMovement(entity: Intelligent, worldDimension: (scala.Int, scala.Int)): Movement = {
+
+    val constantTerm = simulationConstantTerm(worldDimension) //Term containing the constant values needed to calculate the new position
     val pointVal = new Var("Point")
     val directionVal = new Var("Direction")
     val goal: Term = new Struct("standardMov", entity.boundingBox.point, entity.velocity,
-      entity.direction.angle, entity.direction.stepToNextDirection, simulationConstantTerm,
+      entity.direction.angle, entity.direction.stepToNextDirection, constantTerm,
       pointVal, directionVal)
 
     newPosition(goal, pointVal, directionVal)
@@ -79,12 +79,14 @@ object MovingStrategiesProlog {
    *
    * @param entity       to be moved.
    * @param chasedEntity the entity to be chased
+   * @param worldDimension the dimension (Width, Height) of the world.
    * @return a [[Movement]] that contains the new position and the new direction.
    */
-  def chaseMovement(entity: Intelligent, chasedEntity: Point2D): Movement = {
+  def chaseMovement(entity: Intelligent, chasedEntity: Point2D, worldDimension: (scala.Int, scala.Int)): Movement = {
+    val constantTerm = simulationConstantTerm(worldDimension)
     val pointVal = new Var("Point")
     val directionVal = new Var("Direction")
-    val goal: Term = new Struct("chaseMov", entity.boundingBox.point, chasedEntity, entity.velocity, simulationConstantTerm,
+    val goal: Term = new Struct("chaseMov", entity.boundingBox.point, chasedEntity, entity.velocity, constantTerm,
       pointVal, directionVal)
 
     newPosition(goal, pointVal, directionVal)
@@ -103,6 +105,9 @@ object MovingStrategiesProlog {
     val solveInfo = solution.iterator.next()
     movement.Movement(solveInfo.getVarValue(pointVar.getName), solveInfo.getVarValue(directionVar.getName))
   }
+
+  private def simulationConstantTerm(worldDimension: (scala.Int, scala.Int)): Term =
+      new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, worldDimension._1, worldDimension._2, ITERATION_LAPSE)
 
   /** Gets the i-th [[Term]] contained in the [[Term]] passed as a parameter.
    *

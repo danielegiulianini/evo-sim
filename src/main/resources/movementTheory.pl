@@ -42,7 +42,7 @@ standardMov(Point, Velocity, Angle, Step, simulationConstants(PI, MaxDirectionSt
 % StepToNextDirection is always set to 0, so when the entity stops chasing another entity it will change direction.
 chaseMov(point(X, Y), point(ChasedX, ChasedY), Velocity, simulationConstants(PI, MaxDirectionStep, WorldWidth, WorldHeight, IterationPeriod), NewPoint, direction(FinalAngle, 0)):- DiffX is ChasedX - X, DiffY is ChasedY - Y, atan2(DiffY, DiffX, PI, Angle), toDegree(Angle, PI, Degrees), newPosition(point(X, Y), Velocity, Degrees, PI, WorldWidth, WorldHeight, IterationPeriod, NewAngle, NewPoint), FinalAngle is round(NewAngle).
 
-% Calculates the new position based on direction, speed and time to perform an iteration. t is also checked that the new position is inside the edges and if it 
+% Calculates the new position based on direction, speed and time to perform an iteration. It is also checked that the new position is inside the edges and if it 
 % is not the point is recalculated by changing the direction.
 newPosition(point(X,Y), Velocity, Degrees, PI, WorldWidth, WorldHeight, IterationPeriod, Degrees, point(NewX, NewY)):- toRadians(Degrees, PI, Radians), NewX is round(X+Velocity*cos(Radians)*IterationPeriod), NewY is round(Y+Velocity*sin(Radians)*IterationPeriod), between(NewX, 0, WorldWidth), between(NewY, 0, WorldHeight), !.
 newPosition(point(X,Y), Velocity, Degrees, PI, WorldWidth, WorldHeight, IterationPeriod, FinalAngle, point(NewX, NewY)):- rand_int(360, NewAngle), newPosition(point(X,Y), Velocity, NewAngle, PI, WorldWidth, WorldHeight, IterationPeriod, FinalAngle, point(NewX, NewY)).
