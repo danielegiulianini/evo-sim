@@ -26,7 +26,7 @@ object CollisionEffect {
   }
 
   /**
-   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]] and a new [[EntityStructure.Blob]] with properties based of the other blob.
+   * Returns a set with a copy of the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] given as input with life incremented by [[Constants.DEF_FOOD_ENERGY]] and a new [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] with properties based of the other blob.
    *
    * @param blob a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subjected to the effect
    * @return a set with the blobs produced by the effect

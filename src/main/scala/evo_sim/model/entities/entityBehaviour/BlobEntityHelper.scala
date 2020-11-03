@@ -12,12 +12,12 @@ import evo_sim.model.world.{Constants, World}
 
 object BlobEntityHelper {
   /**
-   * Takes a [[EntityStructure.Blob]] and transform it in a [[Entities.BaseBlob]] type, using the input blob's parameters.
+   * Takes a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] and transform it in a [[evo_sim.model.entities.Entities.BaseBlob]] type, using the input blob's parameters.
    * @param self the initial blob.
    * @param world used to update some parameters.
    * @param movement used to update the move direction of the entity.
-   * @tparam A accept [[EntityStructure.Blob]] subtype.
-   * @return The new [[Entities.BaseBlob]] updated.
+   * @tparam A accept [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subtype.
+   * @return The new [[evo_sim.model.entities.Entities.BaseBlob]] updated.
    */
   protected[model] def fromTemporaryBlobToBaseBlob[A <: BlobWithTemporaryStatus](self: A, world: World, movement: Movement): SimulableEntity = {
     var velocity = self.velocity
@@ -31,12 +31,12 @@ object BlobEntityHelper {
   }
 
   /**
-   * Takes a [[EntityStructure.Blob]] and transform it in a [[EntityStructure.BlobWithTemporaryStatus]] type
+   * Takes a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] and transform it in a [[evo_sim.model.entities.entityStructure.EntityStructure.BlobWithTemporaryStatus]] type
    * using the input blob's parameters.
    * @param blob the initial blob.
    * @param blobType specify the blob type to return.
    * @tparam A accept Blob subtype.
-   * @return The new [[EntityStructure.BlobWithTemporaryStatus]] updated.
+   * @return The new [[evo_sim.model.entities.entityStructure.EntityStructure.BlobWithTemporaryStatus]] updated.
    */
   protected[model] def fromBlobToTemporaryBlob[A <: Blob](blob: A, blobType: String): SimulableEntity = blobType match {
     case Constants.POISONBLOB_TYPE => PoisonBlob(blob name, blob boundingBox, blob life, blob velocity, blob degradationEffect,
@@ -46,12 +46,12 @@ object BlobEntityHelper {
   }
 
   /**
-   * This method is used to update a [[EntityStructure.Blob]].
-   * This method can be used by the [[EntityStructure.Blob]] subtypes:
-   * [[Entities.BaseBlob]]
-   * [[Entities.PoisonBlob]]
-   * [[Entities.CannibalBlob]]
-   * [[Entities.SlowBlob]]
+   * This method is used to update a [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]].
+   * This method can be used by the [[evo_sim.model.entities.entityStructure.EntityStructure.Blob]] subtypes:
+   * [[evo_sim.model.entities.Entities.BaseBlob]]
+   * [[evo_sim.model.entities.Entities.PoisonBlob]]
+   * [[evo_sim.model.entities.Entities.CannibalBlob]]
+   * [[evo_sim.model.entities.Entities.SlowBlob]]
    * @param self the blob to be updated.
    * @param movement the movement direction updated.
    * @param world used to update some parameters.
