@@ -1,5 +1,7 @@
 package evo_sim.utils
 
+import evo_sim.utils.TupleUtils.Tuple2Types.{HomogeneousTuple2, HomogeneousTuple2Set}
+
 import scala.language.higherKinds
 
 /** A type class that represents the ability for a type functor to be queried, i.e. asked whether it contains
@@ -82,6 +84,26 @@ object QueriableImplicits {
   /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2]], ie: how it can be
    * considered a [[evo_sim.utils.Queriable]].
    */
+  implicit object ContainsForHomogeneousTuple2 extends Queriable[HomogeneousTuple2]{
+    override def contained[T](t: HomogeneousTuple2[T], elem: T): Boolean =
+      t._1 == elem || t._2 == elem
+  }
+
+  /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2Set]], ie: how it can be
+   * considered a [[evo_sim.utils.Queriable]].
+   */
+  implicit object ContainsForHomogeneousTuple2Set extends Queriable[HomogeneousTuple2Set]{
+    override def contained[T](t: HomogeneousTuple2Set[T], elem: T): Boolean = {
+      t.exists(QueriableImplicits.ContainsForHomogeneousTuple2.contained(_, elem))
+    }
+  }
+}
+
+
+/* old code with type lambda
+ /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2]], ie: how it can be
+   * considered a [[evo_sim.utils.Queriable]].
+   */
   implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
     override def contained[T](t: (T, T), elem: T): Boolean =
       t._1 == elem || t._2 == elem
@@ -95,5 +117,4 @@ object QueriableImplicits {
       t.exists(QueriableImplicits.ContainsForHomogeneousTuple2.contained(_, elem))
     }
   }
-}
-
+ */
