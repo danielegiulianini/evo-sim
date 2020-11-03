@@ -30,7 +30,6 @@ object CLIView extends View {
       initialObstacleNumber = obstacles,
       daysNumber = days
     )
-    _ <- IO apply println(environment)
   } yield environment
 
   override def rendered(world: World): IO[Unit] = for {
