@@ -51,7 +51,8 @@ Queste entità interagiscono tra di loro una volta che la loro bounding box coll
 
 \subsection{View}
 
-\subsubsection{Swing}
+\subsubsection{wrapper monadico di Swing}
+Per agevolare lo sviluppo della GUI è stato realizzato un wrapper monadico di Swing (swing.monadic) che consente di accedere alle API dei più comuni componenti della libreria attraverso un API funzionale. L’implementazione sfrutta il framework cats e sostituisce alle invocazioni dei metodi tradizionali un’insieme di funzioni che ritornano IO monad, nel cui corpo vengono descritte le operazioni necessarie alla costruzione della GUI piuttosto che eseguite con side effect. In questo modo, questi ultimi avvengono effettivamente solo al momento dell’esecuzione della descrizione contenuta nella monade. swing.monadic costituisce un modulo indipendente dal simulatore e potenzialmente riusabile in altre applicazioni.
 
 \subsubsection{CLI}
 È possibile interfacciarsi con l'applicazione attraverso linea di comando. L'input viene controllato e tramite il data type \code{Either} che permette di incapsulare due tipi di ritorno (tipicamente left per gli errori e right per i risultati) è possibile gestire le eccezioni che possono nascere in una composizione tra funzioni, facilitando anche il tracking dei possibili errori, in questo caso per gestire input mal formattati e valori al di fuori del range consentito. Le funzioni di output si limitano a comunicare testualmente aggiornamenti sulla simulazione e relativo risultato.
