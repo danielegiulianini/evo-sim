@@ -1,8 +1,8 @@
-\section{Implementazione}
+\chapter{Implementazione}
 Il seguente capitolo motiva e dettaglia le scelte implementative ritenute rilevanti per una corretta comprensione del progetto.
 
 
-\subsection{Utilizzo paradigma funzionale}
+\section{Utilizzo paradigma funzionale}
 Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizzare il più possibile il paradigma funzionale, cercando di non ricorrere alle usuali abitudini di programmazione object-oriented. Per fare ciò sono state utilizzate diverse metodologie: 
 \begin{itemize}
     \item inutilizzo dei side effect, creando ad ogni modifica un nuovo ogetto immutabile.
@@ -14,40 +14,40 @@ Il Controller e il Model dell'applicazione sono state realizzate con un approcci
 
 
 Prof: "Ricordatevi che la lettura della relazione fino a: (i) i requirement, deve essere sufficiente per uno sviluppatore per giungere ad un sistema che fa quello che fa il vostro; (ii) al design, deve essere sufficiente per uno sviluppatore per giungere ad un sistema che in più è organizzato come il vostro; (iii) alla implementazione, è essenzialmente equivalente al vostro."
-\subsubsection{View}
+\subsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
 
-\subsubsection{Creazione di un nuovo world ad ogni iterazione}
+\subsection{Creazione di un nuovo world ad ogni iterazione}
 
-\subsection{Utilizzo della programmazione logica}
+\section{Utilizzo della programmazione logica}
 Parlo del movimento
 
-\subsection{Test}
+\section{Test}
 Prof: "Cercate di dare una idea di quanto pensate che i vostri test automatizzati coprano il codice e dove: è importante per stimare il potenziale impatto di una modifica al software." 
 Io faccio un discorso generale, se c'è un aspetto particolare nei vostri test scrivetelo pure.
 
 
 
-\subsection{Suddivisione del lavoro}
+\section{Suddivisione del lavoro}
 Mia introduzione iniziale
 
-\subsubsection{Persona qualsiasi}
+\subsection{Persona qualsiasi}
 Ognugno deve dire cosa ha fatto, la sezione di progetto riconducibile a lui (es: per Vaio l'IA e il disegno delle statistiche finali) e se ha collaborato con qualcuno.
 
-\subsubsection{Rei Beshiri}
+\subsection{Rei Beshiri}
 Il mio ruolo nel progetto dal punto di vista implementativo riguarda principalmente lo sviluppo del model e delle sue diverse componenti in collaborazione con i membri del team, in particolare delle entità \textit{blob} del loro comportamento e reazione all'ambiente circostante e alle intersezioni tra le varie entità in gioco e degli effetti delle stesse così come della loro bounding box.
 
 I test sviluppati riguardano le classi \code{BlobTest}, \code{DegradationTest}, \code{IntersectionTest}.
 
-\subsubsection{Andrea Betti}
+\subsection{Andrea Betti}
 Ho contribuito insieme a Rei Beshiri all'implementazione dei comportamenti delle diverse entità della simulazione in \code{evo\_sim.model.EntityBehaviour} e agli effetti applicabili dalle entità \textit{Effectful} in \code{evo\_sim.model.effects.CollisionEffect}, realizzando le classi e le funzioni relative alle entità \textit{Food} e \textit{Plant} e contribuendo in misura minore ai comportamenti delle entità \textit{Blob} e all'estensione di \code{evo\_sim.model.EntityStructure}.
 
 Ho inoltre implementato la logica di rappresentazione della simulazione utilizzando \texttt{Swing} all'interno della classe \code{evo\_sim.view.swing.custom.components.ShapesPanel}, utilizzata nella funzione \code{rendered} di \code{evo\_sim.view.swing.SwingView} realizzata da Alessandro Oliva.
 
 Per quanto riguarda i test, ho realizzato \code{FoodTests} e \code{PlantTests}.
-\subsubsection{Daniele Giulianini}
+\subsection{Daniele Giulianini}
 
-\subsubsection{Alessandro Oliva}
+\subsection{Alessandro Oliva}
 Il mio contributo nel model è consistito nello sviluppo delle entità \textit{Obstacle}, le entità con status temporanei (il cui raffinamento è però stato curato da Rei Beshiri), in particolare lo \textit{SlowBlob}.
 
 Mi sono occupato inoltre del ciclo giorno notte della simulazione, con rispettiva influenza sui blob in termini di velocità e campo visivo tramite appositi moduli di funzioni.
@@ -55,4 +55,4 @@ Mi sono occupato inoltre del ciclo giorno notte della simulazione, con rispettiv
 Per quanto riguarda la View, ne ho seguito lo sviluppo dalla prima versione in \texttt{ScalaFX} fino all'implementazione puramente funzionale attraverso il framework \texttt{Cats}, del quale con l'importante contributo di Daniele Giulianini è stato sviluppato un intero package che permette di utilizzare componenti Swing in maniera funzionale. Sempre con Daniele Giulianini mi sono occupato dell'integrazione fra View e Core mediante il framework monadico. Parallelamente a questa versione è stata sviluppata un interfaccia a linea di comando per permettere la fruizione dell'applicazione nella sua interezza anche mentre si lavorava alla View.
 
 I test da me sviluppati sono inclusi in \code{ObstacleTests}.
-\subsubsection{Andrea Vaienti}
+\subsection{Andrea Vaienti}
