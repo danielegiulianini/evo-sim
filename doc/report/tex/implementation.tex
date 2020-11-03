@@ -36,6 +36,9 @@ Prendendo come esempio l'implementazione della Figura \ref{fig:Blob implementati
 \label{fig:Blob implementation}
 \end{figure}
 
+\paragraph{Effect} Quando un'entità di tipo \code{Blob} collide con un'entità di tipo \code{Food} oppure \code{Obstacle} viene applicato al \textit{blob} un effetto specifico. Food e Obstacle estendono \code{Effectful}, in cui è presente la proprietà \code{CollisionEffect} ovvero il \textit{type alias} \code{CollisionEffect = Blob => Set[SimulableEntity]}.
+Così come per \code{CollisionEffect} questa strategia è stata utilizzata nel Model anche per la proprietà di \code{DegradationEffect}.
+Questi parametri consentono di definire un comportamento variabile di un entità (attraverso lo strategy pattern) permettendo il riutilizzo della stessa struttura dati per la modellazione di componenti diversi
 
 \subsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
