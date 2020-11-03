@@ -5,9 +5,8 @@ import evo_sim.utils.QueriableImplicits.ContainsForSet.contained
 import evo_sim.utils.Queriable.containedAnyOf
 import evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2Set
 
-
 /**
- * Contains some utilities and type definition for [[Tuple2]].
+ * Contains some utilities and types definition for [[Tuple2]].
  */
 object TupleUtils {
 

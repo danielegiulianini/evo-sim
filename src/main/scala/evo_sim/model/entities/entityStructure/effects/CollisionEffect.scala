@@ -1,13 +1,10 @@
 package evo_sim.model.entities.entityStructure.effects
 
-import evo_sim.model.entities.Entities
 import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.entities.entityBehaviour.BlobEntityHelper
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.BoundingBox.Circle
-import evo_sim.model.entities.entityStructure.EntityStructure
 import evo_sim.model.entities.entityStructure.EntityStructure.Blob
-import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
 import evo_sim.model.world.Constants
 import evo_sim.utils.Counter
 

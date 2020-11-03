@@ -4,10 +4,8 @@ import scala.language.postfixOps
 import evo_sim.model.entities.entityStructure.BoundingBox.Circle
 import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, BlobWithTemporaryStatus}
 import evo_sim.model.world.effects.{LuminosityEffect, TemperatureEffect}
-import evo_sim.model.entities.Entities
 import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
-import evo_sim.model.entities.entityStructure.EntityStructure
 import evo_sim.model.entities.entityStructure.effects.DegradationEffect
 import evo_sim.model.entities.entityStructure.movement.Movement
 import evo_sim.model.world.{Constants, World}
