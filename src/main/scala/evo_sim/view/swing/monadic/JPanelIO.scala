@@ -11,7 +11,7 @@ import javax.swing.plaf.PanelUI
  */
 class JPanelIO (override val component: JPanel) extends JComponentIO(component) {
   def uiSet(ui:PanelUI): IO[Unit] = IO {	component.setUI(ui)}
-  def uiGot(): IO[PanelUI] = IO {component.getUI()}
+  def uiGot(): IO[PanelUI] = IO {component.getUI}
 
   def uiSetInvokingAndWaiting(ui:PanelUI): IO[Unit] = invokeAndWaitIO(component.setUI(ui))
 }
