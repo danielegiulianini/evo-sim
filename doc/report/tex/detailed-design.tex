@@ -22,6 +22,10 @@ Di supporto alla gestione delle collisioni è definita la typeclass Queriable, c
 
 \section{Model}
 
+\subsection{World}
+Il \code{World} è stato modellato come un contenitore immutabile delle proprietà della simulazione e delle entità che vi partecipano. Al fine di memorizzare i dati necessari ai fini di analisi, esso è definito in termini di se stesso: la \code{WorldHistory} è uno stream costituito dalle istanze di \code{World} riferite alle iterazioni precedenti. La lazy evaluation degli stream permette di non appesantire la computazione del \code{SimulationLoop} con un carico di lavoro altrimenti insostenibile: impiegare una collezione non lazy come una lista avrebbe comportato la creazione di una moltitudine di strutture dati intermedie di grandissime dimensioni. 
+
+
 \subsection{Struttura entità con mixin}
 Per la modellazione degli aspetti strutturali delle entità del \code{World} si è sfruttato il meccanismo dei self-type al fine di rendere modulare l’acquisizione di ogni singola caratteristica genetica della popolazione attraverso l’algoritmo di linearizzazione predisposto da scala. Una volta definiti, con un’ottica molto granulare, un set di proprietà e i self-type corrispondenti, attribuendo a ciascuno di essi un dominio minimale ed una singola proprietà/funzionalità, la definizione della componente strutturale delle entità richieste dai requisiti si riduce ad un’attività di composizione di moduli elementari. Ciò porta ad una struttura composta da più livelli di componenti, alcuni dei quali condivisi da più entità. Questo approccio rende riutilizzabili in futuro le astrazioni già definite permettendo di combinare i diversi tratti genetici con flessibilità.
 
