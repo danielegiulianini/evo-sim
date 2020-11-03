@@ -12,7 +12,7 @@ object Constants {
   val SIMULATION_LOOP_PERIOD = 10
 
   /** How many simulation loops in a day */
-  val ITERATIONS_PER_DAY = 500
+  val ITERATIONS_PER_DAY = 100
   /** Time lapse between one interaction and the next */
   val ITERATION_LAPSE: Double = 0.05
 

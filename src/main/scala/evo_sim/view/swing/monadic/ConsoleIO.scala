@@ -1,4 +1,4 @@
-package evo_sim.utils
+package evo_sim.view.swing.monadic
 
 import cats.effect.IO
 
