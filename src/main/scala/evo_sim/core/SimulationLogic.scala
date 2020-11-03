@@ -1,13 +1,9 @@
 package evo_sim.core
 
 import evo_sim.utils.TupleUtils.{everyElementPairedWithOnlyOneOtherElement => multipleCollisionsRemoved}
-import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
-import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Food, Obstacle}
 import evo_sim.model.entities.entityStructure.Intersection.intersected
 import evo_sim.model.world.World.worldEnvironmentUpdated
-import evo_sim.model.entities.entityBehaviour.Collidable
-import evo_sim.model.entities.entityStructure.BoundingBox
 import evo_sim.model.world
 import evo_sim.model.world.World
 
@@ -42,7 +38,7 @@ object SimulationLogic {
    * [[evo_sim.model.entities.entityStructure.BoundingBox]]es.
    *
    * @param world the world whose entities' collisions are to be detected.
-   * @return the world after collisions are resolved by invoking collided on [[Collidable]] component
+   * @return the world after collisions are resolved by invoking collided on [[evo_sim.model.entities.entityBehaviour.Collidable]] component
    *         of [[SimulableEntity]] instances populating the world.
    */
   def collisionsHandled(world: World): World = {
