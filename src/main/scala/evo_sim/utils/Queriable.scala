@@ -65,13 +65,7 @@ object Queriable {
    */
   def containedAllOf[F[_]: Queriable, A](t: F[A], elem: Set[A]): Boolean =
     elem.forall(contained(t, _))
-
-
-  //enabling DOT notation TODO
-  /*implicit class ContainablePimped[F[_]: Queriable, T](qa: F[T]) {
-    def contained[T](elem: T): Boolean =
-      implicitly[Queriable[F]].contained(qa, elem)
-  }*/
+  
 }
 
 /** Provides some implicit implementations of [[evo_sim.utils.Queriable]] type class.
