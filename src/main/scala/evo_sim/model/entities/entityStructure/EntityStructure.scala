@@ -23,7 +23,7 @@ object EntityStructure {
     override type Life = Int
     override type Velocity = Int
     override type DegradationEffect[A] = A => Life
-    override type CollisionEffect = Blob => Set[SimulableEntity]  //name to be changed
+    override type CollisionEffect = Blob => Set[SimulableEntity]
     override type Position = Movement
     override type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
     override type Cooldown = Int

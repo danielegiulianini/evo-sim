@@ -48,7 +48,7 @@ object EntityBehaviour {
   /**
    * This Behaviour represent the base behaviour mainly for a Base [[EntityStructure.Blob]]. It contains two methods:
    * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
-   * collided: when the blob collide with an entity this method is called. It can collide with different entitis:
+   * collided: when the blob collide with an entity this method is called. It can collide with different entities:
    * -[[EntityStructure.Food]]: apply the effect of the food at the blob.
    * -[[EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
    * -[[Entities.CannibalBlob]]: if this blob is smaller than the cannibal, this blob is eaten.
@@ -76,7 +76,7 @@ object EntityBehaviour {
    * Differently from a [[Entities.BaseBlob]] this blob moves towards a food or a base blob.
    * It contains two methods:
    * updated: check either the blob is dead or not. It returns a set containing the new blob with the updated values or an empty set if the blob is dead.
-   * collided: when the blob collide with an entity this method is called. It can collide with different entitis:
+   * collided: when the blob collide with an entity this method is called. It can collide with different entities:
    * -[[EntityStructure.Food]]: apply the effect of the food at the blob.
    * -[[EntityStructure.Obstacle]]: apply the effect of the obstacle at the blob.
    * -[[Entities.BaseBlob]]: if this blob is bigger than the base blob, the base blob is eaten.
