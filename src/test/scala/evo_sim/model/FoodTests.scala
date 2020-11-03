@@ -11,7 +11,7 @@ import org.scalatest.FunSpec
 class FoodTests extends FunSpec {
   private val blob: BaseBlob = BaseBlob(
     name = "blob1",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -20,7 +20,7 @@ class FoodTests extends FunSpec {
     direction = Direction(0, 15))
   private val poisonBlob: PoisonBlob = PoisonBlob(
     name = "blob2",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -30,7 +30,7 @@ class FoodTests extends FunSpec {
     cooldown = Constants.DEF_COOLDOWN)
   private val cannibalBlob: CannibalBlob = CannibalBlob(
     name = "blob3",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -39,13 +39,13 @@ class FoodTests extends FunSpec {
     direction = Direction(0, 15))
   private val standardFood: BaseFood = BaseFood(
     name = "food4",
-    boundingBox = BoundingBox.Triangle.apply(point = Point2D(100, 100), height = 10),
+    boundingBox = BoundingBox.Triangle(point = Point2D(100, 100), height = 10),
     degradationEffect = DegradationEffect.standardDegradation,
     life = 100,
     collisionEffect = CollisionEffect.standardFoodEffect)
   private val reproducingFood: BaseFood = standardFood.copy(name = "food5", collisionEffect = CollisionEffect.reproduceBlobFoodEffect)
   private val poisonFood: BaseFood = standardFood.copy(name = "food6", collisionEffect = CollisionEffect.poisonousFoodEffect)
-  private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
+  private val world: World = World(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
     currentIteration = 0, entities = Set(blob, poisonBlob, cannibalBlob, standardFood, reproducingFood, poisonFood), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 
   describe("A Blob with BaseBlobBehaviour") {

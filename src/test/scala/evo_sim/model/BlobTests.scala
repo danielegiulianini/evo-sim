@@ -12,7 +12,7 @@ import org.scalatest.FunSpec
 class BlobTests extends FunSpec {
   private val base: BaseBlob = BaseBlob(
     name = "blob1",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -21,7 +21,7 @@ class BlobTests extends FunSpec {
     direction = Direction(0, 15))
   private val cannibal: CannibalBlob = CannibalBlob(
     name = "blob2",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 100),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 100),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -30,7 +30,7 @@ class BlobTests extends FunSpec {
     direction = Direction(0, 15))
   private val poisonBlob: PoisonBlob = PoisonBlob(
     name = "blob3",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -40,7 +40,7 @@ class BlobTests extends FunSpec {
     cooldown = 0)
   private val slowBlob: SlowBlob = SlowBlob(
     name = "blob4",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -49,7 +49,7 @@ class BlobTests extends FunSpec {
     direction = Direction(0, 15),
     cooldown = 0,
     initialVelocity = 10)
-  private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
+  private val world: World = World(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
     currentIteration = 0, entities = Set(base, poisonBlob, cannibal, slowBlob), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 
   describe("Blob with BaseBlobBehaviour") {

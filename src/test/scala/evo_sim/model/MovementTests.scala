@@ -26,11 +26,11 @@ class MovementTests extends FunSpec {
     degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
     fieldOfViewRadius = Constants.DEF_BLOB_FOV_RADIUS,
     movementStrategy = MovingStrategies.baseMovement,
-    direction = Direction.apply(MOVE_TO_RIGHT_ANGLE, 10))
+    direction = Direction(MOVE_TO_RIGHT_ANGLE, 10))
 
   private val blobChangeDirection = blob.copy(
     name = "blob2",
-    direction = Direction.apply(MOVE_TO_RIGHT_ANGLE, Constants.DEF_NEXT_DIRECTION))
+    direction = Direction(MOVE_TO_RIGHT_ANGLE, Constants.DEF_NEXT_DIRECTION))
 
   private val blobNearBorder = blob.copy(
     name = "blob3",
