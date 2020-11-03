@@ -35,8 +35,8 @@ case class World(temperature: Int,
                  worldHistory: WorldHistory = Stream.empty)
 
 
-/** A factory companion object for World with some utilities to handle simulation time (days and iterations)
- * conversions and day-cycle managemenent.
+/** A factory companion object for World with some utilities to handle World-related stuff like simulation time
+ * (days and iterations) conversions and day-cycle managemenent.
  */
 object World {
 
