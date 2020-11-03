@@ -1,6 +1,6 @@
 name := "evo.sim"
 
-version := "0.2"
+version := "1.0.0"
 
 scalaVersion := "2.12.11"
 
