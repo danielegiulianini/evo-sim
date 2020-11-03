@@ -47,7 +47,7 @@ object Simulation {
       liftIo(View.resultsShowed(worldHistory))
 
     def getTime() =
-      liftIo(TimingOps.getTime())
+      liftIo(TimingOps.getTime)
 
     def waitUntil(from: FiniteDuration, to: FiniteDuration)  =
       liftIo(TimingOps.waitUntil(from, to))
