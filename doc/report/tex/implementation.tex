@@ -15,7 +15,26 @@ Rispettando quanto sopra elencato, il Controller e il Model dell'applicazione so
 \subsubsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
 
-\subsubsection{Creazione di un nuovo world ad ogni iterazione}
+
+\subsubsection{Monadi}
+
+
+\subsubsection{World e Stream}
+Il World è stato modellato come un contenitore immutabile delle proprietà della simulazione e delle entità che vi partecipano. Al fine di memorizzare i dati necessari ai fini di analisi, esso è definito in termini di se stesso: la worldHistory è uno stream costituito dalle istanze di World riferite alle iterazioni precedenti. La lazy evaluation degli stream permette di non appesantire la computazione del simulationLoop con un carico di lavoro altrimenti insostenibile: impiegare una collezione non lazy come una lista avrebbe comportato la creazione di una moltitudine di strutture dati intermedie di grandissime dimensioni. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.30]{img/WorldDetail.png}
+\caption{Dettaglio di worldHistory come Stream per la memorizzazione delle informazioni sugli World alle iterazioni passate necessarie alla elaborazione statistica finale}
+\label{fig:worldDetail}
+\end{figure}
+
+Grazie agli stream, la valutazione della grande quantità di dati accumulata avviene solo alla conclusione della simulazione e al momento del processamento dei dati a fini statistici, non interferendo così con l’andamento della simulazione.
+
+\subsubsection{Currying e partial application}
+
+
+\subsubsection{Memoizing}
 
 \subsection{Paradigma logico}
 Dopo un accurata e dettagliata analisi della logica di movimento delle entità, il team si era proposto di integrare nel progetto il paradigma logico. Ciò è avvenuto attraverso la libreria TuProlog. In particolare, la logica di movimento ideata e implementata è la seguente:
@@ -39,9 +58,10 @@ I test sviluppati riguardano le classi \code{BlobTest}, \code{DegradationTest}, 
 \subsubsection{Andrea Betti}
 Ho contribuito insieme a Rei Beshiri all'implementazione dei comportamenti delle diverse entità della simulazione in \code{evo\_sim.model.EntityBehaviour} e agli effetti applicabili dalle entità \textit{Effectful} in \code{evo\_sim.model.effects.CollisionEffect}, realizzando le classi e le funzioni relative alle entità \textit{Food} e \textit{Plant} e contribuendo in misura minore ai comportamenti delle entità \textit{Blob} e all'estensione di \code{evo\_sim.model.EntityStructure}.
 
-Ho inoltre implementato la logica di rappresentazione della simulazione utilizzando \texttt{Swing} all'interno della classe \code{evo\_sim.view.swing.custom.components.ShapesPanel}, utilizzata nella funzione \code{rendered} di \code{evo\_sim.view.swing.SwingView} realizzata da Alessandro Oliva.
+Ho inoltre implementato la logica di rappresentazione della simulazione utilizzando \texttt{scala-swing} all'interno della classe \code{evo\_sim.view.swing.custom.components.ShapesPanel}, utilizzata nella funzione \code{rendered} di \code{evo\_sim.view.swing.SwingView} realizzata da Alessandro Oliva.
 
 Per quanto riguarda i test, ho realizzato \code{FoodTests} e \code{PlantTests}.
+
 \subsubsection{Daniele Giulianini}
 
 \subsubsection{Alessandro Oliva}
