@@ -74,9 +74,15 @@ La realizzazione di test è stato un aspetto fondamentale per verificare la corr
 Inizialmente il team ha effettuato un analisi preliminare, dettagliando quali caratteristiche e requisti il software dovesse esibire. In seguito a ciò, si sono susseguiti una frequente serie di meeting (in cui era presente tutto il team) dove, partendo da piccoli diagrammi UML che descrivevano a grandi linee l'architettura del sistema, si è scesi sempre più in dettaglio fino a creare l'intero design architetturale. È bene precisare che il design architetturale è stato ideato in ciascuna sua parte da tutto il team, in modo coeso e collaborativo. Successivamente, in seguito alla realizzazione di un design architetturale dettagliato per ogni funzionalità del software, a ciascun membro del team è stata assegnata una parte dello sviluppo. Nel dettaglio:
 
 \subsection{Rei Beshiri}
-Il mio ruolo nel progetto dal punto di vista implementativo riguarda principalmente lo sviluppo del model e delle sue diverse componenti in collaborazione con i membri del team, in particolare delle entità \textit{blob} del loro comportamento e reazione all'ambiente circostante e alle intersezioni tra le varie entità in gioco e degli effetti delle stesse così come della loro bounding box.
+Il mio ruolo nel progetto dal punto di vista implementativo riguarda principalmente la realizzazione e la manutenzione delle entità del modello, seguendone lo sviluppo dalla prima implementazione, e delle sue diverse componenti in collaborazione con i membri del team, in particolare delle entità blob del loro comportamento e reazione con l'ambiente circostante e alle intersezioni tra le varie entità in gioco, degli effetti delle stesse così come della loro bounding box.
+Ogni qual volta risultasse necessario dal team apportare modifiche anche pesanti al codice non mi sono fatto problemi ad applicarle, anzi è spesso risultato semplice attuare azioni di manutenzione correttiva o evolutiva al codice, segno di un buon lavoro di design.
 
-I test sviluppati riguardano le classi \code{BlobTest}, \code{DegradationTest}, \code{IntersectionTest}.
+I test sviluppati riguardano le classi:
+\begin{itemize}
+    \item \code{BlobTest}
+    \item \code{DegradationTest}
+    \item \code{IntersectionTest}
+\end{itemize}
 
 \subsection{Andrea Betti}
 Ho contribuito insieme a Rei Beshiri all'implementazione dei comportamenti delle diverse entità della simulazione in \code{evo\_sim.model.EntityBehaviour} e agli effetti applicabili dalle entità \textit{Effectful} in \code{evo\_sim.model.effects.CollisionEffect}, realizzando le classi e le funzioni relative alle entità \textit{Food} e \textit{Plant} e contribuendo in misura minore ai comportamenti delle entità \textit{Blob} e all'estensione di \code{evo\_sim.model.EntityStructure}.
