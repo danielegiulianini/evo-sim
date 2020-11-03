@@ -14,7 +14,7 @@ import evo_sim.model.world.World
 object SimulationLogic {
   /**
    *  Updates the world by creating a new version of it with updated parameters that represent the effect of time
-   *  elapsed from the previous iteration. It takes care of updating the [[SimulableEntities]] that populate it
+   *  elapsed from the previous iteration. It takes care of updating the [[evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity]] that populate it
    *  at the moment and the [[world.World.EnvironmentParameters]] like temperature and luminosity as well as
    *  saving the old World state for final historical data analysis.
    * @param world the world resulting by the previous iteration
@@ -39,7 +39,7 @@ object SimulationLogic {
    *
    * @param world the world whose entities' collisions are to be detected.
    * @return the world after collisions are resolved by invoking collided on [[evo_sim.model.entities.entityBehaviour.Collidable]] component
-   *         of [[SimulableEntity]] instances populating the world.
+   *         of [[evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity]] instances populating the world.
    */
   def collisionsHandled(world: World): World = {
 
