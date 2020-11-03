@@ -27,6 +27,6 @@ object EntitiesCreation {
      * @tparam T the type of the elements added to the Set to be returned.
      * @return a Set of int elements of type T
      */
-    def of[T](t: =>T) = Iterator.fill(int)(t).toSet
+    def of[T](t: =>T): Set[T] = Iterator.fill(int)(t).toSet
   }
 }
