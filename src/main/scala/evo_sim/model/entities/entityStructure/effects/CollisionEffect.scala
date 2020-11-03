@@ -102,12 +102,12 @@ object CollisionEffect {
    */
   private def createChild[A <: Blob](blob: A): SimulableEntity =
     new java.util.Random().nextInt(2) match {
-      case 0 => BaseBlob(blob.name + "-son" + Counter.nextValue,
-        Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS).max(Constants.MIN_BLOB_RADIUS))
-        , randomValueChange(Constants.DEF_BLOB_FOV_RADIUS).max(Constants.MIN_BLOB_FOV_RADIUS))
-      case 1 => CannibalBlob(blob.name + "-son" + Counter.nextValue,
-        Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS).max(Constants.MIN_BLOB_RADIUS))
-        , randomValueChange(Constants.DEF_BLOB_FOV_RADIUS).max(Constants.MIN_BLOB_FOV_RADIUS))
+      case 0 => BaseBlob(name = blob.name + "-son" + Counter.nextValue,
+        boundingBox = Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS).max(Constants.MIN_BLOB_RADIUS)),
+        fieldOfViewRadius = randomValueChange(Constants.DEF_BLOB_FOV_RADIUS).max(Constants.MIN_BLOB_FOV_RADIUS))
+      case 1 => CannibalBlob(name = blob.name + "-son" + Counter.nextValue,
+        boundingBox = Circle(blob.boundingBox.point, randomValueChange(Constants.DEF_BLOB_RADIUS).max(Constants.MIN_BLOB_RADIUS)),
+        fieldOfViewRadius = randomValueChange(Constants.DEF_BLOB_FOV_RADIUS).max(Constants.MIN_BLOB_FOV_RADIUS))
     }
 
   /** Returns a value with variable range from an initial value.
