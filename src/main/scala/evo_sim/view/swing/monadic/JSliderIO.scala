@@ -1,10 +1,8 @@
 package evo_sim.view.swing.monadic
 
-import java.awt.event.ActionEvent
-
 import cats.effect.IO
 import javax.swing.event.{ChangeEvent, ChangeListener}
-import javax.swing.{JComponent, JSlider}
+import javax.swing.{JSlider}
 
 /**
  * A class that provides a monadic description of the operations supplied by Swing's [[JSlider]] in the form
