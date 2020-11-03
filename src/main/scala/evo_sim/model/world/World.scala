@@ -56,23 +56,11 @@ object World {
 
     val baseBlobs: Set[BaseBlob] = (env.initialBlobNumber.toDouble / 2).ceil.toInt of BaseBlob(
       name = "blob" + nextValue(),
-      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS),
-      life = Constants.DEF_BLOB_LIFE,
-      velocity = Constants.DEF_BLOB_VELOCITY,
-      degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
-      fieldOfViewRadius = Constants.DEF_BLOB_FOV_RADIUS,
-      movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))
+      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = Constants.DEF_BLOB_RADIUS))
 
     val cannibalBlobs: Set[CannibalBlob] = env.initialBlobNumber.toDouble./(2).floor.toInt of CannibalBlob(
       name = "cannibalBlob" + nextValue(),
-      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2 * Constants.DEF_BLOB_RADIUS),
-      life = Constants.DEF_BLOB_LIFE,
-      velocity = Constants.DEF_BLOB_VELOCITY,
-      degradationEffect = DegradationEffect.standardDegradation,
-      fieldOfViewRadius = Constants.DEF_BLOB_FOV_RADIUS,
-      movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))
+      boundingBox = BoundingBox.Circle(point = randomPosition(), radius = 2 * Constants.DEF_BLOB_RADIUS))
 
     val stones: Set[BaseObstacle] = env.initialObstacleNumber.toDouble./(2).ceil.toInt of BaseObstacle(
       name = "stone" + nextValue(),
