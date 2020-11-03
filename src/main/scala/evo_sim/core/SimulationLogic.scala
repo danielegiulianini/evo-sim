@@ -4,7 +4,6 @@ import evo_sim.utils.TupleUtils.{everyElementPairedWithOnlyOneOtherElement => mu
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.Intersection.intersected
 import evo_sim.model.world.World.worldEnvironmentUpdated
-import evo_sim.model.world
 import evo_sim.model.world.World
 
 
