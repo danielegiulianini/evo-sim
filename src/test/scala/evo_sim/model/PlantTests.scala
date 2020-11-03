@@ -11,7 +11,7 @@ import org.scalatest.FunSpec
 class PlantTests extends FunSpec {
   private val blob: BaseBlob = BaseBlob(
     name = "blob1",
-    boundingBox = BoundingBox.Circle.apply(point = Point2D(100, 100), radius = 10),
+    boundingBox = BoundingBox.Circle(point = Point2D(100, 100), radius = 10),
     life = 100,
     velocity = 3,
     degradationEffect = DegradationEffect.standardDegradation,
@@ -26,7 +26,7 @@ class PlantTests extends FunSpec {
     name = "standardPlant3",
     boundingBox = BoundingBox.Rectangle(point = randomPosition(), width = DEF_STANDARD_PLANT_WIDTH, height = DEF_STANDARD_PLANT_HEIGHT),
     lifeCycle = 0)
-  private val world: World = World.apply(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
+  private val world: World = World(temperature = DEF_TEMPERATURE, luminosity = DEF_LUMINOSITY, width = WORLD_WIDTH, height = WORLD_HEIGHT,
     currentIteration = 0, entities = Set(blob, plant, plant2), totalIterations = DEF_DAYS * ITERATIONS_PER_DAY)
 
   describe("A Plant with full lifeCycle") {
