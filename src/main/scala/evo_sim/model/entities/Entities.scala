@@ -81,7 +81,7 @@ object Entities {
                           override val collisionEffect: CollisionEffect) extends Obstacle with NeutralBehaviour
 
   /**
-   * Represents a [[evo_sim.model.entities.entityStructure.EntityStructure.Plant]] implementation that produces [[EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.standardFoodEffect]].
+   * Represents a [[evo_sim.model.entities.entityStructure.EntityStructure.Plant]] implementation that produces [[evo_sim.model.entities.entityStructure.EntityStructure.Food]]s with [[evo_sim.model.entities.entityStructure.effects.CollisionEffect.standardFoodEffect]].
    *
    * @param name plant name
    * @param boundingBox plant boundingBox
