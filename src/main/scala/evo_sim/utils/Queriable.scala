@@ -5,7 +5,7 @@ import scala.language.higherKinds
 /** A type class that represents the ability for a type functor to be queried, i.e. asked whether it contains
  * a given element.
  *
- * @tparam F the type functor to be enriched with the [[Queriable]]#contained function.
+ * @tparam F the type functor to be enriched with the [[Queriable]] contained function.
  */
 trait Queriable[F[_]]{
   /**

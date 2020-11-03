@@ -56,8 +56,12 @@ Grazie agli stream, la valutazione della grande quantità di dati accumulata avv
 \subsection{Currying e partial application}
 Per incentivare il riuso, applicare il principio DRY, agevolarne l’eventuale futuro utilizzo come parametro higher order e gestire meglio l’alto numero di parametri, la funzione sinusoidal è stata implementata come funzione curried e le sue più comuni configurazioni (utilizzate più volte nel codice) sono state tramutate in partially-applied function (zeroPhasedinusoidal, zeroPhasedZeroYTranslatedSinusoidal etc). È stato utilizzato il currying anche nel codice di visualizzazione dei parametri (indicatorsUpdated di SwingView) per evitare duplicazioni ed accomunare invocazioni multiple sotto la stessa signature, indipendente da quella originale.
 
-\subsection{Memoizing}
+\subsection{Memoizing per ciclo giorno-notte}
 Dato l’andamento periodico di temperatura e di luminosità del World, le cui curve sinusoidali esprimono ciascuna gli stessi valori negli stessi momenti di giornate diverse, e data la complessità computazionale del calcolo trigonometrico (rispetto alla aritmetica intera ad es.), è stato applicato il pattern flyweight con memoization di valori di luminosità, temperatura e variazione della proprietà “campo visivo” (dell’astrazione Intelligent) rispetto alla luminosità. Al termine della prima giornata di simulazione, tali valori saranno già stati computati e nelle successive iterazioni sarà sufficiente reperirli con accesso costante.
+
+\subsection{Folding e manipolazione delle entità}
+Per le operazioni di aggiornamento del World e di controllo e notifica delle collisioni, l’iterazione della collezione di entità per la verifica di predicati e la generazione di un nuovo stato del World risultante dall’accumulo incrementale degli aggiornamenti di ciascuna di esse, è stata espressa mediante folding utilizzando Traversable come astrazione generale.
+
 
 \section{Paradigma logico}
 Dopo un'accurata e dettagliata analisi della logica di movimento delle entità, il team si era proposto di integrare nel progetto il paradigma logico. Ciò è avvenuto attraverso la libreria TuProlog. In particolare, la logica di movimento ideata e implementata è la seguente:
