@@ -85,6 +85,7 @@ object CLIView extends View {
         _ <- printlnIO("Population: " + world.entities.collect{case b: Blob => b}.size)
         _ <- printlnIO("Temperature: " + world.temperature)
         _ <- printlnIO("Luminosity: " + world.luminosity)
+        _ <- printlnIO("====================")
       } yield ()
     }
     object ResultViewUtils {
