@@ -3,7 +3,7 @@ package evo_sim.model.entities.entityStructure
 import scala.language.higherKinds
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl.{CollisionEffect, Cooldown, DegradationEffect, Life, LifeCycle, MovementStrategy, Velocity}
+import evo_sim.model.entities.entityStructure.EntityStructure.Domain.{CollisionEffect, Cooldown, DegradationEffect, Life, LifeCycle, MovementStrategy, Velocity}
 import evo_sim.model.entities.entityStructure.movement.{Direction, Movement}
 import evo_sim.model.world.World
 

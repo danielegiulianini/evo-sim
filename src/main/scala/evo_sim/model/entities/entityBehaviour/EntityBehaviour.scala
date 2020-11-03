@@ -1,6 +1,6 @@
 package evo_sim.model.entities.entityBehaviour
 
-import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl.CollisionEffect
+import evo_sim.model.entities.entityStructure.EntityStructure.Domain.CollisionEffect
 import evo_sim.model.entities.entityStructure.EntityStructure._
 import evo_sim.model.entities.entityStructure.Point2D.randomPosition
 import evo_sim.model.entities.Entities

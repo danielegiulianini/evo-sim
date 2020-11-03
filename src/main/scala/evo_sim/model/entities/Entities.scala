@@ -3,7 +3,7 @@ package evo_sim.model.entities
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.Simulable.NeutralBehaviour
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour._
 import evo_sim.model.entities.entityStructure.BoundingBox.{Circle, Rectangle, Triangle}
-import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl._
+import evo_sim.model.entities.entityStructure.EntityStructure.Domain._
 import evo_sim.model.entities.entityStructure.EntityStructure._
 import evo_sim.model.entities.entityStructure.effects.DegradationEffect
 import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}

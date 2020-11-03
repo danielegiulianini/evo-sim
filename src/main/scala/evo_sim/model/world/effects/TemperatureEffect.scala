@@ -1,6 +1,6 @@
 package evo_sim.model.world.effects
 
-import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl.Velocity
+import evo_sim.model.entities.entityStructure.EntityStructure.Domain.Velocity
 import evo_sim.model.world.Constants
 import evo_sim.model.world.World.timeOfTheDay
 import evo_sim.utils.MemoHelper.memoize

@@ -1,7 +1,7 @@
 package evo_sim.model.entities.entityStructure.effects
 
 import evo_sim.model.entities.Entities.PoisonBlob
-import evo_sim.model.entities.entityStructure.EntityStructure.DomainImpl.Life
+import evo_sim.model.entities.entityStructure.EntityStructure.Domain.Life
 import evo_sim.model.entities.entityStructure.EntityStructure.Living
 import evo_sim.model.world.Constants
 
