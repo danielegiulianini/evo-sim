@@ -150,12 +150,10 @@ object Intersection {
    */
   private def circleIntersectsRectangle(circle: Circle, rectangle: Rectangle) = {
 
-    /*rectangle.point.x + rectangle.width > circle.point.x &&
+    rectangle.point.x + rectangle.width > circle.point.x &&
       rectangle.point.y + rectangle.height > circle.point.y &&
       circle.point.x + circle.radius > rectangle.point.x &&
-      circle.point.y + circle.radius > rectangle.point.y*/
-
-    circleIntersectsCircle(circle, Circle(rectangle.point, (rectangle.width+rectangle.height)/2))
+      circle.point.y + circle.radius > rectangle.point.y
   }
 
 
