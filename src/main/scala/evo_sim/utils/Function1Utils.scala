@@ -1,6 +1,6 @@
 package evo_sim.utils
 
-object TestUtils {
+object Function1Utils {
 
   /** Performs a function on an object, then does it again on the result, and so on for n-times. The type of the
    * object must be the same both in input and in output
