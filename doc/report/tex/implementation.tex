@@ -1,45 +1,23 @@
 \section{Implementazione}
-Il seguente capitolo motiva e dettaglia le scelte implementative ritenute rilevanti per una corretta comprensione del progetto. È bene precisare che nel codice è presente la Scaladoc che permette di dettagliare ogni singola parte del codice.
+Il seguente capitolo motiva e dettaglia le scelte implementative ritenute rilevanti per una corretta comprensione del progetto.
 
 
-\subsection{Paradigma funzionale}
-Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizzare il più possibile il paradigma funzionale, cercando di non ricorrere alle usuali abitudini di programmazione object-oriented. Per fare ciò sono stati utilizzati diversi criteri: 
+\subsection{Utilizzo paradigma funzionale}
+Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizzare il più possibile il paradigma funzionale, cercando di non ricorrere alle usuali abitudini di programmazione object-oriented. Per fare ciò sono state utilizzate diverse metodologie: 
 \begin{itemize}
     \item inutilizzo dei side effect, creando ad ogni modifica un nuovo ogetto immutabile.
     \item utilizzo di funzioni ricorsive.
     \item utilizzo di funzioni higher-order che permettono una facile ed immediata realizzazione del parttern Strategy, consentono una maggiore riutilizzabilità del codice. In questo modo è possibile passare alle funzioni strategie esterne, non necessitando così di modificare il codice.
 \end{itemize}
 
-Rispettando quanto sopra elencato, il Controller e il Model dell'applicazione sono stati realizzati con un approccio puramente funzionale. La View adottare anch'essa il paradigma descritto in questo corso attraverso l'utilizzo della libreria cats.effect.IO.
-
-\subsubsection{Model}
-
-Come anticipato nella sezione precedente ogni entità che entra a far parte della simulazione deve soddisfare il requisito di essere del tipo SimulableEntity. Tale classe racchiude di ogni entità struttura e comportamento, come descritto dalla Figura \ref{fig:simentity}. 
+Il Controller e il Model dell'applicazione sono state realizzate con un approccio puramente funzionale, mentre la View adotta un approccio funzionale attraverso la libreria cats.effect.IO ove possibile.
 
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=\textwidth, scale=0.44]{img/SimulableEntity.png}
-\caption{Simulable Entity UML}
-\label{fig:simentity}
-\end{figure}
-
-Per l'implementazione del comportamento di un'entità, quindi l'implementazione delle interfaccie \code{Updatable} e \code{Collidable}, ove necessario definire un comportamento differente dal \code{NeutralBehaviour}, si è fatto uso dei self types. Tale pattern di programmazione è un modo per dichiarare che un trait deve essere mescolato con mixin in un altro trait, anche se non lo estende direttamente. Questa tecnica permette sostanzialmente di fare dependency injection dichiarando esplicitamente nel trait le dipendenze di cui un componente necessita.
-
-Uno dei vantaggi di separare comportamento da struttura è quello della riusabilità dei concetti e quindi del codice. Andando quindi a mescolare strutture e comportamenti è possibile combinarli e riutilizzarli per estensioni  e implementazioni future. 
-
-Prendendo come esempio l'implementazione della Figura \ref{fig:Blob implementation} il \code{BaseBlob}, questa classe estende dal trait Blob (tale trait è un'interfaccia \code{mixin}, viene utilizzato quindi il polimorfismo ad hoc). Il trait blob ne definisce la struttura mentre il comportamento è definito nel trait \code{BaseBlobBehaviour}. Il comportamento del \code{CannibalBlob}, pur mantenedo la struttura dati derivata dal \code{Blob}, è derivato da \code{CannibalBlobBehaviour}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=\textwidth, scale=0.44]{img/Blob implementation.png}
-\caption{Blob implementation hierarchy  UML}
-\label{fig:Blob implementation}
-\end{figure}
-
-
+Prof: "Ricordatevi che la lettura della relazione fino a: (i) i requirement, deve essere sufficiente per uno sviluppatore per giungere ad un sistema che fa quello che fa il vostro; (ii) al design, deve essere sufficiente per uno sviluppatore per giungere ad un sistema che in più è organizzato come il vostro; (iii) alla implementazione, è essenzialmente equivalente al vostro."
 \subsubsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
+
+\subsubsection{Creazione di un nuovo world ad ogni iterazione}
 
 
 \subsubsection{Monadi}
@@ -58,23 +36,26 @@ Il World è stato modellato come un contenitore immutabile delle proprietà dell
 Grazie agli stream, la valutazione della grande quantità di dati accumulata avviene solo alla conclusione della simulazione e al momento del processamento dei dati a fini statistici, non interferendo così con l’andamento della simulazione.
 
 \subsubsection{Currying e partial application}
-
+Per incentivare il riuso, applicare il principio DRY, agevolarne l’eventuale futuro utilizzo come parametro higher order e gestire meglio l’alto numero di parametri, la funzione sinusoidal è stata implementata come funzione curried e le sue più comuni configurazioni (utilizzate più volte nel codice) sono state tramutate in partially-applied function (zeroPhasedinusoidal, zeroPhasedZeroYTranslatedSinusoidal etc). È stato utilizzato il currying anche nel codice di visualizzazione dei parametri (indicatorsUpdated di SwingView) per evitare ripetizioni di codice ed accomunare invocazioni multiple sotto la stessa signature
 
 \subsubsection{Memoizing}
 
-\subsection{Paradigma logico}
-Dopo un accurata e dettagliata analisi della logica di movimento delle entità, il team si era proposto di integrare nel progetto il paradigma logico. Ciò è avvenuto attraverso la libreria TuProlog. In particolare, la logica di movimento ideata e implementata è la seguente:
-\begin{itemize}
-    \item nel caso in cui nessuna entità commestibile sia presente all'interno del campo visivo, l'entità in considerazione deve muoversi in una direzione casuale.
-    \item nel caso in cui una o più entità commestibili siano presenti all'interno del campo visivo, l'entità dovrà dirigersi verso il nutrimento più vicino.
-\end{itemize}
-La teoria Prolog presente nel file \code{src/main/resources/movementTheory.pl} consente di ricercare la presenza di un entità commestibile all'interno del campo visivo tra tutte le entità presenti nella simulazione, ed agire di conseguenza nel caso in cui l'entità sia presente o meno all'interno del campo visivo. Tuttavia per problemi legati alle performance (in quanto non possibile rispettare il requisito 4.1) si è adottato un approccio ibrido, in cui la ricerca di un entità all'interno del campo visivo viene effettuata con il paradigma funzionale, lasciando poi il calcolo della nuova posizione al paradigma logico.
+
+
+\subsection{Utilizzo della programmazione logica}
+Parlo del movimento
 
 \subsection{Test}
-La realizzazione di test è stato un aspetto fondamentale per verificare la correttezza e la qualità del codice, garantendo anche un'ulteriore documentazione del software sviluppato. La loro implementazione non è avvenuta con la metodologia stringente del Test Driven Development (TDD), bensì con un approccio più tradizionale, in cui la funzionalità veniva testata una volta pronta. In particolare è stata utilizzata la libreria ScalaTest, mantenendo uno stile omogeneo utilizzando \textbf{FunSpec}.
+Prof: "Cercate di dare una idea di quanto pensate che i vostri test automatizzati coprano il codice e dove: è importante per stimare il potenziale impatto di una modifica al software." 
+Io faccio un discorso generale, se c'è un aspetto particolare nei vostri test scrivetelo pure.
+
+
 
 \subsection{Suddivisione del lavoro}
-Inizialmente il team ha effettuato un analisi preliminare, dettagliando quali caratteristiche e requisti il software dovesse esibire. In seguito a ciò, si sono susseguiti una frequente serie di meeting (in cui era presente tutto il team) dove, partendo da piccoli diagrammi UML che descrivevano a grandi linee l'architettura del sistema, si è scesi sempre più in dettaglio fino a creare l'intero design architetturale. È bene precisare che il design architetturale è stato ideato in ciascuna sua parte da tutto il team, in modo coeso e collaborativo. Successivamente, in seguito alla realizzazione di un design architetturale dettagliato per ogni funzionalità del software, a ciascun membro del team è stata assegnata una parte dello sviluppo. Nel dettaglio:
+Mia introduzione iniziale
+
+\subsubsection{Persona qualsiasi}
+Ognugno deve dire cosa ha fatto, la sezione di progetto riconducibile a lui (es: per Vaio l'IA e il disegno delle statistiche finali) e se ha collaborato con qualcuno.
 
 \subsubsection{Rei Beshiri}
 Il mio ruolo nel progetto dal punto di vista implementativo riguarda principalmente lo sviluppo del model e delle sue diverse componenti in collaborazione con i membri del team, in particolare delle entità \textit{blob} del loro comportamento e reazione all'ambiente circostante e alle intersezioni tra le varie entità in gioco e degli effetti delle stesse così come della loro bounding box.
