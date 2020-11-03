@@ -5,8 +5,8 @@ import cats.effect.IO
 import evo_sim.core.Simulation.toStateTConversions._
 import evo_sim.model.world.Constants.SIMULATION_LOOP_PERIOD
 import evo_sim.model.world.World
-import evo_sim.view.swing.SwingView.inputReadFromUser
-//import evo_sim.view.cli.CLIView.inputReadFromUser
+//import evo_sim.view.swing.SwingView.inputReadFromUser
+import evo_sim.view.cli.CLIView.inputReadFromUser
 import evo_sim.core.Simulation._
 
 import scala.concurrent.duration._
