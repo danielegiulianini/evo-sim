@@ -1,6 +1,7 @@
 package evo_sim.model.entities.entityStructure.effects
 
 import evo_sim.model.entities.Entities.{BaseBlob, CannibalBlob, PoisonBlob, SlowBlob}
+import evo_sim.model.entities.entityStructure.EntityStructure.Blob
 import evo_sim.model.entities.entityStructure.{BoundingBox, Point2D}
 import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
 import evo_sim.model.world.Constants
@@ -40,8 +41,20 @@ class CollisionTests extends FunSpec {
     it("should increase BaseBlob life"){
       assert(CollisionEffect.reproduceBlobFoodEffect(base).exists(Set(base.copy(life = base.life + Constants.DEF_FOOD_ENERGY))))
     }
+    it("should create BaseBlob child"){
+      assert(CollisionEffect.reproduceBlobFoodEffect(base).filter({
+        case _: Blob => true
+        case _ => false
+      }).size == 2)
+    }
     it("should increase CannibalBlob life"){
       assert(CollisionEffect.reproduceBlobFoodEffect(cannibal).exists(Set(cannibal.copy(life = cannibal.life + Constants.DEF_FOOD_ENERGY))))
+    }
+    it("should create CannibalBlob child"){
+      assert(CollisionEffect.reproduceBlobFoodEffect(base).filter({
+        case _: Blob => true
+        case _ => false
+      }).size == 2)
     }
   }
 
