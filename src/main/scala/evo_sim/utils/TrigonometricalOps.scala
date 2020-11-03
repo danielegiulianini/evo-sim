@@ -21,7 +21,7 @@ object TrigonometricalOps {
      * @param yTranslation the translation applied to the y value after computing the A * sin (...) product
      * @return the value corresponding to input provided.
      */
-    def sinusoidal(yDilatation: Float)(x: Float)(phase: Int)(yTranslation: Int): Int =
+    def sinusoidal(yDilatation: Float)(x: Float)(phase: Float)(yTranslation: Int): Int =
       (yDilatation * Math.sin(2 * Math.PI * x + phase)).toInt + yTranslation //should rename yDilatation to amplitude
 
     /**
@@ -37,7 +37,7 @@ object TrigonometricalOps {
      * invoked instead.
      * @return the value corresponding to input provided.
      */
-    def zeroYTranslatedSinusoidal: (Float, Float, Int) => Int = sinusoidal(_: Float)(_: Float)(_: Int)(0)
+    def zeroYTranslatedSinusoidal: (Float, Float, Float) => Int = sinusoidal(_: Float)(_: Float)(_: Float)(0)
 
     /**
      * Computes the [[sinusoidal]] function value with the input provided and a phase equals to 0 and a yTranslation
@@ -66,7 +66,7 @@ object TrigonometricalOps {
        *
        * @return the sine wave value corresponding to the provided input.
        */
-      def zeroPhasedSinusoidal: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried
+      def zeroPhasedSinusoidal: Float => Float => Float => Int = Sinusoidal.zeroPhasedSinusoidal.curried
 
       /**
        * Curried version of [[zeroYTranslatedSinusoidal]] that can be invoked with a syntax like that:
@@ -80,7 +80,7 @@ object TrigonometricalOps {
        *
        * @return the sine wave value corresponding to the provided input.
        */
-      def zeroYTranslatedSinusoidal: Float => Float => Int => Int = Sinusoidal.zeroYTranslatedSinusoidal.curried
+      def zeroYTranslatedSinusoidal: Float => Float => Float => Int = Sinusoidal.zeroYTranslatedSinusoidal.curried
 
       /**
        * Curried version of [[zeroPhasedZeroYTranslatedSinusoidal]] that can be invoked with a syntax like that:
@@ -98,9 +98,4 @@ object TrigonometricalOps {
     }
 
   }
-
-  /*example of use:
-  instead of calling: sinusoidalSin(1f)(2)(0)(1) in many places in our code, call this instead:
-  zeroPhasedOneYTranslatedSinusoidalSin(1f)(2)            -------->(reuse)
-  */
 }
