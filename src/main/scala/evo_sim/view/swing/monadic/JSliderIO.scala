@@ -6,6 +6,11 @@ import cats.effect.IO
 import javax.swing.event.{ChangeEvent, ChangeListener}
 import javax.swing.{JComponent, JSlider}
 
+/**
+ * A class that provides a monadic description of the operations supplied by Swing's [[JSlider]] in the form
+ * of IO monad in a purely functional fashion.
+ * @param component the jSlider that this class wraps.
+ */
 class JSliderIO(override val component: JSlider) extends JComponentIO(component){
   def changeListenerAdded(l: ChangeListener): IO[Unit] = IO {component.addChangeListener(l)}
   def changeListenerRemoved(l: ChangeListener): IO[Unit] = IO {component.removeChangeListener(l)}
