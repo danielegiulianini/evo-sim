@@ -6,7 +6,7 @@ import evo_sim.model.entities.entityStructure.effects.{CollisionEffect, Degradat
 import evo_sim.model.entities.entityStructure.movement.{Direction, MovingStrategies}
 import evo_sim.model.entities.entityStructure.{BoundingBox, Point2D}
 import evo_sim.model.world.{Constants, World}
-import evo_sim.utils.TestUtils._
+import evo_sim.utils.Function1Utils._
 import org.scalatest.FunSpec
 
 class ObstacleTests extends FunSpec {
