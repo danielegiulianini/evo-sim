@@ -3,6 +3,8 @@ import evo_sim.utils.QueriableImplicits.ContainsForSet
 import evo_sim.utils.TupleUtils.everyElementPairedWithOnlyOneOtherElement
 import org.scalatest.FunSpec
 
+//run with: test;  from Intellij sbt shell
+//or: sbt test     from cmd from the the folder containing build.sbt file
 class TestTupleUtils extends FunSpec {
 
   //to be tested:
