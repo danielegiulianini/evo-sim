@@ -1,8 +1,8 @@
 \chapter{Implementazione}
 Il seguente capitolo motiva e dettaglia le scelte implementative ritenute rilevanti per una corretta comprensione del progetto. È bene precisare che nel codice è presente la Scaladoc che permette di dettagliare ogni singola parte del codice.
 
-\section{Paradigma funzionale}
-Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizzare il più possibile il paradigma funzionale, cercando di non ricorrere alle usuali abitudini di programmazione object-oriented. Per fare ciò sono stati utilizzati diversi criteri: 
+\section{Utilizzo del paradigma funzionale}
+Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizzare il più possibile il paradigma funzionale, cercando di non ricorrere alle usuali abitudini di programmazione object-oriented. Per fare ciò sono state utilizzate diverse metodologie: 
 \begin{itemize}
     \item inutilizzo dei side effect, creando ad ogni modifica un nuovo ogetto immutabile.
     \item utilizzo di funzioni ricorsive.
@@ -40,9 +40,11 @@ Prendendo come esempio l'implementazione della Figura \ref{fig:Blob implementati
 \subsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
 
-
 \subsection{Monadi}
+Grazie agli stream, la valutazione della grande quantità di dati accumulata avviene solo alla conclusione della simulazione e al momento del processamento dei dati a fini statistici, non interferendo così con l’andamento della simulazione.
 
+\subsection{Currying e partial application}
+Per incentivare il riuso, applicare il principio DRY, agevolarne l’eventuale futuro utilizzo come parametro higher order e gestire meglio l’alto numero di parametri, la funzione sinusoidal è stata implementata come funzione curried e le sue più comuni configurazioni (utilizzate più volte nel codice) sono state tramutate in partially-applied function (zeroPhasedinusoidal, zeroPhasedZeroYTranslatedSinusoidal etc). È stato utilizzato il currying anche nel codice di visualizzazione dei parametri (indicatorsUpdated di SwingView) per evitare ripetizioni di codice ed accomunare invocazioni multiple sotto la stessa signature
 
 \subsection{World e Stream}
 Il World è stato modellato come un contenitore immutabile delle proprietà della simulazione e delle entità che vi partecipano. Al fine di memorizzare i dati necessari ai fini di analisi, esso è definito in termini di se stesso: la worldHistory è uno stream costituito dalle istanze di World riferite alle iterazioni precedenti. La lazy evaluation degli stream permette di non appesantire la computazione del simulationLoop con un carico di lavoro altrimenti insostenibile: impiegare una collezione non lazy come una lista avrebbe comportato la creazione di una moltitudine di strutture dati intermedie di grandissime dimensioni. 
@@ -97,4 +99,5 @@ Mi sono occupato inoltre del ciclo giorno notte della simulazione, con rispettiv
 Per quanto riguarda la View, ne ho seguito lo sviluppo dalla prima versione in \texttt{ScalaFX} fino all'implementazione puramente funzionale attraverso il framework \texttt{Cats}, del quale con l'importante contributo di Daniele Giulianini è stato sviluppato un intero package che permette di utilizzare componenti Swing in maniera funzionale. Sempre con Daniele Giulianini mi sono occupato dell'integrazione fra View e Core mediante il framework monadico. Parallelamente a questa versione è stata sviluppata un interfaccia a linea di comando per permettere la fruizione dell'applicazione nella sua interezza anche mentre si lavorava alla View.
 
 I test da me sviluppati sono inclusi in \code{ObstacleTests}.
+
 \subsection{Andrea Vaienti}
