@@ -35,7 +35,9 @@ case class World(temperature: Int,
                  worldHistory: WorldHistory = Stream.empty)
 
 
-//companion object TODO scaladoc
+/** A factory companion object for World with some utilities to handle simulation time (days and iterations)
+ * conversions and day-cycle managemenent.
+ */
 object World {
 
   /** Data structure that will hold historical data used for statistical purpose at the end of simulation.
