@@ -12,6 +12,32 @@ Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizz
 
 Rispettando quanto sopra elencato, il Controller e il Model dell'applicazione sono stati realizzati con un approccio puramente funzionale. La View adottare anch'essa il paradigma descritto in questo corso attraverso l'utilizzo della libreria cats.effect.IO.
 
+\subsubsection{Model}
+
+Come anticipato nella sezione precedente ogni entità che entra a far parte della simulazione deve soddisfare il requisito di essere del tipo SimulableEntity. Tale classe racchiude di ogni entità struttura e comportamento, come descritto dalla Figura \ref{fig:simentity}. 
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth, scale=0.44]{img/SimulableEntity.png}
+\caption{Simulable Entity UML}
+\label{fig:simentity}
+\end{figure}
+
+Per l'implementazione del comportamento di un'entità, quindi l'implementazione delle interfaccie \code{Updatable} e \code{Collidable}, ove necessario definire un comportamento differente dal \code{NeutralBehaviour}, si è fatto uso dei self types. Tale pattern di programmazione è un modo per dichiarare che un trait deve essere mescolato con mixin in un altro trait, anche se non lo estende direttamente. Questa tecnica permette sostanzialmente di fare dependency injection dichiarando esplicitamente nel trait le dipendenze di cui un componente necessita.
+
+Uno dei vantaggi di separare comportamento da struttura è quello della riusabilità dei concetti e quindi del codice. Andando quindi a mescolare strutture e comportamenti è possibile combinarli e riutilizzarli per estensioni  e implementazioni future. 
+
+Prendendo come esempio l'implementazione della Figura \ref{fig:Blob implementation} il \code{BaseBlob}, questa classe estende dal trait Blob (tale trait è un'interfaccia \code{mixin}, viene utilizzato quindi il polimorfismo ad hoc). Il trait blob ne definisce la struttura mentre il comportamento è definito nel trait \code{BaseBlobBehaviour}. Il comportamento del \code{CannibalBlob}, pur mantenedo la struttura dati derivata dal \code{Blob}, è derivato da \code{CannibalBlobBehaviour}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth, scale=0.44]{img/Blob implementation.png}
+\caption{Blob implementation hierarchy  UML}
+\label{fig:Blob implementation}
+\end{figure}
+
+
 \subsubsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
 
