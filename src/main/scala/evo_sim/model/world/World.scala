@@ -42,7 +42,7 @@ object World {
    * Stream's lazy evaluation allow to gather this data without actually impacting on real-time simulation
    * performances.
    * Saving such an amount of data using an eager collection like a list would be impractical because of the
-   * creation of intermediate collections rapidly growing in size.
+   * expensive creation of intermediate collections rapidly growing in size.
    * */
   type WorldHistory = Stream[World]
 
