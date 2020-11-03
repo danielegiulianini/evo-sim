@@ -3,7 +3,7 @@ package evo_sim.model.entities.entityStructure.movement
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.EntityStructure.{Entity, Intelligent}
 import evo_sim.model.entities.entityStructure.Point2D
-import evo_sim.model.world.Constants.{DEF_NEXT_DIRECTION, ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION}
+import evo_sim.model.world.Constants.{DEF_NEXT_DIRECTION, ITERATION_LAPSE, MAX_DIRECTION_ANGLE, MAX_STEP_FOR_ONE_DIRECTION}
 import evo_sim.model.world.{Constants, World}
 
 import scala.math.{atan2, cos, hypot, sin, toDegrees, toRadians}
@@ -46,14 +46,14 @@ object DemonstrationCompletelyScalaMovement {
   private def standardMovement(entity: Intelligent, angle: Int, world: World): Movement = {
 
     val direction = entity.direction.stepToNextDirection match {
-      case DEF_NEXT_DIRECTION => Direction(random.nextInt(360), random.nextInt(MAX_STEP_FOR_ONE_DIRECTION)+1)
+      case DEF_NEXT_DIRECTION => Direction(random.nextInt(MAX_DIRECTION_ANGLE), random.nextInt(MAX_STEP_FOR_ONE_DIRECTION)+1)
       case x => Direction(angle, x-1)
     }
 
     val positionUpdated = nextPosition(entity, direction.angle)
 
     if (isBoundaryCollision(positionUpdated, Point2D(world.width, world.height)))
-      standardMovement(entity, random.nextInt(360), world)
+      standardMovement(entity, random.nextInt(MAX_DIRECTION_ANGLE), world)
     else
       Movement(positionUpdated, direction)
 

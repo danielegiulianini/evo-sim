@@ -80,10 +80,6 @@ object FinalStats {
     origin :: valueAverageDays
   }
 
-  /* private val blobGeneticCharacteristic: (World, SimulableEntity => Int) => Double = (world, getGeneticChar) => {
-    val blobVelocity = world.entities.filter(_.isInstanceOf[Blob]).toList.map(getGeneticChar)
-    blobVelocity.sum / blobVelocity.length
-  } */
   /**
    * Function that calculate the average of the genetic characteristic specified by
    * the function passed as parameter for each Blob present in the simulation.
@@ -98,7 +94,6 @@ object FinalStats {
       blobVelocity.sum / blobVelocity.length
   }
 
-  //private val entityQuantity: (World, SimulableEntity => Boolean) => Double =  (world, elemToChoose) => world.entities.count(elemToChoose)
   /**
    * Function that counts the number of entities present in the world considering only the entities selected
    * by the function passed as parameter.
