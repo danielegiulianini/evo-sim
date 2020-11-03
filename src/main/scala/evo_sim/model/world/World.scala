@@ -38,6 +38,12 @@ case class World(temperature: Int,
 //companion object TODO scaladoc
 object World {
 
+  /** Data structure that will hold historical data used for statistical purpose at the end of simulation.
+   * Stream's lazy evaluation allow to gather this data without actually impacting on real-time simulation
+   * performances.
+   * Saving such an amount of data using an eager collection like a list would be impractical because of the
+   * creation of intermediate collections rapidly growing in size.
+   * */
   type WorldHistory = Stream[World]
 
   /** Creates a World from an [[Environment]] instance.
