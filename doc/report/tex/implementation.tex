@@ -36,6 +36,18 @@ Prendendo come esempio l'implementazione della Figura \ref{fig:Blob implementati
 \label{fig:Blob implementation}
 \end{figure}
 
+\paragraph{Effect} Quando un'entità di tipo \code{Blob} collide con un'entità di tipo \code{Food} oppure \code{Obstacle} viene applicato al \textit{blob} un effetto specifico. Food e Obstacle estendono \code{Effectful}, in cui è presente la proprietà \code{CollisionEffect} ovvero il \textit{type alias} \code{CollisionEffect = Blob => Set[SimulableEntity]}.
+Così come per \code{CollisionEffect} questa strategia è stata utilizzata nel Model anche per la proprietà di \code{DegradationEffect}.
+Questi parametri consentono di definire un comportamento variabile di un entità (attraverso lo strategy pattern) permettendo il riutilizzo della stessa struttura dati per la modellazione di componenti diversi
+
+\paragraph{Shape and BoundingBox} Ogni entità chiave del modello ha una propria shape e bounding box:
+\begin{itemize}
+    \item Circle: \code{BaseBlob}, \code{CannibalBlob}, \code{PoisonBlob} e \code{SlowBlob}.
+    \item Rectangle: \code{BaseObstacle}, \code{StandardPlant}, \code{ReproducingPlant} e \code{PoisonousPlant}.
+    \item Triangle: \code{BaseFood}.
+\end{itemize}
+Queste entità interagiscono tra di loro una volta che la loro bounding box collide, ovvero quanto vi è uno o più punti di intersezione tra le shape delle entità in questione. Tale controllo di intersezione è catturato nel singleton object \code{Intersection}.
+
 
 \subsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
