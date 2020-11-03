@@ -32,7 +32,7 @@ object SimulationEngine {
    * applications.
    * Every simulation iteration is made up of ad update step, followed by a collisions-detection-and-handling phase
    * and by a display step, that finally renders the resulting World on the view.
-   * World is updated at a constant rate defined by [[Constants.SIMULATION_LOOP_PERIOD]] constant.
+   * World is updated at a constant rate defined by [[evo_sim.model.world.Constants.SIMULATION_LOOP_PERIOD]] constant.
    * At the end of simulation a statistical view of the data gathered by the simulation is displayed.
    * This method doesn't actually run the simulation until performing "run" on the [[IO]] returned.
    */
