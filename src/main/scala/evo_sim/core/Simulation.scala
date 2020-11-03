@@ -34,10 +34,10 @@ object Simulation {
    * for-comprehension).
    */
   object toStateTConversions {
-    def worldUpdated(): Simulation[World] =
+    def worldUpdated: Simulation[World] =
       toStateTWorld(SimulationLogic.worldUpdated)
 
-    def collisionsHandled(): Simulation[World] =
+    def collisionsHandled: Simulation[World] =
       toStateTWorld(SimulationLogic.collisionsHandled)
 
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
