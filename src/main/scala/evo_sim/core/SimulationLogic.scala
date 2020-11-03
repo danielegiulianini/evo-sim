@@ -58,31 +58,6 @@ object SimulationLogic {
     def entitiesAfterCollision =
       collisions.foldLeft(world.entities -- collidingEntities)((entitiesAfterCollision, collision) => entitiesAfterCollision ++ collision._1.collided(collision._2))
 
-    var blobnormal = 0
-    var cannibal = 0
-    var blobpoison = 0
-    var blobslow = 0
-    var obstaclen = 0
-    var foodsn = 0
-    val a: List[SimulableEntity] = entitiesAfterCollision.toList
-      a.sortWith(_.name < _.name).foreach(e => {
-      println(e.name)
-      if (e.isInstanceOf[Food]) foodsn = foodsn + 1
-      else if (e.isInstanceOf[CannibalBlob]) cannibal = cannibal + 1
-      else if (e.isInstanceOf[BaseBlob]) blobnormal = blobnormal + 1
-      else if (e.isInstanceOf[Obstacle]) obstaclen = obstaclen + 1
-      else if (e.isInstanceOf[SlowBlob]) blobslow = blobslow + 1
-      else if (e.isInstanceOf[PoisonBlob]) blobpoison = blobpoison + 1
-    })
-
-    println("--------")
-    println("BaseBlob: " + blobnormal)
-    println("CannibalBlob: " + cannibal)
-    println("PoisonBlob: " + blobpoison)
-    println("SlowBlob: " + blobslow)
-    println("Food: " + foodsn)
-    println("Obstacle: " + obstaclen)
-
     world.copy(
       entities = entitiesAfterCollision,
     )
