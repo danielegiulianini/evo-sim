@@ -52,10 +52,11 @@ object DemonstrationCompletelyScalaMovement {
 
     val positionUpdated = nextPosition(entity, direction.angle)
 
-    isBoundaryCollision(positionUpdated, Point2D(world.width, world.height)) match {
-      case true => standardMovement(entity, random.nextInt(360), world)
-      case false => Movement(positionUpdated, direction)
-    }
+    if (isBoundaryCollision(positionUpdated, Point2D(world.width, world.height)))
+      standardMovement(entity, random.nextInt(360), world)
+    else
+      Movement(positionUpdated, direction)
+
   }
 
   /** Calculates the new position based on direction, speed and time to perform an iteration.
