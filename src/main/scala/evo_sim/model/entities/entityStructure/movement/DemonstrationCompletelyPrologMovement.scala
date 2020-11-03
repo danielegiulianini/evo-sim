@@ -1,16 +1,14 @@
 package evo_sim.model.entities.entityStructure.movement
 
-import alice.tuprolog.{Struct, Term, Var, Int, Double}
+import alice.tuprolog.{Double, Int, Struct, Term, Var}
 import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
-import evo_sim.model.entities.entityStructure.EntityStructure.Intelligent
+import evo_sim.model.entities.entityStructure.EntityStructure.{Entity, Intelligent}
 import evo_sim.model.entities.entityStructure.Point2D
-import evo_sim.model.world.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION, WORLD_HEIGHT, WORLD_WIDTH}
+import evo_sim.model.world.Constants.{ITERATION_LAPSE, MAX_STEP_FOR_ONE_DIRECTION}
+import evo_sim.model.world.World
 import evo_sim.prolog.PrologEngine.engine
 
 object DemonstrationCompletelyPrologMovement {
-
-  /** Term containing the constant values needed to calculate the new position */
-  private val simulationConstantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, WORLD_WIDTH, WORLD_HEIGHT, ITERATION_LAPSE)
 
   /** Implicit to convert a [[Term]] into a [[scala.Int]].
    *
@@ -54,11 +52,22 @@ object DemonstrationCompletelyPrologMovement {
    */
   implicit def termToDirection(t: Term): Direction = Direction(extractVarValue(t, 0), extractVarValue(t, 1))
 
-  def completelyPrologBaseMovement(entity: Intelligent, entitiesSet: Set[SimulableEntity]): Movement = {
+  /** Equivalent to [[MovingStrategies.baseMovement]] but fully implemented in Prolog.
+   *
+   *  @param entity to be moved.
+   *  @param world containing all the simulation information.
+   *  @param entitiesFilter that describes all possible eatable entities.
+   *  @return a Movement that contains the new position and the new direction.
+   */
+  def completelyPrologBaseMovement(entity: Intelligent, world: World, entitiesFilter: Entity => Boolean): Movement = {
 
-    val entitiesPointTerm = (entitiesSet - entity.asInstanceOf[SimulableEntity])
+    val entitiesPointTerm = (world.entities - entity.asInstanceOf[SimulableEntity])
+      .filter(entitiesFilter)
       .map(eatableEntity => toStructPoint(eatableEntity.boundingBox.point))
       .fold(new Struct())((entitiesTermList, entity) => new Struct(entity, entitiesTermList))
+
+    /* Term containing the constant values needed to calculate the new position */
+    val simulationConstantTerm: Term = new Struct("simulationConstants", scala.math.Pi, MAX_STEP_FOR_ONE_DIRECTION, world.width, world.height, ITERATION_LAPSE)
 
     val pointVal = new Var("Point")
     val directionVal = new Var("Direction")
@@ -72,7 +81,6 @@ object DemonstrationCompletelyPrologMovement {
     val solveInfo = solution.iterator.next()
 
     Movement(solveInfo.getVarValue(pointVal.getName), solveInfo.getVarValue(directionVal.getName))
-
   }
 
   /** Gets the i-th [[Term]] contained in the [[Term]] passed as a parameter.

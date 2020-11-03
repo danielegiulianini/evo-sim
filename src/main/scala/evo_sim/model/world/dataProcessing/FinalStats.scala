@@ -92,7 +92,10 @@ object FinalStats {
    */
   private def blobGeneticCharacteristic: (World, SimulableEntity => Int) => Double = (world, getGeneticChar) => {
     val blobVelocity = world.entities.filter(_.isInstanceOf[Blob]).toList.map(getGeneticChar)
-    blobVelocity.sum / blobVelocity.length
+    if(blobVelocity.isEmpty)
+      0
+    else
+      blobVelocity.sum / blobVelocity.length
   }
 
   //private val entityQuantity: (World, SimulableEntity => Boolean) => Double =  (world, elemToChoose) => world.entities.count(elemToChoose)
