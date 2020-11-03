@@ -65,7 +65,7 @@ object Queriable {
    */
   def containedAllOf[F[_]: Queriable, A](t: F[A], elem: Set[A]): Boolean =
     elem.forall(contained(t, _))
-  
+
 }
 
 /** Provides some implicit implementations of [[evo_sim.utils.Queriable]] type class.

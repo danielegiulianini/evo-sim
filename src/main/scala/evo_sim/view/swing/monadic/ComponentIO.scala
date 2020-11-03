@@ -6,7 +6,7 @@ import java.awt.event.{ComponentAdapter, ComponentEvent, ComponentListener, Mous
 import cats.effect.IO
 
 /**
- * A class that provides a monadic description of the operations supplied by Swing's [[Component]] in the form
+ * A class that provides a monadic description of the operations supplied by awt's [[Component]] in the form
  * of IO monad in a purely functional fashion.
  * Every Swing's Component could be wrapped by this class, but note that this package provided some ad-hoc factory
  * utilities for the most popular Swing's components (see [[JPanelIO]], [[JFrameIO]], [[JButtonIO]]).
