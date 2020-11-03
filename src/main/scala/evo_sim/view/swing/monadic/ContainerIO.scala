@@ -28,6 +28,3 @@ class ContainerIO[T<:Container](override val component: T) extends ComponentIO(c
   def removedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component]) = IO {   SwingUtilities.invokeAndWait(() =>  component.remove(componentToBeAdded.component) ) }
   def allRemovedInvokingAndWaiting() = IO {   SwingUtilities.invokeAndWait( () =>  component.removeAll() ) }
 }
-
-//companion object with utilities to be added
-
