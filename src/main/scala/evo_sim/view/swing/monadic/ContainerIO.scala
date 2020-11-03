@@ -3,7 +3,6 @@ package evo_sim.view.swing.monadic
 import java.awt.{Component, Container, LayoutManager}
 
 import cats.effect.IO
-import javax.swing.SwingUtilities
 
 /**
  * A class that provides a monadic description of the operations supplied by awt's [[Container]] in the form

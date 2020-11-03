@@ -3,7 +3,7 @@ package evo_sim.view.swing.monadic
 import java.awt.{Component, Container, Frame}
 
 import cats.effect.IO
-import javax.swing.{JFrame, SwingUtilities}
+import javax.swing.JFrame
 
 /**
  * A class that provides a monadic description of the operations supplied by Swing's [[JFrame]] in the form

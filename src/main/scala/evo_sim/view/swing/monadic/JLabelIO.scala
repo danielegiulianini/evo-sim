@@ -1,7 +1,7 @@
 package evo_sim.view.swing.monadic
 
 import cats.effect.IO
-import javax.swing.{JLabel, SwingUtilities}
+import javax.swing.JLabel
 
 
 /**
