@@ -8,7 +8,7 @@ import evo_sim.model.entities.entityStructure.movement.{Direction, Movement}
 import evo_sim.model.world.World
 
 object EntityStructure {
-  trait Domain {
+  /*trait Domain {
     type Life
     type Velocity
     type Position
@@ -16,17 +16,17 @@ object EntityStructure {
     type LifeCycle
     type DegradationEffect[A] >: A => Life
     type CollisionEffect
-    type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
-  }
+  }*/
 
-  object DomainImpl extends Domain {
-    override type Life = Int
-    override type Velocity = Int
-    override type Position = Movement
-    override type Cooldown = Int
-    override type LifeCycle = Int
-    override type DegradationEffect[A] = A => Life
-    override type CollisionEffect = Blob => Set[SimulableEntity]
+  object Domain {
+     type Life = Int
+     type Velocity = Int
+     type Position = Movement
+     type Cooldown = Int
+     type LifeCycle = Int
+     type DegradationEffect[A] = A => Life
+     type CollisionEffect = Blob => Set[SimulableEntity]
+     type MovementStrategy = (Intelligent, World, Entity => Boolean) => Position
   }
 
   /**
