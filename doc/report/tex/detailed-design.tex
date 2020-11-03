@@ -46,10 +46,6 @@ L’aspetto comportamentale delle entità, che riguarda cioè le operazioni che 
 
 Il requisito che un’entità deve soddisfare per partecipare ad una simulazione si suddivide in 2 componenti, rappresentati dal type alias \code{SimulableEntity}: dal punto di vista strutturale il vincolo di rappresentare una Entity, mentre, dal punto di vista comportamentale, quello di disporre di un’implementazione di tali 2 trait, la cui unione è definita mediante il type alias \code{Simulable}.
 
-\begin{verbatim}
-MISSING SNIPPET
-\end{verbatim}
-
 A tale scopo, i companion object di \code{Updatable} e \code{Collidable} forniscono delle implementazioni dei rispettivi trait pronte all’uso per comportamenti riusabili e applicabili intercambiabilmente a qualunque Entity. (\code{NeutralUpdatable} e \code{NeutralCollidable} definiscono dei comportamenti che decorano i tipi sottostanti non inducendo nessuna modifica nella entità su cui vengono installati). Per questo motivo, in ottica futura, l’implementazione di Entity è sufficiente a disporre di nuove entità potenzialmente integrabili all’interno della simulazione.
 
 \section{View}
