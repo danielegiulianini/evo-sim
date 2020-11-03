@@ -5,7 +5,11 @@ import java.awt.{Component, Frame}
 import cats.effect.IO
 import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 
-
+/**
+ * A class that provides a monadic description of the operations supplied by Swing's [[JFrame]] in the form
+ * of IO monad in a purely functional fashion.
+ * @param component the jFrame that this class wraps.
+ */
 class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def contentPane() = IO { new ContainerIO (component.getContentPane) }
   def sizeSet(width: Int, height: Int) = IO { component.setSize(width, height)}
