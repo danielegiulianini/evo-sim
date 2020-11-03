@@ -62,6 +62,9 @@ Dato l’andamento periodico di temperatura e di luminosità del World, le cui c
 \subsection{Folding e manipolazione delle entità}
 Per le operazioni di aggiornamento del World e di controllo e notifica delle collisioni, l’iterazione della collezione di entità per la verifica di predicati e la generazione di un nuovo stato del World risultante dall’accumulo incrementale degli aggiornamenti di ciascuna di esse, è stata espressa mediante folding utilizzando Traversable come astrazione generale.
 
+\subsection{Impliciti e of keyword}
+Per ridurre il “boilerplate code” presente nel codice della creazione delle entità della simulazione, si è implementata una semplice keyword (of) sfruttando il pattern “pimp my library” applicato al tipo di dato Int attraverso il meccanismo delle implicit class. Ciò ha permesso di alzare il livello di astrazione per il codice di costruzione del mondo permettendo di ignorare in quella sede i dettagli relativi alla costruzione di Set e della rispettiva logica di popolamento.
+
 
 \section{Paradigma logico}
 Dopo un'accurata e dettagliata analisi della logica di movimento delle entità, il team si era proposto di integrare nel progetto il paradigma logico. Ciò è avvenuto attraverso la libreria TuProlog. In particolare, la logica di movimento ideata e implementata è la seguente:
