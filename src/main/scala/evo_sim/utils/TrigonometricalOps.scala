@@ -66,7 +66,7 @@ object TrigonometricalOps {
        *
        * @return the sine wave value corresponding to the provided input.
        */
-      def zeroPhasedSinusoidal: Float => Float => Float => Int = Sinusoidal.zeroPhasedSinusoidal.curried
+      def zeroPhasedSinusoidal: Float => Float => Int => Int = Sinusoidal.zeroPhasedSinusoidal.curried
 
       /**
        * Curried version of [[zeroYTranslatedSinusoidal]] that can be invoked with a syntax like that:
