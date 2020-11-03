@@ -42,19 +42,19 @@ class CollisionTests extends FunSpec {
       assert(CollisionEffect.reproduceBlobFoodEffect(base).exists(Set(base.copy(life = base.life + Constants.DEF_FOOD_ENERGY))))
     }
     it("should create BaseBlob child"){
-      assert(CollisionEffect.reproduceBlobFoodEffect(base).filter({
+      assert(CollisionEffect.reproduceBlobFoodEffect(base).count {
         case _: Blob => true
         case _ => false
-      }).size == 2)
+      } == 2)
     }
     it("should increase CannibalBlob life"){
       assert(CollisionEffect.reproduceBlobFoodEffect(cannibal).exists(Set(cannibal.copy(life = cannibal.life + Constants.DEF_FOOD_ENERGY))))
     }
     it("should create CannibalBlob child"){
-      assert(CollisionEffect.reproduceBlobFoodEffect(cannibal).filter({
+      assert(CollisionEffect.reproduceBlobFoodEffect(cannibal).count {
         case _: Blob => true
         case _ => false
-      }).size == 2)
+      } == 2)
     }
   }
 

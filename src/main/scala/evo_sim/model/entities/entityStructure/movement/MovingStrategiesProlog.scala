@@ -93,7 +93,7 @@ object MovingStrategiesProlog {
   }
 
   /** Create a [[Movement]] containing the new position and direction using the values contained in the
-   * variables passed as parameters after solving the [[Term]] with the [[PrologEngine]]
+   * variables passed as parameters after solving the [[Term]] with the [[evo_sim.prolog.PrologEngine]]
    *
    * @param goal         the term to solve.
    * @param pointVar     the [[Var]] containing the information regarding the new [[Point2D]] position.

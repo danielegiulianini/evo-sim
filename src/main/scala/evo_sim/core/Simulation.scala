@@ -43,13 +43,13 @@ object Simulation {
     def worldRendered(worldAfterCollisions: World): Simulation[Unit] =
       liftIo(View.rendered(worldAfterCollisions))
 
-    def resultShowed(worldHistory: WorldHistory) =
+    def resultShowed(worldHistory: WorldHistory): Simulation[Unit] =
       liftIo(View.resultsShowed(worldHistory))
 
-    def getTime() =
+    def getTime(): Simulation[FiniteDuration] =
       liftIo(TimingOps.getTime)
 
-    def waitUntil(from: FiniteDuration, to: FiniteDuration)  =
+    def waitUntil(from: FiniteDuration, to: FiniteDuration): Simulation[Unit] =
       liftIo(TimingOps.waitUntil(from, to))
   }
 }

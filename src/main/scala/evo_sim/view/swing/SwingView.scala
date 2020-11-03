@@ -59,9 +59,7 @@ object SwingView extends View {
   } yield ()
 
   override def resultsShowed(world: WorldHistory): IO[Unit] = for {
-
     panel <- ResultViewUtils.panelWithChart(world.reverse)
-
     cp <- frame.contentPane()
     _ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.added(panel)
@@ -182,7 +180,6 @@ object SwingView extends View {
     }
 
     object ResultViewUtils {
-
       def panelWithChart(history: WorldHistory): IO[JPanelIO] = for {
 
         days <- IO { days(history.head.totalIterations) }
