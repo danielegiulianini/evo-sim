@@ -11,7 +11,7 @@ import javax.swing.JPanel
 class JPanelIO (override val component: JPanel) extends JComponentIO(component) {
 }
 
-/** A companion object that acts as a factory for JPanelIO*/
+/** Factory for JPanelIO instances*/
 object JPanelIO{
   def apply(): IO[JPanelIO] = IO { new JPanelIO(new JPanel) }
 }

@@ -19,7 +19,6 @@ class ComponentIO[T<:Component](val component: T){
     IO { component.addComponentListener(l) }
   def mouseListenerAdded(l:MouseListener): IO[Unit] =
     IO {component.addMouseListener(l) }
-
   def mouseListenerRemoved(l:MouseListener): Unit =
     IO { component.removeMouseListener(l) }
   def fontGot(): IO[Font] = IO {component.getFont}
@@ -28,8 +27,6 @@ class ComponentIO[T<:Component](val component: T){
 
   def setPreferredSizeInvokingAndWaiting(d: Dimension): IO[Unit] =
     IO {component.setPreferredSize(d)  }
-
-
   def addComponentAdapterInvokingAndWaiting(): IO[Unit] =
     IO {
       component.addComponentListener(new ComponentAdapter {
@@ -38,6 +35,3 @@ class ComponentIO[T<:Component](val component: T){
       })
     }
 }
-
-//companion object with utilities to be added
-

@@ -5,6 +5,11 @@ import java.awt.event.{ActionEvent, ActionListener}
 import cats.effect.IO
 import javax.swing.JButton
 
+/**
+ * A class that provides a monadic description of the operations supplied by Swing's [[JButton]] in the form
+ * of IO monad in a purely functional fashion.
+ * @param component the jButton that this class wraps.
+ */
 class JButtonIO(override val component: JButton) extends ComponentIO(component){
   //procedural event listener description (from API user point of view)
   def actionListenerAdded(l:ActionListener): IO[Unit] = IO {component.addActionListener(l)}
@@ -24,7 +29,7 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
     IO {component.addActionListener( _ => l.unsafeRunSync() )}
 }
 
-//companion object with utilities
+/** Factory for JButtonIO instances*/
 object JButtonIO {
   def apply(text:String): IO[JButtonIO] = IO { new JButtonIO(new JButton(text)) }
 }

@@ -29,7 +29,7 @@ class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def setMaximizedExtendedStateInvokeAndWaiting() = IO { component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH) }
 }
 
-//companion object with utilities
+/** Factory for JFrameIO instances*/
 object JFrameIO{
   def apply() = IO { new JFrameIO(new JFrame) }
 }

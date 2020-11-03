@@ -14,7 +14,7 @@ class JLabelIO(override val component: JLabel) extends JComponentIO[JLabel](comp
   def textGot: IO[String] = IO {component.getText}
 }
 
-/** A companion object that acts as a factory for JLabelIO*/
+/** Factory for JLabelIO instances*/
 object JLabelIO{
   def apply(): IO[JLabelIO] = IO { new JLabelIO(new JLabel) }
   def apply(text:String): IO[JLabelIO] = IO { new JLabelIO(new JLabel(text)) }
