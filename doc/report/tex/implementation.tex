@@ -40,8 +40,6 @@ Prendendo come esempio l'implementazione della Figura \ref{fig:Blob implementati
 \subsection{View}
 Bisogna parlare della View, in particolare dell'approccio funzionale utilizzato.
 
-\subsection{Monadi}
-
 
 \subsection{Currying e partial application}
 Per incentivare il riuso, applicare il principio DRY, agevolarne l’eventuale futuro utilizzo come parametro higher order e gestire meglio l’alto numero di parametri, la funzione sinusoidal è stata implementata come funzione curried e le sue più comuni configurazioni (utilizzate più volte nel codice) sono state tramutate in partially-applied function (zeroPhasedinusoidal, zeroPhasedZeroYTranslatedSinusoidal etc). È stato utilizzato il currying anche nel codice di visualizzazione dei parametri (indicatorsUpdated di SwingView) per evitare ripetizioni di codice ed accomunare invocazioni multiple sotto la stessa signature, indipendente da quella originale.
