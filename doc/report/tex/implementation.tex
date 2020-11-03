@@ -9,7 +9,7 @@ Sin dalle prime fasi di progettazione il team ha intrapreso la scelta di utilizz
     \item utilizzo di funzioni higher-order che permettono una facile ed immediata realizzazione del parttern Strategy, consentono una maggiore riutilizzabilità del codice. In questo modo è possibile passare alle funzioni strategie esterne, non necessitando così di modificare il codice.
 \end{itemize}
 
-Il Controller e il Model dell'applicazione sono state realizzate con un approccio puramente funzionale, mentre la View adotta un approccio funzionale attraverso la libreria cats.effect.IO ove possibile.
+Rispettando quanto sopra elencato, il Controller e il Model dell'applicazione sono stati realizzati con un approccio puramente funzionale. La View adottare anch'essa il paradigma descritto in questo corso attraverso l'utilizzo della libreria cats.effect.IO.
 
 \subsection{Model}
 
@@ -96,4 +96,19 @@ Per quanto riguarda la View, ne ho seguito lo sviluppo dalla prima versione in \
 
 I test da me sviluppati sono inclusi in \code{ObstacleTests}.
 
-\subsection{Andrea Vaienti}
+\subsubsection{Andrea Vaienti}
+Sono principalmente due le porzioni del progetto di cui mi sono occupato: 
+
+\begin{itemize}
+    \item l'intelligenza artificiale che consente il movimento delle entità all'interno del mondo
+    \item statistiche finali, dal loro calcolo fino alla creazione e renderizzazione dei grafici che le visualizzano.
+\end{itemize}
+
+Per quanto riguarda il movimento, come anticipato precedentemente, la logica era stata inizialmente implementata in Scala (\code{DemonstrationCompletelyScalaMovement}). Successivamente, dopo aver effettuato controlli su una possibile implementazione attraverso il paradigma logico, è stata realizzata in Prolog (\code{DemonstrationCompletelyPrologMovement}). Infine, a causa dei problemi di performance sopraindicati è stata utilizzata una soluzione ibrida (Scala + Prolog), presente nel file \code{MovingStrategies}. Tutte queste tre soluzioni sono state opportunamente testate in \code{MovementTests}. Per la visualizzazione delle statiche finale, prima di tutto è stata effettuata un'esplorazione delle possibili librerie che permettessero la visualizzazione dei grafici all'interno dell'interfaccia grafica, che si è conclusa con la scelta di utilizzare \hyperlink{https://knowm.org/open-source/xchart/}{XChart}. In seguito a ciò è stato realizzato un ChartBuilder, che consente attraverso appositi parametri di creare 3 tipologie di grafici. Così facendo, qualsiasi membro del Team o futuro sviluppatore, potrebbe costruire e successivamente visualizzare un grafico contenente i propri valori. Il calcolo delle statistiche finali è stato implementato nel file \code{FinalStats}, in cui si è fatto ampiamente uso di funzioni higher-order per consentire una maggiore riutilizzabilità del codice. Per precisione, vengono di seguito elencati i package contententi le implementazioni da me svolte:
+
+\begin{itemize}
+    \item \texttt{model.entities.entityStructure.movement}
+    \item \texttt{prolog}
+    \item \texttt{view.swing.chart}
+    \item \texttt{model.world.dataProcessing}
+\end{itemize}
