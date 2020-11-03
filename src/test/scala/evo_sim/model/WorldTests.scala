@@ -5,7 +5,7 @@ import evo_sim.model.entities.entityBehaviour.EntityBehaviour.SimulableEntity
 import evo_sim.model.entities.entityStructure.EntityStructure.{Blob, Obstacle, Plant}
 import evo_sim.model.world.{Constants, Environment, World}
 import evo_sim.utils.TestUtils._
-import org.scalatest.FunSpec
+import org.scalatest.{Assertion, FunSpec}
 
 class WorldTests extends FunSpec {
 
@@ -18,10 +18,10 @@ class WorldTests extends FunSpec {
       initialObstacleNumber = 3,
       daysNumber = 5)
 
-  val initialWorld = World(initialEnvironment)
+  val initialWorld: World = World(initialEnvironment)
 
   //utility method
-  def assertWorldEntitiesOfTypeTAreN[A](entitiesFilter: PartialFunction[SimulableEntity, A], size: Int) = {
+  def assertWorldEntitiesOfTypeTAreN[A](entitiesFilter: PartialFunction[SimulableEntity, A], size: Int): Assertion = {
     assert(
       initialWorld.entities.collect(entitiesFilter).size == size
     )
@@ -65,8 +65,8 @@ class WorldTests extends FunSpec {
 
 
   //2. testing worldUpdated
-  val worldAfterOneIteration = worldUpdated(initialWorld)
-  val worldAfterOneDay = chain(Constants.ITERATIONS_PER_DAY)(initialWorld)(worldUpdated(_))
+  val worldAfterOneIteration: World = worldUpdated(initialWorld)
+  val worldAfterOneDay: World = chain(Constants.ITERATIONS_PER_DAY)(initialWorld)(worldUpdated)
 
   describe("A World") {
 
