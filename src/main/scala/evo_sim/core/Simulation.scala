@@ -46,11 +46,11 @@ object Simulation {
     def resultShowed(worldHistory: WorldHistory): Simulation[Unit] =
       liftIo(View.resultsShowed(worldHistory))
 
-    def getTime(): Simulation[FiniteDuration] =
-      liftIo(TimingOps.getTime)
+    def getTime: Simulation[FiniteDuration] =
+      liftIo(TimingIO.getTime)
 
     def waitUntil(from: FiniteDuration, to: FiniteDuration): Simulation[Unit] =
-      liftIo(TimingOps.waitUntil(from, to))
+      liftIo(TimingIO.waitUntil(from, to))
   }
 }
 
