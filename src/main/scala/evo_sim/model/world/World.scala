@@ -54,7 +54,7 @@ object World {
       degradationEffect = (blob: EntityStructure.Blob) => DegradationEffect.standardDegradation(blob),
       fieldOfViewRadius = Constants.DEF_BLOB_FOV_RADIUS,
       movementStrategy = MovingStrategies.baseMovement,
-      direction = Direction.apply(0, Constants.DEF_NEXT_DIRECTION))
+      direction = Direction(0, Constants.DEF_NEXT_DIRECTION))
 
     val cannibalBlobs: Set[CannibalBlob] = env.initialBlobNumber.toDouble./(2).floor.toInt of CannibalBlob(
       name = "cannibalBlob" + nextValue(),
