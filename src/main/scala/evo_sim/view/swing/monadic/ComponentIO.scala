@@ -26,12 +26,12 @@ class ComponentIO[T<:Component](val component: T){
     IO {component.setPreferredSize(d) }
 
   def setPreferredSizeInvokingAndWaiting(d: Dimension): IO[Unit] =
-    IO {component.setPreferredSize(d)  }
+    invokeAndWaitIO(component.setPreferredSize(d))
   def addComponentAdapterInvokingAndWaiting(): IO[Unit] =
-    IO {
+   invokeAndWaitIO(
       component.addComponentListener(new ComponentAdapter {
         override def componentResized(e: ComponentEvent): Unit =
           component.setPreferredSize(component.getSize)
       })
-    }
+   )
 }
