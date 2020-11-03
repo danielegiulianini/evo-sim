@@ -1,5 +1,6 @@
 \chapter{Guida utente}
 
+\subsection{Build Swing}
 La schermata iniziale dell'applicazione consiste in un'interfaccia che consente all'utente di impostare i seguenti parametri per l'avvio di una sessione di simulazione:
 \begin{itemize}
 \item il numero di blob, distribuiti in equa misura tra Base Blob e Cannibal Blob
@@ -63,3 +64,40 @@ Al termine della simulazione, verrà visualizzato un pannello con tre grafici:
 \caption{Schermata finale dei dati osservati}
 \label{fig:ResultsInterface}
 \end{figure}
+
+\subsection{Build CLI}
+Lanciando l'applicazione verrà chiesto di digitare i valori per i diversi parametri di inizializzazione del world:
+\begin{itemize}
+\item il numero di blob, distribuiti in equa misura tra Base Blob e Cannibal Blob
+\item il numero di piante, distribuite tra Standard Plant, Reproducing Plant e Poisonous Plant
+\item il numero di ostacoli, distribuiti tra Base Obstacle con \code{damageEffect} e \code{slowEffect}
+\item il valore della luminosità minima
+\item il valore della temperatura minima
+\item la durata in giornate della sessione di simulazione
+\end{itemize}
+
+Esempio di prompt:
+
+\begin{verbatim}
+$ Enter #Blob (between 0 and 100): 50
+\end{verbatim}
+
+Inseriti tutti i valori partità la simulazione, e verranno stampati i vari indicatori real time.
+
+\begin{verbatim}
+Days: 3/10
+Population: 6
+Temperature: 15
+Luminosity: 19
+\end{verbatim}
+
+Infine saranno presentitati i risultati finali.
+
+\begin{verbatim}
+Average velocity: 48.82000000000001
+Average dimension: 7.175454545454546
+Average field of view range: 43.152727272727276
+Survived blobs: 5
+Food left: 10
+\end{verbatim}
+
