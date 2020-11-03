@@ -14,7 +14,6 @@ object Constants {
   /** How many simulation loops in a day */
   val ITERATIONS_PER_DAY = 50
   /** Time lapse between one interaction and the next */
-  //val ITERATION_LAPSE: Double = 0.017
   val ITERATION_LAPSE: Double = 0.05
 
   /** Growth rate of the temperature */
@@ -45,6 +44,8 @@ object Constants {
   val MAX_STEP_FOR_ONE_DIRECTION = 50
   /** A blob's life at death */
   val DEF_BLOB_DEAD = 0
+  /** The maximum angle that can be assigned as a direction */
+  val MAX_DIRECTION_ANGLE = 360
 
   /** A food's default height */
   val DEF_FOOD_HEIGHT = 10
