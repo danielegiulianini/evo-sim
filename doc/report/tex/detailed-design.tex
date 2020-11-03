@@ -1,14 +1,14 @@
 \chapter{Design di dettaglio}
 
 Dopo aver descritto l’architettura del sistema, si procede con il design di dettaglio delle sue componenti principali. 
-L’approccio progettuale utilizzato combina aspetti Object-oriented, come l’utilizzo dell’interfaccia come astrazione attraverso la quale caratterizzare i componenti, per scatenare comportamenti diversi su entità soggette ad un comune contratto, con elementi di programmazione funzionale pura, quali la tendenza all’impiego di strutture dati immutabili e la riduzione di side effects, favorendo la descrizione lazy della computazione, la separazione fra componente strutturale e comportamentale delle entità ed altri elencati di seguito.
+L’approccio progettuale utilizzato combina aspetti Object-oriented, come l’utilizzo dell’interfaccia come astrazione attraverso la quale caratterizzare i componenti, per scatenare comportamenti diversi su entità soggette ad un comune contratto, con elementi di programmazione funzionale pura, quali la tendenza all’impiego di strutture dati immutabili e la riduzione di \textit{side effects}, favorendo la descrizione \textit{lazy} della computazione, la separazione fra componente strutturale e comportamentale delle entità ed altri elencati di seguito.
 
 
 \section{Core}
 
 \subsection{SimulationEngine e monadi}
 Il motore della simulazione \code{SimulationEngine} consiste in una descrizione monadica delle fasi della simulazione, che prevede l’aggiornamento dei parametri del mondo, il rilevamento e risoluzione delle collisioni fra le entità che lo popolano, la visualizzazione a video del suo stato aggiornato e l’attesa dell’intervallo di tempo prima della successiva iterazione. In questo modo il codice non contiene i side-effect invece presenti in un’equivalente versione procedurale, e la parte non funzionalmente pura è confinata, per quel che riguarda il core, all’avvio della applicazione. 
-Questo andamento sequenziale e periodico è stato modellato attraverso una composizione di state monad (per quanto riguarda l’aggiornamento della struttura del mondo) e di IO monad (per le operazioni di I/O come il display a video delle entità e delle statistiche storiche alla chiusura dell’applicazione).
+Questo andamento sequenziale e periodico è stato modellato attraverso una composizione di textbf{state monad} (per quanto riguarda l’aggiornamento della struttura del mondo) e di textbf{IO monad} (per le operazioni di I/O come il display a video delle entità e delle statistiche storiche alla chiusura dell’applicazione).
 
 
 La IO monad permette di esprimere una computazione in modo lazy, e in più, la state monad consente di rendere implicito il passaggio di stato aggiornato fra le operazioni sequenziali di manipolazione del mondo, ciascuna delle quali determina una sua nuova versione. Al fine di combinare 2 monadi differenti, che in quanto tali non si possono comporre fra di loro\footnote{Rúnar Bjarnason and Paul Chiusano. Functional Programming in Scala. Exercise 12.11.}, è stato utilizzato il monad transformer \code{StateT}.
