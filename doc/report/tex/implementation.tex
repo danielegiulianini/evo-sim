@@ -77,6 +77,9 @@ Per le operazioni di aggiornamento del World e di controllo e notifica delle col
 \subsection{Pimp my library e creazione delle entità}
 Per ridurre il “boilerplate code” presente nel codice della creazione delle entità della simulazione, si è implementata una semplice keyword (of) sfruttando il pattern “pimp my library” applicato al tipo di dato Int attraverso il meccanismo delle implicit class. Ciò ha permesso di alzare il livello di astrazione per il codice di costruzione del mondo permettendo di ignorare in quella sede i dettagli relativi alla costruzione di Set e della rispettiva logica di popolamento.
 
+\subsection{Implementazione delle monadi}
+Per la implementazione delle monadi descritte al punto xx è stato scelto il framework monadico cats\footnote{https://github.com/typelevel/cats}, piuttosto che realizzarle ex-novo. In questo modo si è potuto usufruire del monad transformer StateT per la composizione di State monad e IO monad e di altre funzionalità già predisposte da cats, quali la sua implementazione trampolined di IO, che permette di ridurre le allocazioni sullo stack ed evitare StackOverFlow anche di fronte a invocazioni ricorsive arbitrariamente profonde\footnote{Rúnar Bjarnason and Paul Chiusano. Functional Programming in Scala. Section 13.3}
+
 
 \section{Paradigma logico}
 Dopo un'accurata e dettagliata analisi della logica di movimento delle entità, il team si era proposto di integrare nel progetto il paradigma logico. Ciò è avvenuto attraverso la libreria TuProlog. In particolare, la logica di movimento ideata e implementata è la seguente:
