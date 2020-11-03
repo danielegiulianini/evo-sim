@@ -70,16 +70,16 @@ I \textit{self types} come accennato nella sezione \ref{section:self} sono stati
 \subsection{Singleton}
 Abbiamo ampiamente utilizzato il pattern Singleton nel progetto, in quanto Scala rende particolarmente semplice l’implementazione dello stesso.
 \subsection{Factory}
-Nel progetto si è fatto uso del pattern Factory per la creazione di oggeti quali ad esempio le \code{BoundingBox} facendo uso del suo companion object.
+Nel progetto si è fatto uso del pattern Factory per la creazione di oggetti quali ad esempio le \code{BoundingBox} facendo uso del suo companion object.
 \subsection{Builder}
 Come altri pattern anche il Builder è stato utilizzato nella sua accezione legata a Scala, in quanto ha un supporto nativo per differenti pattern progettuali. Nello specifico per il pattern Builder è stato sfruttato l’utilizzo di immutable case classes con default nei parametri dei costruttori come ad esempio per i \code{Blob} in \code{Entities}.
 
 \section{Organizzazione del codice}
-Il sistema è stato organizzato in package ognuno dei quali raggruppa i sorgenti che implementano una specifica feature. La Figura \ref{fig:pakage} mostra la suddivisione effettuata per il progetto e per chiarezza visiva quelli meno importanti sono stati omessi.
+Il sistema è stato organizzato in package ognuno dei quali raggruppa i sorgenti che implementano una specifica feature. La Figura \ref{fig:package} mostra la suddivisione effettuata per il progetto e per chiarezza visiva quelli meno importanti sono stati omessi.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth, scale=0.44]{img/Packages.png}
 \caption{Diagramma strutturale del progetto}
-\label{fig:pakage}
+\label{fig:package}
 \end{figure}
