@@ -98,23 +98,3 @@ object QueriableImplicits {
     }
   }
 }
-
-
-/* old code with type lambda
- /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2]], ie: how it can be
-   * considered a [[evo_sim.utils.Queriable]].
-   */
-  implicit object ContainsForHomogeneousTuple2 extends Queriable[({type HomogeneousTuple2[A] = (A, A)})#HomogeneousTuple2]{
-    override def contained[T](t: (T, T), elem: T): Boolean =
-      t._1 == elem || t._2 == elem
-  }
-
-  /** Implicit implementation of [[evo_sim.utils.Queriable]] for [[evo_sim.utils.TupleUtils.Tuple2Types.HomogeneousTuple2Set]], ie: how it can be
-   * considered a [[evo_sim.utils.Queriable]].
-   */
-  implicit object ContainsForHomogeneousTuple2Set extends Queriable[({type HomogeneousTuple2Set[A] = Set[(A, A)]})#HomogeneousTuple2Set]{
-    override def contained[T](t: Set[(T, T)], elem: T): Boolean = {
-      t.exists(QueriableImplicits.ContainsForHomogeneousTuple2.contained(_, elem))
-    }
-  }
- */
