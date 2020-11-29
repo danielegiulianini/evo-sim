@@ -8,9 +8,6 @@ import javax.swing.SwingUtilities
  * project.
  */
 package object monadic {
-  def invokeAndWaitIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeAndWait(() => runnable)}
-  def invokeLaterIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeLater(() => runnable)}
-
   def invokingAndWaiting(computation: IO[_]): IO[Unit] = IO {
     SwingUtilities.invokeAndWait(() => computation.unsafeRunSync())
   }
@@ -18,4 +15,6 @@ package object monadic {
     SwingUtilities.invokeLater(() => computation.unsafeRunSync())
   }
 
+  def invokeAndWaitIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeAndWait(() => runnable)}
+  def invokeLaterIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeLater(() => runnable)}
 }

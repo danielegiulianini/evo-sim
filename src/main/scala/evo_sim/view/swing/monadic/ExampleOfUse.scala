@@ -28,7 +28,7 @@ object SimpleExampleWithSwingMonadic extends App {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- frame.visibleSet(true)
   } yield ()
 
   //thread-safer version with invoke-and-wait
@@ -37,8 +37,6 @@ object SimpleExampleWithSwingMonadic extends App {
     panel <- panelBuilt
     _ <- invokingAndWaiting(frame.added(panel))
     _ <- invokingAndWaiting(frame.visibleSet(true))
-    /*_ <- frame.addedInvokingAndWaiting(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)*/
   } yield ()
 
   program unsafeRunSync
