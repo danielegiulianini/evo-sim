@@ -17,7 +17,16 @@ package object monadic {
     SwingUtilities.invokeLater(() => computation.unsafeRunSync())
   }
 
-  implicit def unitToActionListener(f: =>Unit): ActionListener = _ => f
+  /** Type alias for a monadic listener, i.e. a listener whose behaviour upon ActionEvent is described by an IO
+   * monad (possibly result of a composition of IO monads).
+   * See [[evo_sim.view.swing.monadic.ExampleWithMonadicVsProceduralListeners]] for examples.*/
   type MonadicActionListener = ActionEvent => IO[Unit]
+
+  /** Implicit utility for converting a by-name (or unevaluated) parameter expression provided by => syntax to
+   * [[ActionListener]] for enabling a more concise syntax at call-side when describing listeners that ignores
+   * the [[ActionEvent]] triggering.*/
+  implicit def unitToActionListener(f: =>Unit): ActionListener = _ => f
+
+
   implicit def unitToMonadicActionListener(f: => IO[Unit]): MonadicActionListener = _ => f
 }
