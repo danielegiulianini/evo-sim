@@ -12,9 +12,23 @@ import javax.swing.SwingUtilities
  * returns the corresponding [[IO]] monad descriptions, actually decoupling description from execution.
  */
 package object monadic {
+  /**
+   * Returns the [[IO]] containing the code for synchronously executing the computation description inside
+   * [[computation]] on the AWT event dispatching thread, in a thread-safe manner.
+   * @see [[evo_sim.view.swing.monadic.ExampleWithLayoutWithSwingMonadic]] for examples of how to use it
+   * *         inside a monadic chain.
+   * @param computation
+   * @return
+   */
   def invokingAndWaiting(computation: IO[_]): IO[Unit] = IO {
     SwingUtilities.invokeAndWait(() => computation.unsafeRunSync())
   }
+
+  /**
+   *
+   * @param computation
+   * @return
+   */
   def invokingLater(computation: IO[_]): IO[Unit] = IO {
     SwingUtilities.invokeLater(() => computation.unsafeRunSync())
   }
