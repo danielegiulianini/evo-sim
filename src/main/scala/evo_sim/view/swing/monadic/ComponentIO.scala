@@ -11,7 +11,7 @@ import cats.effect.IO
  * Every Swing's Component could be wrapped by this class, but note that this package provided some ad-hoc factory
  * utilities for the most popular Swing's components (see [[JPanelIO]], [[JFrameIO]], [[JButtonIO]]).
  * @param component the component that this class wraps.
- * @tparam T the type of the component to be wrapped. and whose methods are to be enhanced with IO description.
+ * @tparam T the type of the component to be wrapped whose methods are to be enhanced with [[IO]] description.
  */
 class ComponentIO[T<:Component](val component: T){
   def componentListenerAdded(l: ComponentListener): IO[Unit] = IO { component.addComponentListener(l) }

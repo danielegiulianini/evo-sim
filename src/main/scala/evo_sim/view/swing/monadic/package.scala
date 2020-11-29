@@ -8,6 +8,8 @@ import javax.swing.SwingUtilities
 /** A monadic wrapper for Swing and Awt main components that provides an access point to the Swing APIs with
  * a monadic taste. It is independent from the simulator domain and can be potentially re-used outside this
  * project.
+ * Instead of directly executing swing's components' methods and utilities, the classes of this package
+ * returns the corresponding [[IO]] monad descriptions, actually decoupling description from execution.
  */
 package object monadic {
   def invokingAndWaiting(computation: IO[_]): IO[Unit] = IO {
