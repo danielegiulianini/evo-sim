@@ -24,9 +24,6 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
     IO {component.addActionListener(l(_).unsafeRunSync())}
   def monadicActionListenerRemoved(l:MonadicActionListener): IO[Unit] =
     IO {component.removeActionListener(l(_).unsafeRunSync())}
-
-  /*def textSetInvokingAndWaiting(text: String): IO[Unit] = invokeAndWaitIO(component.setText(text))
-  def enabledSetInvokingAndWaiting(b: Boolean): IO[Unit] = invokeAndWaitIO(component.setEnabled(b))*/
 }
 
 /** Factory for JButtonIO instances*/

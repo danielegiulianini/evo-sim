@@ -14,7 +14,6 @@ import cats.effect.IO
  * @tparam T the type of the component to be wrapped. and whose methods are to be enhanced with IO description.
  */
 class ComponentIO[T<:Component](val component: T){
-
   def componentListenerAdded(l: ComponentListener): IO[Unit] =
     IO { component.addComponentListener(l) }
   def mouseListenerAdded(l:MouseListener): IO[Unit] =
@@ -29,15 +28,4 @@ class ComponentIO[T<:Component](val component: T){
         override def componentResized(e: ComponentEvent): Unit =
           component.setPreferredSize(component.getSize)
       })}
-
-
-  /*def setPreferredSizeInvokingAndWaiting(d: Dimension): IO[Unit] =
-    invokeAndWaitIO(component.setPreferredSize(d))
-  def addComponentAdapterInvokingAndWaiting(): IO[Unit] =
-   invokeAndWaitIO(
-      component.addComponentListener(new ComponentAdapter {
-        override def componentResized(e: ComponentEvent): Unit =
-          component.setPreferredSize(component.getSize)
-      })
-   )*/
 }
