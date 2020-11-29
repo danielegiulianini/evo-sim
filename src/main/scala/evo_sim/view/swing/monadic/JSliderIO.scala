@@ -31,7 +31,7 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
 }
 
 
-/** A factory for JSliderIO instances*/
+/** A factory for [[IO]]s containing a JSliderIO instance.*/
 object JSliderIO{
   def apply(): IO[JSliderIO] = IO { new JSliderIO(new JSlider) }
 }

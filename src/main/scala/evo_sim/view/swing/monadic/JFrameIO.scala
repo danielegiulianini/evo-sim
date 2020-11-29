@@ -23,7 +23,7 @@ class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def setMaximizedExtendedState(): IO[Unit] = IO{component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH)}
 }
 
-/** Factory for JFrameIO instances*/
+/** A factory for [[IO]]s containing a JFrameIO instance.*/
 object JFrameIO{
   def apply(): IO[JFrameIO] = IO { new JFrameIO(new JFrame) }
 }

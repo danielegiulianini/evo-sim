@@ -26,7 +26,7 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
     IO {component.removeActionListener(l(_).unsafeRunSync())}
 }
 
-/** Factory for JButtonIO instances*/
+/** A factory for [[IO]]s containing a JButtonIO instance.*/
 object JButtonIO {
   def apply(text:String): IO[JButtonIO] = IO { new JButtonIO(new JButton(text)) }
 }

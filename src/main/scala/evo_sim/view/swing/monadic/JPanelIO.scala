@@ -15,7 +15,7 @@ class JPanelIO (override val component: JPanel) extends JComponentIO(component) 
 }
 
 
-/** Factory for JPanelIO instances*/
+/** A factory for [[IO]]s containing a JPanelIO instance.*/
 object JPanelIO{
   def apply(): IO[JPanelIO] = IO { new JPanelIO(new JPanel) }
 }
