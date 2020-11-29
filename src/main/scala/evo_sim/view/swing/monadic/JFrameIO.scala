@@ -12,10 +12,16 @@ import javax.swing.JFrame
  */
 class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def contentPane(): IO[ContainerIO[Container]] = IO { new ContainerIO (component.getContentPane) }
+
+  def resizableSet(resizable: Boolean): IO[Unit] = IO{component.setResizable(resizable)}
+  def visibleSet(b: Boolean): IO[Unit] = IO{component.setVisible(b)}
+  def packed(): IO[Unit] = IO{component.pack()}
   def sizeSet(width: Int, height: Int): IO[Unit] = IO { component.setSize(width, height)}
   def locationRelativeToSet(c:Component): IO[Unit] = IO {component.setLocationRelativeTo(c)}
   def defaultCloseOperationSet(operation:Int): IO[Unit] = IO {component.setDefaultCloseOperation(operation)}
   def titleSet(title: String): IO[Unit] = IO{component.setTitle(title)}
+  def setMaximizedExtendedState(): IO[Unit] = IO{component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH)}
+
 
   //invoke and wait versions (for finer granularity for task assignment to EDT thread)
   def resizableInvokingAndWaiting(resizable: Boolean): IO[Unit] = invokeAndWaitIO(component.setResizable(resizable))
