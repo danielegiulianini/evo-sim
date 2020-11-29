@@ -21,7 +21,6 @@ class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def resizableInvokingAndWaiting(resizable: Boolean): IO[Unit] = invokeAndWaitIO(component.setResizable(resizable))
   def visibleInvokingAndWaiting(b: Boolean): IO[Unit] = invokeAndWaitIO(component.setVisible(b))
   def packedInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(component.pack())
-  def contentPaneInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(new ContainerIO (component.getContentPane))
   def sizeSetInvokingAndWaiting(width: Int, height: Int): IO[Unit] = invokeAndWaitIO(component.setSize(width, height))
   def locationRelativeToSetInvokingAndWaiting(c:Component): IO[Unit] = invokeAndWaitIO(component.setLocationRelativeTo(c))
   def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =invokeAndWaitIO(component.setDefaultCloseOperation(operation))
