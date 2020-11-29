@@ -10,43 +10,41 @@ import javax.swing.{JButton, JFrame, JPanel, WindowConstants}
  * This objects provides a simple example of use for the classes contained in this package that helps to build
  * GUI in a purely functional fashion.
  */
-object ExampleWithLayoutWithSwingMonadic extends App {
+object SimpleExampleWithSwingMonadic extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
     _ <- frame.titleSet("Basic GUI")
     _ <- frame.sizeSet(320, 200)
-    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
   val panelBuilt = for {
     panel <- JPanelIO()
-    _ <- panel.layoutSet(new BorderLayout())
-    nb <- JButtonIO("North")
-    _ <- panel.added(nb, BorderLayout.NORTH)
-    sb <- JButtonIO("South (close program)")
-    _ <- sb.actionListenerAddedFromUnit(System.exit(0))
-    _ <- panel.added(sb, BorderLayout.SOUTH)
+    cb <- JButtonIO("Close window.")
+    _ <- cb.actionListenerAddedFromUnit(System.exit(0))
+    _ <- panel.added(cb)
   } yield panel
 
   val program = for {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
-    _ <- frame.visibleSet(true)
+    _ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
 
   //thread-safer version with invoke-and-wait
   val threadSafeProgram = for {
     frame <- frameBuilt
     panel <- panelBuilt
-    _ <- frame.addedInvokingAndWaiting(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- invokingAndWaiting(frame.added(panel))
+    _ <- invokingAndWaiting(frame.visibleSet(true))
+    /*_ <- frame.addedInvokingAndWaiting(panel)
+    _ <- frame.visibleInvokingAndWaiting(true)*/
   } yield ()
 
   program unsafeRunSync
 }
 
-object ExampleWithLayoutWithTraditionalSwing extends App {
+object SimpleExampleWithTraditionalSwing extends App {
   def buildFrame = {
     val frame = new JFrame
     frame.setTitle("Basic GUI")
@@ -56,17 +54,14 @@ object ExampleWithLayoutWithTraditionalSwing extends App {
 
   def buildPanel = {
     val panel = new JPanel
-    panel.setLayout(new BorderLayout)
+    val b = new JButton("Close program)")
+    b.addActionListener(_ => System.exit(0))
     panel
   }
 
   val panel = buildPanel
   val frame = buildFrame
   frame.getContentPane.add(panel)
-  panel.add(new JButton("North"), BorderLayout.NORTH)
-  val sb = new JButton("South (Close program)")
-  sb.addActionListener(_ => System.exit(0))
-  panel.add(sb, BorderLayout.SOUTH)
   frame.setVisible(true)
 }
 
@@ -99,7 +94,7 @@ object ExampleWithMonadicVsProceduralListeners extends App {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- frame.visibleSet(true)
   } yield ()
 
   //example of execution with unsafeRunAsync (async, callback-based API)
@@ -109,40 +104,35 @@ object ExampleWithMonadicVsProceduralListeners extends App {
   }
 }
 
-
-object SimpleExampleWithSwingMonadic extends App {
+object ExampleWithLayoutWithSwingMonadic extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
     _ <- frame.titleSet("Basic GUI")
     _ <- frame.sizeSet(320, 200)
+    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
   val panelBuilt = for {
     panel <- JPanelIO()
-    cb <- JButtonIO("Close window.")
-    _ <- cb.actionListenerAddedFromUnit(System.exit(0))
-    _ <- panel.added(cb)
+    _ <- panel.layoutSet(new BorderLayout())
+    nb <- JButtonIO("North")
+    _ <- panel.added(nb, BorderLayout.NORTH)
+    sb <- JButtonIO("Center (close program)")
+    _ <- sb.actionListenerAddedFromUnit(System.exit(0))
+    _ <- panel.added(sb, BorderLayout.CENTER)
   } yield panel
 
   val program = for {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
-  } yield ()
-
-  //thread-safer version with invoke-and-wait
-  val threadSafeProgram = for {
-    frame <- frameBuilt
-    panel <- panelBuilt
-    _ <- frame.addedInvokingAndWaiting(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- frame.visibleSet(true)
   } yield ()
 
   program unsafeRunSync
 }
 
-object SimpleExampleWithTraditionalSwing extends App {
+object ExampleWithLayoutWithTraditionalSwing extends App {
   def buildFrame = {
     val frame = new JFrame
     frame.setTitle("Basic GUI")
@@ -152,16 +142,21 @@ object SimpleExampleWithTraditionalSwing extends App {
 
   def buildPanel = {
     val panel = new JPanel
-    val b = new JButton("Close program)")
-    b.addActionListener(_ => System.exit(0))
+    panel.setLayout(new BorderLayout)
     panel
   }
 
   val panel = buildPanel
   val frame = buildFrame
   frame.getContentPane.add(panel)
+  panel.add(new JButton("North"), BorderLayout.NORTH)
+  val sb = new JButton("Center (Close program)")
+  sb.addActionListener(_ => System.exit(0))
+  panel.add(sb, BorderLayout.CENTER)
   frame.setVisible(true)
 }
+
+
 /*object Example1 extends App {
   val guiBuilt = for {
     jf <- JFrameIO()
