@@ -13,6 +13,7 @@ import cats.effect.IO
  * @tparam T the type of the component to be wrapped whose methods are to be enhanced with [[IO]] description.
  */
 class ComponentIO[T<:Component](val component: T){
+
   //TODO procedural vs monadic for listeners
   /** Returns an [[IO]] containing the description of a [[java.awt.Component#addMouseListener]]
    * method invocation.*/
