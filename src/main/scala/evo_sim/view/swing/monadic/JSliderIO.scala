@@ -10,8 +10,6 @@ import javax.swing.JSlider
  * @param component the jSlider that this class wraps.
  */
 class JSliderIO(override val component: JSlider) extends JComponentIO(component){
-  def changeListenerAdded(l: ChangeListener): IO[Unit] = IO {component.addChangeListener(l)}
-  def changeListenerRemoved(l: ChangeListener): IO[Unit] = IO {component.removeChangeListener(l)}
   def minimumSet(min: Int): IO[Unit] = IO { component.setMinimum(min) }
   def maximumSet(max: Int): IO[Unit] = IO { component.setMaximum(max) }
   def valueSet(value: Int): IO[Unit] = IO { component.setValue(value) }
@@ -21,11 +19,13 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
   def paintTicksSet(b: Boolean): IO[Unit] = IO { component.setPaintTicks(b) }
   def paintLabelsSet(b: Boolean): IO[Unit] = IO { component.setPaintLabels(b) }
 
+  //procedural event listener description:
+  def changeListenerAdded(l: ChangeListener): IO[Unit] = IO {component.addChangeListener(l)}
+  def changeListenerRemoved(l: ChangeListener): IO[Unit] = IO {component.removeChangeListener(l)}
 
-  //enabling event listener description by monad
+  //monadic event listener description:
   def changeListenerAdded(l: ChangeEvent => IO[Unit]): IO[Unit] =
-    IO { component.addChangeListener(e => l(e).unsafeRunSync()) }
-  //event listener that doesn't leverage action event parameter
+    IO { component.addChangeListener(l(_).unsafeRunSync())}
   def changeListenerAdded(l: => IO[Unit]): IO[Unit] =
     IO { component.addChangeListener(_ => l.unsafeRunSync()) }
 }
