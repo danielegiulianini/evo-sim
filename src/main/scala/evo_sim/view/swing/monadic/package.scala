@@ -27,6 +27,8 @@ package object monadic {
    * the [[ActionEvent]] triggering.*/
   implicit def unitToActionListener(f: =>Unit): ActionListener = _ => f
 
-
+  /** Implicit utility for converting a by-name (or unevaluated) parameter expression provided by => syntax to
+   * [[MonadicActionListener]] for enabling a more concise syntax at call-side when describing listeners that ignores
+   * the [[ActionEvent]] triggering.*/
   implicit def unitToMonadicActionListener(f: => IO[Unit]): MonadicActionListener = _ => f
 }
