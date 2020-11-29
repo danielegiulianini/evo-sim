@@ -27,5 +27,4 @@ class ContainerIO[T<:Container](override val component: T) extends ComponentIO(c
   def removedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = invokeAndWaitIO(component.remove(componentToBeAdded.component))
   def allRemovedInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(component.removeAll())
   def layoutSetInvokingAndWaiting(mgr : LayoutManager): IO[Unit] =invokeAndWaitIO(component.setLayout(mgr))*/
-
 }
