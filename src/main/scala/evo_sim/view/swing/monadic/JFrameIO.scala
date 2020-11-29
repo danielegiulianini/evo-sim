@@ -21,17 +21,6 @@ class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def defaultCloseOperationSet(operation:Int): IO[Unit] = IO {component.setDefaultCloseOperation(operation)}
   def titleSet(title: String): IO[Unit] = IO{component.setTitle(title)}
   def setMaximizedExtendedState(): IO[Unit] = IO{component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH)}
-
-
-  /*//invoke and wait versions (for finer granularity for task assignment to EDT thread)
-  def resizableInvokingAndWaiting(resizable: Boolean): IO[Unit] = invokeAndWaitIO(component.setResizable(resizable))
-  def visibleInvokingAndWaiting(b: Boolean): IO[Unit] = invokeAndWaitIO(component.setVisible(b))
-  def packedInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(component.pack())
-  def sizeSetInvokingAndWaiting(width: Int, height: Int): IO[Unit] = invokeAndWaitIO(component.setSize(width, height))
-  def locationRelativeToSetInvokingAndWaiting(c:Component): IO[Unit] = invokeAndWaitIO(component.setLocationRelativeTo(c))
-  def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =invokeAndWaitIO(component.setDefaultCloseOperation(operation))
-  def titleSetInvokingAndWaiting(title: String): IO[Unit] =invokeAndWaitIO(component.setTitle(title))
-  def setMaximizedExtendedStateInvokeAndWaiting(): IO[Unit] = invokeAndWaitIO(component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH))*/
 }
 
 /** Factory for JFrameIO instances*/
