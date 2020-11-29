@@ -30,7 +30,19 @@ package object monadic {
     SwingUtilities.invokeAndWait(() => computation.unsafeRunSync())
   }
 
- 
+  /**
+   * Returns the [[IO]] containing the code for asynchronously executing the computation described inside the
+   * given IO parameter on the AWT event dispatching thread, in a thread-safe manner.
+   * This method should be used whenever a thread other than EDT needs to asynchronously update the GUI.
+   * Unlike [[invokingAndWaiting()]], upon calling "unsafeRunSync" on the IO returned, the control flow
+   * will immediately return from the [[SwingUtilities#invokeLater]] call wrapped in the IO returned and
+   * the GUI-related code will be executed after all pending AWT events have been processed.
+   * The actual execution of the [[IO]] return should not happen on the EDT thread without a proper
+   * thread or context-shifting mechanism.
+   *
+   * @param computation the [[IO]] containing the GUI-related logic to be executed.
+   * @return an IO wrapping the [[SwingUtilities#invokeLater]] thread-safe call.
+   */
   def invokingLater(computation: IO[_]): IO[Unit] = IO {
     SwingUtilities.invokeLater(() => computation.unsafeRunSync())
   }
