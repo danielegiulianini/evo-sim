@@ -15,8 +15,17 @@ import javax.swing.border.Border
  * @tparam T the type of the component to be wrapped. and whose methods are to be enhanced with IO description.
  */
 class JComponentIO[T<:JComponent](override val component: T) extends ContainerIO(component) {
+
+  /** Returns an [[IO]] containing the description of a [[JComponent#setMinimumSize]]
+   * method invocation.*/
   def minimumSizeSet(dimension: Dimension): IO[Unit] = IO {component.setMinimumSize(dimension)}
+
+  /** Returns an [[IO]] containing the description of a [[JComponent#setMaximumSize]]
+   * method invocation.*/
   def maximumSizeSet(dimension: Dimension): IO[Unit] = IO{ component.setMaximumSize(dimension)}
+
+  /** Returns an [[IO]] containing the description of a [[JComponent#setBorder]]
+   * method invocation.*/
   def borderSet(border: Border): IO[Unit] = IO {component.setBorder(border)}
 }
 
