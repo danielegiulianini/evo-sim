@@ -10,4 +10,12 @@ import javax.swing.SwingUtilities
 package object monadic {
   def invokeAndWaitIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeAndWait(() => runnable)}
   def invokeLaterIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeLater(() => runnable)}
+
+  def invokingAndWaiting(computation: IO[Unit]): IO[Unit] = IO {
+    SwingUtilities.invokeAndWait(() => computation.unsafeRunSync())
+  }
+  def invokingLater(computation: IO[Unit]): IO[Unit] = IO {
+    SwingUtilities.invokeLater(() => computation.unsafeRunSync())
+  }
+
 }
