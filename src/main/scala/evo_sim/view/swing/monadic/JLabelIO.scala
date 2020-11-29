@@ -13,7 +13,7 @@ class JLabelIO(override val component: JLabel) extends JComponentIO[JLabel](comp
   def textSet(text: String): IO[Unit] = IO {component.setText(text)}
   def textGot: IO[String] = IO {component.getText}
 
-  def textSetInvokingAndWaiting(text: String): IO[Unit] = invokeAndWaitIO(component.setText(text))
+  /*def textSetInvokingAndWaiting(text: String): IO[Unit] = invokeAndWaitIO(component.setText(text))*/
 }
 
 /** Factory for JLabelIO instances*/

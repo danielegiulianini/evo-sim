@@ -24,8 +24,14 @@ class ComponentIO[T<:Component](val component: T){
   def fontGot(): IO[Font] = IO {component.getFont}
   def setPreferredSize(d: Dimension): IO[Unit] =
     IO {component.setPreferredSize(d) }
+  def componentAdapterAdded(): IO[Unit] =
+      IO {component.addComponentListener(new ComponentAdapter {
+        override def componentResized(e: ComponentEvent): Unit =
+          component.setPreferredSize(component.getSize)
+      })}
 
-  def setPreferredSizeInvokingAndWaiting(d: Dimension): IO[Unit] =
+
+  /*def setPreferredSizeInvokingAndWaiting(d: Dimension): IO[Unit] =
     invokeAndWaitIO(component.setPreferredSize(d))
   def addComponentAdapterInvokingAndWaiting(): IO[Unit] =
    invokeAndWaitIO(
@@ -33,5 +39,5 @@ class ComponentIO[T<:Component](val component: T){
         override def componentResized(e: ComponentEvent): Unit =
           component.setPreferredSize(component.getSize)
       })
-   )
+   )*/
 }

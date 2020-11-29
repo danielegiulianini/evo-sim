@@ -20,12 +20,12 @@ class ContainerIO[T<:Container](override val component: T) extends ComponentIO(c
   def allRemoved(): IO[Unit] = IO {    component.removeAll()  }
   def layoutSet(mgr : LayoutManager): IO[Unit] = IO {    component.setLayout(mgr)  }
 
-  //versions with invokeAndWait for finer granularity in thread assignment
+  /*//versions with invokeAndWait for finer granularity in thread assignment
   def addedInvokingAndWaiting(componentToBeAdded: ComponentIO[_<:Component]): IO[Unit] = invokeAndWaitIO(component.add(componentToBeAdded.component))
   def addedInvokingAndWaiting(name: String, componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = invokeAndWaitIO(component.add(name, componentToBeAdded.component))
   def addedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component], constraints : Object): IO[Unit] = invokeAndWaitIO(component.add(componentToBeAdded.component, constraints))
   def removedInvokingAndWaiting(componentToBeAdded: ComponentIO[ _<:Component]): IO[Unit] = invokeAndWaitIO(component.remove(componentToBeAdded.component))
   def allRemovedInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(component.removeAll())
-  def layoutSetInvokingAndWaiting(mgr : LayoutManager): IO[Unit] =invokeAndWaitIO(component.setLayout(mgr))
+  def layoutSetInvokingAndWaiting(mgr : LayoutManager): IO[Unit] =invokeAndWaitIO(component.setLayout(mgr))*/
 
 }

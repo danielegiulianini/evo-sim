@@ -27,8 +27,10 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
 
   def textSet(text: String): IO[Unit] = IO {component.setText(text)}
   def enabledSet(b: Boolean): IO[Unit] = IO { component.setEnabled(b) }
-  def textSetInvokingAndWaiting(text: String): IO[Unit] = invokeAndWaitIO(component.setText(text))
-  def enabledSetInvokingAndWaiting(b: Boolean): IO[Unit] = invokeAndWaitIO(component.setEnabled(b))
+
+
+  /*def textSetInvokingAndWaiting(text: String): IO[Unit] = invokeAndWaitIO(component.setText(text))
+  def enabledSetInvokingAndWaiting(b: Boolean): IO[Unit] = invokeAndWaitIO(component.setEnabled(b))*/
 }
 
 /** Factory for JButtonIO instances*/

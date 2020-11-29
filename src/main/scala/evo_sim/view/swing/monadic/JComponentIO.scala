@@ -22,8 +22,8 @@ class JComponentIO[T<:JComponent](override val component: T) extends ContainerIO
   def borderSet(border: Border): IO[Unit] =
     IO {component.setBorder(border)}
 
-  def minimumSizeSetInvokingAndWaiting(dimension: Dimension) : IO[Unit] = invokeAndWaitIO(component.setMaximumSize(dimension))
+  /*def minimumSizeSetInvokingAndWaiting(dimension: Dimension) : IO[Unit] = invokeAndWaitIO(component.setMaximumSize(dimension))
   def maximumSizeSetInvokingAndWaiting(dimension: Dimension): IO[Unit] =invokeAndWaitIO(component.setMinimumSize(dimension))
-  def borderSetInvokingAndWaiting(border: Border): IO[Unit] = invokeAndWaitIO(component.setBorder(border))
+  def borderSetInvokingAndWaiting(border: Border): IO[Unit] = invokeAndWaitIO(component.setBorder(border))*/
 }
 

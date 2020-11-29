@@ -13,7 +13,7 @@ class JPanelIO (override val component: JPanel) extends JComponentIO(component) 
   def uiSet(ui:PanelUI): IO[Unit] = IO {	component.setUI(ui)}
   def uiGot(): IO[PanelUI] = IO {component.getUI}
 
-  def uiSetInvokingAndWaiting(ui:PanelUI): IO[Unit] = invokeAndWaitIO(component.setUI(ui))
+  /*def uiSetInvokingAndWaiting(ui:PanelUI): IO[Unit] = invokeAndWaitIO(component.setUI(ui))*/
 }
 
 
