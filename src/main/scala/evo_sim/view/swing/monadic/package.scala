@@ -1,5 +1,7 @@
 package evo_sim.view.swing
 
+import java.awt.event.{ActionEvent, ActionListener}
+
 import cats.effect.IO
 import javax.swing.SwingUtilities
 
@@ -17,4 +19,8 @@ package object monadic {
 
   /*def invokeAndWaitIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeAndWait(() => runnable)}
   def invokeLaterIO(runnable : => Unit): IO[Unit] = IO {SwingUtilities.invokeLater(() => runnable)}*/
+
+  implicit def unitToActionListener(f: =>Unit): ActionListener = _ => f
+  type MonadicActionListener = ActionEvent => IO[Unit]
+  implicit def unitToMonadicActionListener(f: =>IO[Unit]): MonadicActionListener = _ => f
 }

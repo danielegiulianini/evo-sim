@@ -20,7 +20,8 @@ object SimpleExampleWithSwingMonadic extends App {
   val panelBuilt = for {
     panel <- JPanelIO()
     cb <- JButtonIO("Close window.")
-    _ <- cb.actionListenerAddedFromUnit(System.exit(0))
+    //_ <- cb.actionListenerAddedFromUnit(System.exit(0))
+    _ <- cb.actionListenerAdded(System.exit(0))
     _ <- panel.added(cb)
   } yield panel
 
@@ -79,12 +80,13 @@ object ExampleWithMonadicVsProceduralListeners extends App {
     label <- JLabelIO("value: ?")
     _ <- panel.added(label, BorderLayout.NORTH)
     button <- JButtonIO("Click to display positive value.")
-    _ <- button.actionListenerAdded(for {
+    _ <- button.monadicActionListenerAdded(for {
       currentValue <- slider.valueGot
       _ <- if (currentValue > 0) label.textSet("value: " + currentValue)
       else IO.unit
     } yield ())
-    _ <- button.actionListenerAddedFromUnit(System.out.println("button pressed"))
+    //_ <- button.actionListenerAddedFromUnit(System.out.println("button pressed"))
+    _ <- button.actionListenerAdded(System.out.println("button pressed"))
     _ <- panel.added(button, BorderLayout.SOUTH)
   } yield panel
 
@@ -116,7 +118,8 @@ object ExampleWithLayoutWithSwingMonadic extends App {
     nb <- JButtonIO("North")
     _ <- panel.added(nb, BorderLayout.NORTH)
     sb <- JButtonIO("Center (close program)")
-    _ <- sb.actionListenerAddedFromUnit(System.exit(0))
+    //_ <- sb.actionListenerAddedFromUnit(System.exit(0))
+    _ <- sb.actionListenerAdded(System.exit(0))
     _ <- panel.added(sb, BorderLayout.CENTER)
   } yield panel
 

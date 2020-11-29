@@ -88,7 +88,7 @@ object SwingView extends View {
         daysSlider <- inputRowCreated(inputPanel, "#Days", Constants.MIN_DAYS, Constants.MAX_DAYS,
           Constants.DEF_DAYS)
         start <- JButtonIO("Start")
-        _ <- start.actionListenerAdded(for {
+        _ <- start.monadicActionListenerAdded(for {
           t <- temperatureSlider.valueGot
           l <- luminositySlider.valueGot
           b <- blobSlider.valueGot
@@ -150,7 +150,7 @@ object SwingView extends View {
       // Adds a listener to a button that changes a slider value if the condition is true
       private def clickUpdatesSliderListenerAdded(button: JButtonIO, slider: JSliderIO, checkCondition: Int => Boolean,
                                                   updateFunction: Int => Int): IO[Unit] = for {
-        _ <- button.actionListenerAdded(for {
+        _ <- button.monadicActionListenerAdded(for {
           currentValue <- slider.valueGot
           _ <- if (checkCondition(currentValue)) slider.valueSet(updateFunction(currentValue)) else IO.unit
         } yield())
