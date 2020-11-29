@@ -1,6 +1,6 @@
 package evo_sim.view.swing.monadic
 
-import java.awt.event.{ActionEvent, ActionListener}
+import java.awt.event.{ActionListener}
 
 import cats.effect.IO
 import javax.swing.JButton
