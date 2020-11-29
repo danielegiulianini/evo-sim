@@ -14,18 +14,14 @@ import cats.effect.IO
  * @tparam T the type of the component to be wrapped. and whose methods are to be enhanced with IO description.
  */
 class ComponentIO[T<:Component](val component: T){
-  def componentListenerAdded(l: ComponentListener): IO[Unit] =
-    IO { component.addComponentListener(l) }
-  def mouseListenerAdded(l:MouseListener): IO[Unit] =
-    IO {component.addMouseListener(l) }
-  def mouseListenerRemoved(l:MouseListener): Unit =
-    IO { component.removeMouseListener(l) }
+  def componentListenerAdded(l: ComponentListener): IO[Unit] = IO { component.addComponentListener(l) }
+  def mouseListenerAdded(l:MouseListener): IO[Unit] = IO {component.addMouseListener(l) }
+  def mouseListenerRemoved(l:MouseListener): Unit = IO { component.removeMouseListener(l) }
   def fontGot(): IO[Font] = IO {component.getFont}
-  def setPreferredSize(d: Dimension): IO[Unit] =
-    IO {component.setPreferredSize(d) }
-  def componentAdapterAdded(): IO[Unit] =
-      IO {component.addComponentListener(new ComponentAdapter {
-        override def componentResized(e: ComponentEvent): Unit =
-          component.setPreferredSize(component.getSize)
-      })}
+  def setPreferredSize(d: Dimension): IO[Unit] = IO {component.setPreferredSize(d) }
+  def componentAdapterAdded(): IO[Unit] = IO {
+    component.addComponentListener(new ComponentAdapter {
+      override def componentResized(e: ComponentEvent): Unit =
+        component.setPreferredSize(component.getSize)
+    })}
 }
