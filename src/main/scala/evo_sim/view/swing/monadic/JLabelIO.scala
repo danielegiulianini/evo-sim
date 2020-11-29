@@ -10,7 +10,13 @@ import javax.swing.JLabel
  * @param component the jLabel that this class wraps.
  */
 class JLabelIO(override val component: JLabel) extends JComponentIO[JLabel](component) {
+
+  /** Returns an [[IO]] containing the description of a [[JLabel#setText]]
+   * method invocation on the [[JLabel]] wrapped in this instance. */
   def textSet(text: String): IO[Unit] = IO {component.setText(text)}
+
+  /** Returns an [[IO]] containing the description of a [[JLabel#getText]]
+   * method invocation on the [[JLabel]] wrapped in this instance. */
   def textGot: IO[String] = IO {component.getText}
 }
 

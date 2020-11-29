@@ -10,6 +10,7 @@ import javax.swing.JButton
  * @param component the jButton that this class wraps.
  */
 class JButtonIO(override val component: JButton) extends ComponentIO(component){
+
   /** Returns an [[IO]] containing the description of a [[JButton#getText]]
    * method invocation.*/
   def textGot(): IO[String] = IO {component.getText}

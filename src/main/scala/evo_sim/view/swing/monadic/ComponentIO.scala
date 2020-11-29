@@ -14,7 +14,6 @@ import cats.effect.IO
  */
 class ComponentIO[T<:Component](val component: T){
 
-  //TODO procedural vs monadic for listeners
   /** Returns an [[IO]] containing the description of a [[java.awt.Component#addMouseListener]]
    * method invocation.*/
   def mouseListenerAdded(l:MouseListener): IO[Unit] = IO {component.addMouseListener(l) }
