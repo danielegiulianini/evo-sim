@@ -19,9 +19,11 @@ package object monadic {
     SwingUtilities.invokeLater(() => computation.unsafeRunSync())
   }
 
-  /** Type alias for a monadic listener, i.e. a listener whose behaviour upon ActionEvent is described by an IO
+  /** Type alias for a monadic listener, i.e. a listener whose behaviour upon [[ActionEvent]] is described by an IO
    * monad (possibly result of a composition of IO monads).
-   * See [[evo_sim.view.swing.monadic.ExampleWithMonadicVsProceduralListeners]] for examples.*/
+   * It is the alternative to [[ActionListener]] and it is used in
+   * [[evo_sim.view.swing.monadic.JButtonIO.monadicActionListenerAdded]].
+   * @see [[evo_sim.view.swing.monadic.ExampleWithMonadicVsProceduralListeners]] for examples.*/
   type MonadicActionListener = ActionEvent => IO[Unit]
 
   /** Implicit utility for converting a by-name (or unevaluated) parameter expression provided by => syntax to

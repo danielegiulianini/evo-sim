@@ -5,8 +5,7 @@ import java.awt.event.{ActionListener}
 import cats.effect.IO
 import javax.swing.JButton
 
-/**
- * A class that provides a monadic description of the operations supplied by Swing's [[JButton]] in the form
+/** A class that provides a monadic description of the operations supplied by Swing's [[JButton]] in the form
  * of IO monad in a purely functional fashion.
  * @param component the jButton that this class wraps.
  */
@@ -20,6 +19,7 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
   def actionListenerRemoved(l:ActionListener): IO[Unit] = IO {component.removeActionListener(l)}
 
   //monadic event listener description
+  /** returns the description of  [[JButton#addActionListener]] method.*/
   def monadicActionListenerAdded(l:MonadicActionListener): IO[Unit] =
     IO {component.addActionListener(l(_).unsafeRunSync())}
   def monadicActionListenerRemoved(l:MonadicActionListener): IO[Unit] =

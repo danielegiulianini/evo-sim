@@ -11,8 +11,8 @@ import javax.swing.JFrame
  * @param component the jFrame that this class wraps.
  */
 class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
-  def contentPane(): IO[ContainerIO[Container]] = IO { new ContainerIO (component.getContentPane) }
 
+  def contentPane(): IO[ContainerIO[Container]] = IO { new ContainerIO (component.getContentPane) }
   def resizableSet(resizable: Boolean): IO[Unit] = IO{component.setResizable(resizable)}
   def visibleSet(b: Boolean): IO[Unit] = IO{component.setVisible(b)}
   def packed(): IO[Unit] = IO{component.pack()}
