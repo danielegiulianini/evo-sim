@@ -10,8 +10,16 @@ import javax.swing.JButton
  * @param component the jButton that this class wraps.
  */
 class JButtonIO(override val component: JButton) extends ComponentIO(component){
+  /** Returns an [[IO]] containing the description of a [[JButton#getText]]
+   * method invocation.*/
   def textGot(): IO[String] = IO {component.getText}
+
+  /** Returns an [[IO]] containing the description of a [[JButton#setText]]
+   * method invocation.*/
   def textSet(text: String): IO[Unit] = IO {component.setText(text)}
+
+  /** Returns an [[IO]] containing the description of a [[JButton#setEnabled]]
+   * method invocation.*/
   def enabledSet(b: Boolean): IO[Unit] = IO { component.setEnabled(b) }
 
   //procedural event listener description (from API-user point of view)
@@ -19,7 +27,6 @@ class JButtonIO(override val component: JButton) extends ComponentIO(component){
   def actionListenerRemoved(l:ActionListener): IO[Unit] = IO {component.removeActionListener(l)}
 
   //monadic event listener description
-  /** returns the description of  [[JButton#addActionListener]] method.*/
   def monadicActionListenerAdded(l:MonadicActionListener): IO[Unit] =
     IO {component.addActionListener(l(_).unsafeRunSync())}
   def monadicActionListenerRemoved(l:MonadicActionListener): IO[Unit] =
