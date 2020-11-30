@@ -6,7 +6,7 @@ import java.awt.BorderLayout
 import cats.effect.IO
 import javax.swing.{JButton, JFrame, JPanel, WindowConstants}
 
-/** This object provides a simple example of use for building a Basic GUI with the classes contained in this package.
+/** Contains a simple example of use for building a Basic GUI with the classes contained in this package.
  */
 object SimpleExampleWithSwingMonadic extends App {
   val frameBuilt = for {
@@ -40,7 +40,7 @@ object SimpleExampleWithSwingMonadic extends App {
   program unsafeRunSync
 }
 
-/** This object provides the procedural-equivalent code of [[SimpleExampleWithSwingMonadic]] leveraging traditional
+/** Contains the procedural-equivalent code of [[SimpleExampleWithSwingMonadic]] leveraging traditional
  * swing APIs.
  */
 object SimpleExampleWithTraditionalSwing extends App {
@@ -65,7 +65,7 @@ object SimpleExampleWithTraditionalSwing extends App {
   frame.setVisible(true)
 }
 
-/** */
+/** Contains a simple example of use for GUI */
 object ExampleWithMonadicVsProceduralListeners extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
@@ -108,6 +108,8 @@ object ExampleWithMonadicVsProceduralListeners extends App {
   }
 }
 
+/** Contains simple example of use of the classes of this package for building a frame with explicit use
+ * of layout managers. */
 object ExampleWithLayoutWithSwingMonadic extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
