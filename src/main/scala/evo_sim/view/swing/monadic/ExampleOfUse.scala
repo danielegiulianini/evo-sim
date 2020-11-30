@@ -40,7 +40,7 @@ object SimpleExampleWithSwingMonadic extends App {
   program unsafeRunSync
 }
 
-/** Contains the procedural-equivalent code of [[SimpleExampleWithSwingMonadic]] leveraging traditional
+/** Contains the procedural/OO-equivalent code of [[SimpleExampleWithSwingMonadic]] leveraging traditional
  * swing APIs.
  */
 object SimpleExampleWithTraditionalSwing extends App {
@@ -65,7 +65,8 @@ object SimpleExampleWithTraditionalSwing extends App {
   frame.setVisible(true)
 }
 
-/** Contains a simple example of use for GUI */
+/** Contains a simple example of a GUI with a comparison of procedural vs monadic
+ * action listener specification. */
 object ExampleWithMonadicVsProceduralListeners extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
@@ -108,7 +109,7 @@ object ExampleWithMonadicVsProceduralListeners extends App {
   }
 }
 
-/** Contains simple example of use of the classes of this package for building a frame with explicit use
+/** Contains a simple example of use of the classes of this package for building a frame with explicit use
  * of layout managers. */
 object ExampleWithLayoutWithSwingMonadic extends App {
   val frameBuilt = for {
