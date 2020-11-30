@@ -4,6 +4,7 @@ import java.awt.event.{ActionEvent, ActionListener}
 
 import cats.effect.IO
 import javax.swing.SwingUtilities
+import javax.swing.event.ChangeEvent
 
 /** A monadic wrapper for Swing and Awt main components that provides an access point to the Swing APIs with
  * a monadic taste. It is independent from the simulator domain and can be potentially re-used outside this
@@ -59,8 +60,11 @@ package object monadic {
    * the [[ActionEvent]] triggering.*/
   implicit def unitToActionListener(f: =>Unit): ActionListener = _ => f
 
+  type MonadicChangeListener = ChangeEvent => IO[Unit]
+
   /** Implicit utility for converting a by-name (or unevaluated) parameter expression provided by => syntax to
    * [[MonadicActionListener]] for enabling a more concise syntax at call-side when describing listeners that ignores
    * the [[ActionEvent]] triggering.*/
   implicit def unitToMonadicActionListener(f: => IO[Unit]): MonadicActionListener = _ => f
+
 }

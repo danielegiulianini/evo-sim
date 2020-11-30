@@ -47,7 +47,7 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
   def changeListenerRemoved(l: ChangeListener): IO[Unit] = IO {component.removeChangeListener(l)}
 
   //monadic event listener description:
-  def changeListenerAdded(l: ChangeEvent => IO[Unit]): IO[Unit] =
+  def changeListenerAdded(l: MonadicChangeListener): IO[Unit] =
     IO { component.addChangeListener(l(_).unsafeRunSync())}
   def changeListenerAdded(l: => IO[Unit]): IO[Unit] =
     IO { component.addChangeListener(_ => l.unsafeRunSync()) }
