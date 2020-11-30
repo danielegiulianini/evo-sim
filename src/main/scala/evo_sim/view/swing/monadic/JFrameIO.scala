@@ -45,7 +45,7 @@ class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
   def titleSet(title: String): IO[Unit] = IO{component.setTitle(title)}
 
   /** Returns an [[IO]] containing the code for maximizing the state of the JFrame wrapped by this instance.*/
-  def setMaximizedExtendedState(): IO[Unit] =
+  def maximizedAndExtendedStateSet(): IO[Unit] =
     IO{component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH)}
 }
 
