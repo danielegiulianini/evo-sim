@@ -22,8 +22,8 @@ package object monadic {
    * [[SwingUtilities#invokeLater]] wrapped call will return.
    * If searching for an asynchronous execution of [[IO]]'s content, must use [[invokingLater]] instead.
    *
-   * @see [[evo_sim.view.swing.monadic.ExampleWithLayoutWithSwingMonadic]] for examples of how to use it
-   *          inside a monadic chain.
+   * @see [[evo_sim.view.swing.monadic.ThreadSafeExampleWithLayoutWithSwingMonadic]] for examples of how to use it
+   *      inside a monadic chain.
    * @param computation the [[IO]] containing the GUI-related logic to be executed.
    * @return an IO wrapping the [[SwingUtilities#invokeAndWait]] thread-safe call.
    */
