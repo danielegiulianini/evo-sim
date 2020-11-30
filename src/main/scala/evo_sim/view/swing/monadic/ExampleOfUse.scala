@@ -102,7 +102,7 @@ object ExampleWithMonadicVsProceduralListeners extends App {
 /** Contains a simple example of use of the classes of this package for building a frame with explicit use
  * of layout managers in a thread-safe manner. */
 object ThreadSafeExampleWithLayoutWithSwingMonadic extends App {
-  val threadSafelyFrameBuilt = for {
+  val threadSafelyBuiltFrame = for {
     frame <- JFrameIO()
     _ <- invokingAndWaiting(for {
       _ <- frame.titleSet("Basic GUI with layouts")
@@ -111,7 +111,7 @@ object ThreadSafeExampleWithLayoutWithSwingMonadic extends App {
     } yield ())
   } yield frame
 
-  val threadSafelyPanelBuilt = for {
+  val threadSafelyBuiltPanel = for {
     panel <- JPanelIO()
     _ <- invokingAndWaiting(
       for {
@@ -131,8 +131,8 @@ object ThreadSafeExampleWithLayoutWithSwingMonadic extends App {
   } yield panel
 
   val threadSafeProgram = for {
-    frame <- threadSafelyFrameBuilt
-    panel <- threadSafelyPanelBuilt
+    frame <- threadSafelyBuiltFrame
+    panel <- threadSafelyBuiltPanel
     _ <- invokingAndWaiting(frame.added(panel))
     _ <- invokingAndWaiting(frame.visibleSet(true))
   } yield ()
