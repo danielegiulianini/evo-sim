@@ -19,7 +19,7 @@ object SimpleExampleWithSwingMonadic extends App {
 
   val panelBuilt = for {
     panel <- JPanelIO()
-    cb <- JButtonIO("Close window.")
+    cb <- JButtonIO("Close program.")
     _ <- cb.actionListenerAdded(System.exit(0))
     _ <- panel.added(cb)
   } yield panel
@@ -33,8 +33,8 @@ object SimpleExampleWithSwingMonadic extends App {
 
   //thread-safer version with invoke-and-wait
   val threadSafeProgram = for {
-    frame <- frameBuilt
-    panel <- panelBuilt
+    frame <- JFrameIO()
+    panel <- JPanelIO()
     _ <- invokingAndWaiting(frame.added(panel))
     _ <- invokingAndWaiting(frame.visibleSet(true))
   } yield ()
@@ -52,8 +52,9 @@ object SimpleExampleWithTraditionalSwing extends App {
 
   def buildPanel = {
     val panel = new JPanel
-    val b = new JButton("Close program)")
+    val b = new JButton("Close program")
     b.addActionListener(_ => System.exit(0))
+    panel.add(b)
     panel
   }
 
@@ -66,8 +67,9 @@ object SimpleExampleWithTraditionalSwing extends App {
 object ExampleWithMonadicVsProceduralListeners extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
-    _ <- frame.titleSet("example")
-    _ <- frame.sizeSet(320, 200)
+    _ <- frame.titleSet("Basic GUI with listeners.")
+    _ <- frame.sizeSet(400, 400)
+    _ <- frame.resizableSet(true)
     _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
@@ -79,11 +81,13 @@ object ExampleWithMonadicVsProceduralListeners extends App {
     label <- JLabelIO("value: ?")
     _ <- panel.added(label, BorderLayout.NORTH)
     button <- JButtonIO("Click to display positive value.")
+    //monadic listener:
     _ <- button.monadicActionListenerAdded(for {
       currentValue <- slider.valueGot
       _ <- if (currentValue > 0) label.textSet("value: " + currentValue)
       else IO.unit
     } yield ())
+    //procedural listener:
     _ <- button.actionListenerAdded(System.out.println("button pressed"))
     _ <- panel.added(button, BorderLayout.SOUTH)
   } yield panel
@@ -98,14 +102,14 @@ object ExampleWithMonadicVsProceduralListeners extends App {
   //example of execution with unsafeRunAsync (async, callback-based API)
   program unsafeRunAsync {
     case Left(_) => println("an exception was raised during gui-building.")
-    case _ => println("gui building ok.")
+    case _ => println("gui-building ok.")
   }
 }
 
 object ExampleWithLayoutWithSwingMonadic extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
-    _ <- frame.titleSet("Basic GUI")
+    _ <- frame.titleSet("Basic GUI with layouts")
     _ <- frame.sizeSet(320, 200)
     _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
@@ -115,9 +119,13 @@ object ExampleWithLayoutWithSwingMonadic extends App {
     _ <- panel.layoutSet(new BorderLayout())
     nb <- JButtonIO("North")
     _ <- panel.added(nb, BorderLayout.NORTH)
-    sb <- JButtonIO("Center (close program)")
-    _ <- sb.actionListenerAdded(System.exit(0))
-    _ <- panel.added(sb, BorderLayout.CENTER)
+    eb <- JButtonIO("East")
+    _ <- panel.added(eb, BorderLayout.EAST)
+    sb <- JButtonIO("South")
+    _ <- panel.added(sb, BorderLayout.SOUTH)
+    cb <- JButtonIO("Center (close program)")
+    _ <- cb.actionListenerAdded(System.exit(0))
+    _ <- panel.added(cb, BorderLayout.CENTER)
   } yield panel
 
   val program = for {
