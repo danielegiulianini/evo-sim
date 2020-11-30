@@ -38,7 +38,7 @@ object SwingView extends View {
     _ <- frame.defaultCloseOperationSet(EXIT_ON_CLOSE)
     _ <- invokingAndWaiting(frame.componentAdapterAdded())        //_ <- frame.addComponentAdapterInvokingAndWaiting()
     _ <- invokingAndWaiting(frame.packed())                       //_ <- frame.packedInvokingAndWaiting()
-    _ <- invokingAndWaiting(frame.resizableSet(false))  //_ <- frame.resizableInvokingAndWaiting(false)
+    _ <- invokingAndWaiting(frame.resizableSet(false))            //_ <- frame.resizableInvokingAndWaiting(false)
     _ <- invokingAndWaiting(frame.visibleSet(true))               //_ <- frame.visibleInvokingAndWaiting(true)
     environment <- IO(Await.result(environmentPromise.future, Duration.Inf))
   } yield environment
