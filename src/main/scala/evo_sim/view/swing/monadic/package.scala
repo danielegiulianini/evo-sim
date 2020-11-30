@@ -60,11 +60,20 @@ package object monadic {
    * the [[ActionEvent]] triggering.*/
   implicit def unitToActionListener(f: =>Unit): ActionListener = _ => f
 
-  type MonadicChangeListener = ChangeEvent => IO[Unit]
-
   /** Implicit utility for converting a by-name (or unevaluated) parameter expression provided by => syntax to
    * [[MonadicActionListener]] for enabling a more concise syntax at call-side when describing listeners that ignores
    * the [[ActionEvent]] triggering.*/
   implicit def unitToMonadicActionListener(f: => IO[Unit]): MonadicActionListener = _ => f
+
+  /** Type alias for a monadic change listener, i.e. a listener whose behaviour upon [[ChangeEvent]] is
+   * described by an IO monad (possibly result of a composition of IO monads).
+   * It is the alternative to [[ChangeListener]] and it is used in
+   * [[evo_sim.view.swing.monadic.JSliderIO.monadicChangeListenerAdded]]. */
+  type MonadicChangeListener = ChangeEvent => IO[Unit]
+
+  /** Implicit utility for converting a by-name (or unevaluated) parameter expression provided by => syntax to
+   * [[MonadicChangeListener]] for enabling a more concise syntax at call-side when describing listeners that ignores
+   * the [[ChangeEvent]] triggering.*/
+  implicit def unitToMonadicChangeListener(f: => IO[Unit]): MonadicChangeListener = _ => f
 
 }
