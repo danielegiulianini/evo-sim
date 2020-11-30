@@ -118,7 +118,7 @@ object ThreadSafeExampleWithLayoutWithSwingMonadic extends App {
         _ <- panel.layoutSet (new BorderLayout ())
         nb <- JButtonIO ("North")
         _ <- panel.added (nb, BorderLayout.NORTH)
-        wb <- JButtonIO ("East")
+        wb <- JButtonIO ("West")
         _ <- panel.added (wb, BorderLayout.WEST)
         eb <- JButtonIO ("East")
         _ <- panel.added (eb, BorderLayout.EAST)
