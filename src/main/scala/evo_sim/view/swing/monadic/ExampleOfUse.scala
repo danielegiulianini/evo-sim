@@ -129,27 +129,3 @@ object ExampleWithLayoutWithSwingMonadic extends App {
 
   program unsafeRunSync
 }
-
-object ExampleWithLayoutWithTraditionalSwing extends App {
-  def buildFrame = {
-    val frame = new JFrame
-    frame.setTitle("Basic GUI")
-    frame.setSize(320, 200)
-    frame
-  }
-
-  def buildPanel = {
-    val panel = new JPanel
-    panel.setLayout(new BorderLayout)
-    panel
-  }
-
-  val panel = buildPanel
-  val frame = buildFrame
-  frame.getContentPane.add(panel)
-  panel.add(new JButton("North"), BorderLayout.NORTH)
-  val sb = new JButton("Center (Close program)")
-  sb.addActionListener(_ => System.exit(0))
-  panel.add(sb, BorderLayout.CENTER)
-  frame.setVisible(true)
-}

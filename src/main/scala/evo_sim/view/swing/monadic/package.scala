@@ -67,7 +67,7 @@ package object monadic {
 
   /** Type alias for a monadic change listener, i.e. a listener whose behaviour upon [[ChangeEvent]] is
    * described by an IO monad (possibly result of a composition of IO monads).
-   * It is the alternative to [[ChangeListener]] and it is used in
+   * It is the alternative to [[javax.swing.event.ChangeListener]] and it is used in
    * [[evo_sim.view.swing.monadic.JSliderIO.monadicChangeListenerAdded]]. */
   type MonadicChangeListener = ChangeEvent => IO[Unit]
 
