@@ -118,7 +118,7 @@ object SwingView extends View {
         _ <- slider.minimumSet(minValue)
         _ <- slider.maximumSet(maxValue)
         _ <- slider.valueSet(defaultValue)
-        _ <- slider.changeListenerAdded(for {
+        _ <- slider.monadicChangeListenerAdded(for {
           value <- slider.valueGot
           _ <- counter.textSet(value.toString)
         } yield ())

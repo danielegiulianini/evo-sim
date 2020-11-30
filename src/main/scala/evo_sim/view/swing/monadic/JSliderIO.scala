@@ -1,7 +1,7 @@
 package evo_sim.view.swing.monadic
 
 import cats.effect.IO
-import javax.swing.event.{ChangeEvent, ChangeListener}
+import javax.swing.event.ChangeListener
 import javax.swing.JSlider
 
 /** A class that provides a monadic description of the operations supplied by Swing's [[JSlider]] in the form
@@ -44,13 +44,16 @@ class JSliderIO(override val component: JSlider) extends JComponentIO(component)
 
   //procedural event listener description:
   def changeListenerAdded(l: ChangeListener): IO[Unit] = IO {component.addChangeListener(l)}
+
   def changeListenerRemoved(l: ChangeListener): IO[Unit] = IO {component.removeChangeListener(l)}
 
   //monadic event listener description:
-  def changeListenerAdded(l: MonadicChangeListener): IO[Unit] =
+  def monadicChangeListenerAdded(l: MonadicChangeListener): IO[Unit] =
     IO { component.addChangeListener(l(_).unsafeRunSync())}
-  def changeListenerAdded(l: => IO[Unit]): IO[Unit] =
-    IO { component.addChangeListener(_ => l.unsafeRunSync()) }
+
+  def monadicChangeListenerRemoved(l: MonadicChangeListener): IO[Unit] =
+    IO {component.removeChangeListener(l(_).unsafeRunSync())}
+
 }
 
 
