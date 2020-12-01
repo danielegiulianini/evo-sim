@@ -36,10 +36,10 @@ object SwingView extends View {
     _ <- cp.layoutSet(new BorderLayout())
     _ <- cp.added(mainPanel, BorderLayout.CENTER)
     _ <- frame.defaultCloseOperationSet(EXIT_ON_CLOSE)
-    _ <- frame.addComponentAdapterInvokingAndWaiting()
-    _ <- frame.packedInvokingAndWaiting()
-    _ <- frame.resizableInvokingAndWaiting(false)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- invokingAndWaiting(frame.componentAdapterAdded())        //_ <- frame.addComponentAdapterInvokingAndWaiting()
+    _ <- invokingAndWaiting(frame.packed())                       //_ <- frame.packedInvokingAndWaiting()
+    _ <- invokingAndWaiting(frame.resizableSet(false))            //_ <- frame.resizableInvokingAndWaiting(false)
+    _ <- invokingAndWaiting(frame.visibleSet(true))               //_ <- frame.visibleInvokingAndWaiting(true)
     environment <- IO(Await.result(environmentPromise.future, Duration.Inf))
   } yield environment
 
@@ -50,21 +50,21 @@ object SwingView extends View {
     shapes <- IO { new JPanelIO(new ShapesPanel(world)) }
     _ <- entityPanel.added(shapes)
     cp <- frame.contentPane()
-    _ <- cp.allRemovedInvokingAndWaiting()
-    _ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
-    _ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
+    _ <- invokingAndWaiting(cp.allRemoved())                                  //_ <- cp.allRemovedInvokingAndWaiting()
+    _ <- invokingAndWaiting(cp.added(barPanel, BorderLayout.NORTH))           //_ <- cp.addedInvokingAndWaiting(barPanel, BorderLayout.NORTH)
+    _ <- invokingAndWaiting(cp.added(entityPanel, BorderLayout.CENTER))       //_ <- cp.addedInvokingAndWaiting(entityPanel, BorderLayout.CENTER)
     windowsBounds <- IO pure GraphicsEnvironment.getLocalGraphicsEnvironment.getMaximumWindowBounds
     _ <- frame.sizeSet(windowsBounds.width, windowsBounds.height)
-    _ <- frame.packedInvokingAndWaiting()
+    _ <- invokingAndWaiting(frame.packed())                                   //_ <- frame.packedInvokingAndWaiting()
   } yield ()
 
   override def resultsShowed(world: WorldHistory): IO[Unit] = for {
     panel <- ResultViewUtils.panelWithChart(world.reverse)
     cp <- frame.contentPane()
-    _ <- cp.allRemovedInvokingAndWaiting()
+    _ <- invokingAndWaiting(cp.allRemoved())        //_ <- cp.allRemovedInvokingAndWaiting()
     _ <- cp.added(panel)
-    _ <- frame.packedInvokingAndWaiting()
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- invokingAndWaiting(frame.packed())         //_ <- frame.packedInvokingAndWaiting()
+    _ <- invokingAndWaiting(frame.visibleSet(true)) //_ <- frame.visibleInvokingAndWaiting(true)
   } yield ()
 
   /** Contains some utilities for creating [[SwingView]].*/
@@ -88,7 +88,7 @@ object SwingView extends View {
         daysSlider <- inputRowCreated(inputPanel, "#Days", Constants.MIN_DAYS, Constants.MAX_DAYS,
           Constants.DEF_DAYS)
         start <- JButtonIO("Start")
-        _ <- start.actionListenerAdded(for {
+        _ <- start.monadicActionListenerAdded(for {
           t <- temperatureSlider.valueGot
           l <- luminositySlider.valueGot
           b <- blobSlider.valueGot
@@ -118,7 +118,7 @@ object SwingView extends View {
         _ <- slider.minimumSet(minValue)
         _ <- slider.maximumSet(maxValue)
         _ <- slider.valueSet(defaultValue)
-        _ <- slider.changeListenerAdded(for {
+        _ <- slider.monadicChangeListenerAdded(for {
           value <- slider.valueGot
           _ <- counter.textSet(value.toString)
         } yield ())
@@ -150,7 +150,7 @@ object SwingView extends View {
       // Adds a listener to a button that changes a slider value if the condition is true
       private def clickUpdatesSliderListenerAdded(button: JButtonIO, slider: JSliderIO, checkCondition: Int => Boolean,
                                                   updateFunction: Int => Int): IO[Unit] = for {
-        _ <- button.actionListenerAdded(for {
+        _ <- button.monadicActionListenerAdded(for {
           currentValue <- slider.valueGot
           _ <- if (checkCondition(currentValue)) slider.valueSet(updateFunction(currentValue)) else IO.unit
         } yield())

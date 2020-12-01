@@ -4,98 +4,138 @@ import scala.language.postfixOps
 import java.awt.BorderLayout
 
 import cats.effect.IO
-import javax.swing.WindowConstants
+import javax.swing.{JButton, JFrame, JPanel, WindowConstants}
 
-/**
- * This objects provides a simple example of use for the classes contained in this package that helps to build
- * GUI in a purely functional fashion.
- */
-object Example1 extends App {
-  val guiBuilt = for {
-    jf <- JFrameIO()
-    _ <- jf.titleSet("Simple example")
-    _ <- jf.sizeSet(300, 200)
-    _ <- jf.locationRelativeToSet(null)
-    _ <- jf.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
-  } yield jf
-
-  val program = for {
-    jf <- guiBuilt
-    _ <- jf.visibleInvokingAndWaiting(true)
-  } yield ()
-
-  program unsafeRunSync
-}
-
-object Example2 extends App {
+/** Contains a simple example of use for building a Basic GUI with the classes contained in this package. */
+object SimpleExampleWithSwingMonadic extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
-    _ <- frame.titleSet("example")
+    _ <- frame.titleSet("Basic GUI")
     _ <- frame.sizeSet(320, 200)
-    _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
   val panelBuilt = for {
     panel <- JPanelIO()
-    _ <- panel.layoutSet(new BorderLayout())
-    nb <- JButtonIO("North")
-    _ <- panel.added(nb, BorderLayout.NORTH)
-    sb <- JButtonIO("South (close program)")
-    _ <- sb.actionListenerAddedFromUnit(System.exit(0))  //listener by procedural specification by name (no param)
-    _ <- panel.added(sb, BorderLayout.SOUTH)
-    eb <- JButtonIO("East (close program)")
-    _ <- panel.added(eb, BorderLayout.EAST)
-    s <- JSliderIO()
-    _ <- panel.added(s, BorderLayout.CENTER)
-    wb <- JButtonIO("West (close program)")
-    _ <- wb.actionListenerAdded(for {
-      currentValue <- s.valueGot
-      _ <- IO { println(currentValue) }
-      _ <- if (currentValue <= 0) IO.unit else IO { println("ok") }
-    } yield ())  //listener by io monad and by name specification
-    _ <- panel.added(wb, BorderLayout.WEST)
+    cb <- JButtonIO("Close program.")
+    _ <- cb.actionListenerAdded(System.exit(0))
+    _ <- panel.added(cb)
   } yield panel
 
   val program = for {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- frame.visibleSet(true)
   } yield ()
 
   program unsafeRunSync
 }
 
-object Example3 extends App {
+/** Contains the procedural/OO-equivalent code of [[SimpleExampleWithSwingMonadic]] leveraging traditional
+ * swing APIs. */
+object SimpleExampleWithTraditionalSwing extends App {
+  def buildFrame = {
+    val frame = new JFrame
+    frame.setTitle("Basic GUI")
+    frame.setSize(320, 200)
+    frame
+  }
 
+  def buildPanel = {
+    val panel = new JPanel
+    val b = new JButton("Close program")
+    b.addActionListener(_ => System.exit(0))
+    panel.add(b)
+    panel
+  }
+
+  val panel = buildPanel
+  val frame = buildFrame
+  frame.add(panel)
+  frame.setVisible(true)
+}
+
+/** Contains a simple example of a GUI with a comparison of procedural vs monadic
+ * action listener specification. */
+object ExampleWithMonadicVsProceduralListeners extends App {
   val frameBuilt = for {
     frame <- JFrameIO()
-    _ <- frame.titleSet("example")
-    _ <- frame.sizeSet(320, 200)
+    _ <- frame.titleSet("Basic GUI with listeners")
+    _ <- frame.sizeSet(400, 400)
+    _ <- frame.resizableSet(true)
     _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
   } yield frame
 
   val panelBuilt = for {
     panel <- JPanelIO()
     _ <- panel.layoutSet(new BorderLayout())
-    l <- JLabelIO()
-    sl <- JSliderIO()
-    _ <- sl.changeListenerAdded(for {
-      currentValue <- sl.valueGot
-      _ <- l.textSet(""+currentValue)
-    } yield())
-    _ <- panel.added(l, BorderLayout.EAST)
-    _ <- panel.added(sl, BorderLayout.CENTER)
+    slider <- JSliderIO()
+    _ <- panel.added(slider, BorderLayout.CENTER)
+    label <- JLabelIO("value: ?")
+    _ <- panel.added(label, BorderLayout.NORTH)
+    button <- JButtonIO("Click to display positive value.")
+    //monadic listener:
+    _ <- button.monadicActionListenerAdded(for {
+      currentValue <- slider.valueGot
+      _ <- if (currentValue > 0) label.textSet("value: " + currentValue)
+      else IO.unit
+    } yield ())
+    //procedural listener:
+    _ <- button.actionListenerAdded(System.out.println("button pressed"))
+    _ <- panel.added(button, BorderLayout.SOUTH)
   } yield panel
 
   val program = for {
     frame <- frameBuilt
     panel <- panelBuilt
     _ <- frame.added(panel)
-    _ <- frame.visibleInvokingAndWaiting(true)
+    _ <- frame.visibleSet(true)
   } yield ()
 
-  program unsafeRunSync
+  //example of execution with unsafeRunAsync (async, callback-based API)
+  program unsafeRunAsync {
+    case Left(_) => println("an exception was raised during gui-building.")
+    case _ => println("gui-building ok.")
+  }
 }
 
+/** Contains a simple example of use of the classes of this package for building a frame with explicit use
+ * of layout managers in a thread-safe manner. */
+object ThreadSafeExampleWithLayoutWithSwingMonadic extends App {
+  val threadSafelyBuiltFrame = for {
+    frame <- JFrameIO()
+    _ <- invokingAndWaiting(for {
+      _ <- frame.titleSet("Basic GUI with layouts")
+      _ <- frame.sizeSet(320, 200)
+      _ <- frame.defaultCloseOperationSet(WindowConstants.EXIT_ON_CLOSE)
+    } yield ())
+  } yield frame
 
+  val threadSafelyBuiltPanel = for {
+    panel <- JPanelIO()
+    _ <- invokingAndWaiting(
+      for {
+        _ <- panel.layoutSet (new BorderLayout ())
+        nb <- JButtonIO ("North")
+        _ <- panel.added (nb, BorderLayout.NORTH)
+        wb <- JButtonIO ("West")
+        _ <- panel.added (wb, BorderLayout.WEST)
+        eb <- JButtonIO ("East")
+        _ <- panel.added (eb, BorderLayout.EAST)
+        sb <- JButtonIO ("South")
+        _ <- panel.added (sb, BorderLayout.SOUTH)
+        cb <- JButtonIO ("Center (close program)")
+        _ <- cb.actionListenerAdded (System.exit (0))
+        _ <- panel.added (cb, BorderLayout.CENTER)
+      } yield ())
+  } yield panel
+
+  val threadSafeProgram = for {
+    frame <- threadSafelyBuiltFrame
+    panel <- threadSafelyBuiltPanel
+    _ <- invokingAndWaiting(frame.added(panel))
+    _ <- invokingAndWaiting(frame.visibleSet(true))
+  } yield ()
+
+  threadSafeProgram unsafeRunSync
+}

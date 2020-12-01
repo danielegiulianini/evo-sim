@@ -11,25 +11,45 @@ import javax.swing.JFrame
  * @param component the jFrame that this class wraps.
  */
 class JFrameIO(override val component: JFrame) extends ContainerIO(component) {
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#getContentPane]]
+   * method invocation.*/
   def contentPane(): IO[ContainerIO[Container]] = IO { new ContainerIO (component.getContentPane) }
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#setResizable]]
+   * method invocation.*/
+  def resizableSet(resizable: Boolean): IO[Unit] = IO{component.setResizable(resizable)}
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#setVisible]]
+   * method invocation.*/
+  def visibleSet(b: Boolean): IO[Unit] = IO{component.setVisible(b)}
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#pack]]
+   * method invocation.*/
+  def packed(): IO[Unit] = IO{component.pack()}
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#setSize]]
+   * method invocation.*/
   def sizeSet(width: Int, height: Int): IO[Unit] = IO { component.setSize(width, height)}
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#setLocationRelativeTo]]
+   * method invocation.*/
   def locationRelativeToSet(c:Component): IO[Unit] = IO {component.setLocationRelativeTo(c)}
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#setDefaultCloseOperation]]
+   * method invocation.*/
   def defaultCloseOperationSet(operation:Int): IO[Unit] = IO {component.setDefaultCloseOperation(operation)}
+
+  /** Returns an [[IO]] containing the description of a [[JFrame#setTitle]]
+   * method invocation.*/
   def titleSet(title: String): IO[Unit] = IO{component.setTitle(title)}
 
-  //invoke and wait versions (for finer granularity for task assignment to EDT thread)
-  def resizableInvokingAndWaiting(resizable: Boolean): IO[Unit] = invokeAndWaitIO(component.setResizable(resizable))
-  def visibleInvokingAndWaiting(b: Boolean): IO[Unit] = invokeAndWaitIO(component.setVisible(b))
-  def packedInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(component.pack())
-  def contentPaneInvokingAndWaiting(): IO[Unit] = invokeAndWaitIO(new ContainerIO (component.getContentPane))
-  def sizeSetInvokingAndWaiting(width: Int, height: Int): IO[Unit] = invokeAndWaitIO(component.setSize(width, height))
-  def locationRelativeToSetInvokingAndWaiting(c:Component): IO[Unit] = invokeAndWaitIO(component.setLocationRelativeTo(c))
-  def defaultCloseOperationSetInvokingAndWaiting(operation:Int): IO[Unit] =invokeAndWaitIO(component.setDefaultCloseOperation(operation))
-  def titleSetInvokingAndWaiting(title: String): IO[Unit] =invokeAndWaitIO(component.setTitle(title))
-  def setMaximizedExtendedStateInvokeAndWaiting(): IO[Unit] = invokeAndWaitIO(component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH))
+  /** Returns an [[IO]] containing the code for maximizing the state of the JFrame wrapped by this instance.*/
+  def maximizedAndExtendedStateSet(): IO[Unit] =
+    IO{component.setExtendedState(component.getExtendedState | Frame.MAXIMIZED_BOTH)}
 }
 
-/** Factory for JFrameIO instances*/
+/** A factory for [[IO]]s containing a JFrameIO instance.*/
 object JFrameIO{
   def apply(): IO[JFrameIO] = IO { new JFrameIO(new JFrame) }
 }
